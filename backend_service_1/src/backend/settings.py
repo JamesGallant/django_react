@@ -15,7 +15,8 @@ import os
 
 # uncomment to use environment files outside container
 #from dotenv import load_dotenv
-#load_dotenv()
+#BASE = os.path.abspath(os.path.dirname(__file__))
+#load_dotenv(os.path.join(BASE, "environments", ".development.env"))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -160,5 +161,8 @@ REST_FRAMEWORK = {
      "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
-    ),
+     ),
  }
+
+# users model
+AUTH_USER_MODEL = 'accounts.UserModel'

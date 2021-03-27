@@ -11,7 +11,7 @@ __pycache__/
 *$py.class
 
 # django
-/backend_service_1/environments/.env
+/backend_service_1/environments/.development.env
 /backend_service_1/*.log
 /backend_service_1/local_settings.py
 /backend_service_1/db.sqlite3

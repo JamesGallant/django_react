@@ -82,7 +82,7 @@ npm install
       - "8010:3000"
     # points to the environment file
     env_file:
-      - ./frontend/environments/.env
+      - ./frontend/environments/.development.env
     depends_on:
       - postgres_database
 ```
@@ -128,7 +128,7 @@ is a commented of the yaml file for the microservices to gain a better understan
 
     # points to a environment file
     env_file:
-      - ./backend_service_1/environments/.env
+      - ./backend_service_1/environments/.development.env
     # states a dependant container
     depends_on:
       - postgres_database

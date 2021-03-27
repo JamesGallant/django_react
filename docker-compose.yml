@@ -6,6 +6,7 @@ services:
      context: ./frontend
      dockerfile: ./Docker/Dockerfile
     image: react_frontend_service
+    container_name: frontend
     restart: always
     command: npm start
     volumes:
@@ -23,6 +24,7 @@ services:
      context: ./backend_service_1
      dockerfile: ./Docker/Dockerfile
     image: django_backend_service_1
+    container_name: backend_service_1
     restart: always
     command: python ./src/manage.py runserver 0.0.0.0:8000
     volumes:
@@ -30,7 +32,7 @@ services:
     ports:
       - "8011:8000"
     env_file:
-      - ./backend_service_1/environments/.env
+      - backend_service_1/environments/.development.env
     depends_on:
       - postgres_database
 

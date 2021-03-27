@@ -1,8 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth import get_user_model
 
-
-class UserAccountTestCase(TestCase):
+class UserManagerTestCase(TestCase):
     def setUp(self) -> None:
         self.user = get_user_model()
 

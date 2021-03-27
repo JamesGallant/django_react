@@ -1,0 +1,11 @@
+# main
+.dockerignore
+
+# backend_service_1
+backend_service_1/docker/
+backend_service_1/venv/
+
+# frontend
+frontend/node_modules
+frontend/build
+frontend/Docker/Dockerfile
