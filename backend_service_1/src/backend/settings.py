@@ -46,9 +46,10 @@ INSTALLED_APPS = [
     # third party
     'corsheaders',
     'rest_framework',
+    'phonenumber_field',
 
     # ours
-    'accounts.apps.AccountsConfig'
+    'accounts.apps.AccountsConfig',
 
 
 ]

@@ -201,9 +201,18 @@ Need to check how ports work and if we are interfering with internal port. Expos
 |Service| Exposed port | internal port |
 |-------|---------------|--------------|
 |postgres_database | 5432 | 5432 |
-|pgadmin | 8000| 80 |
+|pgadmin | 8010| 80 |
 |mailhog smtp | 1025 | 1025 |
-| mailhog web ui | 8001 | 8080 |
-|Frontend | 3000 | 3000|
-|Backend_service_1| 8011 | 8000 |
+| mailhog web ui | 8011 | 8080 |
+|Frontend | 8000 | 3000|
+|Backend_service_1| 8001 | 8000 |
+
+# Credentials
+
+These are the development credentials, do not save your actual credentials in version control
+
+| service | email | password | url|
+|---------|-------|----------|----|
+|Django-admin|admin@admin.com|admin|localhost/8001/admin/|
+|pgadmin|admin@admin.com|admin|localhost/8010/|
 

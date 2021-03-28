@@ -17,6 +17,7 @@ __pycache__/
 /backend_service_1/db.sqlite3
 /backend_service_1/db.sqlite3-journal
 /backend_service_1/coverage
+/backend_service_1/src/accounts/migrations/
 
 # react
 /frontend/dist/
