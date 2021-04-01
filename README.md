@@ -110,7 +110,7 @@ is a commented of the yaml file for the microservices to gain a better understan
     # call the build function
     build:
      # set the context to the microservice root
-     context: ./backend_service_1
+     context: ./accounts
      # point to the dockerfile from the root
      dockerfile: ./Docker/Dockerfile
     # this is the image name
@@ -120,7 +120,7 @@ is a commented of the yaml file for the microservices to gain a better understan
     command: python ./src/manage.py runserver 0.0.0.0:8000
     # This maps the container to the directory for hot reloading
     volumes:
-      - ./backend_service_1/:/usr/src/app/
+      - ./accounts/:/usr/src/app/
 
     # Exposing and mapping the ports
     ports:
@@ -128,7 +128,7 @@ is a commented of the yaml file for the microservices to gain a better understan
 
     # points to a environment file
     env_file:
-      - ./backend_service_1/environments/.development.env
+      - ./accounts/environments/.development.env
     # states a dependant container
     depends_on:
       - postgres_database
@@ -205,7 +205,7 @@ Need to check how ports work and if we are interfering with internal port. Expos
 |mailhog smtp | 1025 | 1025 |
 | mailhog web ui | 8011 | 8080 |
 |Frontend | 8000 | 3000|
-|Backend_service_1| 8001 | 8000 |
+|backend_accounts| 8001 | 8000 |
 
 # Credentials
 

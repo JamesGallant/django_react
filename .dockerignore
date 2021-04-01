@@ -1,9 +1,9 @@
 # main
 .dockerignore
 
-# backend_service_1
-backend_service_1/docker/
-backend_service_1/venv/
+# accounts
+accounts/docker/
+accounts/venv/
 
 # frontend
 frontend/node_modules

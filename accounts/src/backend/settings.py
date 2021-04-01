@@ -49,7 +49,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
 
     # ours
-    'accounts.apps.AccountsConfig',
+    'users.apps.AccountsConfig',
 
 
 ]
@@ -166,4 +166,4 @@ REST_FRAMEWORK = {
  }
 
 # users model
-AUTH_USER_MODEL = 'accounts.UserModel'
+AUTH_USER_MODEL = 'users.UserModel'

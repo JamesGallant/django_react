@@ -19,20 +19,20 @@ services:
     depends_on:
       - postgres_database
 
-  backend_service_1:
+  backend_accounts:
     build:
-     context: ./backend_service_1
+     context: accounts
      dockerfile: ./Docker/Dockerfile
-    image: django_backend_service_1
-    container_name: backend_service_1
+    image: backend_accounts
+    container_name: backend_accounts
     restart: always
     command: python ./src/manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./backend_service_1/:/usr/src/app/
+      - ./accounts/:/usr/src/app/
     ports:
       - "8001:8000"
     env_file:
-      - backend_service_1/environments/.development.env
+      - accounts/environments/.development.env
     depends_on:
       - postgres_database
 
