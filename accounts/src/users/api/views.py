@@ -1,30 +1,41 @@
-from rest_framework import generics, mixins
+"""
+Resources:
+views:
+https://www.django-rest-framework.org/tutorial/3-class-based-views/
+https://www.django-rest-framework.org/api-guide/views/
+
+Requests and responses:
+https://docs.djangoproject.com/en/3.1/ref/request-response/
+
+"""
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
+
 from .serialzers import UserSerializer
 from ..models import UserModel
 
-class ListUsers(generics.ListAPIView, mixins.ListModelMixin, mixins.CreateModelMixin):
-    queryset = UserModel.objects.all()
-    serializer_class = UserSerializer
+class ListPostUsers(APIView):
+    def get(self, request, format=None):
+        model = UserModel.objects.all()
+        serializer = UserSerializer(model, many=True)
+        if request.user.is_superuser:
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response({"Not authenticated"}, status=status.HTTP_403_FORBIDDEN)
 
-    def get(self,request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
+    def post(self, request, format=None):
+        print(request.method)
+        return Response({"Was a post request"}, status=status.HTTP_200_OK)
 
-    def post(self, request, *args, **kwargs):
-        print(request.POST.get('email'))
-        return self.create(request, *args, **kwargs)
+class ControlUsers(APIView):
 
-class ControlUsers(generics.RetrieveUpdateDestroyAPIView,
-                   mixins.RetrieveModelMixin,
-                   mixins.UpdateModelMixin,
-                   mixins.DestroyModelMixin):
-    queryset = UserModel.objects.all()
-    serializer_class = UserSerializer
+    def get(self, request, pk, format=None):
+        return Response({f"Was a targeted get request for pk: {pk}"}, status=status.HTTP_200_OK)
 
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
+    def put(self, request, pk, format=None):
+        return Response({f"Was a targeted put request for pk: {pk}"}, status=status.HTTP_200_OK)
 
-    def put(self, request, *args, **kwargs):
-        return self.update(request, *args, **kwargs)
-
-    def delete(self, request, *args, **kwargs):
-        return self.destroy(request, *args, **kwargs)
+    def delete(self, request, pk, format=None):
+        return Response({f"Was a targeted delete request for pk: {pk}"}, status=status.HTTP_200_OK)

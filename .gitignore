@@ -16,7 +16,7 @@ __pycache__/
 /accounts/local_settings.py
 /accounts/db.sqlite3
 /accounts/db.sqlite3-journal
-/accounts/coverage
+/accounts/coverage/
 /accounts/src/users/migrations/
 
 # react
