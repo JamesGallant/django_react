@@ -62,7 +62,6 @@ class ControlUsers(APIView):
         except ObjectDoesNotExist:
             return Response("Model does not exist", status=status.HTTP_404_NOT_FOUND)
 
-        print(f"from views {pk, request.user.pk}")
         serializer = UserSerializer(user)
         if request.user.is_superuser or request.user.is_staff:
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -70,7 +69,7 @@ class ControlUsers(APIView):
             if request.user.pk == pk:
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
-                return Response(status=status.HTTP_403_FORBIDDEN)
+                return Response({"Not authorised"}, status=status.HTTP_403_FORBIDDEN)
 
 
 

@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.contrib.auth import get_user_model
 
 from rest_framework import status
-from rest_framework.test import APIClient
+from rest_framework.test import APIClient, APITestCase
 
 from ..api.serialzers import UserSerializer
 
@@ -171,7 +171,7 @@ class TestCreateUser(TestCase):
 
         self.assertEqual(Response_invalid.status_code, status.HTTP_400_BAD_REQUEST)
 
-class TestControlUser(TestCase):
+class TestControlUser(APITestCase):
     """
     Users should be able access update or delete their accounts
     tests
@@ -194,7 +194,15 @@ class TestControlUser(TestCase):
             last_name="testuser1_lastname",
             email="testuser1@testuser.com",
             mobile_number='+31111111111',
-            password='testpassword1'
+            password='password'
+        )
+
+        self.user2 = self.user_model.objects.create_user(
+            first_name="testuser2_firstname",
+            last_name="testuser2_lastname",
+            email="testuser2@testuser.com",
+            mobile_number='+31111111112',
+            password='password'
         )
 
         self.user_model.objects.create_superuser(
@@ -205,18 +213,20 @@ class TestControlUser(TestCase):
             password='superuser@testuser.com'
         )
 
-    def test_superuser_get_request(self):
-        #response_anon = self.client.get(reverse('detail_users', kwargs={'pk': self.user1.pk}))
+    def test_get_request(self):
+        response_anon = self.client.get(reverse('detail_users', kwargs={'pk': self.user1.pk}))
 
         self.client.login(username='superuser@testuser.com', password='superuser@testuser.com')
         response_superuser = self.client.get(reverse('detail_users', kwargs={'pk': self.user1.pk}))
         self.client.logout()
 
-    def test_user_get_request(self):
-        self.client.login(username='testuser1_lastname', password='testpassword1')
-        print(self.user1.pk)
-        response_user = self.client.get('api/v1/users/2/')
+        self.client.login(username='testuser1@testuser.com', password='password')
+        response_user = self.client.get(reverse('detail_users', kwargs={'pk': self.user2.pk}))
         self.client.logout()
+
+        print(f"anon: {response_anon.status_code}")
+        print(f"superuser: {response_superuser.status_code}")
+        print(f"user: {response_user.status_code}")
 
 
 
