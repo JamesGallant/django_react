@@ -14,7 +14,6 @@ Things to implement
  - integration testing
  - stress testing
  - CI/CD
- - Central port registry
  
 ## Introduction
 This is the entry point for the django-react-postgres boilerplate documentation. This document serves as the total overview of the project 
@@ -34,6 +33,10 @@ docker-compose -d up .
 To build a service
 ```
 docker-compose build .
+```
+To run commands within a container
+```
+docker-compose run --rm <containerID> <command>
 ```
 
 ## Services
@@ -87,8 +90,8 @@ npm install
       - postgres_database
 ```
 
-### Backend_service_1
-This is a placeholder to provide a working project structure. All other backend services should follow this model. 
+### Accounts
+This is a authentication service for user accounts. All other backend services should follow this models example. 
 Detailed explanation should be in a readme within each microservice. Each django service will also have its own
 dependencies. Create a virtual environment within the microservice and install the dependencies with pip
 
@@ -215,4 +218,6 @@ These are the development credentials, do not save your actual credentials in ve
 |---------|-------|----------|----|
 |Django-admin|admin@admin.com|admin|localhost/8001/admin/|
 |pgadmin|admin@admin.com|admin|localhost/8010/|
+
+# Changelog
 
