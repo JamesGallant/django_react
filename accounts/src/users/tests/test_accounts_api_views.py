@@ -110,7 +110,6 @@ class TestListUsers(TestCase):
         self.assertEqual(response_user_post.status_code, status.HTTP_403_FORBIDDEN)
         self.assertEqual(response_user_delete.status_code, status.HTTP_403_FORBIDDEN)
 
-
 class TestCreateUser(TestCase):
     """
     Creating a new user should meet the following tests.
@@ -171,6 +170,56 @@ class TestCreateUser(TestCase):
                                     content_type='application/json')
 
         self.assertEqual(Response_invalid.status_code, status.HTTP_400_BAD_REQUEST)
+
+class TestControlUser(TestCase):
+    """
+    Users should be able access update or delete their accounts
+    tests
+    1. Get account information from user or admin but not from other user
+    2. Update account information from user or admin but not from other user
+    3. Delete account information by user or admin but not from other user
+    4. Should return 404 if primary key is not available
+    """
+
+    def setUp(self) -> None:
+        """
+        Setup testing environment
+        :return:
+        """
+        self.client = APIClient()
+        self.user_model = get_user_model()
+
+        self.user1 = self.user_model.objects.create_user(
+            first_name="testuser1_firstname",
+            last_name="testuser1_lastname",
+            email="testuser1@testuser.com",
+            mobile_number='+31111111111',
+            password='testpassword1'
+        )
+
+        self.user_model.objects.create_superuser(
+            first_name="superuser_firstname",
+            last_name="superuser_lastname",
+            email="superuser@testuser.com",
+            mobile_number='+33111111111',
+            password='superuser@testuser.com'
+        )
+
+    def test_superuser_get_request(self):
+        #response_anon = self.client.get(reverse('detail_users', kwargs={'pk': self.user1.pk}))
+
+        self.client.login(username='superuser@testuser.com', password='superuser@testuser.com')
+        response_superuser = self.client.get(reverse('detail_users', kwargs={'pk': self.user1.pk}))
+        self.client.logout()
+
+    def test_user_get_request(self):
+        self.client.login(username='testuser1_lastname', password='testpassword1')
+        print(self.user1.pk)
+        response_user = self.client.get('api/v1/users/2/')
+        self.client.logout()
+
+
+
 
 
 

@@ -8,6 +8,8 @@ Requests and responses:
 https://docs.djangoproject.com/en/3.1/ref/request-response/
 
 """
+from django.core.exceptions import ObjectDoesNotExist
+
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
@@ -51,9 +53,26 @@ class CreateUsers(APIView):
 
 
 class ControlUsers(APIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = UserSerializer
 
-    def get(self, request, pk, format=None):
-        return Response({f"Was a targeted get request for pk: {pk}"}, status=status.HTTP_200_OK)
+    def get(self, request, pk):
+        try:
+            user = UserModel.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            return Response("Model does not exist", status=status.HTTP_404_NOT_FOUND)
+
+        print(f"from views {pk, request.user.pk}")
+        serializer = UserSerializer(user)
+        if request.user.is_superuser or request.user.is_staff:
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            if request.user.pk == pk:
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(status=status.HTTP_403_FORBIDDEN)
+
+
 
     def put(self, request, pk, format=None):
         return Response({f"Was a targeted put request for pk: {pk}"}, status=status.HTTP_200_OK)
