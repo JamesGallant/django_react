@@ -53,10 +53,17 @@ class CreateUsers(APIView):
 
 
 class ControlUsers(APIView):
+    """Control users allow users and admin to control their own account data by accessing, editing or deleting it"""
     permission_classes = [IsAuthenticated]
     serializer_class = UserSerializer
 
-    def get(self, request, pk):
+    def get(self, request, pk) -> Response:
+        """
+        Admin and validated user can access their data with a get request
+        :param request: GET
+        :param pk: user primary key
+        :return: Response
+        """
         try:
             user = UserModel.objects.get(pk=pk)
         except ObjectDoesNotExist:
@@ -73,8 +80,25 @@ class ControlUsers(APIView):
 
 
 
-    def put(self, request, pk, format=None):
-        return Response({f"Was a targeted put request for pk: {pk}"}, status=status.HTTP_200_OK)
+    def put(self, request, pk) -> Response:
+        """
+        Put requests will update the user model, the backend accepts only valid inputs and all fields must be entered.
+        Dynamic interactions such as automatic retention of unaltered fields are handled in the front end.
+        :param request: PUT
+        :param pk: user primary key
+        :return: Response
+        """
+        try:
+            user = UserModel.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            return Response("Model does not exist", status=status.HTTP_404_NOT_FOUND)
+
+        serializer = UserSerializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "details updated"}, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
     def delete(self, request, pk, format=None):
         return Response({f"Was a targeted delete request for pk: {pk}"}, status=status.HTTP_200_OK)

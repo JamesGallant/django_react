@@ -188,6 +188,7 @@ class TestControlUser(APITestCase):
         """
         self.client = APIClient()
         self.user_model = get_user_model()
+        self.invalid_pk = 100
 
         self.user1 = self.user_model.objects.create_user(
             first_name="testuser1_firstname",
@@ -221,12 +222,150 @@ class TestControlUser(APITestCase):
         self.client.logout()
 
         self.client.login(username='testuser1@testuser.com', password='password')
-        response_user = self.client.get(reverse('detail_users', kwargs={'pk': self.user2.pk}))
+        response_user_invalid = self.client.get(reverse('detail_users', kwargs={'pk': self.user2.pk}))
         self.client.logout()
 
-        print(f"anon: {response_anon.status_code}")
-        print(f"superuser: {response_superuser.status_code}")
-        print(f"user: {response_user.status_code}")
+        self.client.login(username='testuser1@testuser.com', password='password')
+        response_user_valid = self.client.get(reverse('detail_users', kwargs={'pk': self.user1.pk}))
+        self.client.logout()
+
+        self.assertEqual(response_anon.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response_user_invalid.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response_superuser.status_code, status.HTTP_200_OK)
+        self.assertEqual(response_user_valid.status_code, status.HTTP_200_OK)
+
+    def test_put_request(self) -> None:
+        """
+        testing put request on user accounts
+        Users and admin can update their data, outside users cannot.
+        Validate the following:
+            - cannot access unauthorised data
+            - No user available: check
+            - valid mobile number: check
+            - valid password: check
+            - valid hash: check:
+            - unique email
+            - can login after changing email and password
+        :return:
+        """
+        # data
+        valid_edit_names = {
+            "first_name": "user1_newfirsname",
+            "last_name": "user1_newlastname",
+            "email": "testuser1@testuser.com",
+            "mobile_number": "+31111111111",
+            "password": "password"
+        }
+
+        valid_edit_logins = {
+            "first_name": "user2_firsname",
+            "last_name": "user2_lastname",
+            "email": "testuser2_newemail@testuser.com",
+            "mobile_number": "+31111111112",
+            "password": "newpassword"
+        }
+
+        invalid_edit_bademail = {
+            "first_name": "user1_newfirsname",
+            "last_name": "user1_newfirsname",
+            "email": "testuser1testuser.",
+            "mobile_number": "+31111111111",
+            "password": "password"
+        }
+
+        invalid_edit_badmobile = {
+            "first_name": "user1_newfirsname",
+            "last_name": "user1_newfirsname",
+            "email": "testuser1testuser.",
+            "mobile_number": "+311",
+            "password": "password"
+        }
+
+        invalid_edit_nodata = {
+            "first_name": "",
+            "last_name": "",
+            "email": "",
+            "mobile_number": "",
+            "password": ""
+        }
+
+        # logins
+        ## Anonymous
+        response_anon = self.client.put(reverse('detail_users', kwargs={'pk': self.user1.pk}),
+                                                 json.dumps(valid_edit_names),
+                                                 content_type='application/json')
+
+        # Normal user
+        self.client.login(username='testuser1@testuser.com', password='password')
+        response_user_validEdit_names = self.client.put(reverse('detail_users', kwargs={'pk': self.user1.pk}),
+                                                 json.dumps(valid_edit_names),
+                                                 content_type='application/json')
+
+        response_user_otheruser = self.client.put(reverse('detail_users', kwargs={'pk': self.user2.pk}),
+                                                 json.dumps(valid_edit_names),
+                                                 content_type='application/json')
+        self.client.logout()
+
+        # normal user changing login details
+        self.client.login(username='testuser2@testuser.com', password='password')
+
+        response_user_validEdit_logins = self.client.put(reverse('detail_users', kwargs={'pk': self.user2.pk}),
+                                                 json.dumps(valid_edit_logins),
+                                                 content_type='application/json')
+        self.client.logout()
+
+
+
+        # Superuser
+        self.client.login(username='superuser@testuser.com', password='superuser@testuser.com')
+        response_superuser_nouser = self.client.put(reverse('detail_users', kwargs={'pk': self.invalid_pk}),
+                                                 json.dumps(valid_edit_names),
+                                                 content_type='application/json')
+
+        response_superuser_valid_user1 = self.client.put(reverse('detail_users', kwargs={'pk': self.user1.pk}),
+                                                 json.dumps(valid_edit_names),
+                                                 content_type='application/json')
+
+        response_superuser_invalid1_user1 = self.client.put(reverse('detail_users', kwargs={'pk': self.user1.pk}),
+                                                 json.dumps(invalid_edit_nodata),
+                                                 content_type='application/json')
+
+        response_superuser_invalid2_user1 = self.client.put(reverse('detail_users', kwargs={'pk': self.user1.pk}),
+                                                 json.dumps(invalid_edit_bademail),
+                                                 content_type='application/json')
+
+        response_superuser_invalid3_user1 = self.client.put(reverse('detail_users', kwargs={'pk': self.user1.pk}),
+                                                 json.dumps(invalid_edit_badmobile),
+                                                 content_type='application/json')
+
+
+        response_superuser = self.client.get(reverse('detail_users', kwargs={'pk': self.user2.pk}))
+        self.client.logout()
+
+        # tests
+        ## valid
+        ### data can be edited
+        self.assertEqual(response_superuser_valid_user1.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response_user_validEdit_names.status_code, status.HTTP_201_CREATED)
+
+        ### new account details: user can login
+        self.assertTrue(self.client.login(username="testuser2_newemail@testuser.com", password="newpassword"))
+
+        ## invalid
+        ### non logged in user
+        self.assertEqual(response_anon.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response_user_otheruser.status_code, status.HTTP_403_FORBIDDEN)
+
+        ### bad edits by superuser or validated user
+        self.assertEqual(response_superuser_nouser.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response_superuser_invalid1_user1.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response_superuser_invalid2_user1.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response_superuser_invalid3_user1.status_code, status.HTTP_400_BAD_REQUEST)
+
+        ### Old account details cannot be accessed
+        self.assertFalse(self.client.login(username='testuser2@testuser.com', password='password'))
+
+
 
 
 
