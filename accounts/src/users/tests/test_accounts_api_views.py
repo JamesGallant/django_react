@@ -22,6 +22,7 @@ class TestListUsers(TestCase):
     Only accepts get requests
 
     """
+
     def setUp(self) -> None:
         self.client = APIClient()
         self.user_model = get_user_model()
@@ -87,8 +88,8 @@ class TestListUsers(TestCase):
         """
         self.client.login(username='superuser@testuser.com', password='superuser@testuser.com')
         response_superuser_post = self.client.post(reverse(self.view_name),
-                                         data=json.dumps({"data": "some_data"}),
-                                         content_type='application/json')
+                                                   data=json.dumps({"data": "some_data"}),
+                                                   content_type='application/json')
 
         response_superuser_delete = self.client.delete(reverse(self.view_name),
                                                        data=json.dumps({"data": "some_data"}),
@@ -97,18 +98,19 @@ class TestListUsers(TestCase):
 
         self.client.login(username='testuser1_lastname', password='testpassword1')
         response_user_post = self.client.post(reverse(self.view_name),
-                                         data=json.dumps({"data": "some_data"}),
-                                         content_type='application/json')
+                                              data=json.dumps({"data": "some_data"}),
+                                              content_type='application/json')
 
         response_user_delete = self.client.delete(reverse(self.view_name),
-                                                       data=json.dumps({"data": "some_data"}),
-                                                       content_type="application/json")
+                                                  data=json.dumps({"data": "some_data"}),
+                                                  content_type="application/json")
         self.client.logout()
 
         self.assertEqual(response_superuser_post.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
         self.assertEqual(response_superuser_delete.status_code, status.HTTP_405_METHOD_NOT_ALLOWED)
         self.assertEqual(response_user_post.status_code, status.HTTP_403_FORBIDDEN)
         self.assertEqual(response_user_delete.status_code, status.HTTP_403_FORBIDDEN)
+
 
 class TestCreateUser(TestCase):
     """
@@ -118,6 +120,7 @@ class TestCreateUser(TestCase):
     3. There cannot be duplicate users by email or mobile
     4. Users need to verify by mobile before account is made
     """
+
     def setUp(self) -> None:
         """
         Set up for testing user creation
@@ -162,14 +165,15 @@ class TestCreateUser(TestCase):
         :return:
         """
         self.client.post(reverse(self.viewname),
-                                    data=json.dumps(self.valid_payload),
-                                    content_type='application/json')
+                         data=json.dumps(self.valid_payload),
+                         content_type='application/json')
 
         Response_invalid = self.client.post(reverse(self.viewname),
-                                    data=json.dumps(self.invalid_payload),
-                                    content_type='application/json')
+                                            data=json.dumps(self.invalid_payload),
+                                            content_type='application/json')
 
         self.assertEqual(Response_invalid.status_code, status.HTTP_400_BAD_REQUEST)
+
 
 class TestControlUser(APITestCase):
     """
@@ -206,6 +210,14 @@ class TestControlUser(APITestCase):
             password='password'
         )
 
+        self.user3 = self.user_model.objects.create_user(
+            first_name="testuser3_firstname",
+            last_name="testuser3_lastname",
+            email="testuser3@testuser.com",
+            mobile_number='+31111111113',
+            password='password'
+        )
+
         self.user_model.objects.create_superuser(
             first_name="superuser_firstname",
             last_name="superuser_lastname",
@@ -239,7 +251,7 @@ class TestControlUser(APITestCase):
         testing put request on user accounts
         Users and admin can update their data, outside users cannot.
         Validate the following:
-            - cannot access unauthorised data
+            - cannot access unauthorised data: check
             - No user available: check
             - valid mobile number: check
             - valid password: check
@@ -292,54 +304,50 @@ class TestControlUser(APITestCase):
         # logins
         ## Anonymous
         response_anon = self.client.put(reverse('detail_users', kwargs={'pk': self.user1.pk}),
-                                                 json.dumps(valid_edit_names),
-                                                 content_type='application/json')
+                                        json.dumps(valid_edit_names),
+                                        content_type='application/json')
 
         # Normal user
         self.client.login(username='testuser1@testuser.com', password='password')
         response_user_validEdit_names = self.client.put(reverse('detail_users', kwargs={'pk': self.user1.pk}),
-                                                 json.dumps(valid_edit_names),
-                                                 content_type='application/json')
+                                                        json.dumps(valid_edit_names),
+                                                        content_type='application/json')
 
         response_user_otheruser = self.client.put(reverse('detail_users', kwargs={'pk': self.user2.pk}),
-                                                 json.dumps(valid_edit_names),
-                                                 content_type='application/json')
+                                                  json.dumps(valid_edit_names),
+                                                  content_type='application/json')
         self.client.logout()
 
         # normal user changing login details
         self.client.login(username='testuser2@testuser.com', password='password')
 
-        response_user_validEdit_logins = self.client.put(reverse('detail_users', kwargs={'pk': self.user2.pk}),
-                                                 json.dumps(valid_edit_logins),
-                                                 content_type='application/json')
+        response_user_validEdit_login = self.client.put(reverse('detail_users', kwargs={'pk': self.user2.pk}),
+                                                        json.dumps(valid_edit_logins),
+                                                        content_type='application/json')
         self.client.logout()
-
-
 
         # Superuser
         self.client.login(username='superuser@testuser.com', password='superuser@testuser.com')
         response_superuser_nouser = self.client.put(reverse('detail_users', kwargs={'pk': self.invalid_pk}),
-                                                 json.dumps(valid_edit_names),
-                                                 content_type='application/json')
+                                                    json.dumps(valid_edit_names),
+                                                    content_type='application/json')
 
         response_superuser_valid_user1 = self.client.put(reverse('detail_users', kwargs={'pk': self.user1.pk}),
-                                                 json.dumps(valid_edit_names),
-                                                 content_type='application/json')
+                                                         json.dumps(valid_edit_names),
+                                                         content_type='application/json')
 
         response_superuser_invalid1_user1 = self.client.put(reverse('detail_users', kwargs={'pk': self.user1.pk}),
-                                                 json.dumps(invalid_edit_nodata),
-                                                 content_type='application/json')
+                                                            json.dumps(invalid_edit_nodata),
+                                                            content_type='application/json')
 
         response_superuser_invalid2_user1 = self.client.put(reverse('detail_users', kwargs={'pk': self.user1.pk}),
-                                                 json.dumps(invalid_edit_bademail),
-                                                 content_type='application/json')
+                                                            json.dumps(invalid_edit_bademail),
+                                                            content_type='application/json')
 
         response_superuser_invalid3_user1 = self.client.put(reverse('detail_users', kwargs={'pk': self.user1.pk}),
-                                                 json.dumps(invalid_edit_badmobile),
-                                                 content_type='application/json')
+                                                            json.dumps(invalid_edit_badmobile),
+                                                            content_type='application/json')
 
-
-        response_superuser = self.client.get(reverse('detail_users', kwargs={'pk': self.user2.pk}))
         self.client.logout()
 
         # tests
@@ -349,6 +357,8 @@ class TestControlUser(APITestCase):
         self.assertEqual(response_user_validEdit_names.status_code, status.HTTP_201_CREATED)
 
         ### new account details: user can login
+
+        self.assertEqual(response_user_validEdit_login.status_code, status.HTTP_201_CREATED)
         self.assertTrue(self.client.login(username="testuser2_newemail@testuser.com", password="newpassword"))
 
         ## invalid
@@ -365,10 +375,51 @@ class TestControlUser(APITestCase):
         ### Old account details cannot be accessed
         self.assertFalse(self.client.login(username='testuser2@testuser.com', password='password'))
 
+    def test_delete_request(self) -> None:
+        """
+        Tests deleting users. Admin and user should be able to delete their account. Frontend must handle validating
+        the handling of this request.
 
+        tests:
+            - admin can delete: check
+            - user can delete his own data
+            - anon cannot delete
+            - user cannot delete others data
+            - unable to login to the account after deletion
+            - cannot delete nonexistant account
+        :param request:
+        :param pk:
+        :return:
+        """
+        # anon
+        response_anon = self.client.delete(reverse('detail_users', kwargs={'pk': self.user1.pk}))
 
+        # superuser
+        self.client.login(username='superuser@testuser.com', password='superuser@testuser.com')
+        response_superuser = self.client.delete(reverse('detail_users', kwargs={'pk': self.user1.pk}))
+        self.client.logout()
 
+        # user
+        self.client.login(username='testuser2@testuser.com', password='password')
+        response_user_invalid = self.client.delete(reverse('detail_users', kwargs={'pk': self.user3.pk}))
+        response_user_valid = self.client.delete(reverse('detail_users', kwargs={'pk': self.user2.pk}))
+        self.client.logout()
 
+        # tests
+        ## fail
+        ### anon cannot delete accounts
+        self.assertEqual(response_anon.status_code, status.HTTP_403_FORBIDDEN)
+        ### user cannot delete another users account
+        self.assertEqual(response_user_invalid.status_code, status.HTTP_403_FORBIDDEN)
 
-
-
+        ## pass
+        ### admin can delete account
+        self.assertEqual(response_superuser.status_code, status.HTTP_204_NO_CONTENT)
+        ### account one no longer accessible
+        self.assertFalse(self.client.login(username='testuser1@testuser.com', password='password'))
+        ### attacked user can enter account
+        self.assertTrue(self.client.delete(reverse('detail_users', kwargs={'pk': self.user3.pk})))
+        ### user can delete own account
+        self.assertEqual(response_user_valid.status_code, status.HTTP_204_NO_CONTENT)
+        ### user cannot access the account that was deleted
+        self.assertFalse(self.client.login(username='testuser2@testuser.com', password='password'))

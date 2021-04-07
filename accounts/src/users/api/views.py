@@ -67,7 +67,7 @@ class ControlUsers(APIView):
         try:
             user = UserModel.objects.get(pk=pk)
         except ObjectDoesNotExist:
-            return Response("Model does not exist", status=status.HTTP_404_NOT_FOUND)
+            return Response({"message": "user does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = UserSerializer(user)
         if request.user.is_superuser or request.user.is_staff:
@@ -76,9 +76,7 @@ class ControlUsers(APIView):
             if request.user.pk == pk:
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
-                return Response({"Not authorised"}, status=status.HTTP_403_FORBIDDEN)
-
-
+                return Response({"message": "Not authorised"}, status=status.HTTP_403_FORBIDDEN)
 
     def put(self, request, pk) -> Response:
         """
@@ -91,7 +89,7 @@ class ControlUsers(APIView):
         try:
             user = UserModel.objects.get(pk=pk)
         except ObjectDoesNotExist:
-            return Response("Model does not exist", status=status.HTTP_404_NOT_FOUND)
+            return Response({"message": "user does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
         serializer = UserSerializer(user, data=request.data)
         if serializer.is_valid():
@@ -100,5 +98,23 @@ class ControlUsers(APIView):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, pk, format=None):
-        return Response({f"Was a targeted delete request for pk: {pk}"}, status=status.HTTP_200_OK)
+    def delete(self, request, pk) -> Response:
+        """
+        Delete requests will delete the users account. Only admin and the user can delete their account. The accounts
+        are accessed by the primary key and the front end must do verifications before submitting a delete request
+        :param request: Delete
+        :param pk: primary key
+        :return: Response
+        """
+
+        try:
+            user = UserModel.objects.get(pk=pk)
+        except ObjectDoesNotExist:
+            return Response({"message": "User does not exist"}, status=status.HTTP_404_NOT_FOUND)
+
+        if request.user.pk == pk or request.user.is_staff:
+            user_email = user.email
+            user.delete()
+            return Response({f"message: User {user_email} was deleted"}, status=status.HTTP_204_NO_CONTENT)
+
+        return Response({"message": "Not authorised"}, status=status.HTTP_403_FORBIDDEN)
