@@ -9,6 +9,11 @@ https://docs.djangoproject.com/en/3.1/ref/request-response/
 
 """
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.mail import send_mail
+from django.views import View
+from django.http import HttpResponse
+from django.shortcuts import redirect
+from django.urls import reverse
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -29,9 +34,13 @@ class ListUsers(APIView):
         :param format:
         :return:
         """
-        model = UserModel.objects.all()
-        serializer = UserSerializer(model, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        print(request.user)
+        if request.user.is_staff:
+            model = UserModel.objects.all()
+            serializer = UserSerializer(model, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+
+        return Response({"message": "Not Authorised"}, status=status.HTTP_401_UNAUTHORIZED)
 
 
 class CreateUsers(APIView):
@@ -69,6 +78,8 @@ class ControlUsers(APIView):
         except ObjectDoesNotExist:
             return Response({"message": "user does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
+
+
         serializer = UserSerializer(user)
         if request.user.is_superuser or request.user.is_staff:
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -76,7 +87,7 @@ class ControlUsers(APIView):
             if request.user.pk == pk:
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
-                return Response({"message": "Not authorised"}, status=status.HTTP_403_FORBIDDEN)
+                return Response({"message": "Not authorised"}, status=status.HTTP_401_UNAUTHORIZED)
 
     def put(self, request, pk) -> Response:
         """
@@ -91,12 +102,16 @@ class ControlUsers(APIView):
         except ObjectDoesNotExist:
             return Response({"message": "user does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = UserSerializer(user, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"message": "details updated"}, status=status.HTTP_201_CREATED)
+        if request.user.pk == pk or request.user.is_staff:
+            serializer = UserSerializer(user, data=request.data)
+            if serializer.is_valid():
+                serializer.save()
+                return Response({"message": "details updated"}, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"message": "Not authorised"}, status=status.HTTP_401_UNAUTHORIZED)
+
+
 
     def delete(self, request, pk) -> Response:
         """
@@ -117,4 +132,14 @@ class ControlUsers(APIView):
             user.delete()
             return Response({f"message: User {user_email} was deleted"}, status=status.HTTP_204_NO_CONTENT)
 
-        return Response({"message": "Not authorised"}, status=status.HTTP_403_FORBIDDEN)
+        return Response({"message": "Not authorised"}, status=status.HTTP_401_UNAUTHORIZED)
+
+class ConfirmEmailRegistrationView(APIView):
+    """
+    This will set user status to active by validating a token and redirect the user to a front end page
+    """
+    def get(self, request):
+        response = redirect("https://www.google.com/")
+        return response
+
+

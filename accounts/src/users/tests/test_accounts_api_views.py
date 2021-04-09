@@ -8,6 +8,7 @@ from django.test import TestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 
+
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
 
@@ -57,17 +58,29 @@ class TestListUsers(TestCase):
         Superuser should have all the access
         :return:
         """
-        # request
+        # logins
+        ## superuser
         self.client.login(username='superuser@testuser.com', password='superuser@testuser.com')
-        response = self.client.get(reverse(self.view_name))
+        response_admin = self.client.get(reverse(self.view_name))
         self.client.logout()
+
+        ## non admin
+        self.client.login(username="testuser1@testuser.com", password='password')
+        response_user = self.client.get(reverse(self.view_name))
+        self.client.logout()
+
+
         # data
         users = self.user_model.objects.all()
         serializer = UserSerializer(users, many=True)
 
         # validations
-        self.assertEqual(response.data, serializer.data)
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        ## pass
+        self.assertEqual(response_admin.data, serializer.data)
+        self.assertEqual(response_admin.status_code, status.HTTP_200_OK)
+
+        ## fails
+        self.assertEqual(response_user.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_get_request_normaluser(self) -> None:
         """
@@ -242,7 +255,7 @@ class TestControlUser(APITestCase):
         self.client.logout()
 
         self.assertEqual(response_anon.status_code, status.HTTP_403_FORBIDDEN)
-        self.assertEqual(response_user_invalid.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response_user_invalid.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertEqual(response_superuser.status_code, status.HTTP_200_OK)
         self.assertEqual(response_user_valid.status_code, status.HTTP_200_OK)
 
@@ -363,8 +376,8 @@ class TestControlUser(APITestCase):
 
         ## invalid
         ### non logged in user
-        self.assertEqual(response_anon.status_code, status.HTTP_403_FORBIDDEN)
-        self.assertEqual(response_user_otheruser.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response_anon.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertEqual(response_user_otheruser.status_code, status.HTTP_401_UNAUTHORIZED)
 
         ### bad edits by superuser or validated user
         self.assertEqual(response_superuser_nouser.status_code, status.HTTP_404_NOT_FOUND)
@@ -408,9 +421,9 @@ class TestControlUser(APITestCase):
         # tests
         ## fail
         ### anon cannot delete accounts
-        self.assertEqual(response_anon.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response_anon.status_code, status.HTTP_401_UNAUTHORIZED)
         ### user cannot delete another users account
-        self.assertEqual(response_user_invalid.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response_user_invalid.status_code, status.HTTP_401_UNAUTHORIZED)
 
         ## pass
         ### admin can delete account

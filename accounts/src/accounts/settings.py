@@ -146,6 +146,8 @@ STATIC_URL = '/static/'
 EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND", None)
 EMAIL_HOST = os.environ.get("EMAIL_HOST", None)
 EMAIL_PORT = os.environ.get("EMAIL_PORT", None)
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", None)
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", None)
 
 
 # Rest framework options
@@ -160,6 +162,7 @@ CORS_ORIGIN_ALLOW_ALL = False
 REST_FRAMEWORK = {
      "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
      "DEFAULT_AUTHENTICATION_CLASSES": (
+        'rest_framework.authentication.BasicAuthentication',
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
      ),

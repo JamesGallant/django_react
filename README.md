@@ -5,6 +5,7 @@ Add a split between development and production. Right now in django this can be 
 Auto documentation builder. 
 
 Things to implement
+ - second service
  - Redis caching
  - Spinx or autodoc
  - celery
@@ -206,7 +207,7 @@ Need to check how ports work and if we are interfering with internal port. Expos
 |postgres_database | 5432 | 5432 |
 |pgadmin | 8010| 80 |
 |mailhog smtp | 1025 | 1025 |
-| mailhog web ui | 8011 | 8080 |
+|mailhog web ui | 8011 | 8080 |
 |Frontend | 8000 | 3000|
 |backend_accounts| 8001 | 8000 |
 
