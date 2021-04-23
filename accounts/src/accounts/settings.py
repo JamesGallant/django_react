@@ -33,6 +33,8 @@ DEBUG = os.environ.get("DEBUG", default=0)
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
+# comapany name
+SITE_NAME = os.environ.get("SITE_NAME", "placeholder")
 # Application definition
 
 INSTALLED_APPS = [
@@ -46,6 +48,8 @@ INSTALLED_APPS = [
     # third party
     'corsheaders',
     'rest_framework',
+    'rest_framework.authtoken',
+    'djoser',
     'phonenumber_field',
 
     # ours
@@ -142,6 +146,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+
 # Email support
 EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND", None)
 EMAIL_HOST = os.environ.get("EMAIL_HOST", None)
@@ -149,6 +154,9 @@ EMAIL_PORT = os.environ.get("EMAIL_PORT", None)
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", None)
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", None)
 
+# users model
+AUTH_USER_MODEL = 'users.UserModel'
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 
 # Rest framework options
 
@@ -162,11 +170,19 @@ CORS_ORIGIN_ALLOW_ALL = False
 REST_FRAMEWORK = {
      "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
      "DEFAULT_AUTHENTICATION_CLASSES": (
-        'rest_framework.authentication.BasicAuthentication',
-        "rest_framework.authentication.SessionAuthentication",
+        #"rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
      ),
  }
 
-# users model
-AUTH_USER_MODEL = 'users.UserModel'
+# djoser
+DJOSER = {
+    'SEND_ACTIVATION_EMAIL': bool(os.environ.get('DJOSER_SEND_EMAIL', False)),
+    "LOGIN_FIELD": os.environ.get('DJOSER_LOGIN_FIELD', "username"),
+    'HIDE_USERS': bool(os.environ.get('DJOSER_HIDE_USER', True)),
+    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'SERIALIZERS': {
+    },
+
+}
+

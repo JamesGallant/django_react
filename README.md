@@ -211,6 +211,8 @@ Need to check how ports work and if we are interfering with internal port. Expos
 |Frontend | 8000 | 3000|
 |backend_accounts| 8001 | 8000 |
 
+files where ports are referenced
+`src/accounts/`
 # Credentials
 
 These are the development credentials, do not save your actual credentials in version control
