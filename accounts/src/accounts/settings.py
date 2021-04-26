@@ -13,10 +13,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 from pathlib import Path
 import os
 
-# uncomment to use environment files outside container
-#from dotenv import load_dotenv
-#BASE = os.path.abspath(os.path.dirname(__file__))
-#load_dotenv(os.path.join(BASE, "environments", ".development.env"))
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -74,7 +71,7 @@ ROOT_URLCONF = 'accounts.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, "templates")],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -82,6 +79,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                # ours
+                'accounts.context_processors.frontend_url'
             ],
         },
     },
@@ -161,16 +160,14 @@ DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 # Rest framework options
 
 # CORS
-CORS_ORIGIN_WHITELIST = [
-    "http://localhost:8010",
-]
+CORS_ORIGIN_WHITELIST = ['http://localhost:8000']
+
 # restrict to api only
 CORS_ORIGIN_ALLOW_ALL = False
 
 REST_FRAMEWORK = {
      "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
      "DEFAULT_AUTHENTICATION_CLASSES": (
-        #"rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
      ),
  }
@@ -178,11 +175,12 @@ REST_FRAMEWORK = {
 # djoser
 DJOSER = {
     'SEND_ACTIVATION_EMAIL': bool(os.environ.get('DJOSER_SEND_EMAIL', False)),
+    'SEND_CONFORMATION_EMAIL': bool(os.environ.get('DJOSER_SEND_EMAIL', False)),
     "LOGIN_FIELD": os.environ.get('DJOSER_LOGIN_FIELD', "username"),
     'HIDE_USERS': bool(os.environ.get('DJOSER_HIDE_USER', True)),
     'ACTIVATION_URL': 'activate/{uid}/{token}',
-    'SERIALIZERS': {
-    },
-
+    'SERIALIZERS': {},
+    'EMAIL': {
+        'activation': 'users.email.activation_email.ActivationEmail'
+    }
 }
-

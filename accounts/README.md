@@ -45,10 +45,11 @@ Base URL: `api/v1/auth/`
 |------------------|------------|--------------|----------------------|-----------------|
 |users/            | GET        | READ         | Get all users        | Admin           |
 |users/            | POST       | CREATE       | Create new user      | Any             |
-|users/:id         | GET        | READ         | Get user by id       | User & Admin    |
-|users/me          | GET        | READ         | Get user instance    | User            |
-|users/me          | PUT        | UPDATE       | Change user instance | User            |
-|users/me          | DELETE     | UPDATE       | Delete user instance | User            |   
+|users/:id/        | GET        | READ         | Get user by id       | User & Admin    |
+|users/me/         | GET        | READ         | Get user instance    | User            |
+|users/me/         | PUT        | UPDATE       | Change user instance | User            |
+|users/me/         | DELETE     | UPDATE       | Delete user instance | User            |
+|users/activation/ | POST       | Update       | Activates user       | frontend        |   
 |token/login/      | POST       | CREATE       | User login           | User            |
 |token/logout/     | POST       | READ         | User logout          | User            |
 
@@ -56,5 +57,21 @@ Base URL: `api/v1/auth/`
 ## Email verification
 
 A users email must be verified before it will be entered into the database. Email verification is useful for securing the
-authenticity of an email address. Developer mode uses mailhog as the development server. For more info on mailhog have 
-a look [here](https://github.com/mailhog/MailHog). 
+authenticity of an email address. The data is parsed using [djoser](https://djoser.readthedocs.io/en/latest/settings.html#send-activation-email). 
+
+Developer mode uses mailhog as the development server. For more info on mailhog have a look [here](https://github.com/mailhog/MailHog). 
+
+### Workflow
+ - users sign into account
+ - user id and token is generated and in a url to their email
+ - user clicks this url and is directed to a front end
+ - front end extracts user id and token from url
+ - front end sends a post request to backend `/api/v1/auth/users/activation` with the uid and token
+ - account is activated
+ 
+ Email templates can be customised using JINJA and is found in the directory `accounts/src/templates/activation_email.py`
+ 
+ The email link is directed using the `DJOSER_FRONTEND_URL` in the environment file. To change it, see the 
+ context_processors.py file in `src/accounts/context_processors.py`. 
+
+

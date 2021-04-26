@@ -8,14 +8,19 @@ Requests and responses:
 https://docs.djangoproject.com/en/3.1/ref/request-response/
 
 """
+
+import os
+import requests
+
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.mail import send_mail
 from django.views import View
 from django.http import HttpResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse
 
 from rest_framework.views import APIView
+from rest_framework.generics import GenericAPIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 from rest_framework import status
@@ -78,8 +83,6 @@ class ControlUsers(APIView):
         except ObjectDoesNotExist:
             return Response({"message": "user does not exist"}, status=status.HTTP_404_NOT_FOUND)
 
-
-
         serializer = UserSerializer(user)
         if request.user.is_superuser or request.user.is_staff:
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -111,8 +114,6 @@ class ControlUsers(APIView):
 
         return Response({"message": "Not authorised"}, status=status.HTTP_401_UNAUTHORIZED)
 
-
-
     def delete(self, request, pk) -> Response:
         """
         Delete requests will delete the users account. Only admin and the user can delete their account. The accounts
@@ -134,12 +135,12 @@ class ControlUsers(APIView):
 
         return Response({"message": "Not authorised"}, status=status.HTTP_401_UNAUTHORIZED)
 
+
 class ConfirmEmailRegistrationView(APIView):
     """
     This will set user status to active by validating a token and redirect the user to a front end page
     """
+
     def get(self, request):
         response = redirect("https://www.google.com/")
         return response
-
-

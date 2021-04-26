@@ -26,7 +26,11 @@ export default function UserData() {
   
 
   const populateFields = () => {
-    axios.get('http://127.0.0.1:8011/api/user/')
+    axios({
+      method: "get",
+      url: 'http://localhost:8001/api/v1/auth/users/',
+      headers: {'Authorization': 'Token: 4add7f9cda66e8c310f9dc1ca4401852b880d093'}
+    })
     .then(function (response) {
       var userdata = response.data;
       

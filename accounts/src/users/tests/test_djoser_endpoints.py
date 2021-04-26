@@ -2,9 +2,11 @@ import os
 import json
 
 from django.contrib.auth import get_user_model
+from django.core import mail
 
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
+
 
 """
 Internal testing for the djoser authentications. https://djoser.readthedocs.io/en/latest/introduction.html
@@ -17,6 +19,7 @@ Tests to implement
  - deleting account : included
  - updating account : 
  - authorisations : included
+ - email verification
 """
 
 
@@ -290,7 +293,70 @@ class TestDjoserAccountDelete(APITestCase):
         self.assertEqual(response_admin_delete.status_code, status.HTTP_204_NO_CONTENT)
 
 
+class TestEmailVerification(APITestCase):
+    """
+    Test email verification, users creating an account should recieve an email with a token and a ID. The email
+    should contain a token and a user id.
+
+    tests:
+     - email sent: included
+     - token can be retrieved via link: included
+     - account is set as active when link is clicked: included
+     - account exists:
+    """
+
+    def setUp(self) -> None:
+        self.User_model = get_user_model()
+        self.client = APIClient()
+        self.base_url = f"http://localhost:{os.environ.get('BACKEND_ACCOUNTS_EXPOSED', None)}/api/v1/auth"
+        self.valid_payload = {
+            "first_name": "testuser3_firstname",
+            "last_name": "testuser3_lastname",
+            "email": "testuser3@testuser.com",
+            "mobile_number": '+31111111114',
+            "password": '@VeryHardPassword123'
+        }
+
+    def test_email(self):
+        response_register_user = self.client.post(f"{self.base_url}/users/", data=json.dumps(self.valid_payload),
+                                                  content_type='application/json')
+
+        user_not_active = self.User_model.objects.get(pk=response_register_user.data.get('id'))
+
+        uid, token = [str(lines) for lines in mail.outbox[0].body.splitlines() if "auth/activate/" in lines][0].split("/")[-2:] 
+
+        data = {'uid': uid,
+                'token': token}
+
+        response_activate_user = self.client.post(f"{self.base_url}/users/activation/",
+                                                  data=json.dumps(data),
+                                                  content_type='application/json')
+
+        user_active = self.User_model.objects.get(pk=response_register_user.data.get('id'))
+
+        # tests
+        ## new account pending
+        self.assertEqual(response_register_user.status_code, status.HTTP_201_CREATED)
+        self.assertFalse(user_not_active.is_active)
+
+        ## single mail sent
+        self.assertEqual(len(mail.outbox), 1)
+
+        ## account created
+        self.assertEqual(response_activate_user.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertTrue(user_active.is_active)
+
+
 class TestDjoserAccountChange(APITestCase):
+    """
+    Tests changing the email address or the password. The rest of the data can be changed by put requests
+
+    tests:
+     - user can change username
+     - user can change password
+     - admin can change username
+     - admin can change password
+    """
     pass
 
 
@@ -309,6 +375,8 @@ class TestDjoserAuth(APITestCase):
         - Hostile cannot view account by primary key : included
         - Hostile cannot delete account by primary key : included
         - Hostile cannot alter account by primary key : included
+        - Hostile cannot change username of another:
+        - Hostile cannot change password of another:
     """
 
     def setUp(self) -> None:
