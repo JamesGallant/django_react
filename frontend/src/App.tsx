@@ -10,7 +10,7 @@ function App() {
     <BrowserRouter>
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route path="/activate/:uid/:token/" exact component={UsersActivate} />
+        <Route path="/auth/activate/:uid/:token/" exact component={UsersActivate} />
         
       </Switch>
     </BrowserRouter> )

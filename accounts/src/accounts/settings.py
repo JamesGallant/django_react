@@ -178,7 +178,7 @@ DJOSER = {
     'SEND_CONFORMATION_EMAIL': bool(os.environ.get('DJOSER_SEND_EMAIL', False)),
     "LOGIN_FIELD": os.environ.get('DJOSER_LOGIN_FIELD', "username"),
     'HIDE_USERS': bool(os.environ.get('DJOSER_HIDE_USER', True)),
-    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'ACTIVATION_URL': 'auth/activate/{uid}/{token}',
     'SERIALIZERS': {},
     'EMAIL': {
         'activation': 'users.email.activation_email.ActivationEmail'

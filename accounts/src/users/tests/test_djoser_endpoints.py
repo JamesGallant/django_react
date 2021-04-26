@@ -19,7 +19,7 @@ Tests to implement
  - deleting account : included
  - updating account : 
  - authorisations : included
- - email verification
+ - email verification: included
 """
 
 
@@ -334,6 +334,12 @@ class TestEmailVerification(APITestCase):
 
         user_active = self.User_model.objects.get(pk=response_register_user.data.get('id'))
 
+        response_user_is_active = self.client.post(f"{self.base_url}/users/activation/",
+                                                  data=json.dumps(data),
+                                                  content_type='application/json')
+
+
+
         # tests
         ## new account pending
         self.assertEqual(response_register_user.status_code, status.HTTP_201_CREATED)
@@ -345,6 +351,10 @@ class TestEmailVerification(APITestCase):
         ## account created
         self.assertEqual(response_activate_user.status_code, status.HTTP_204_NO_CONTENT)
         self.assertTrue(user_active.is_active)
+
+        ## user is active, clicked link twice
+        self.assertEqual(response_user_is_active.status_code, status.HTTP_403_FORBIDDEN)
+
 
 
 class TestDjoserAccountChange(APITestCase):

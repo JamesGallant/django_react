@@ -73,5 +73,10 @@ Developer mode uses mailhog as the development server. For more info on mailhog 
  
  The email link is directed using the `DJOSER_FRONTEND_URL` in the environment file. To change it, see the 
  context_processors.py file in `src/accounts/context_processors.py`. 
+ 
+ Frontend needs to handle the following cases
+ - email verification page
+ - link clicked twice
+ - check if is_active is True
 
 
