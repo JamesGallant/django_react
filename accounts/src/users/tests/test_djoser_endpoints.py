@@ -7,7 +7,6 @@ from django.core import mail
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
 
-
 """
 Internal testing for the djoser authentications. https://djoser.readthedocs.io/en/latest/introduction.html
 Since security is essential we will test these even if djoser has internal testing, if something fails we can fix
@@ -323,7 +322,8 @@ class TestEmailVerification(APITestCase):
 
         user_not_active = self.User_model.objects.get(pk=response_register_user.data.get('id'))
 
-        uid, token = [str(lines) for lines in mail.outbox[0].body.splitlines() if "auth/activate/" in lines][0].split("/")[-2:] 
+        uid, token = [str(lines) for lines in mail.outbox[0].body.splitlines() if "auth/activate/" in lines][0].split(
+            "/")[-2:]
 
         data = {'uid': uid,
                 'token': token}
@@ -335,10 +335,8 @@ class TestEmailVerification(APITestCase):
         user_active = self.User_model.objects.get(pk=response_register_user.data.get('id'))
 
         response_user_is_active = self.client.post(f"{self.base_url}/users/activation/",
-                                                  data=json.dumps(data),
-                                                  content_type='application/json')
-
-
+                                                   data=json.dumps(data),
+                                                   content_type='application/json')
 
         # tests
         ## new account pending
@@ -354,6 +352,124 @@ class TestEmailVerification(APITestCase):
 
         ## user is active, clicked link twice
         self.assertEqual(response_user_is_active.status_code, status.HTTP_403_FORBIDDEN)
+
+
+class TestDjoserUpdateAccount(APITestCase):
+    """
+    Tests updating a user account.
+
+    tests:
+     - user can update fields like first name, last name, mobile: included
+     - user cannot change other fields like superuser or staff: included
+     - user cannot change based on a non related primary key: included
+     - superuser can change user details
+    """
+
+    def setUp(self) -> None:
+        self.client = APIClient()
+        self.user_model = get_user_model()
+        self.base_url = f"http://localhost:{os.environ.get('BACKEND_ACCOUNTS_EXPOSED', None)}/api/v1/auth"
+        self.users_url = f"{self.base_url}/users/"
+        self.login_url = f"{self.base_url}/token/login/"
+
+        self.user = self.user_model.objects.create_user(
+            first_name="regular_user_fn",
+            last_name="regular_user_ln",
+            email="regular_user@email.com",
+            mobile_number='+31111111112',
+            password='secret'
+        )
+
+        self.admin = self.user_model.objects.create_superuser(
+            first_name="superuser_fn",
+            last_name="superuser_ln",
+            email="superuser@testuser.com",
+            mobile_number='+31111111111',
+            password='secret'
+        )
+
+        self.reguser_login = {
+            'email': "regular_user@email.com",
+            'password': "secret",
+        }
+
+        self.admin_login = {
+            "email": "superuser@testuser.com",
+            "password": "secret"
+        }
+
+        self.token_user = self.client.post(self.login_url,
+                                           data=json.dumps(self.reguser_login),
+                                           content_type='application/json'
+                                           )
+
+        self.token_admin = self.client.post(self.login_url,
+                                           data=json.dumps(self.admin_login),
+                                           content_type='application/json'
+                                           )
+
+        self.valid_payload = {
+            "first_name": "new_first_name",
+            "last_name": "new_last_name",
+            "mobile_number": '+27111111118',
+        }
+
+        self.invalid_payload = {
+            "first_name": "new_first_name",
+            "last_name": "new_last_name",
+            "mobile_number": '+27111111118',
+            "email": "new_email@email.com",
+            "is_superuser": True,
+            "id": 50000
+        }
+
+        self.admin_valid_payload = {
+            "first_name": "admin_first_name",
+            "last_name": "admin_last_name",
+            "mobile_number": '+930775443832',
+        }
+
+    def test_update_details(self):
+        """
+        Tests updating user account details available to them. Users cannot change data not available to them. Anonymous
+        user has cannot access data and superuser can alter users data
+        :return: None
+        """
+
+        # anonymous
+        response_anon_id = self.client.put(f"{self.users_url}{self.admin.id}/", data=json.dumps({"email": "anon@anon.com"}),
+                                           content_type="application/json")
+
+        # users
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token_user.data.get('auth_token'))
+        response_user_detailChange = self.client.put(f"{self.users_url}me/", data=json.dumps(self.valid_payload),
+                                                     content_type="application/json")
+        self.client.put(f"{self.users_url}me/", data=json.dumps(self.invalid_payload),
+                                                      content_type="application/json")
+        self.client.credentials()
+
+        ## superuser
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token_admin.data.get('auth_token'))
+
+        response_admin_detailChange = self.client.put(f"{self.users_url}{self.user.id}/",
+                                                      data=json.dumps(self.admin_valid_payload),
+                                                     content_type="application/json")
+
+
+        self.client.credentials()
+
+        # tests
+        ## anonymous
+        self.assertEqual(response_anon_id.status_code, status.HTTP_401_UNAUTHORIZED)
+
+        ## user
+        self.assertEqual(response_user_detailChange.status_code, status.HTTP_200_OK)
+        self.assertEqual("regular_user@email.com", self.user.email)
+        self.assertNotEqual(self.user.id, 5000)
+        self.assertFalse(self.user.is_superuser)
+
+        ## superuser
+        self.assertEqual(response_admin_detailChange.status_code, status.HTTP_200_OK)
 
 
 
