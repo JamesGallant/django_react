@@ -175,12 +175,18 @@ REST_FRAMEWORK = {
 # djoser
 DJOSER = {
     'SEND_ACTIVATION_EMAIL': bool(os.environ.get('DJOSER_SEND_EMAIL', False)),
-    'SEND_CONFORMATION_EMAIL': bool(os.environ.get('DJOSER_SEND_EMAIL', False)),
+    'SEND_CONFIRMATION_EMAIL': bool(os.environ.get('DJOSER_SEND_CONFIRMATION_EMAIL', False)),
+    'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': True,
+    'USERNAME_RESET_SHOW_EMAIL_NOT_FOUND': True,
     "LOGIN_FIELD": os.environ.get('DJOSER_LOGIN_FIELD', "username"),
     'HIDE_USERS': bool(os.environ.get('DJOSER_HIDE_USER', True)),
     'ACTIVATION_URL': 'auth/activate/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': 'auth/reset/username/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_URL': 'auth/reset/password/{uid}/{token}',
     'SERIALIZERS': {},
     'EMAIL': {
-        'activation': 'users.email.activation_email.ActivationEmail'
+        'activation': 'users.email.activation_email.ActivationEmail',
+        'username_changed_confirmation': 'users.email.username_reset_confirmation.UsernameChangedConfirmationEmail',
+        'username_reset': 'users.email.username_reset.UsernameResetEmail',
     }
 }

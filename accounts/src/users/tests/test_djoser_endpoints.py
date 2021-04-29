@@ -343,8 +343,8 @@ class TestEmailVerification(APITestCase):
         self.assertEqual(response_register_user.status_code, status.HTTP_201_CREATED)
         self.assertFalse(user_not_active.is_active)
 
-        ## single mail sent
-        self.assertEqual(len(mail.outbox), 1)
+        ## two mails sent, one activation and once welcome
+        self.assertEqual(len(mail.outbox), 2)
 
         ## account created
         self.assertEqual(response_activate_user.status_code, status.HTTP_204_NO_CONTENT)
@@ -472,8 +472,7 @@ class TestDjoserUpdateAccount(APITestCase):
         self.assertEqual(response_admin_detailChange.status_code, status.HTTP_200_OK)
 
 
-
-class TestDjoserAccountChange(APITestCase):
+class TestDjoserResets(APITestCase):
     """
     Tests changing the email address or the password. The rest of the data can be changed by put requests
 
@@ -483,7 +482,140 @@ class TestDjoserAccountChange(APITestCase):
      - admin can change username
      - admin can change password
     """
-    pass
+    def setUp(self) -> None:
+        self.client = APIClient()
+        self.user_model = get_user_model()
+        self.base_url = f"http://localhost:{os.environ.get('BACKEND_ACCOUNTS_EXPOSED', None)}/api/v1/auth/"
+        self.new_username = "regular_user_new@email.com"
+        self.new_password = "newSecret"
+
+        self.user = self.user_model.objects.create_user(
+            first_name="regular_user_fn",
+            last_name="regular_user_ln",
+            email="regular_user@email.com",
+            mobile_number='+31111111112',
+            password='secret'
+        )
+
+        self.admin = self.user_model.objects.create_superuser(
+            first_name="superuser_fn",
+            last_name="superuser_ln",
+            email="superuser@testuser.com",
+            mobile_number='+31111111111',
+            password='secret'
+        )
+
+
+        self.admin_login = {
+            "email": "superuser@testuser.com",
+            "password": "secret"
+        }
+
+    def test_reset_username(self):
+        """
+        Tests resetting the username. Email must be present in database, User should be able to reset
+        username. Frontend must log user out
+        :return:
+        """
+        response_valid_resetEmail = self.client.post(f"{self.base_url}users/reset_email/",
+                                                    data=json.dumps({'email': 'regular_user@email.com'}),
+                                                    content_type='application/json')
+
+        response_invalid_resetEmail = self.client.post(f"{self.base_url}users/reset_email/",
+                                                    data=json.dumps({'email': 'regular_user_new@email.com'}),
+                                                    content_type='application/json')
+
+        uid, token = [str(lines) for lines in mail.outbox[0].body.splitlines() if "reset/username/" in lines][0].split(
+            "/")[-2:]
+
+        response_new_username = self.client.post(f"{self.base_url}users/reset_email_confirm/",
+                                                 data=json.dumps({
+                                                     "uid": uid,
+                                                     "token": token,
+                                                     "new_email": self.new_username
+                                                 }),
+                                                 content_type="application/json")
+
+        # login old username, fails
+        response_login_old_username = self.client.post(f"{self.base_url}token/login/",
+                                                       data=json.dumps({
+                                                           "email": "regular_user@email.com",
+                                                           "password": "secret"
+                                                       }),
+                                                       content_type="application/json")
+
+        # login new username, passes
+        response_login_new_username = self.client.post(f"{self.base_url}token/login/",
+                                                       data=json.dumps({
+                                                           "email": "regular_user_new@email.com",
+                                                           "password": "secret"
+                                                       }),
+                                                       content_type="application/json")
+
+        user = self.user_model.objects.get(pk=self.user.id)
+
+        # tests
+        ## valid request
+        self.assertEqual(response_valid_resetEmail.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(response_login_new_username.status_code, status.HTTP_200_OK)
+        self.assertEqual(response_new_username.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(user.email, "regular_user_new@email.com")
+        self.assertEqual(user.first_name, "regular_user_fn")
+        self.assertEqual(user.last_name, "regular_user_ln")
+
+        ## invalid request
+        self.assertEqual(response_invalid_resetEmail.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response_login_old_username.status_code, status.HTTP_400_BAD_REQUEST)
+
+        ## mail sent
+        ## two mails sent, one activation and once welcome
+        self.assertEqual(len(mail.outbox), 1)
+
+    def test_reset_password(self):
+        """
+        User should be able to reset their password and is able to login with the new password and the old one is invalid.
+        Frontend should logout users.
+        :return: None
+        """
+        response_reset_pw_request = self.client.post(f"{self.base_url}users/reset_password/",
+                                                    data=json.dumps({'email': 'regular_user@email.com'}),
+                                                    content_type='application/json')
+
+        uid, token = [str(lines) for lines in mail.outbox[0].body.splitlines() if "reset/password/" in lines][0].split(
+            "/")[-2:]
+
+        response_new_password = self.client.post(f"{self.base_url}users/reset_password_confirm/",
+                                                 data=json.dumps({
+                                                     "uid": uid,
+                                                     "token": token,
+                                                     "new_password": self.new_password
+                                                 }),
+                                                 content_type="application/json")
+
+        response_login_old_pw = self.client.post(f"{self.base_url}token/login/",
+                                                       data=json.dumps({
+                                                           "email": "regular_user@email.com",
+                                                           "password": "secret"
+                                                       }),
+                                                       content_type="application/json")
+
+        response_login_new_pw = self.client.post(f"{self.base_url}token/login/",
+                                                       data=json.dumps({
+                                                           "email": "regular_user@email.com",
+                                                           "password": self.new_password
+                                                       }),
+                                                       content_type="application/json")
+
+
+        ## tests
+        ## valid response
+        self.assertEqual(response_reset_pw_request.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(response_new_password.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(response_login_new_pw.status_code, status.HTTP_200_OK)
+
+        # invalid responses
+        self.assertEqual(response_login_old_pw.status_code, status.HTTP_400_BAD_REQUEST)
 
 
 class TestDjoserAuth(APITestCase):
