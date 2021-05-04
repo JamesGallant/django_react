@@ -46,11 +46,12 @@ django-rest-framework project with a slightly modified directory structure which
 Under services add a name for the new service that's created, this name must be unique. Services must restart and run
 the runserver django command. The ports are mapped from 8000 to in incremental port which starts at 8001. Below is a 
 table with the assigned ports update these as new services are created. All services depend on a database. The main
-directory contains the docker-compose.yaml file that controls and launches all the services.
+directory contains the docker-compose.yaml file that controls and launches all the services. If it is necessary to remap
+the ports, check environmental files to change the port options
 
 ### Frontend
 This is the react front end and its where the ui lives. It functions similar to the backend service however here 
-we use node and typescript. The default front end service will display some data from the default backend. More in depth
+we use React and typescript. The default front end service will display some data from the default backend. More in depth
 details of the front end should be documented in the front end readme. 
 
 The development server is spun up using the frontend service in the docker-compose file. below is a commented version
@@ -222,5 +223,7 @@ These are the development credentials, do not save your actual credentials in ve
 |Django-admin|admin@admin.com|admin|localhost/8001/admin/|
 |pgadmin|admin@admin.com|admin|localhost/8010/|
 
-# Changelog
+# Testing
+Each microservice runs its own unit tests and details on the tests can be found in README of the individual service. 
+Intergration tests are handled using selenium to mock web browsers. See selenium README for more details.
 

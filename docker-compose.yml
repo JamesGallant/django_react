@@ -23,7 +23,7 @@ services:
     build:
      context: accounts
      dockerfile: ./Docker/Dockerfile
-    image: backend_accounts
+    image: backend_accounts_service
     container_name: backend_accounts
     restart: always
     command: python ./src/manage.py runserver 0.0.0.0:8000
