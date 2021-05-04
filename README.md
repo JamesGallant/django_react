@@ -7,6 +7,7 @@ Auto documentation builder.
 Things to implement
  - second service
  - Redis caching
+ - RabbitMQ or Kafka for messaging?
  - Spinx or autodoc
  - celery
  - prodcution environments

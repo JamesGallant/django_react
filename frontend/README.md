@@ -1,13 +1,3 @@
-# To do
- - user login
- - user logout
- - create accounts
- - delete accounts
- - reset email
- - reset password
- - resend verification email
- - storing and retrieving tokens as cookies - cookie policy
-
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
@@ -55,3 +45,66 @@ You can learn more in the [Create React App documentation](https://facebook.gith
 
 To learn React, check out the [React documentation](https://reactjs.org/).
 
+---------------------------------------------------------------------------------------
+# Introduction
+
+This is the frontend service built with react and templated with Typescript. The common things like Babel and web pack are
+already available when using the `create-react-app` command which allows us to focus on development. The frontend service
+will contain all the frontend code for now. Perhaps a future model can split these into individual frontend services. The
+frontend will reference the backend through API calls to the other services.
+
+The coding practise of the frontend is component based. the code is loacated in `src` and the entrypoint to the react application
+is `src/App.tsx`. The src directory further contains `pages`, `components` and `css` directories. In `src/pages/page.tsx` individual 
+web pages are found and these are imported into `src/App.tsx`. The pages in turn use components found in `src/components/component.tsx`
+to generate the web pages. Pages represent the major units of the application while components represent re-usable pieces of logic
+available to every page. 
+
+# Test driven development
+
+Components and logic is created using a test driven approach as much as possible. This insures that the components and buisiness
+logic is wll represented. `Create react app` comes with test runners that work on ES6 out of the box. Tests are located in the
+`__tests__` directory and imports components or utilities and the test file convention is `component.test.tsx`. Components and
+logic functions that are not from trusted third parties should be tested, every component should at least have a smoke test. 
+
+Learn more about [testing](https://facebook.github.io/create-react-app/docs/running-tests)
+
+To run tests
+```nodemon
+npm test
+```
+
+Smoke test base code
+```js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import App from '../App';
+
+it('renders without crashing', () => {
+  const div = document.createElement('div');
+  ReactDOM.render(<App />, div);
+});
+
+```
+Coverage reports can be accessed using jest as well
+
+```nodemon
+npm test -- --coverage
+```
+Some usefull info regarding the coverage report
+ - Function (funcs) coverage Has each function (or subroutine) in the program been called?
+ - Statement (stmts) coverage Has each statement in the program been executed?
+ - Branch coverage Has each branch (also called DD-path) of each control structure (such as in if and case statements) been executed? For example, given an if statement, have both the true and false branches been executed? Another way of saying this is, has every edge in the program been executed?
+ - Line coverage has each executable line in the source file been executed?
+
+
+# To do
+ - user login
+ - user logout
+ - create accounts
+ - delete accounts
+ - reset email
+ - reset password
+ - resend verification email
+ - storing and retrieving tokens as cookies - cookie policy
+ 
+ 

@@ -71,7 +71,7 @@ Developer mode uses mailhog as the development server. For more info on mailhog 
  - user id and token is generated and in a url to their email
  - user clicks this url and is directed to a front end
  - front end extracts user id and token from url
- - front end sends a post request to backend `/api/v1/auth/users/activation` with the uid and token
+ - front end sends a post request to backend `/api/v1/auth/users/activation/` with the uid and token
  - account is activated
  
  Email templates can be customised using JINJA and is found in the directory `accounts/src/templates/activation_email.py`

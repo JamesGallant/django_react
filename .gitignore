@@ -26,8 +26,8 @@ __pycache__/
 /frontend/.npm
 /frontend/.pnp
 /frontend/.pnp.js
-/frontend/environments/.env
-/frontend/coverage
+/frontend/environments/.develpment.env
+/frontend/coverage/
 /frontend/.DS_Store
 /frontend/.env.local
 /frontend/.env.development.local

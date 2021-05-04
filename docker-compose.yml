@@ -15,7 +15,7 @@ services:
     ports:
       - "8000:3000"
     env_file:
-      - ./frontend/environments/.env
+      - frontend/environments/.develpment.env
     depends_on:
       - postgres_database
 
