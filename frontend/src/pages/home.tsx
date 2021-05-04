@@ -2,10 +2,8 @@ import React, { FC } from "react"
 
 import UserData from "../components/forms"
 
-const Home: FC = () => {
-    return(
-        <UserData />
-    );
-};
+const HomePage: FC = () => (
+    <UserData />
+);
 
-export default Home
+export default HomePage
