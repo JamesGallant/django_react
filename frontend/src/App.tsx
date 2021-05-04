@@ -1,19 +1,20 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 
-import Home from "./pages/home"
-import UsersActivate from "./pages/users_activate"
+import HomePage from "./pages/home"
+import LoginPage from "./pages/login"
+import UsersActivatePage from "./pages/activateAccount"
 
 
-function App() {
-  return (
-    <BrowserRouter>
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route path="/auth/activate/:uid/:token/" exact component={UsersActivate} />
-        
-      </Switch>
-    </BrowserRouter> )
-};
+const App = () => (
+  <BrowserRouter>
+    <Switch>
+      <Route exact path="/" component={HomePage} />
+      <Route exact path="/login" component={LoginPage} />
+      <Route path="/auth/activate/:uid/:token/" exact component={UsersActivatePage} />
+      
+    </Switch>
+  </BrowserRouter>
+);
 
 export default App;
