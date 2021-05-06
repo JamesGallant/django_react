@@ -2,13 +2,23 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 
 import AccountActivation from '../components/accountActivationComponent'
+import UserActivatePage from '../pages/activateAccount'
 
+// mock input from url /:uid/:token
+jest.mock('react-router-dom', () => ({
+    useParams: () => ({
+      uid: 'someId',
+      token: 'someToken',
+    }),
+    useRouteMatch: () => ({ url: "/auth/activate/someID/someToken" }),
+  }));
 
 describe("testing account activation component", () => {
     /**
      * @description Tests the message and behaviour of account activation message that displays on the parent component AccountsActivation
      * page.
      * 
+     * @tests Test loading of the component and the extraction of a userid and token from the url for an api call.
      * @tests Test different message displays based on codes and behaviour when parent component is not loaded correctly
      * 
      * @metadata
@@ -17,6 +27,9 @@ describe("testing account activation component", () => {
      */
 
     // smoke test
+    it("Page renders correctly", () => {
+        render(<UserActivatePage />)
+    })
     it('component renders corretly', () => {
       render(<AccountActivation isComponentLoaded={ true } status = {204} />)
     })
