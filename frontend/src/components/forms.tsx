@@ -38,7 +38,7 @@ export default function UserData() {
       setlasttname(userdata[id].last_name)
       setEmail(userdata[id].email)
    
-      if (id == userdata.length-1) {
+      if (id === userdata.length-1) {
         setID(0)
       } else {
         setID(id + 1)

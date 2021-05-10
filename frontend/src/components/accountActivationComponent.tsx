@@ -4,7 +4,6 @@ import Paper from '@material-ui/core/Paper';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Button from '@material-ui/core/Button';
 
-
 type AppProps = {
     // related to the isLoaded type in default function
     isComponentLoaded: boolean;
