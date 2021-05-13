@@ -1,7 +1,8 @@
+// react
 import React, { useState } from 'react';
-
 import { useHistory } from "react-router-dom";
 
+// material ui
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -12,21 +13,12 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
+// axios
 import axios from 'axios';
 
-// move to own component
-function Copyright() {
-  return (
-    <Typography variant="body2" color="textSecondary" align="center">
-      {'Copyright © '}
-      <Link color="inherit" href="/">
-        {process.env.REACT_APP_SITE_NAME}
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-};
+// own
+import Copyright from './copyrightComponent'; 
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -156,7 +148,7 @@ const validate = () => {
     return(Object.values(tempErrText).every(x => x===""))
 }
 
-const submit = (event: React.FormEvent<HTMLFormElement>): void => {
+const  submit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     let userData = JSON.stringify({
         ...formValues
@@ -175,8 +167,10 @@ const submit = (event: React.FormEvent<HTMLFormElement>): void => {
             var userdata = response.data;
             console.log(userdata)
             history.push("/login")
-        
         })
+        .catch(function (error) {
+            alert(error)
+          });
     }
     else {
         alert('invalid entry')
@@ -227,7 +221,6 @@ return (
             </Grid>
             
             <Grid item xs={12} sm={6}>
-                
             </Grid>
             <Grid item xs={12} sm={6}>
             <TextField

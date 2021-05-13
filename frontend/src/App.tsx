@@ -6,7 +6,6 @@ import LoginPage from "./pages/login"
 import UsersActivatePage from "./pages/activateAccount"
 import RegisterPage from "./pages/register"
 
-
 const App = () => (
   <BrowserRouter>
     <Switch>
