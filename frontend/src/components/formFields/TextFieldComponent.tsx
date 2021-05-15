@@ -1,9 +1,20 @@
 import React from 'react';
 import { TextField as MuiTextField }from "@material-ui/core";
+import { MuiThemeProvider } from '@material-ui/core/styles';
 
-import FormValidator from '../../utils/validators'
+import FormValidator from '../../utils/validators';
+import MuiGlobalTheme from '../../utils/styles';
 
 const TextField = (props: any): JSX.Element => {
+   /**
+    * @description Textfield component extended from material ui. Inludes error handling internally based on validate prop
+    * check resources for additional props
+    * 
+    * @resource https://testing-library.com/docs/react-testing-library/api
+    * 
+    * @param props: Input props
+    * @returns JSX element
+    */
    const { name, label, id, value, onChange, didSubmit, validate="", ...other } = props;
    let validator = new FormValidator(validate)
    let errorMessage = validator.validate(value)
@@ -29,16 +40,18 @@ const TextField = (props: any): JSX.Element => {
    };
 
     return(
-        <MuiTextField
-         name={name}
-         label={label}
-         id={id}
-         value={value}
-         onChange={onChange}
-         error={ handleErr() }
-         helperText={ handleHelper() }
-         {...other}
-        />
+        <MuiThemeProvider theme={MuiGlobalTheme}>
+            <MuiTextField
+            name={name}
+            label={label}
+            id={id}
+            value={value}
+            onChange={onChange}
+            error={ handleErr() }
+            helperText={ handleHelper() }
+            {...other}
+            />
+        </MuiThemeProvider>
     );
 };
 

@@ -6,13 +6,10 @@ import LoginPage from "./pages/login"
 import UsersActivatePage from "./pages/activateAccount"
 import RegisterPage from "./pages/register"
 
-import TestingSometing from './testComponent';
-
 const App = () => (
   <BrowserRouter>
     <Switch>
       <Route exact path="/" component={HomePage} />
-      <Route exact path="/test/" component={TestingSometing} />
       <Route exact path="/login/" component={LoginPage} />
       <Route exact path="/register/" component={RegisterPage} />
       <Route path="/auth/activate/:uid/:token/" exact component={UsersActivatePage} />

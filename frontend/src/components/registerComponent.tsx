@@ -5,7 +5,6 @@ import { useHistory } from "react-router-dom";
 // material ui
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
 import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
@@ -18,7 +17,7 @@ import axios from 'axios';
 
 // own
 import Copyright from './copyrightComponent'; 
-
+import TextField from './formFields/TextFieldComponent'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -48,40 +47,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 interface FormTypes {
-    first_name: string,
-    last_name: string,
+    firstName: string,
+    lastName: string,
     //country: string,
-    mobile_number: string,
+    mobileNumber: string,
     email: string,
     password: string
 };
 
-interface errTypes {
-    first_name: boolean,
-    last_name: boolean,
-    //country: boolean,
-    mobile_number: boolean,
-    email: boolean,
-    password: boolean
-};
-
 const initialVals: FormTypes = {
-    first_name: "",
-    last_name: "",
+    firstName: "",
+    lastName: "",
     //country: "",
-    mobile_number: "",
+    mobileNumber: "",
     email: "",
     password: ""
 };
-
-const initialErrs: errTypes = {
-    first_name: false,
-    last_name: false,
-    //country: false,
-    mobile_number: false,
-    email: false,
-    password: false
-}
 
 export default function SignUp() {
 /**
@@ -95,8 +76,6 @@ const classes = useStyles();
 const history = useHistory();
 
 const [formValues, setFormValues] = useState(initialVals);
-const [errValues, setErrValues] = useState(initialErrs);
-const [errText, setErrText] = useState(initialVals)
 
 const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
@@ -104,57 +83,16 @@ const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         ...formValues,
         [name]: value,
     });
-
-    setErrValues({
-        ...errValues,
-        [name]: false,
-    });
-
-    setErrText({
-        ...errText,
-        [name]: "",
-    })
 };
 
-const validate = () => {
-    let tempErrText = {
-        "first_name": formValues.first_name ? "": "This Field is required",
-        "last_name": formValues.last_name ? "": "This Field is required",
-        "mobile_number":  formValues.mobile_number.length > 7 ? "": "Not a valid mobile_number number",
-        "email": (/^[^\s@]+@[^\s@]+$/).test(formValues.email) ? "": "Not a valid email address",
-        //"country": formValues.country ? "": "This Field is required",
-        "password": formValues.password ? "": "This Field is required",
-    };
-
-    let tempErrVals = {
-        "first_name": formValues.first_name==="" ? true: false,
-        "last_name":  formValues.last_name==="" ? true: false,
-        "mobile_number":  formValues.mobile_number.length < 7  ? true: false,
-        "email":  (/^[^\s@]+@[^\s@]+$/).test(formValues.email) ? false: true,
-        //"country": formValues.country==="" ?true: false,
-        "password": formValues.password==="" ?true: false,
-    };
-
-
-    setErrText({
-        ...tempErrText
-    });
-
-    setErrValues({
-        ...tempErrVals
-    });
-
-
-    return(Object.values(tempErrText).every(x => x===""))
-}
-
+// need to fix this
 const  submit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     let userData = JSON.stringify({
         ...formValues
     })
     
-    if (validate()){
+    if (true){
         axios({
             method: "post",
             data: userData,
@@ -189,34 +127,28 @@ return (
         <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
             <TextField
-                autoComplete="fname"
-                name="first_name"
-                variant="outlined"
-                id="first_name"
+                name="firstName"
+                id="firstName"
                 label="First Name"
                 autoFocus
                 fullWidth
                 required
-                value={ formValues.first_name }
+                value={ formValues.firstName }
                 onChange={ handleChange }
-                error={errValues.first_name}
-                helperText={errText.first_name}
+                didSubmit={true}
+                validate="noEmptyFields"
             />
             </Grid>
             <Grid item xs={12} sm={6}>
             <TextField
-                variant="outlined"
                 required
                 fullWidth
-                id="last_name"
+                id="lastName"
+                name="lastName"
                 label="Last Name"
-                name="last_name"
-                autoComplete="lname"
-                value={ formValues.last_name }
+                value={ formValues.lastName }
                 onChange={ handleChange }
-                error={errValues.last_name}
-                helperText={errText.last_name}
-                
+                validate="noEmptyFields"
             />
             </Grid>
             
@@ -224,21 +156,18 @@ return (
             </Grid>
             <Grid item xs={12} sm={6}>
             <TextField
-                variant="outlined"
                 required
                 fullWidth
-                id="mobile_number"
-                label="mobile_number"
-                name="mobile_number"
-                value={ formValues.mobile_number }
+                id="mobileNumber"
+                name="mobileNumber"
+                label="mobile number"
+                value={ formValues.mobileNumber }
                 onChange={ handleChange }
-                error={errValues.mobile_number}
-                helperText={errText.mobile_number}
+                validate="noEmptyFields"
             />
             </Grid>
             <Grid item xs={12}>
             <TextField
-                variant="outlined"
                 required
                 fullWidth
                 id="email"
@@ -247,25 +176,11 @@ return (
                 autoComplete="email"
                 value={ formValues.email }
                 onChange={ handleChange }
-                error={errValues.email}
-                helperText={errText.email}
+                validate="noEmptyFields"
             />
             </Grid>
             <Grid item xs={12}>
-            <TextField
-                variant="outlined"
-                required
-                fullWidth
-                name="password"
-                label="Password"
-                type="password"
-                id="password"
-                autoComplete="current-password"
-                value={ formValues.password }
-                onChange={ handleChange }
-                error={errValues.password}
-                helperText={errText.password}
-            />
+
             </Grid>
         </Grid>
         <Button
