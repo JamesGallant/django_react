@@ -10,7 +10,7 @@ const MuiGlobalTheme = createMUITheme({
     props: {
         // MUI  base component name goes here
         MuiTextField: {
-            variant: 'filled'
+            variant: 'outlined'
         },
     },
 })
