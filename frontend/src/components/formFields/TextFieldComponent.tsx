@@ -3,8 +3,8 @@ import { TextField as MuiTextField }from "@material-ui/core";
 
 import FormValidator from '../../utils/validators'
 
-const TextField = (props: any) => {
-   const { name, label, id, value, onChange, validate="", didSubmit, ...other } = props;
+const TextField = (props: any): JSX.Element => {
+   const { name, label, id, value, onChange, didSubmit, validate="", ...other } = props;
    let validator = new FormValidator(validate)
    let errorMessage = validator.validate(value)
 
