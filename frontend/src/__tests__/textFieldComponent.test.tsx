@@ -18,16 +18,7 @@ describe("testing textField component", () => {
         render(<TextField />)
     });
 
-    it("label is displayed", () => {
-        render(<TextField 
-            name="testName" 
-            label="testLabel"
-            id="testId"/>)
-
-        expect(screen.getByText("testLabel")).toBeInTheDocument()
-    });
-
-    it("noEmptyFields error is displayed", async () => {
+    it("noEmptyFields error is displayed",  () => {
         render(<TextField 
                 name="testName" 
                 label="testLabel"
@@ -43,7 +34,7 @@ describe("testing textField component", () => {
         
     });
 
-    it("valid entry", async () => {
+    it("valid entry",  () => {
         render(<TextField 
                 name="testName" 
                 label="testLabel"
@@ -58,7 +49,7 @@ describe("testing textField component", () => {
         
     });
 
-    it("not submitted", async () => {
+    it("not submitted",  () => {
         render(<TextField 
                 name="testName" 
                 label="testLabel"
