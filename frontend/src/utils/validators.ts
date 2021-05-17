@@ -8,12 +8,13 @@ class FormValidator {
      * @method blank: returns empty string, good for default values
      * @method noEmptyFields: Generic method to assert that a field is filled
      * @method validateEmail: Basic test to see if the email field is contains an @ symbol
+     * @method validatePassword: Works different to the others, takes a HTTP status code and either displays error or null 
      * @method default: Throws a error 
      */
 
     validationType: string;
 
-    public constructor(validate: string) {
+    public constructor(validate: string, ) {
         this.validationType = validate
     };
 
@@ -29,6 +30,10 @@ class FormValidator {
         return (/^[^\s@]+@[^\s@]+$/).test(value) === true ? "": "Enter a valid email"
     };
 
+    private validatePassword(value: string): string {
+        return value === "201" ? "": "Password is invalid"
+    };
+
     public validate(value: string): string {
 
         switch (this.validationType) {
@@ -40,6 +45,9 @@ class FormValidator {
             
             case "validateEmail":
                 return(this.validateEmail(value))
+
+            case "validatePassword":
+                return(this.validatePassword(value))
 
             default:
                 throw new TypeError("Validation method not found, see formValidator documentation")

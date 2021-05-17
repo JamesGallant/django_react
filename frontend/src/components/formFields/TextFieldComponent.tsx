@@ -15,6 +15,7 @@ const TextField = (props: any): JSX.Element => {
     * @param props: Input props
     * @returns JSX element
     */
+   
    const { name, label, id, value, onChange, didSubmit, validate="", ...other } = props;
    let validator = new FormValidator(validate)
    let errorMessage = validator.validate(value)

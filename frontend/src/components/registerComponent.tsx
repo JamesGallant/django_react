@@ -18,6 +18,7 @@ import axios from 'axios';
 // own
 import Copyright from './copyrightComponent'; 
 import TextField from './formFields/TextFieldComponent'
+import PasswordField from './formFields/passwordComponent'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -103,7 +104,6 @@ const  submit = (event: React.FormEvent<HTMLFormElement>) => {
           })
           .then(function (response) {
             var userdata = response.data;
-            console.log(userdata)
             history.push("/login")
         })
         .catch(function (error) {
@@ -151,7 +151,6 @@ return (
                 validate="noEmptyFields"
             />
             </Grid>
-            
             <Grid item xs={12} sm={6}>
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -180,7 +179,7 @@ return (
             />
             </Grid>
             <Grid item xs={12}>
-
+                <PasswordField />
             </Grid>
         </Grid>
         <Button

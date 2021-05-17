@@ -7,6 +7,7 @@ const MuiGlobalTheme = createMUITheme({
      * 
      * @resource https://material-ui.com/customization/globals/
      */
+
     props: {
         // MUI  base component name goes here
         MuiTextField: {
@@ -14,5 +15,6 @@ const MuiGlobalTheme = createMUITheme({
         },
     },
 })
+
 
 export default MuiGlobalTheme;

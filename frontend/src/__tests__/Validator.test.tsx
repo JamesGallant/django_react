@@ -19,3 +19,10 @@ test("valid email field", () => {
     expect(testValidator.validate("user@email.com")).toBe("")
     expect(testValidator.validate("notAnEmail")).toBe("Enter a valid email")
 });
+
+test("valid password field", () => {
+    let testValidator = new FormValidator("validatePassword")
+
+    expect(testValidator.validate("201")).toBe("")
+    expect(testValidator.validate("404")).toBe("Password is invalid")
+});
