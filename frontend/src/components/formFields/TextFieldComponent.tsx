@@ -1,9 +1,10 @@
 import React from 'react';
 import { TextField as MuiTextField }from "@material-ui/core";
-import { MuiThemeProvider } from '@material-ui/core/styles';
 
 import FormValidator from '../../utils/validators';
-import MuiGlobalTheme from '../../utils/styles';
+import configuration from '../../utils/config'
+
+
 
 const TextField = (props: any): JSX.Element => {
    /**
@@ -19,7 +20,7 @@ const TextField = (props: any): JSX.Element => {
    const { name, label, id, value, onChange, didSubmit, validate="", ...other } = props;
    let validator = new FormValidator(validate)
    let errorMessage = validator.validate(value)
-
+   let muiVariant = configuration['mui-InputVariant']
    const checkValidatorErr = (err: string): boolean => {
        return(err === "" ? false: true)
    };
@@ -41,18 +42,17 @@ const TextField = (props: any): JSX.Element => {
    };
 
     return(
-        <MuiThemeProvider theme={MuiGlobalTheme}>
-            <MuiTextField
-            name={name}
-            label={label}
-            id={id}
-            value={value}
-            onChange={onChange}
-            error={ handleErr() }
-            helperText={ handleHelper() }
-            {...other}
-            />
-        </MuiThemeProvider>
+        <MuiTextField
+        variant={ muiVariant }
+        name={name}
+        label={label}
+        id={id}
+        value={value}
+        onChange={onChange}
+        error={ handleErr() }
+        helperText={ handleHelper() }
+        {...other}
+        />
     );
 };
 

@@ -12,7 +12,8 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 
-// axios
+
+// third party
 import axios from 'axios';
 
 // own
@@ -50,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
 interface FormTypes {
     firstName: string,
     lastName: string,
-    //country: string,
+    country: string,
     mobileNumber: string,
     email: string,
     password: string
@@ -59,7 +60,7 @@ interface FormTypes {
 const initialVals: FormTypes = {
     firstName: "",
     lastName: "",
-    //country: "",
+    country: "",
     mobileNumber: "",
     email: "",
     password: ""
@@ -126,60 +127,70 @@ return (
         <form className={classes.form} noValidate={true} onSubmit= { submit }>
         <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
-            <TextField
-                name="firstName"
-                id="firstName"
-                label="First Name"
-                autoFocus
-                fullWidth
-                required
-                value={ formValues.firstName }
-                onChange={ handleChange }
-                didSubmit={true}
-                validate="noEmptyFields"
-            />
+                <TextField
+                    name="firstName"
+                    id="fname"
+                    label="First Name"
+                    fullWidth
+                    required
+                    value={ formValues.firstName }
+                    onChange={ handleChange }
+                    didSubmit={false}
+                    validate="noEmptyFields"
+                />
             </Grid>
             <Grid item xs={12} sm={6}>
-            <TextField
-                required
-                fullWidth
-                id="lastName"
-                name="lastName"
-                label="Last Name"
-                value={ formValues.lastName }
-                onChange={ handleChange }
-                validate="noEmptyFields"
-            />
+                <TextField
+                    required
+                    fullWidth
+                    id="lname"
+                    name="lastName"
+                    label="Last Name"
+                    value={ formValues.lastName }
+                    onChange={ handleChange }
+                    validate="noEmptyFields"
+                />
             </Grid>
             <Grid item xs={12} sm={6}>
+                <TextField 
+                    required
+                    fullWidth
+                    id="country"
+                    name="country"
+                    label="Country"
+                    value={ formValues.country }
+                    onChange={ handleChange }
+                />
             </Grid>
             <Grid item xs={12} sm={6}>
-            <TextField
-                required
-                fullWidth
-                id="mobileNumber"
-                name="mobileNumber"
-                label="mobile number"
-                value={ formValues.mobileNumber }
-                onChange={ handleChange }
-                validate="noEmptyFields"
-            />
+                <TextField
+                    required
+                    fullWidth
+                    id="mobileNumber"
+                    name="mobileNumber"
+                    label="mobile number"
+                    value={ formValues.mobileNumber }
+                    onChange={ handleChange }
+                    validate="noEmptyFields"
+                />
             </Grid>
-            <Grid item xs={12}>
-            <TextField
-                required
-                fullWidth
-                id="email"
-                label="Email Address"
-                name="email"
-                autoComplete="email"
-                value={ formValues.email }
-                onChange={ handleChange }
-                validate="noEmptyFields"
-            />
+            <Grid item xs={12} >
+                <TextField
+                    required
+                    fullWidth
+                    id="email"
+                    label="Email"
+                    name="email"
+                    value={ formValues.email }
+                    onChange={ handleChange }
+                    validate="noEmptyFields"
+                />
             </Grid>
-            <Grid item xs={12}>
-                <PasswordField />
+            <Grid item xs={12} >
+                    <PasswordField
+                    id="password"
+                    statusCode
+                    didSubmit={false}/>
             </Grid>
         </Grid>
         <Button

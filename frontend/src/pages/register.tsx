@@ -6,7 +6,9 @@ const RegisterPage: FC = () => (
     /**
      * @Description Page displays the component that will register the user.
      */
+    
     <RegisterComponent />
+    
 );
 
 export default RegisterPage;

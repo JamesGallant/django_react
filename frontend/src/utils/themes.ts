@@ -7,14 +7,12 @@ const MuiGlobalTheme = createMUITheme({
      * 
      * @resource https://material-ui.com/customization/globals/
      */
-
     props: {
         // MUI  base component name goes here
-        MuiTextField: {
-            variant: 'outlined'
+        MuiInputLabel: {
+            variant: 'outlined',
         },
     },
 })
-
 
 export default MuiGlobalTheme;

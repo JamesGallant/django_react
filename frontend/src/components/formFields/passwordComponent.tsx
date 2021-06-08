@@ -1,30 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import { Input, FilledInput, OutlinedInput } from '@material-ui/core';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { Input, FilledInput, OutlinedInput, Zoom, IconButton, Typography, FormControl, InputLabel,
+        InputAdornment, FormHelperText, Tooltip, ClickAwayListener} from '@material-ui/core';
+
+import { ThemeProvider, } from '@material-ui/core/styles';
+import {Visibility, VisibilityOff } from '@material-ui/icons';
+import InfoIcon from '@material-ui/icons/Info';
 
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    input: {
-        marginLeft: theme.spacing(2),
-    },
-  }),
-);
+import configuration from '../../utils/config';
+import MuiGlobalTheme from '../../utils/themes';
+import FormValidator from '../../utils/validators';
 
 
 const InputVariant = (props: any): JSX.Element => {
     /**
      * @description returns the correct Input element based on the variant
      */
-    const { variant="", ...rest } = props;
+    const { variant="", ...other } = props;
 
     switch(variant){
-        case "outlined": return(<OutlinedInput {...rest} />);
-        case "filled": return(<FilledInput {...rest} />);
-        default: return(<Input {...rest}/>)
+        case "outlined": return(<OutlinedInput {...other} />);
+        case "filled": return(<FilledInput {...other} />);
+        default: return(<Input {...other}/>)
     };
 };
 
@@ -35,17 +33,123 @@ const PasswordField = (props: any): JSX.Element => {
      * @Resource https://material-ui.com/components/text-fields/
      * 
      * @param props: Props from JSX element
+     * @param propChildren: - value => Value from top level function, i.e. the password.
+     *                      - stauscode, HTML status code to display after submission
+     *                      - onChange, the change function from the parent
+     *                      - didSubmit, boolean to indicate if submit was clicked from the parent
+     *                      
      * @returns JSX.Element
      */
 
-    const classes = useStyles();
+    const { value, fullWidth=true, statusCode="", onChange, didSubmit, ...other } = props;
+
+    const [showPassword, setShowPassword] = useState(false);
+    const [openTooltip, setOpenTooltip] = useState(false);
+
+    let validator = new FormValidator("validatePassword");
+    let errorMessage:string = validator.validate(statusCode);
+    let muiVariant:string = configuration['mui-InputVariant'];
+
+    useEffect(() => {
+        const timedTooltip = setTimeout(() => {
+            if (openTooltip) {
+                setOpenTooltip(false);
+            }
+        }, 8000)
+
+        return () => clearTimeout(timedTooltip)
+    }, [openTooltip])
+
+    const checkValidatorErr = (err: string): boolean => {
+        return(err === "" ? false: true)
+    };
+ 
+    const handleErr = (): boolean => {
+        if (didSubmit) {
+            return(checkValidatorErr(errorMessage))
+        } else {
+            return(false)
+        };
+    };
+
+    const handleHelper = (): string => {
+        if (didSubmit) {
+            return(errorMessage)
+        } else {
+            return("")
+        };
+    };
+
+    const handleMouseDown = (event: React.MouseEvent<HTMLButtonElement>) => {
+        event.preventDefault();
+      };
+
+    const handleClickShowPassword = () => {
+        setShowPassword(!showPassword);
+      };
+
+    const HandleClickAway = () => {
+        setOpenTooltip(false)
+    };
+    
+    const handleToggleTooltip = () => {
+        setOpenTooltip(!openTooltip);
+    };
 
     return(
-        <FormControl >
-            <InputLabel className={classes.input}  htmlFor="outlined-adornment-password">Password</InputLabel>
-            <InputVariant variant="outlined" label="Password" />
+        <FormControl fullWidth={ fullWidth } >
+        <ThemeProvider theme={MuiGlobalTheme}>
+            <InputLabel>Password</InputLabel>
+        </ThemeProvider>
+            <InputVariant   variant={ muiVariant }
+                            label="Password" 
+                            value = {value}
+                            onChange = {onChange}
+                            type = { showPassword ? 'text': 'password'}
+                            error = { handleErr() }
+                            endAdornment={
+                                <InputAdornment position="end">
+                                    <IconButton
+                                            aria-label="toggle-pw-visibility"
+                                            onClick={handleClickShowPassword}
+                                            edge="end"
+                                            onMouseDown={handleMouseDown}
+                                            >
+                                                {showPassword ? <Visibility /> : <VisibilityOff />}
+                                    </IconButton>
+                                    <ClickAwayListener onClickAway={HandleClickAway}>
+                                        <Tooltip title={
+                                                    <React.Fragment>
+                                                        <Typography color="inherit"><u>Password Requirements</u></Typography>
+                                                        <Typography variant="body1">
+                                                                    <li>At least 8 characters.</li>
+                                                                    <li>Can’t be too similar to your other personal information.</li>
+                                                                    <li>No common passwords</li>
+                                                                    <li>Must be alphanumerical</li>
+                                                        </Typography>
+                                                    </React.Fragment>
+                                                } 
+                                                interactive
+                                                open={openTooltip}
+                                                TransitionComponent={Zoom}
+                                                placement="right"
+                                                >
+                                            <IconButton
+                                                    aria-label="display-pw-info"
+                                                    onMouseDown={handleMouseDown}
+                                                    onClick = {handleToggleTooltip}
+                                                    >
+                                                <InfoIcon />
+                                            </IconButton >
+                                        </Tooltip>
+                                    </ClickAwayListener>
+                                </InputAdornment>
+                            }
+                            {...other} 
+                            />
+            <FormHelperText error={ handleErr() }>{ handleHelper() }</FormHelperText>
         </FormControl>
     );
 };
 
-export default PasswordField
+export default PasswordField;

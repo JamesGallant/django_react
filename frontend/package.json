@@ -47,6 +47,7 @@
     ]
   },
   "devDependencies": {
+    "@types/material-ui-phone-number": "^2.2.0",
     "msw": "^0.28.2"
   }
 }
