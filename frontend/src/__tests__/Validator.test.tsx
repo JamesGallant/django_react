@@ -26,3 +26,10 @@ test("valid password field", () => {
     expect(testValidator.validate("201")).toBe("")
     expect(testValidator.validate("404")).toBe("Password is invalid")
 });
+
+test("valid Mobile Number", () => {
+    let testValidator = new FormValidator("ValidatePhoneNumber")
+    
+    expect(testValidator.validate('+78005553535')).toBe("")
+    expect(testValidator.validate('8 (800) 555-35-35')).toBe("Phone number is invalid")
+});

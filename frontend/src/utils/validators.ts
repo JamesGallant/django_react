@@ -1,3 +1,5 @@
+import {isValidPhoneNumber} from 'libphonenumber-js';
+
 class FormValidator {
     /**
      * @Description Validator for our forms, a statement is passed to a function in this class to trigger a validation. The class 
@@ -8,7 +10,8 @@ class FormValidator {
      * @method blank: returns empty string, good for default values
      * @method noEmptyFields: Generic method to assert that a field is filled
      * @method validateEmail: Basic test to see if the email field is contains an @ symbol
-     * @method validatePassword: Works different to the others, takes a HTTP status code and either displays error or null 
+     * @method validatePassword: Works different to the others, takes a HTTP status code and either displays error or null
+     * @method validatePhoneNumber: takes a phone number and country code tuple and returns a international phonenumber 
      * @method default: Throws a error 
      */
 
@@ -34,6 +37,11 @@ class FormValidator {
         return value === "201" ? "": "Password is invalid"
     };
 
+    private validatePhoneNumber(value: string): string {
+        const isValid = isValidPhoneNumber(value)
+        return isValid ? "": "Phone number is invalid"
+    };
+
     public validate(value: string): string {
 
         switch (this.validationType) {
@@ -48,6 +56,9 @@ class FormValidator {
 
             case "validatePassword":
                 return(this.validatePassword(value))
+
+            case "ValidatePhoneNumber":
+                return(this.validatePhoneNumber(value))
 
             default:
                 throw new TypeError("Validation method not found, see formValidator documentation")

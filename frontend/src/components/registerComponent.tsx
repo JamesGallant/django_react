@@ -171,7 +171,8 @@ return (
                     label="mobile number"
                     value={ formValues.mobileNumber }
                     onChange={ handleChange }
-                    validate="noEmptyFields"
+                    validate="ValidatePhoneNumber"
+                    didSubmit={false}
                 />
             </Grid>
             <Grid item xs={12} >

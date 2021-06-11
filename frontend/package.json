@@ -14,6 +14,7 @@
     "@types/react-dom": "^17.0.1",
     "@types/react-router-dom": "^5.1.7",
     "axios": "^0.21.1",
+    "libphonenumber-js": "^1.9.19",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
@@ -47,7 +48,6 @@
     ]
   },
   "devDependencies": {
-    "@types/material-ui-phone-number": "^2.2.0",
     "msw": "^0.28.2"
   }
 }
