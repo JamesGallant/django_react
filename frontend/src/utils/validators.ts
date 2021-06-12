@@ -1,4 +1,4 @@
-import {isValidPhoneNumber} from 'libphonenumber-js';
+import { isValidPhoneNumber } from 'libphonenumber-js';
 
 class FormValidator {
     /**
@@ -13,6 +13,7 @@ class FormValidator {
      * @method validatePassword: Works different to the others, takes a HTTP status code and either displays error or null
      * @method validatePhoneNumber: takes a phone number and country code tuple and returns a international phonenumber 
      * @method default: Throws a error 
+     * 
      */
 
     validationType: string;
@@ -37,7 +38,7 @@ class FormValidator {
         return value === "201" ? "": "Password is invalid"
     };
 
-    private validatePhoneNumber(value: string): string {
+    private validatePhoneNumber(value:string): string {
         const isValid = isValidPhoneNumber(value)
         return isValid ? "": "Phone number is invalid"
     };

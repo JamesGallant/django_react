@@ -18,8 +18,9 @@ import axios from 'axios';
 
 // own
 import Copyright from './copyrightComponent'; 
-import TextField from './formFields/TextFieldComponent'
-import PasswordField from './formFields/passwordComponent'
+import TextField from './formFields/TextFieldComponent';
+import MobileNumber from './formFields/MobileNumberComponent';
+import PasswordField from './formFields/passwordComponent';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -93,7 +94,7 @@ const  submit = (event: React.FormEvent<HTMLFormElement>) => {
     let userData = JSON.stringify({
         ...formValues
     })
-    
+    console.log(formValues)
     if (true){
         axios({
             method: "post",
@@ -124,6 +125,7 @@ return (
         <Typography component="h1" variant="h5">
         Register your account
         </Typography>
+
         <form className={classes.form} noValidate={true} onSubmit= { submit }>
         <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
@@ -135,7 +137,7 @@ return (
                     required
                     value={ formValues.firstName }
                     onChange={ handleChange }
-                    didSubmit={false}
+                    didSubmit={true}
                     validate="noEmptyFields"
                 />
             </Grid>
@@ -148,6 +150,7 @@ return (
                     label="Last Name"
                     value={ formValues.lastName }
                     onChange={ handleChange }
+                    didSubmit={false}
                     validate="noEmptyFields"
                 />
             </Grid>
@@ -158,21 +161,23 @@ return (
                     id="country"
                     name="country"
                     label="Country"
+                    didSubmit={false}
                     value={ formValues.country }
                     onChange={ handleChange }
                 />
             </Grid>
             <Grid item xs={12} sm={6}>
-                <TextField
+                <MobileNumber
                     required
                     fullWidth
                     id="mobileNumber"
                     name="mobileNumber"
                     label="mobile number"
+                    countryCode="NL"
                     value={ formValues.mobileNumber }
                     onChange={ handleChange }
                     validate="ValidatePhoneNumber"
-                    didSubmit={false}
+                    didSubmit={true}
                 />
             </Grid>
             <Grid item xs={12} >

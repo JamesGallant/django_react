@@ -11,6 +11,7 @@ import InfoIcon from '@material-ui/icons/Info';
 import configuration from '../../utils/config';
 import MuiGlobalTheme from '../../utils/themes';
 import FormValidator from '../../utils/validators';
+import HandleErrors from '../../utils/FormErrors';
 
 
 const InputVariant = (props: any): JSX.Element => {
@@ -50,6 +51,8 @@ const PasswordField = (props: any): JSX.Element => {
     let errorMessage:string = validator.validate(statusCode);
     let muiVariant:string = configuration['mui-InputVariant'];
 
+    let handler = new HandleErrors(didSubmit, errorMessage)
+
     useEffect(() => {
         const timedTooltip = setTimeout(() => {
             if (openTooltip) {
@@ -59,26 +62,6 @@ const PasswordField = (props: any): JSX.Element => {
 
         return () => clearTimeout(timedTooltip)
     }, [openTooltip])
-
-    const checkValidatorErr = (err: string): boolean => {
-        return(err === "" ? false: true)
-    };
- 
-    const handleErr = (): boolean => {
-        if (didSubmit) {
-            return(checkValidatorErr(errorMessage))
-        } else {
-            return(false)
-        };
-    };
-
-    const handleHelper = (): string => {
-        if (didSubmit) {
-            return(errorMessage)
-        } else {
-            return("")
-        };
-    };
 
     const handleMouseDown = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
@@ -106,7 +89,7 @@ const PasswordField = (props: any): JSX.Element => {
                             value = {value}
                             onChange = {onChange}
                             type = { showPassword ? 'text': 'password'}
-                            error = { handleErr() }
+                            error = { handler.handleErr() }
                             endAdornment={
                                 <InputAdornment position="end">
                                     <IconButton
@@ -147,7 +130,7 @@ const PasswordField = (props: any): JSX.Element => {
                             }
                             {...other} 
                             />
-            <FormHelperText error={ handleErr() }>{ handleHelper() }</FormHelperText>
+            <FormHelperText error={ handler.handleErr() }>{ handler.handleHelper() }</FormHelperText>
         </FormControl>
     );
 };
