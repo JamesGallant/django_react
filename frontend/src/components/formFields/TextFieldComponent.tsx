@@ -4,9 +4,7 @@ import React from 'react';
 import { TextField as MuiTextField }from "@material-ui/core";
 
 //ours
-import FormValidator from '../../utils/validators';
 import configuration from '../../utils/config';
-import HandleErrors from '../../utils/FormErrors';
 
 
 
@@ -23,12 +21,7 @@ const TextField = (props: any): JSX.Element => {
 
    let muiVariant = configuration['mui-InputVariant']
    
-   const { name, label, id, value, onChange, didSubmit, validate="", ...other } = props;
-
-   let validator = new FormValidator(validate)
-   let errorMessage = validator.validate(value)
-
-   let handler = new HandleErrors(didSubmit, errorMessage)
+   const { name, label, id, value, onChange, errorMessage, ...other } = props;
 
     return(
         <MuiTextField
@@ -38,8 +31,8 @@ const TextField = (props: any): JSX.Element => {
             id={id}
             value={value}
             onChange={onChange}
-            error={ handler.handleErr() }
-            helperText={ handler.handleHelper() }
+            error={  errorMessage.length === 1 &&  errorMessage[0] === "" ? false: true }
+            helperText={ errorMessage.join(' ') }
             {...other}
         />
     );

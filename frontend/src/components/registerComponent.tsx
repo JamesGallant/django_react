@@ -15,12 +15,13 @@ import Container from '@material-ui/core/Container';
 
 // third party
 import axios from 'axios';
+import parsePhoneNumber from 'libphonenumber-js';
 
 // own
 import Copyright from './copyrightComponent'; 
 import TextField from './formFields/TextFieldComponent';
-import MobileNumber from './formFields/MobileNumberComponent';
 import PasswordField from './formFields/passwordComponent';
+import CountrySelect from './formFields/countryComponent';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -67,6 +68,25 @@ const initialVals: FormTypes = {
     password: ""
 };
 
+interface ErrMessageTypes {
+    firstName: string[],
+    lastName: string[],
+    email: string[], 
+    mobile: string[],
+    country: string[],
+    password: string[],
+};
+
+const initialErrs: ErrMessageTypes = {
+    firstName: [""],
+    lastName: [""],
+    email: [""], 
+    mobile: [""],
+    country: [""],
+    password: [""],
+
+};
+
 export default function SignUp() {
 /**
  *@Description component signs up a user by submitting a post request to the authentication server with the required fields. The mobile_number 
@@ -79,40 +99,91 @@ const classes = useStyles();
 const history = useHistory();
 
 const [formValues, setFormValues] = useState(initialVals);
+const [countryCode, setCountryCode] = useState("");
+const [errorMessage, setErrorMessage] = useState(initialErrs)
 
 const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target
+   
     setFormValues({
         ...formValues,
         [name]: value,
     });
 };
 
+const handleCountryData = (event: React.ChangeEvent<HTMLInputElement>, value: {code: string, label: string, phone: string}) => {
+
+    const label = value && value.label 
+    const code = value && value.code
+    if (label === null) {
+        setCountryCode("");
+
+        setFormValues({
+            ...formValues,
+            country: "",
+        });
+
+        } else {
+            setCountryCode(code);
+
+            setFormValues({
+                ...formValues,
+                country: label,
+            });
+        
+        }
+};
+
 // need to fix this
 const  submit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    let userData = JSON.stringify({
-        ...formValues
-    })
-    console.log(formValues)
-    if (true){
+
+    const country: any = countryCode
+    const parsedPhoneNumber = parsePhoneNumber(formValues.mobileNumber, country)
+
+    var phonenumber = formValues.mobileNumber
+    if (parsedPhoneNumber) {
+         phonenumber = parsedPhoneNumber.number.toString()
+     } 
+    
+    const userData = {
+        first_name: formValues.firstName,
+        last_name: formValues.lastName,
+        mobile_number: phonenumber,
+        email: formValues.email,
+        country: formValues.country,
+        password: formValues.password
+    };
+    
+    console.log(userData)
+    if (true) {
         axios({
             method: "post",
-            data: userData,
+            data: JSON.stringify(userData),
             url: 'http://localhost:8001/api/v1/auth/users/',
             headers: {
                 'Content-Type': 'application/json',
             }
           })
           .then(function (response) {
-            var userdata = response.data;
+            //console.log(response)
             history.push("/login")
         })
         .catch(function (error) {
-            alert(error)
+            console.log(error.response.data)
+            setErrorMessage({
+                firstName: typeof(error.response.data.first_name) === "undefined" ? [""]:  error.response.data.first_name,
+                lastName: typeof(error.response.data.last_name) === "undefined" ? [""]:  error.response.data.last_name,
+                email: typeof(error.response.data.email) === "undefined" ? [""]: error.response.data.email,
+                mobile: typeof(error.response.data.mobile_number) === "undefined" ? [""]: error.response.data.mobile_number,
+                country: typeof(error.response.data.country) === "undefined" ? [""]: error.response.data.country,
+                password: typeof(error.response.data.password) === "undefined" ? [""]:  error.response.data.password,
+            });
           });
+          
     }
     else {
+        
         alert('invalid entry')
     } 
 };
@@ -125,7 +196,7 @@ return (
         <Typography component="h1" variant="h5">
         Register your account
         </Typography>
-
+        
         <form className={classes.form} noValidate={true} onSubmit= { submit }>
         <Grid container spacing={2}>
             <Grid item xs={12} sm={6}>
@@ -137,8 +208,8 @@ return (
                     required
                     value={ formValues.firstName }
                     onChange={ handleChange }
-                    didSubmit={true}
-                    validate="noEmptyFields"
+                    errorMessage={ errorMessage.firstName }
+                    
                 />
             </Grid>
             <Grid item xs={12} sm={6}>
@@ -150,34 +221,26 @@ return (
                     label="Last Name"
                     value={ formValues.lastName }
                     onChange={ handleChange }
-                    didSubmit={false}
                     validate="noEmptyFields"
+                    errorMessage={ errorMessage.lastName }
+                    
                 />
             </Grid>
             <Grid item xs={12} sm={6}>
-                <TextField 
-                    required
-                    fullWidth
-                    id="country"
-                    name="country"
-                    label="Country"
-                    didSubmit={false}
-                    value={ formValues.country }
-                    onChange={ handleChange }
-                />
+            <CountrySelect onChange={handleCountryData} 
+                           errorMessage = { errorMessage.country }
+                            />
             </Grid>
             <Grid item xs={12} sm={6}>
-                <MobileNumber
+                <TextField
                     required
                     fullWidth
                     id="mobileNumber"
                     name="mobileNumber"
                     label="mobile number"
-                    countryCode="NL"
                     value={ formValues.mobileNumber }
                     onChange={ handleChange }
-                    validate="ValidatePhoneNumber"
-                    didSubmit={true}
+                    errorMessage={ errorMessage.mobile }
                 />
             </Grid>
             <Grid item xs={12} >
@@ -189,14 +252,16 @@ return (
                     name="email"
                     value={ formValues.email }
                     onChange={ handleChange }
-                    validate="noEmptyFields"
+                    errorMessage={ errorMessage.email }
+                    
                 />
             </Grid>
             <Grid item xs={12} >
                     <PasswordField
                     id="password"
-                    statusCode
-                    didSubmit={false}/>
+                    value={ formValues.password }
+                    errorMessage={ errorMessage.password }
+                    onChange={ handleChange }/>
             </Grid>
         </Grid>
         <Button

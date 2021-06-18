@@ -10,8 +10,7 @@ import InfoIcon from '@material-ui/icons/Info';
 
 import configuration from '../../utils/config';
 import MuiGlobalTheme from '../../utils/themes';
-import FormValidator from '../../utils/validators';
-import HandleErrors from '../../utils/FormErrors';
+
 
 
 const InputVariant = (props: any): JSX.Element => {
@@ -35,23 +34,18 @@ const PasswordField = (props: any): JSX.Element => {
      * 
      * @param props: Props from JSX element
      * @param propChildren: - value => Value from top level function, i.e. the password.
-     *                      - stauscode, HTML status code to display after submission
      *                      - onChange, the change function from the parent
-     *                      - didSubmit, boolean to indicate if submit was clicked from the parent
      *                      
      * @returns JSX.Element
      */
 
-    const { value, fullWidth=true, statusCode="", onChange, didSubmit, ...other } = props;
+    const { value, fullWidth=true, onChange, errorMessage, ...other } = props;
 
     const [showPassword, setShowPassword] = useState(false);
     const [openTooltip, setOpenTooltip] = useState(false);
 
-    let validator = new FormValidator("validatePassword");
-    let errorMessage:string = validator.validate(statusCode);
     let muiVariant:string = configuration['mui-InputVariant'];
 
-    let handler = new HandleErrors(didSubmit, errorMessage)
 
     useEffect(() => {
         const timedTooltip = setTimeout(() => {
@@ -85,11 +79,12 @@ const PasswordField = (props: any): JSX.Element => {
             <InputLabel>Password</InputLabel>
         </ThemeProvider>
             <InputVariant   variant={ muiVariant }
-                            label="Password" 
-                            value = {value}
-                            onChange = {onChange}
+                            label="Password"
+                            name="password" 
+                            value = { value }
+                            onChange = { onChange }
                             type = { showPassword ? 'text': 'password'}
-                            error = { handler.handleErr() }
+                            error = { errorMessage.length === 1 &&  errorMessage[0] === "" ? false: true }
                             endAdornment={
                                 <InputAdornment position="end">
                                     <IconButton
@@ -130,7 +125,9 @@ const PasswordField = (props: any): JSX.Element => {
                             }
                             {...other} 
                             />
-            <FormHelperText error={ handler.handleErr() }>{ handler.handleHelper() }</FormHelperText>
+            <FormHelperText error={ errorMessage.length === 1 &&  errorMessage[0] === "" ? false: true }>
+                    { errorMessage.join(' ') }
+                </FormHelperText>
         </FormControl>
     );
 };
