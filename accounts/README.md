@@ -12,6 +12,13 @@ The accounts service handles authentication mediated by the [djoser](https://djo
 package. At this time the infrastructure to do both JSON Web token, token based and social OAUTH is present but only token
 based is currently implemented.  
 
+a few basic commands in case you forget :)
+```
+docker-compose run --rm backend_accounts python src/manage.py makemigrations
+```
+```
+docker-compose run --rm backend_accounts python src/manage.py migrate
+```
 ## Testing
 Testing is done on custom implementations of models and views. However, since this is the security layer of the application
 tests will be written for djoser views as well to be sure that access is granted or rejected as required by the authenitcation

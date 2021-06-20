@@ -11,10 +11,11 @@ class UserModel(AbstractUser):
     first_name = models.CharField(null=False, blank=False, max_length=100)
     last_name = models.CharField(null=False, blank=False, max_length=100)
     mobile_number = PhoneNumberField(null=False, blank=False, unique=True)
+    country = models.CharField(null=False, blank=False, max_length=100)
 
     # sets email to be the unique field, usernames cause issues and is annoying to users
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'mobile_number']
+    REQUIRED_FIELDS = ['first_name', 'last_name', 'mobile_number', 'country']
 
     objects = AccountsManager()
 

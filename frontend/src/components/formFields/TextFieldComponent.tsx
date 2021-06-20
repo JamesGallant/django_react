@@ -21,7 +21,7 @@ const TextField = (props: any): JSX.Element => {
 
    let muiVariant = configuration['mui-InputVariant']
    
-   const { name, label, id, value, onChange, errorMessage, ...other } = props;
+   const { name, label, id, value, onChange, errorMessage=[""], ...other } = props;
 
     return(
         <MuiTextField

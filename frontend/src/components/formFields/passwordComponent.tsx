@@ -39,13 +39,12 @@ const PasswordField = (props: any): JSX.Element => {
      * @returns JSX.Element
      */
 
-    const { value, fullWidth=true, onChange, errorMessage, ...other } = props;
+    const { value, fullWidth=true, onChange, errorMessage=[""], ...other } = props;
 
     const [showPassword, setShowPassword] = useState(false);
     const [openTooltip, setOpenTooltip] = useState(false);
 
     let muiVariant:string = configuration['mui-InputVariant'];
-
 
     useEffect(() => {
         const timedTooltip = setTimeout(() => {

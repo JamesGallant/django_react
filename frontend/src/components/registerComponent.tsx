@@ -221,7 +221,6 @@ return (
                     label="Last Name"
                     value={ formValues.lastName }
                     onChange={ handleChange }
-                    validate="noEmptyFields"
                     errorMessage={ errorMessage.lastName }
                     
                 />
