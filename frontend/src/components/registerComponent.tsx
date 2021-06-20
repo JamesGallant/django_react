@@ -22,6 +22,7 @@ import Copyright from './copyrightComponent';
 import TextField from './formFields/TextFieldComponent';
 import PasswordField from './formFields/passwordComponent';
 import CountrySelect from './formFields/countryComponent';
+import configuration from '../utils/config';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -134,10 +135,9 @@ const handleCountryData = (event: React.ChangeEvent<HTMLInputElement>, value: {c
         }
 };
 
-// need to fix this
+
 const  submit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
     const country: any = countryCode
     const parsedPhoneNumber = parsePhoneNumber(formValues.mobileNumber, country)
 
@@ -155,37 +155,28 @@ const  submit = (event: React.FormEvent<HTMLFormElement>) => {
         password: formValues.password
     };
     
-    console.log(userData)
-    if (true) {
-        axios({
-            method: "post",
-            data: JSON.stringify(userData),
-            url: 'http://localhost:8001/api/v1/auth/users/',
-            headers: {
-                'Content-Type': 'application/json',
-            }
-          })
-          .then(function (response) {
-            //console.log(response)
-            history.push("/login")
-        })
-        .catch(function (error) {
-            console.log(error.response.data)
-            setErrorMessage({
-                firstName: typeof(error.response.data.first_name) === "undefined" ? [""]:  error.response.data.first_name,
-                lastName: typeof(error.response.data.last_name) === "undefined" ? [""]:  error.response.data.last_name,
-                email: typeof(error.response.data.email) === "undefined" ? [""]: error.response.data.email,
-                mobile: typeof(error.response.data.mobile_number) === "undefined" ? [""]: error.response.data.mobile_number,
-                country: typeof(error.response.data.country) === "undefined" ? [""]: error.response.data.country,
-                password: typeof(error.response.data.password) === "undefined" ? [""]:  error.response.data.password,
-            });
-          });
-          
-    }
-    else {
-        
-        alert('invalid entry')
-    } 
+    
+    axios({
+        method: "post",
+        data: JSON.stringify(userData),
+        url: configuration['api-base'].concat('', 'users/'),
+        headers: {
+            'Content-Type': 'application/json',
+        }
+      })
+      .then(function (response) {
+        history.push("/login")
+    })
+    .catch(function (error) {
+        setErrorMessage({
+            firstName: typeof(error.response.data.first_name) === "undefined" ? [""]:  error.response.data.first_name,
+            lastName: typeof(error.response.data.last_name) === "undefined" ? [""]:  error.response.data.last_name,
+            email: typeof(error.response.data.email) === "undefined" ? [""]: error.response.data.email,
+            mobile: typeof(error.response.data.mobile_number) === "undefined" ? [""]: error.response.data.mobile_number,
+            country: typeof(error.response.data.country) === "undefined" ? [""]: error.response.data.country,
+            password: typeof(error.response.data.password) === "undefined" ? [""]:  error.response.data.password,
+        });
+      });
 };
 
 return (

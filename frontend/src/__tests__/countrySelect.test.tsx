@@ -1,8 +1,8 @@
 import React from 'react';
-import { act,  cleanup, fireEvent, render, screen } from '@testing-library/react';
+import {cleanup, fireEvent, render, screen } from '@testing-library/react';
 
 import CountrySelect from '../components/formFields/countryComponent';
-import { cpuUsage } from 'process';
+
 
 afterEach(cleanup);
 
