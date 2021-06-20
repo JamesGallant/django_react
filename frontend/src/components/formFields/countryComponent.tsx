@@ -33,7 +33,7 @@ const useStyles = makeStyles({
 
 export default function CountrySelect(props:any): JSX.Element {
 
-    const { onChange, errorMessage } = props;
+    const { onChange, errorMessage=[""] } = props;
     const classes = useStyles();
     const [country, setCountry] = useState("");
     
