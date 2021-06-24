@@ -15,6 +15,7 @@ import Container from '@material-ui/core/Container';
 
 // third party
 import axios from 'axios';
+import { AxiosResponse, AxiosError } from 'axios';
 import parsePhoneNumber from 'libphonenumber-js';
 
 // own
@@ -23,6 +24,7 @@ import TextField from './formFields/TextFieldComponent';
 import PasswordField from './formFields/passwordComponent';
 import CountrySelect from './formFields/countryComponent';
 import configuration from '../utils/config';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -94,6 +96,7 @@ export default function SignUp() {
  * number must be edited to reflect the correct country by use of the country selector. 
  *
  *@Resource https://github.com/mui-org/material-ui/tree/master/docs/src/pages/getting-started/templates/sign-up
+ *@Resource https://djoser.readthedocs.io/en/latest/base_endpoints.html#user-create
  */
 
 const classes = useStyles();
@@ -138,6 +141,7 @@ const handleCountryData = (event: React.ChangeEvent<HTMLInputElement>, value: {c
 
 const  submit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+
     const country: any = countryCode
     const parsedPhoneNumber = parsePhoneNumber(formValues.mobileNumber, country)
 
@@ -159,23 +163,37 @@ const  submit = (event: React.FormEvent<HTMLFormElement>) => {
     axios({
         method: "post",
         data: JSON.stringify(userData),
-        url: configuration['api-base'].concat('', 'users/'),
+        url: configuration['api-base'].concat(configuration["api-createAccount"]),
         headers: {
             'Content-Type': 'application/json',
         }
       })
-      .then(function (response) {
-        history.push("/login")
+      .then(function (response: AxiosResponse) {
+          if (response.status === 201) {
+
+            history.push(configuration["url-createAccount"], {
+                email: formValues.email,
+                firstName: formValues.firstName,
+            });
+
+          } else {
+            throw new Error("Status code invalid, should be 201. See Djoser docs")
+          };
     })
-    .catch(function (error) {
-        setErrorMessage({
-            firstName: typeof(error.response.data.first_name) === "undefined" ? [""]:  error.response.data.first_name,
-            lastName: typeof(error.response.data.last_name) === "undefined" ? [""]:  error.response.data.last_name,
-            email: typeof(error.response.data.email) === "undefined" ? [""]: error.response.data.email,
-            mobile: typeof(error.response.data.mobile_number) === "undefined" ? [""]: error.response.data.mobile_number,
-            country: typeof(error.response.data.country) === "undefined" ? [""]: error.response.data.country,
-            password: typeof(error.response.data.password) === "undefined" ? [""]:  error.response.data.password,
-        });
+    .catch(function (error: AxiosError) {
+
+        if (error.response?.status === 400) {
+            setErrorMessage({
+                firstName: typeof(error.response!.data.first_name) === "undefined" ? [""]:  error.response!.data.first_name,
+                lastName: typeof(error.response!.data.last_name) === "undefined" ? [""]:  error.response!.data.last_name,
+                email: typeof(error.response!.data.email) === "undefined" ? [""]: error.response!.data.email,
+                mobile: typeof(error.response!.data.mobile_number) === "undefined" ? [""]: error.response!.data.mobile_number,
+                country: typeof(error.response!.data.country) === "undefined" ? [""]: error.response!.data.country,
+                password: typeof(error.response!.data.password) === "undefined" ? [""]:  error.response!.data.password,
+            });
+        } else { 
+            throw new Error("Status code invalid, should be 400. See Djoser docs")
+        };
       });
 };
 
@@ -265,7 +283,7 @@ return (
         </Button>
         <Grid container justify="flex-end">
             <Grid item>
-            <Link href="/login/" variant="body2">
+            <Link href={configuration["url-login"]} variant="body2">
                 Already have an account? Sign in
             </Link>
             </Grid>

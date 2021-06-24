@@ -5,7 +5,7 @@ import Link from '@material-ui/core/Link';
 const Copyright: FC = () => {
   return(
     <Typography variant="body2" color="textSecondary" align="center">
-        {'Copyright © '}
+        Copyright ©
         <Link color="inherit" href="/">
         {process.env.REACT_APP_SITE_NAME}
         </Link>{' '}

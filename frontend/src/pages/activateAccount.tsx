@@ -1,9 +1,9 @@
 import { FC, useState, useEffect } from "react";
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 
 import axios from 'axios';
 
-import AccountActivation from '../components/accountActivationComponent'
+import configuration from "../utils/config";
 
 const UsersActivatePage: FC = () => {
     /**
@@ -16,18 +16,17 @@ const UsersActivatePage: FC = () => {
     };
     
     const { uid, token } = useParams<ParamTypes>();
-    const [isLoaded, setIsLoaded] = useState(false);
     const [statusCode, setStatusCode] = useState(0)
+    const history = useHistory();
 
 
     // api calls using useEffect hook
     // Note: the empty deps array [] means it will run once after react updates the DOM, otherwise the email is sent twice.
     useEffect(() => {
          // sends post request to djoser activation url on the backend.
-        setIsLoaded(true);
         axios({
             method: "post",
-            url: `${process.env.REACT_APP_BASE_API_ACCOUNTS}/${process.env.REACT_APP_API_ACCOUNT_ACTIVATION}`,
+            url: configuration["api-base"].concat(configuration["api-activateAccount"]),
             data: {'uid': uid, 'token': token},
             headers: {'Content-type': 'application/json'}
         })
@@ -42,9 +41,28 @@ const UsersActivatePage: FC = () => {
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    switch (statusCode) {
+        case 204: {
+            // no content, account created successfully
+            history.push(configuration["url-login"])
+            break;
+        }
+        case 403: {
+            // forbidden, account is active
+            history.push(configuration["url-login"])
+            break;
+        }
+        
+        case 400: {
+            // no account exists, need to re-register
+            history.push(configuration["url-register"])
+            break;
+        }
+    };
     
     return(
-        <AccountActivation isComponentLoaded={isLoaded} status={statusCode}/>
+        null
     )
 };
 

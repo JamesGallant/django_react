@@ -1,5 +1,7 @@
 import React, { FC } from "react"
 
+import configuration from "../utils/config";
+
 import Grid from '@material-ui/core/Grid';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 
@@ -17,10 +19,10 @@ const HomePage: FC = () => {
             <Grid>
                 <Grid container spacing={1}>
                     <Grid item xs={12}>
-                            <a href="/register/"> Register </a>
+                            <a href={ configuration["url-register"] }> Register </a>
                     </Grid>
                     <Grid item xs={12}>
-                            <a href="/login/">Login </a>
+                            <a href={ configuration["url-login"] }>Login </a>
                     </Grid>
                 </Grid>
             </Grid>

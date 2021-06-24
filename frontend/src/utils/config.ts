@@ -5,7 +5,17 @@ const configuration = {
     // material ui configuration
     "mui-InputVariant": "outlined",
     // API endpoints
-    "api-base": "http://localhost:8001/api/v1/auth/"
+    "api-base": `${process.env.REACT_APP_BASE_API_ACCOUNTS}`,
+    "api-activateAccount": "users/activation/",
+    "api-createAccount": "users/",
+    "api-resendActivationEmail": "users/resend_activation/",
+    // internal urls registry
+    "url-home": "/",
+    "url-login": "/login/",
+    "url-register": "/register",
+    "url-createAccount": "/account-created/",
+    "url-acitvateAccount": "/auth/activate/:uid/:token/", // this also neeeds changing in the backend accounts service
+
 };
 
 export default configuration;
