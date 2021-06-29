@@ -14,8 +14,6 @@ import Container from '@material-ui/core/Container';
 
 
 // third party
-import axios from 'axios';
-import { AxiosResponse, AxiosError } from 'axios';
 import parsePhoneNumber from 'libphonenumber-js';
 
 // own
@@ -24,6 +22,8 @@ import TextField from './formFields/TextFieldComponent';
 import PasswordField from './formFields/passwordComponent';
 import CountrySelect from './formFields/countryComponent';
 import configuration from '../utils/config';
+
+import { accountsClient } from "../utils/APImethods";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -141,7 +141,7 @@ const handleCountryData = (event: React.ChangeEvent<HTMLInputElement>, value: {c
 
 const  submit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
+    let client = new accountsClient()
     const country: any = countryCode
     const parsedPhoneNumber = parsePhoneNumber(formValues.mobileNumber, country)
 
@@ -159,42 +159,32 @@ const  submit = (event: React.FormEvent<HTMLFormElement>) => {
         password: formValues.password
     };
     
-    
-    axios({
-        method: "post",
-        data: JSON.stringify(userData),
-        url: configuration['api-base'].concat(configuration["api-createAccount"]),
-        headers: {
-            'Content-Type': 'application/json',
-        }
-      })
-      .then(function (response: AxiosResponse) {
-          if (response.status === 201) {
+    const registerNewAccount = client.registerUser(userData)
+    registerNewAccount.then((res) => {
+        switch(res.status) {
+            case 201:
+                //account creation successfull
+                history.push(configuration["url-createAccount"], {
+                    email: formValues.email,
+                    firstName: formValues.firstName,
+                });
+                break;
+            case 400:
+                // account creation failed
+                setErrorMessage({
+                    firstName: typeof(res.data!.first_name) === "undefined" ? [""]:  res.data!.first_name,
+                    lastName: typeof(res.data!.last_name) === "undefined" ? [""]:  res.data!.last_name,
+                    email: typeof(res.data!.email) === "undefined" ? [""]: res.data!.email,
+                    mobile: typeof(res.data!.mobile_number) === "undefined" ? [""]: res.data!.mobile_number,
+                    country: typeof(res.data!.country) === "undefined" ? [""]: res.data!.country,
+                    password: typeof(res.data!.password) === "undefined" ? [""]: res.data!.password,
+                });
+                break;
 
-            history.push(configuration["url-createAccount"], {
-                email: formValues.email,
-                firstName: formValues.firstName,
-            });
-
-          } else {
-            throw new Error("Status code invalid, should be 201. See Djoser docs")
-          };
-    })
-    .catch(function (error: AxiosError) {
-
-        if (error.response?.status === 400) {
-            setErrorMessage({
-                firstName: typeof(error.response!.data.first_name) === "undefined" ? [""]:  error.response!.data.first_name,
-                lastName: typeof(error.response!.data.last_name) === "undefined" ? [""]:  error.response!.data.last_name,
-                email: typeof(error.response!.data.email) === "undefined" ? [""]: error.response!.data.email,
-                mobile: typeof(error.response!.data.mobile_number) === "undefined" ? [""]: error.response!.data.mobile_number,
-                country: typeof(error.response!.data.country) === "undefined" ? [""]: error.response!.data.country,
-                password: typeof(error.response!.data.password) === "undefined" ? [""]:  error.response!.data.password,
-            });
-        } else { 
-            throw new Error("Status code invalid, should be 400. See Djoser docs")
+            default:
+                throw new Error("Status code invalid, should be 400 or 201. See https://djoser.readthedocs.io/en/latest/base_endpoints.html#user-create")
         };
-      });
+    });
 };
 
 return (

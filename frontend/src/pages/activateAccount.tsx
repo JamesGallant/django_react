@@ -1,9 +1,8 @@
 import { FC, useState, useEffect } from "react";
 import { useParams, useHistory } from 'react-router-dom';
 
-import axios from 'axios';
-
 import configuration from "../utils/config";
+import { accountsClient } from "../utils/APImethods";
 
 const UsersActivatePage: FC = () => {
     /**
@@ -19,26 +18,12 @@ const UsersActivatePage: FC = () => {
     const [statusCode, setStatusCode] = useState(0)
     const history = useHistory();
 
-
     // api calls using useEffect hook
     // Note: the empty deps array [] means it will run once after react updates the DOM, otherwise the email is sent twice.
     useEffect(() => {
-         // sends post request to djoser activation url on the backend.
-        axios({
-            method: "post",
-            url: configuration["api-base"].concat(configuration["api-activateAccount"]),
-            data: {'uid': uid, 'token': token},
-            headers: {'Content-type': 'application/json'}
-        })
-        .then(response => {
-            // handle success and errors
-            setStatusCode(response.status)
-        })
-        .catch(error => {
-            // handle error
-            var errorStatusCode: number = error.response.status
-            setStatusCode(errorStatusCode)
-        });
+        let client = new accountsClient()
+        const getStatus = client.activateUserAccount(uid, token);
+        getStatus.then((status) => setStatusCode(status))
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

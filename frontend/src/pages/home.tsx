@@ -24,6 +24,9 @@ const HomePage: FC = () => {
                     <Grid item xs={12}>
                             <a href={ configuration["url-login"] }>Login </a>
                     </Grid>
+                    <Grid item xs={12}>
+                            <a href={  "/auth/activate/Hello/World/" }>test page </a>
+                    </Grid>
                 </Grid>
             </Grid>
         </div>

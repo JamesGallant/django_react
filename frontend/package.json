@@ -49,6 +49,8 @@
     ]
   },
   "devDependencies": {
-    "msw": "^0.28.2"
+    "axios-mock-adapter": "^1.19.0",
+    "msw": "^0.28.2",
+    "ts-jest": "^27.0.3"
   }
 }

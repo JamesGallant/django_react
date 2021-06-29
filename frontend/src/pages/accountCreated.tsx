@@ -3,10 +3,9 @@ import { useLocation, useHistory } from 'react-router-dom';
 
 import Button from '@material-ui/core/Button';
 
-import axios from 'axios';
-import { AxiosResponse, AxiosError } from 'axios';
-
 import configuration from '../utils/config';
+import { accountsClient } from "../utils/APImethods";
+
 
 interface stateType {
     email: string, 
@@ -28,28 +27,23 @@ const AccountCreatedPage : FC = () => {
     const firstName = location.state.firstName;
 
     const resendEmail = () => {
-          axios({
-            method: "post",
-            url: configuration['api-base'].concat(configuration["api-resendActivationEmail"]),
-            data: {email: email},
-            headers: {'Content-type': 'application/json'}
-          })
-          .then(function (response: AxiosResponse) {
-              if (response?.status === 204) {
+        let client = new accountsClient();
+        const getStatus = client.sendEmail(email)
+        getStatus.then((code) => {         
+        switch(code) {
+            case 204: 
+                //success
                 alert(`email sent to ${email}`)
-              } else {
-                  throw new Error("Status code not valid, options are 400 or 204. See Djoser docs on activation emails")
-              }
+                break;
+            case 400:
+                history.push(configuration["url-login"]);
+                break;
+            default:
+                throw new Error("Invalid status code, options are 400 or 200. see: https://djoser.readthedocs.io/en/latest/base_endpoints.html#user-resend-activation-e-mail")
+            
+            }; 
         })
-        .catch(function (error: AxiosError) {
-            console.log(error.response)
-            if (error.response?.status === 400) {
-                history.push(configuration["url-login"])
-            } else {
-                throw new Error("Status code not valid, options are 400 or 204. See Djoser docs on activation emails")
-            }
-          });
-    }
+    };
 
     return(
         <div>
