@@ -6,7 +6,7 @@ import { mocked } from "ts-jest/dist/utils/testing";
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom';
 
-import RegisterComponent from '../components/registerComponent'
+import RegisterComponent from '../components/registerAccountComponent'
 import RegisterPage from '../pages/register'
 import configuration from '../utils/config'
 

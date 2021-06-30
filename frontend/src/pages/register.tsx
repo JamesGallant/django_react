@@ -1,6 +1,6 @@
 import React, { FC } from "react"
 
-import RegisterComponent from '../components/registerComponent'
+import RegisterComponent from '../components/registerAccountComponent'
 
 const RegisterPage: FC = () => (
     /**
