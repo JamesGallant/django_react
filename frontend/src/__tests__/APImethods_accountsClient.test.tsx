@@ -1,6 +1,6 @@
 
 import axios, { AxiosResponse } from "axios";
-import { mocked } from "ts-jest/dist/utils/testing"; //<-- This allows to mock results
+import { mocked } from "ts-jest/dist/utils/testing";
 
 import { accountsClient } from '../utils/APImethods';
 
@@ -50,8 +50,4 @@ test("registerUser returns error status code and data", async () => {
     expect(response.data.email).toEqual(["This is a error message", "This is also a error message"])
     expect(response.status).toEqual(201)
 
-})
-test("dummy test", () => {
-    let http = new accountsClient()
-    expect(http.dummy()).toBe("HelloWorld");
 });

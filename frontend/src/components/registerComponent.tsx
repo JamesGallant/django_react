@@ -164,7 +164,7 @@ const  submit = (event: React.FormEvent<HTMLFormElement>) => {
         switch(res.status) {
             case 201:
                 //account creation successfull
-                history.push(configuration["url-createAccount"], {
+                history.push(configuration["url-accountCreated"], {
                     email: formValues.email,
                     firstName: formValues.firstName,
                 });

@@ -13,7 +13,7 @@ const configuration = {
     "url-home": "/",
     "url-login": "/login/",
     "url-register": "/register",
-    "url-createAccount": "/account-created/",
+    "url-accountCreated": "/account-created/",
     "url-acitvateAccount": "/auth/activate/:uid/:token/", // this also neeeds changing in the backend accounts service
 
 };

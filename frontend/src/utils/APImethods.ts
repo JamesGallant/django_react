@@ -75,10 +75,6 @@ class accountsClient  {
             return err.response.status
         };
     };
-
-    public dummy() {
-        return("HelloWorld")
-    };
 };
 
 export {
