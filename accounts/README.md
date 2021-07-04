@@ -13,11 +13,25 @@ package. At this time the infrastructure to do both JSON Web token, token based 
 based is currently implemented.  
 
 a few basic commands in case you forget :)
+
+make migrations
 ```
 docker-compose run --rm backend_accounts python src/manage.py makemigrations
 ```
+
+migrate
 ```
 docker-compose run --rm backend_accounts python src/manage.py migrate
+```
+
+create super user
+```
+docker-compose run --rm backend_accounts python src/manage.py createsuperuser
+```
+
+test
+```
+docker-compose run --rm backend_accounts python src/manage.py test
 ```
 ## Testing
 Testing is done on custom implementations of models and views. However, since this is the security layer of the application

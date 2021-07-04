@@ -47,6 +47,7 @@ class TestDjoserAccountCreation(APITestCase):
             "last_name": "testuser3_lastname",
             "email": "testuser3@testuser.com",
             "mobile_number": '+31111111114',
+            "country": 'Netherlands',
             "password": '@VeryHardPassword123'
         }
         # same email and mobile, both these fields should error out
@@ -55,6 +56,7 @@ class TestDjoserAccountCreation(APITestCase):
             "last_name": "testuser4_lastname",
             "email": "testuser3@testuser.com",
             "mobile_number": '+31111111114',
+            "country": 'Netherlands',
             "password": '@VeryHardPassword123'
         }
 
@@ -62,6 +64,7 @@ class TestDjoserAccountCreation(APITestCase):
             "first_name": "testuser5_firstname",
             "last_name": "testuser5_lastname",
             "email": "testuser5@testuser.com",
+            "country": 'Netherlands',
             "mobile_number": '+31111111115',
             "password": 'secret'
         }
@@ -70,6 +73,7 @@ class TestDjoserAccountCreation(APITestCase):
             "first_name": "testuser5_firstname",
             "last_name": "testuser5_lastname",
             "email": "",
+            "country": "",
             "mobile_number": '',
             "password": 'secret'
         }
@@ -152,6 +156,7 @@ class TestDjoserLoginLogout(APITestCase):
             last_name="regular_user_ln",
             email="regular_user@email.com",
             mobile_number='+31111111112',
+            country='Netherlands',
             password='secret'
         )
         self.valid_login = {
@@ -217,6 +222,7 @@ class TestDjoserAccountDelete(APITestCase):
             last_name="regular_user_ln",
             email="regular_user@email.com",
             mobile_number='+31111111112',
+            country='Netherlands',
             password='secret'
         )
 
@@ -225,6 +231,7 @@ class TestDjoserAccountDelete(APITestCase):
             last_name="hostile_user_fn",
             email="hostile_user@email.com",
             mobile_number='+31111111113',
+            country='Netherlands',
             password='secret'
         )
 
@@ -233,6 +240,7 @@ class TestDjoserAccountDelete(APITestCase):
             last_name="superuser_ln",
             email="superuser@testuser.com",
             mobile_number='+31111111111',
+            country='Netherlands',
             password='secret'
         )
 
@@ -313,6 +321,7 @@ class TestEmailVerification(APITestCase):
             "last_name": "testuser3_lastname",
             "email": "testuser3@testuser.com",
             "mobile_number": '+31111111114',
+            "country": 'Netherlands',
             "password": '@VeryHardPassword123'
         }
 
@@ -377,6 +386,7 @@ class TestDjoserUpdateAccount(APITestCase):
             last_name="regular_user_ln",
             email="regular_user@email.com",
             mobile_number='+31111111112',
+            country='+31111111112',
             password='secret'
         )
 
@@ -385,6 +395,7 @@ class TestDjoserUpdateAccount(APITestCase):
             last_name="superuser_ln",
             email="superuser@testuser.com",
             mobile_number='+31111111111',
+            country='+31111111112',
             password='secret'
         )
 
@@ -412,12 +423,14 @@ class TestDjoserUpdateAccount(APITestCase):
             "first_name": "new_first_name",
             "last_name": "new_last_name",
             "mobile_number": '+27111111118',
+            "country": 'South Africa',
         }
 
         self.invalid_payload = {
             "first_name": "new_first_name",
             "last_name": "new_last_name",
             "mobile_number": '+27111111118',
+            "country": 'South Africa',
             "email": "new_email@email.com",
             "is_superuser": True,
             "id": 50000
@@ -427,6 +440,7 @@ class TestDjoserUpdateAccount(APITestCase):
             "first_name": "admin_first_name",
             "last_name": "admin_last_name",
             "mobile_number": '+930775443832',
+            "country": 'UK',
         }
 
     def test_update_details(self):
@@ -494,6 +508,7 @@ class TestDjoserResets(APITestCase):
             last_name="regular_user_ln",
             email="regular_user@email.com",
             mobile_number='+31111111112',
+            country='Netherlands',
             password='secret'
         )
 
@@ -502,6 +517,7 @@ class TestDjoserResets(APITestCase):
             last_name="superuser_ln",
             email="superuser@testuser.com",
             mobile_number='+31111111111',
+            country='Netherlands',
             password='secret'
         )
 
@@ -649,6 +665,7 @@ class TestDjoserAuth(APITestCase):
             last_name="regular_user_ln",
             email="regular_user@email.com",
             mobile_number='+31111111112',
+            country='Netherlands',
             password='secret'
         )
 
@@ -657,6 +674,7 @@ class TestDjoserAuth(APITestCase):
             last_name="hostile_user_fn",
             email="hostile_user@email.com",
             mobile_number='+31111111113',
+            country='Netherlands',
             password='secret'
         )
 
@@ -665,6 +683,7 @@ class TestDjoserAuth(APITestCase):
             last_name="superuser_ln",
             email="superuser@testuser.com",
             mobile_number='+31111111111',
+            country='Netherlands',
             password='secret'
         )
 
@@ -702,6 +721,7 @@ class TestDjoserAuth(APITestCase):
             "first_name": "hostile",
             "last_name": "hostile",
             "mobile_number": '+31111111118',
+            "country": 'Netherlands',
         }
 
     def test_unauthorised_usersView(self) -> None:
