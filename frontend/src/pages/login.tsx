@@ -1,7 +1,11 @@
 import React, { FC } from "react"
 
-const LoginPage: FC = () => (
-    <h1> Login page</h1>
-)
+import Login from '../components/loginComponent'
+const LoginPage: FC = () =>{
+    /**
+     *@description view to display the login component
+     */
+    return(<Login />)
+}
 
 export default LoginPage

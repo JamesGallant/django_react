@@ -14,7 +14,8 @@ const configuration = {
     "url-login": "/login/",
     "url-register": "/register",
     "url-accountCreated": "/account-created/",
-    "url-acitvateAccount": "/auth/activate/:uid/:token/", // this also neeeds changing in the backend accounts service
+    "url-acitvateAccount": "/activate/:uid/:token/", // this also neeeds changing in the backend accounts service
+    "url-tokenLogin": "/token/login/",
 
 };
 

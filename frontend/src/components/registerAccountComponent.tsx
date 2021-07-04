@@ -141,6 +141,7 @@ const handleCountryData = (event: React.ChangeEvent<HTMLInputElement>, value: {c
 
 const  submit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    // this should probs not be in submit
     let client = new accountsClient()
     const country: any = countryCode
     const parsedPhoneNumber = parsePhoneNumber(formValues.mobileNumber, country)

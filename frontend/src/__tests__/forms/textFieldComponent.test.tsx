@@ -1,7 +1,7 @@
 import React from 'react';
 import { cleanup, render, screen } from '@testing-library/react';
 
-import TextField from '../components/formFields/TextFieldComponent'
+import TextField from '../../components/formFields/TextFieldComponent'
 
 afterEach(cleanup);
 

@@ -75,6 +75,27 @@ class accountsClient  {
             return err.response.status
         };
     };
+
+    public async tokenLogin(email: string, password: string) {
+        /**
+         * @description logs in a user by sending their email (username field) and password via ajax calls using axios. 
+         *
+         * @statusCodes 200 Okay
+         * 
+         * @returns Promise resolves to response or err.response
+         */
+        try {
+            const response = await axios({
+                method: "post",
+                url: configuration["api-base"].concat(configuration["url-tokenLogin"]),
+                data: {email: email, password: password},
+                headers: {'Content-type': 'application/json'}
+            });
+            return response
+        } catch(err) {
+            return err.response
+        };
+    }
 };
 
 export {

@@ -2,7 +2,7 @@
 import axios, { AxiosResponse } from "axios";
 import { mocked } from "ts-jest/dist/utils/testing";
 
-import { accountsClient } from '../utils/APImethods';
+import { accountsClient } from '../../utils/APImethods';
 
 jest.mock("axios");
 

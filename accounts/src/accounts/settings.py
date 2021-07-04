@@ -181,8 +181,8 @@ DJOSER = {
     "LOGIN_FIELD": os.environ.get('DJOSER_LOGIN_FIELD', "username"),
     'HIDE_USERS': bool(os.environ.get('DJOSER_HIDE_USER', True)),
     'ACTIVATION_URL': 'auth/activate/{uid}/{token}',
-    'USERNAME_RESET_CONFIRM_URL': 'auth/reset/username/{uid}/{token}',
-    'PASSWORD_RESET_CONFIRM_URL': 'auth/reset/password/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': 'reset/username/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_URL': 'reset/password/{uid}/{token}',
     'SERIALIZERS': {},
     'EMAIL': {
         'activation': 'users.email.activation_email.ActivationEmail',
