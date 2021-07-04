@@ -79,7 +79,7 @@ const PasswordField = (props: any): JSX.Element => {
         </ThemeProvider>
             <InputVariant   variant={ muiVariant }
                             label="Password"
-                            name="password" 
+                            name="password"
                             value = { value }
                             onChange = { onChange }
                             type = { showPassword ? 'text': 'password'}

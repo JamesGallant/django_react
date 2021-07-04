@@ -7,9 +7,13 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Container from '@material-ui/core/Container';
 import Link from '@material-ui/core/Link';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
+import Box from '@material-ui/core/Box';
 
 import TextField from './formFields/TextFieldComponent';
 import PasswordField from './formFields/passwordComponent';
+import Copyright from './copyrightComponent';
 
 import configuration from '../utils/config';
 import { accountsClient } from '../utils/APImethods';
@@ -92,24 +96,30 @@ const Login = () => {
                     </Typography>
                     <form className={classes.form} noValidate={true} onSubmit = { submit }>
                     <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12}>
                             <TextField 
                                 id="email"
                                 name="email"
                                 label="email"
-                                fullwidth={true}
+                                fullWidth = {true}           
                                 required={true}
                                 value = {formValues.email}
                                 onChange={ handleChange }
-                                error={ [""] } // handle this
+                                errorMessage={ [""] }
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12}>
                             <PasswordField
                                 value={formValues.password}
-                                error={ [""] }
+                                errorMessage={ [""] }
                                 onChange={ handleChange }
                              />
+                        </Grid>
+                        <Grid item xs={12}>
+                        <FormControlLabel
+                            control={<Checkbox value="remember" color="primary" />}
+                            label="Remember me"
+                        />
                         </Grid>
                     </Grid>
                     <Button
@@ -126,10 +136,13 @@ const Login = () => {
                         <Link href={configuration["url-register"]} variant="body2">
                             Not registered? create an account
                         </Link>
-                        </Grid>
+                    </Grid>
                     </Grid>
                     </form>
                 </div>
+                <Box mt={5}>
+                    <Copyright />
+                </Box>
             </Container>
         </div>
      )

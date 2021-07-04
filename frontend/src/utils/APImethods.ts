@@ -87,7 +87,7 @@ class accountsClient  {
         try {
             const response = await axios({
                 method: "post",
-                url: configuration["api-base"].concat(configuration["url-tokenLogin"]),
+                url: configuration["api-base"].concat(configuration["api-tokenLogin"]),
                 data: {email: email, password: password},
                 headers: {'Content-type': 'application/json'}
             });
