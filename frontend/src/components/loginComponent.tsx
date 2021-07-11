@@ -47,18 +47,43 @@ interface formTypes {
     password: string,
 };
 
+interface errTypes {
+    email: string[],
+    password: string[],
+};
+
+interface tokenTypes {
+    storeToken: boolean, 
+    token: string
+}
+
 const initialFormVals: formTypes = {
     email: "",
     password: "",
-}
+};
+
+const initialErrs: errTypes = {
+    email: [""],
+    password: [""],
+};
+
+const initialTokenVals: tokenTypes = {
+    storeToken: false,
+    token: ""
+};
+
 const Login = () => {
     /**
      * @description Component that handles the login logic. Sends a request to the accounts backend for a token.
      * API endpoint requires email and password and returns [status] and token or [errors]
+     * @resource securely saving auth tokens: https://www.rdegges.com/2018/please-stop-using-local-storage/
      */
 
     const classes = useStyles();
     const [formValues, setFormValues] = useState(initialFormVals);
+    const [errorMessage, setErrorMessage] = useState(initialErrs);
+    const [token, setToken] = useState(initialTokenVals);
+
 
     let client = new accountsClient();
 
@@ -70,6 +95,11 @@ const Login = () => {
             [name]: value,
         });
     };
+
+    const handleCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
+        console.log(event.target.checked)
+    };
+
     const submit = (event: React.FormEvent<HTMLFormElement>) => {
         /**
          * @description Handles the form submission. Should send a AJAX request to the user login endpoint
@@ -79,9 +109,22 @@ const Login = () => {
 
         const getToken = client.tokenLogin(formValues.email, formValues.password)
         getToken.then((response) => {
-            console.log(response)
-        }).catch((error) => {
-            console.log(error)
+            switch(response.status) {
+                case 400:
+                    setErrorMessage({
+                        email: typeof(response.data!.email) === "undefined" ? [""]: response.data!.email,
+                        password: typeof(response.data!.password) === "undefined" ? [""]: response.data!.password
+                    });
+                    break;
+                case 200:
+                    setToken(response.data.auth_token)
+                    document.cookie = "cookiename=Hello"
+                    break;
+                default:
+                    throw new Error(`Status code ${response.status} is invalid. 
+                    Check https://djoser.readthedocs.io/en/latest/token_endpoints.html#token-create`)
+            }
+            console.log(document.cookie)
         });
         
     }
@@ -105,19 +148,24 @@ const Login = () => {
                                 required={true}
                                 value = {formValues.email}
                                 onChange={ handleChange }
-                                errorMessage={ [""] }
+                                errorMessage={ errorMessage.email }
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <PasswordField
-                                value={formValues.password}
-                                errorMessage={ [""] }
-                                onChange={ handleChange }
-                             />
+                        <PasswordField
+                            id="password"
+                            showTooltip= {false}
+                            value={ formValues.password }
+                            errorMessage={ errorMessage.password }
+                            onChange={ handleChange }/>
                         </Grid>
                         <Grid item xs={12}>
                         <FormControlLabel
-                            control={<Checkbox value="remember" color="primary" />}
+                            control={<Checkbox 
+                                        value="remember" 
+                                        color="primary"
+                                        onChange = { handleCheckbox }
+                                        />}
                             label="Remember me"
                         />
                         </Grid>

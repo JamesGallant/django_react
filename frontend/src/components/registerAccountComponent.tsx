@@ -258,6 +258,7 @@ return (
             <Grid item xs={12} >
                     <PasswordField
                     id="password"
+                    showTooltip= {true}
                     value={ formValues.password }
                     errorMessage={ errorMessage.password }
                     onChange={ handleChange }/>

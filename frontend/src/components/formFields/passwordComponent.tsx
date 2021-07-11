@@ -12,6 +12,17 @@ import configuration from '../../utils/config';
 import MuiGlobalTheme from '../../utils/themes';
 
 
+type mouseEvent = (event: React.MouseEvent<HTMLButtonElement>) => void;
+type baseEvent = () => void;
+
+type adornmentType = {
+    display: boolean, 
+    openToolTip: boolean, 
+    showPassword: boolean,
+    handleClickAway: baseEvent,
+    handleMouseDown: mouseEvent, 
+    handleToggleTooltip: baseEvent,
+    handleClickShowPassword: baseEvent}
 
 const InputVariant = (props: any): JSX.Element => {
     /**
@@ -24,6 +35,62 @@ const InputVariant = (props: any): JSX.Element => {
         case "filled": return(<FilledInput {...other} />);
         default: return(<Input {...other}/>)
     };
+};
+
+const displayFullAdornment = (fn: adornmentType): JSX.Element => {
+    if(fn.display) {
+        return(
+            <InputAdornment position="end">
+                <IconButton
+                aria-label="toggle-pw-visibility"
+                onClick={fn.handleClickShowPassword}
+                edge="end"
+                onMouseDown={fn.handleMouseDown}
+                >
+                    {fn.showPassword ? <Visibility /> : <VisibilityOff />}
+            </IconButton>
+            <ClickAwayListener onClickAway={fn.handleClickAway}>
+                <Tooltip title={
+                            <React.Fragment>
+                                <Typography color="inherit"><u>Password Requirements</u></Typography>
+                                <Typography variant="body1">
+                                            <li>At least 8 characters.</li>
+                                            <li>Can’t be too similar to your other personal information.</li>
+                                            <li>No common passwords</li>
+                                            <li>Must be alphanumerical</li>
+                                </Typography>
+                            </React.Fragment>
+                        } 
+                        interactive
+                        open={fn.openToolTip}
+                        TransitionComponent={Zoom}
+                        placement="right"
+                        >
+                    <IconButton
+                            aria-label="display-pw-info"
+                            onMouseDown={fn.handleMouseDown}
+                            onClick = {fn.handleToggleTooltip}
+                            >
+                        <InfoIcon />
+                    </IconButton >
+                </Tooltip>
+            </ClickAwayListener>
+        </InputAdornment>
+        );
+    } else {
+        return(        
+        <InputAdornment position="end">
+            <IconButton
+                    aria-label="toggle-pw-visibility"
+                    onClick={fn.handleClickShowPassword}
+                    edge="end"
+                    onMouseDown={fn.handleMouseDown}
+                    >
+                        {fn.showPassword ? <Visibility /> : <VisibilityOff />}
+            </IconButton>
+        </InputAdornment>
+);
+    }
 };
 
 const PasswordField = (props: any): JSX.Element => {
@@ -39,7 +106,7 @@ const PasswordField = (props: any): JSX.Element => {
      * @returns JSX.Element
      */
 
-    const { value, fullWidth=true, onChange, errorMessage=[""], ...other } = props;
+    const { value, fullWidth=true, onChange, showTooltip, errorMessage=[""], ...other } = props;
 
     const [showPassword, setShowPassword] = useState(false);
     const [openTooltip, setOpenTooltip] = useState(false);
@@ -72,6 +139,16 @@ const PasswordField = (props: any): JSX.Element => {
         setOpenTooltip(!openTooltip);
     };
 
+    const adornmentData = {
+        display: showTooltip, 
+        openToolTip: openTooltip, 
+        showPassword: showPassword,
+        handleClickAway: HandleClickAway,
+        handleMouseDown: handleMouseDown, 
+        handleToggleTooltip: handleToggleTooltip,
+        handleClickShowPassword: handleClickShowPassword
+    };
+
     return(
         <FormControl fullWidth={ fullWidth } >
         <ThemeProvider theme={MuiGlobalTheme}>
@@ -84,44 +161,7 @@ const PasswordField = (props: any): JSX.Element => {
                             onChange = { onChange }
                             type = { showPassword ? 'text': 'password'}
                             error = { errorMessage.length === 1 &&  errorMessage[0] === "" ? false: true }
-                            endAdornment={
-                                <InputAdornment position="end">
-                                    <IconButton
-                                            aria-label="toggle-pw-visibility"
-                                            onClick={handleClickShowPassword}
-                                            edge="end"
-                                            onMouseDown={handleMouseDown}
-                                            >
-                                                {showPassword ? <Visibility /> : <VisibilityOff />}
-                                    </IconButton>
-                                    <ClickAwayListener onClickAway={HandleClickAway}>
-                                        <Tooltip title={
-                                                    <React.Fragment>
-                                                        <Typography color="inherit"><u>Password Requirements</u></Typography>
-                                                        <Typography variant="body1">
-                                                                    <li>At least 8 characters.</li>
-                                                                    <li>Can’t be too similar to your other personal information.</li>
-                                                                    <li>No common passwords</li>
-                                                                    <li>Must be alphanumerical</li>
-                                                        </Typography>
-                                                    </React.Fragment>
-                                                } 
-                                                interactive
-                                                open={openTooltip}
-                                                TransitionComponent={Zoom}
-                                                placement="right"
-                                                >
-                                            <IconButton
-                                                    aria-label="display-pw-info"
-                                                    onMouseDown={handleMouseDown}
-                                                    onClick = {handleToggleTooltip}
-                                                    >
-                                                <InfoIcon />
-                                            </IconButton >
-                                        </Tooltip>
-                                    </ClickAwayListener>
-                                </InputAdornment>
-                            }
+                            endAdornment={ displayFullAdornment(adornmentData) }
                             {...other} 
                             />
             <FormHelperText error={ errorMessage.length === 1 &&  errorMessage[0] === "" ? false: true }>
