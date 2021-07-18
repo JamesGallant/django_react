@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme: Theme) =>
         }
     }));
     
-const HomePage: FC = () => {
+const HomeView: FC = () => {
     const classes = useStyles();
     return(
         <div className={classes.root}>
@@ -33,4 +33,4 @@ const HomePage: FC = () => {
     );
 };
 
-export default HomePage
+export default HomeView;

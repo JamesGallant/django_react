@@ -4,7 +4,7 @@ import { useParams, useHistory } from 'react-router-dom';
 import configuration from "../utils/config";
 import { accountsClient } from "../utils/APImethods";
 
-const UsersActivatePage: FC = () => {
+const AccountActivationView: FC = () => {
     /**
      * @resource https://reactjs.org/docs/faq-ajax.html#gatsby-focus-wrapper
      */
@@ -51,4 +51,4 @@ const UsersActivatePage: FC = () => {
     )
 };
 
-export default UsersActivatePage
+export default AccountActivationView;

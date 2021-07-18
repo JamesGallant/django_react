@@ -13,11 +13,25 @@ package. At this time the infrastructure to do both JSON Web token, token based 
 based is currently implemented.  
 
 a few basic commands in case you forget :)
+
+make migrations
 ```
 docker-compose run --rm backend_accounts python src/manage.py makemigrations
 ```
+
+migrate
 ```
 docker-compose run --rm backend_accounts python src/manage.py migrate
+```
+
+create super user
+```
+docker-compose run --rm backend_accounts python src/manage.py createsuperuser
+```
+
+test
+```
+docker-compose run --rm backend_accounts python src/manage.py test
 ```
 ## Testing
 Testing is done on custom implementations of models and views. However, since this is the security layer of the application
@@ -52,9 +66,9 @@ Base URL: `api/v1/auth/`
 |users/me/                                  | DELETE     | UPDATE       | Delete user instance | User            | Accounts |
 |users/reset_password/                      | POST       | READ         | Resets password      | User            | Accounts |
 |users/reset_email/                         | POST       | READ         | Resets username      | User            | Accounts |
-|auth/reset/username/:uid/:token/           | POST       | READ         | changes username     | User            | Email    |
-|auth/reset/password/:uid/:token/           | POST       | READ         | changes password     | User            | Email    |
-|auth/activate/:uid/:token/                 | POST       | READ         | Activates user       | User            | Email    |
+|reset/username/:uid/:token/           | POST       | READ         | changes username     | User            | Email    |
+|reset/password/:uid/:token/           | POST       | READ         | changes password     | User            | Email    |
+|activate/:uid/:token/                 | POST       | READ         | Activates user       | User            | Email    |
 |users/activation/:uid/:token/              | POST       | UPDATE       | Activates user       | User            | Frontend |
 |users/reset_email_confirm/                 | POST       | READ         | changes email        | User            | Frontend |
 |users/reset_password_confirm/              | POST       | READ         | changes password     | User            | Frontend |

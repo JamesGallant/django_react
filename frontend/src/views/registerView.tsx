@@ -17,10 +17,10 @@ import Container from '@material-ui/core/Container';
 import parsePhoneNumber from 'libphonenumber-js';
 
 // own
-import Copyright from './copyrightComponent'; 
-import TextField from './formFields/TextFieldComponent';
-import PasswordField from './formFields/passwordComponent';
-import CountrySelect from './formFields/countryComponent';
+import Copyright from '../components/helper/copyrightComponent'; 
+import TextField from '../components/formFields/TextFieldComponent';
+import PasswordField from '../components/formFields/passwordComponent';
+import CountrySelect from '../components/formFields/countryComponent';
 import configuration from '../utils/config';
 
 import { accountsClient } from "../utils/APImethods";
@@ -90,7 +90,7 @@ const initialErrs: ErrMessageTypes = {
 
 };
 
-export default function SignUp() {
+const RegisterView: React.FC = (): JSX.Element => {
 /**
  *@Description component signs up a user by submitting a post request to the authentication server with the required fields. The mobile_number 
  * number must be edited to reflect the correct country by use of the country selector. 
@@ -141,10 +141,10 @@ const handleCountryData = (event: React.ChangeEvent<HTMLInputElement>, value: {c
 
 const  submit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    // this should probs not be in submit
     let client = new accountsClient()
     const country: any = countryCode
     const parsedPhoneNumber = parsePhoneNumber(formValues.mobileNumber, country)
-
     var phonenumber = formValues.mobileNumber
     if (parsedPhoneNumber) {
          phonenumber = parsedPhoneNumber.number.toString()
@@ -257,6 +257,7 @@ return (
             <Grid item xs={12} >
                     <PasswordField
                     id="password"
+                    showTooltip= {true}
                     value={ formValues.password }
                     errorMessage={ errorMessage.password }
                     onChange={ handleChange }/>
@@ -287,3 +288,5 @@ return (
 </div>
 );
 };
+
+export default RegisterView;

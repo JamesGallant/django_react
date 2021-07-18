@@ -1,7 +1,7 @@
 import React from 'react';
 import {cleanup, fireEvent, render, screen } from '@testing-library/react';
 
-import CountrySelect from '../components/formFields/countryComponent';
+import CountrySelect from '../countryComponent';
 
 
 afterEach(cleanup);

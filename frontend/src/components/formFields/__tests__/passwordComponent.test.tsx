@@ -1,7 +1,7 @@
 import React from 'react';
 import { act,  cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 
-import PasswordField from '../components/formFields/passwordComponent';
+import PasswordField from '../../../components/formFields/passwordComponent';
 
 afterEach(cleanup);
 
@@ -34,9 +34,16 @@ describe("Testing password field Component", () => {
         expect(displayedPassword).toHaveAttribute('type', 'text')
     });
 
+    it("removes tooltip adornment", () => {
+        render(<PasswordField showTooltip={false} inputProps={{'data-testid': 'testPassword'}} />);
+        const helpButton = screen.queryByRole('button', {'name': 'display-pw-info'});
+        expect(helpButton).not.toBeInTheDocument();
+    })
+
     it("display help", async() => {
         // also test clickaway and timers
-        render(<PasswordField inputProps={{'data-testid': 'testPassword'}} />);
+        render(<PasswordField showTooltip={true} inputProps={{'data-testid': 'testPassword'}} />);
+
         const helpButton = screen.getByRole('button', {'name': 'display-pw-info'});
         const toolTipHidden = screen.queryByRole('tooltip');
         expect(toolTipHidden).not.toBeInTheDocument();
