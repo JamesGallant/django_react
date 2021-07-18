@@ -12,7 +12,7 @@ interface stateType {
     firstName: string,
  };
 
-const AccountCreatedPage : FC = () => {
+const AccountCreatedView : FC = () => {
     /**
      * @description Redirects user to login or register based on the email link. to login if account creation is successfull or the account exists, to
      * register if the account is deleted or password is mangled. 
@@ -56,4 +56,4 @@ const AccountCreatedPage : FC = () => {
     );
 };
 
-export default AccountCreatedPage;
+export default AccountCreatedView;

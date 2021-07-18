@@ -17,10 +17,10 @@ import Container from '@material-ui/core/Container';
 import parsePhoneNumber from 'libphonenumber-js';
 
 // own
-import Copyright from './copyrightComponent'; 
-import TextField from './formFields/TextFieldComponent';
-import PasswordField from './formFields/passwordComponent';
-import CountrySelect from './formFields/countryComponent';
+import Copyright from '../components/helper/copyrightComponent'; 
+import TextField from '../components/formFields/TextFieldComponent';
+import PasswordField from '../components/formFields/passwordComponent';
+import CountrySelect from '../components/formFields/countryComponent';
 import configuration from '../utils/config';
 
 import { accountsClient } from "../utils/APImethods";
@@ -90,7 +90,7 @@ const initialErrs: ErrMessageTypes = {
 
 };
 
-export default function SignUp() {
+const RegisterView: React.FC = (): JSX.Element => {
 /**
  *@Description component signs up a user by submitting a post request to the authentication server with the required fields. The mobile_number 
  * number must be edited to reflect the correct country by use of the country selector. 
@@ -289,3 +289,5 @@ return (
 </div>
 );
 };
+
+export default RegisterView;

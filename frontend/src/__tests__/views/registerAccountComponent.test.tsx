@@ -6,9 +6,8 @@ import { mocked } from "ts-jest/dist/utils/testing";
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom';
 
-import RegisterComponent from '../components/registerAccountComponent'
-import RegisterPage from '../pages/register'
-import configuration from '../utils/config'
+import RegisterView from '../../views/registerView'
+import configuration from '../../utils/config'
 
 jest.mock('axios')
 
@@ -20,12 +19,8 @@ describe("Testing account registration", () => {
      * from https://djoser.readthedocs.io/en/latest/base_endpoints.html#user-create
      */
 
-     it("Page renders correctly", () => {
-        render(<RegisterPage />)
-    });
-
     it("component renders correctly", () => {
-        render(<RegisterComponent />)
+        render(<RegisterView />)
     });
 
     it("displays no errors when form is completed correctly", async () => {
@@ -34,12 +29,12 @@ describe("Testing account registration", () => {
         const axiosResponse: AxiosResponse = {
             data: {},
             status: 201, 
-            statusText: "BAD Request", 
+            statusText: "Ok", 
             config: {},
             headers: {}
         };
         render(<Router history={history}>
-                    <RegisterComponent />
+                    <RegisterView />
                 </Router>)
         mocked(axios).mockResolvedValue(axiosResponse);
 
@@ -79,7 +74,7 @@ describe("Testing account registration", () => {
             headers: {}
         };
 
-        render(<RegisterComponent />)
+        render(<RegisterView />)
 
         mocked(axios).mockResolvedValue(axiosResponse);
     
@@ -117,7 +112,7 @@ describe("Testing account registration", () => {
             headers: {}
         };
 
-        render(<RegisterComponent />)
+        render(<RegisterView />)
 
         mocked(axios).mockResolvedValue(axiosResponse);
 
@@ -151,7 +146,7 @@ describe("Testing account registration", () => {
             headers: {}
         };
 
-        render(<RegisterComponent />)
+        render(<RegisterView />)
 
         mocked(axios).mockResolvedValue(axiosResponse);
 

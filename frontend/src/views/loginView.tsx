@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -11,13 +11,17 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Box from '@material-ui/core/Box';
 
-import TextField from './formFields/TextFieldComponent';
-import PasswordField from './formFields/passwordComponent';
-import Copyright from './copyrightComponent';
+
+import TextField from '../components/formFields/TextFieldComponent';
+import PasswordField from '../components/formFields/passwordComponent';
+import Copyright from '../components/helper/copyrightComponent';
 
 import configuration from '../utils/config';
 import { accountsClient } from '../utils/APImethods';
-import { useState } from 'react';
+import CookieHandler from '../utils/cookies';
+
+import FlashError from '../components/helper/flashErrors';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -32,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        flexWrap: 'wrap',
     },
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -72,7 +77,7 @@ const initialTokenVals: tokenTypes = {
     token: ""
 };
 
-const Login = () => {
+const LoginView: React.FC = (): JSX.Element => {
     /**
      * @description Component that handles the login logic. Sends a request to the accounts backend for a token.
      * API endpoint requires email and password and returns [status] and token or [errors]
@@ -82,10 +87,12 @@ const Login = () => {
     const classes = useStyles();
     const [formValues, setFormValues] = useState(initialFormVals);
     const [errorMessage, setErrorMessage] = useState(initialErrs);
-    const [token, setToken] = useState(initialTokenVals);
+    const [flashError, setFlashError] = useState(false);
+    const [checkboxValue, setCheckboxValue] = useState(false);
 
 
     let client = new accountsClient();
+    let cookieHandler = new CookieHandler();
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target
@@ -94,10 +101,15 @@ const Login = () => {
             ...formValues,
             [name]: value,
         });
+
+        setErrorMessage({
+            ...errorMessage,
+            [name]: [""],
+        })
     };
 
     const handleCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(event.target.checked)
+        setCheckboxValue(event.target.checked)
     };
 
     const submit = (event: React.FormEvent<HTMLFormElement>) => {
@@ -106,25 +118,36 @@ const Login = () => {
          * @resource https://djoser.readthedocs.io/en/latest/token_endpoints.html#token-create
          */
         event.preventDefault();
+        setFlashError(false);
 
         const getToken = client.tokenLogin(formValues.email, formValues.password)
         getToken.then((response) => {
             switch(response.status) {
                 case 400:
-                    setErrorMessage({
-                        email: typeof(response.data!.email) === "undefined" ? [""]: response.data!.email,
-                        password: typeof(response.data!.password) === "undefined" ? [""]: response.data!.password
-                    });
+                    if (response.data.non_field_errors) {
+                        setFlashError(true)  
+                    } else {
+                        setErrorMessage({
+                            email: typeof(response.data!.email) === "undefined" ? [""]: response.data!.email,
+                            password: typeof(response.data!.password) === "undefined" ? [""]: response.data!.password
+                        })
+                    };
                     break;
                 case 200:
-                    setToken(response.data.auth_token)
-                    document.cookie = "cookiename=Hello"
+                    const cookiePayload = {
+                        name: "authToken",
+                        value: response.data.auth_token,
+                        duration: checkboxValue ? configuration["cookie-maxAuthDuration"] : 0,
+                        path: "/",
+                        secure: true
+                    };
+                    cookieHandler.setCookie(cookiePayload);
+                    // go to homepage and display welcome based on me endpoint
                     break;
                 default:
                     throw new Error(`Status code ${response.status} is invalid. 
                     Check https://djoser.readthedocs.io/en/latest/token_endpoints.html#token-create`)
             }
-            console.log(document.cookie)
         });
         
     }
@@ -135,10 +158,17 @@ const Login = () => {
                 <CssBaseline />
                 <div className={classes.paper}>
                     <Typography component="h1" variant="h5">
-                        Login
+                        Sign in to {process.env.REACT_APP_SITE_NAME}
                     </Typography>
                     <form className={classes.form} noValidate={true} onSubmit = { submit }>
+                    
                     <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <FlashError 
+                                    message="Incorrect username or password"
+                                    display={ flashError }
+                                    />
+                        </Grid>
                         <Grid item xs={12}>
                             <TextField 
                                 id="email"
@@ -154,6 +184,7 @@ const Login = () => {
                         <Grid item xs={12}>
                         <PasswordField
                             id="password"
+                            name="password"
                             showTooltip= {false}
                             value={ formValues.password }
                             errorMessage={ errorMessage.password }
@@ -172,17 +203,18 @@ const Login = () => {
                     </Grid>
                     <Button
                         fullWidth
+                        name="s"
                         variant="contained"
                         color="primary"
                         type="submit"
                         className={classes.submit}
                     >
-                        Sign Up
+                        Sign in
                     </Button>
                     <Grid container justify="flex-end">
                     <Grid item>
                         <Link href={configuration["url-register"]} variant="body2">
-                            Not registered? create an account
+                            New to {process.env.REACT_APP_SITE_NAME}? create an account
                         </Link>
                     </Grid>
                     </Grid>
@@ -196,4 +228,4 @@ const Login = () => {
      )
 };
 
-export default Login;
+export default LoginView;

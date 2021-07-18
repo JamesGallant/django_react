@@ -19,6 +19,9 @@ const configuration = {
     "url-accountCreated": "/auth/account-created/",
     "url-acitvateAccount": "/auth/activate/:uid/:token/", // this also neeeds changing in the backend accounts service
 
+    // cookies
+    "cookie-maxAuthDuration": 90
+
 };
 
 export default configuration;

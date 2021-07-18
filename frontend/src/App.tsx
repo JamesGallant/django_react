@@ -3,20 +3,20 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import configuration from './utils/config';
 
-import HomePage from "./pages/home"
-import LoginPage from "./pages/login"
-import UsersActivatePage from "./pages/activateAccount"
-import RegisterPage from "./pages/register";
-import AccountCreatedPage from './pages/accountCreated';
+import HomeView from "./views/homeView"
+import AccountActivationView from "./views/accountActivationView"
+import RegisterView from "./views/registerView";
+import LoginView from "./views/loginView";
+import AccountCreatedView from './views/accountCreatedView';
 
 const App = () => (
   <BrowserRouter>
     <Switch>
-      <Route exact path={ configuration["url-home"] } component={HomePage} />
-      <Route exact path={ configuration["url-login"] } component={LoginPage} />
-      <Route exact path={ configuration["url-register"] } component={RegisterPage} />
-      <Route path={ configuration["url-accountCreated"] } exact component={AccountCreatedPage} />
-      <Route path= { configuration["url-acitvateAccount"] } exact component={UsersActivatePage} />
+      <Route exact path={ configuration["url-home"] } component={HomeView} />
+      <Route exact path={ configuration["url-login"] } component={LoginView} />
+      <Route exact path={ configuration["url-register"] } component={RegisterView} />
+      <Route path={ configuration["url-accountCreated"] } exact component={AccountCreatedView} />
+      <Route path= { configuration["url-acitvateAccount"] } exact component={AccountActivationView} />
       
     </Switch>
   </BrowserRouter>
