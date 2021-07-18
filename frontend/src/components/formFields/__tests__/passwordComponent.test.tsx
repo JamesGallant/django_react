@@ -1,7 +1,7 @@
 import React from 'react';
 import { act,  cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react';
 
-import PasswordField from '../../components/formFields/passwordComponent';
+import PasswordField from '../../../components/formFields/passwordComponent';
 
 afterEach(cleanup);
 

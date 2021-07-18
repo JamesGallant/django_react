@@ -3,7 +3,7 @@ import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import axios, { AxiosResponse } from "axios";
 import { mocked } from "ts-jest/dist/utils/testing";
 
-import LoginView from '../../views/loginView';
+import LoginView from '../loginView';
 import CookieHandler from '../../utils/cookies';
 import { accountsClient } from '../../utils/APImethods';
 

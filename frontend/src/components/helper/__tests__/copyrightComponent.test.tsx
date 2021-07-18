@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from '@testing-library/react';
 
-import Copyright from "../../components/helper/copyrightComponent";
+import Copyright from "../copyrightComponent";
 
 
 describe("testing copyright component", () => {

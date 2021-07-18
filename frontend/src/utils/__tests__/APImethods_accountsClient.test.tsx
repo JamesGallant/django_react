@@ -2,7 +2,7 @@
 import axios, { AxiosResponse } from "axios";
 import { mocked } from "ts-jest/dist/utils/testing";
 
-import { accountsClient } from '../../utils/APImethods';
+import { accountsClient } from '../APImethods';
 
 jest.mock("axios");
 
@@ -46,7 +46,6 @@ describe("Testing authentication API calls", () => {
         mocked(axios).mockResolvedValue(axiosResponse);
     
         const response = await client.registerUser({})
-        console.log(response.data.first_name)
         expect(response.data.first_name).toEqual(["This is a error message"])
         expect(response.data.email).toEqual(["This is a error message", "This is also a error message"])
         expect(response.status).toEqual(201)
@@ -68,7 +67,7 @@ describe("Testing authentication API calls", () => {
         mocked(axios).mockResolvedValue(axiosResponse);
     
         const response = await client.tokenLogin("email@email.com", "invalidPassword")
-        console.log(response.data.first_name)
+       
         expect(response.data.non_field_errors).toEqual(["This is a error message"])
         expect(response.status).toEqual(400)
     
@@ -89,9 +88,9 @@ describe("Testing authentication API calls", () => {
         mocked(axios).mockResolvedValue(axiosResponse);
     
         const response = await client.tokenLogin("email@email.com", "validPassword")
-        console.log(response.data.first_name)
+
         expect(response.data.auth_token).toEqual("randomstringofints")
-        expect(response.status).toEqual(400)
+        expect(response.status).toEqual(200)
     
     });
 });
