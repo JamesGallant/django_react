@@ -14,4 +14,4 @@ jobs:
         uses: actions/checkout@v2
 
       - name: show me
-        run: ls
+        run: echo docker --version
