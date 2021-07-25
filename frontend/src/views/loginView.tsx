@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from "react-router-dom";
 
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
@@ -11,16 +12,16 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Box from '@material-ui/core/Box';
 
-
 import TextField from '../components/formFields/TextFieldComponent';
 import PasswordField from '../components/formFields/passwordComponent';
 import Copyright from '../components/helper/copyrightComponent';
 
 import configuration from '../utils/config';
-import { accountsClient } from '../utils/APImethods';
-import CookieHandler from '../utils/cookies';
+import { accountsClient } from '../modules/APImethods';
+import CookieHandler from '../modules/cookies';
 
 import FlashError from '../components/helper/flashErrors';
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -85,6 +86,7 @@ const LoginView: React.FC = (): JSX.Element => {
      */
 
     const classes = useStyles();
+    const history = useHistory();
     const [formValues, setFormValues] = useState(initialFormVals);
     const [errorMessage, setErrorMessage] = useState(initialErrs);
     const [flashError, setFlashError] = useState(false);
@@ -93,6 +95,7 @@ const LoginView: React.FC = (): JSX.Element => {
 
     let client = new accountsClient();
     let cookieHandler = new CookieHandler();
+    
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target
@@ -134,6 +137,7 @@ const LoginView: React.FC = (): JSX.Element => {
                     };
                     break;
                 case 200:
+                    
                     const cookiePayload = {
                         name: "authToken",
                         value: response.data.auth_token,
@@ -143,6 +147,8 @@ const LoginView: React.FC = (): JSX.Element => {
                     };
                     cookieHandler.setCookie(cookiePayload);
                     // go to homepage and display welcome based on me endpoint
+                    
+                    history.push(configuration["url-dashboard"]);
                     break;
                 default:
                     throw new Error(`Status code ${response.status} is invalid. 

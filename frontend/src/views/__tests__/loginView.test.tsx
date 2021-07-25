@@ -1,58 +1,30 @@
 import React from 'react';
-import { render, fireEvent, screen, waitFor } from '@testing-library/react';
+import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import axios, { AxiosResponse } from "axios";
 import { mocked } from "ts-jest/dist/utils/testing";
+import { createMemoryHistory } from 'history'
+import { Router } from 'react-router-dom';
 
 import LoginView from '../loginView';
-import CookieHandler from '../../utils/cookies';
-import { accountsClient } from '../../utils/APImethods';
+import CookieHandler from '../../modules/cookies';
+import { accountsClient } from '../../modules/APImethods';
+import configuration from '../../utils/config';
 
 
 jest.mock('axios');
 
 describe("Testing login", () => {
+    beforeEach(() => {
+        jest.resetAllMocks();
+      });
 
     it("component renders correctly", () => {
         render(<LoginView/>)
     });
 
-    it("login functions correctly", async () => {
-        /**
-         * @description tests that api call is made and cookie is set 
-         * when users correctly logs in
-         */
-
-         let client = new accountsClient()
-
-        const axiosResponse: AxiosResponse = {
-            data: {
-                auth_token: "123456789"
-            },
-            status: 200, 
-            statusText: "Ok", 
-            config: {},
-            headers: {}
-        };
-
-        const wrapper = render(<LoginView />)
-        jest.spyOn(CookieHandler.prototype, 'setCookie')
-        const submitButton = wrapper.getByRole('button', {name: "Sign in"})
-       
-        mocked(axios).mockResolvedValue(axiosResponse);
-        let response = await client.tokenLogin("", "");
-
-        await waitFor(() => {
-            fireEvent.click(submitButton)
-        })
-
-        expect(response.data.auth_token).toEqual("123456789")
-        expect(CookieHandler.prototype.setCookie).toHaveBeenCalledTimes(1)
-
-    });
-
     it("Error is displayd on invalid account", async () => {
         let client = new accountsClient()
-
+        
         const axiosResponse: AxiosResponse = {
             data: {
                 non_field_errors: ["Some error"]
@@ -108,5 +80,39 @@ describe("Testing login", () => {
         expect(wrapper.getAllByText("This field is required")[0]).toBeInTheDocument();
         expect(wrapper.getAllByText("This field is required").length).toBe(2);
         expect(email).toHaveAttribute('aria-invalid', 'true');
+    })
+
+    it("sets cookies and routes to dashboard on successfull login", async () => {
+        const history = createMemoryHistory();
+        
+        let client = new accountsClient()
+
+        const axiosResponse: AxiosResponse = {
+            data: {
+                auth_token: "123456789"
+            },
+            status: 200, 
+            statusText: "Ok", 
+            config: {},
+            headers: {}
+        };
+
+        render(<Router history={history}>
+            <LoginView />
+            </Router>)
+
+         mocked(axios).mockResolvedValue(axiosResponse);
+        let response = await client.tokenLogin("", "");
+        jest.spyOn(CookieHandler.prototype, 'setCookie')
+        
+        await waitFor(() => {
+            fireEvent.click(screen.getByRole('button', {name: "Sign in"}));
+        });
+        
+        expect(response.status).toBe(200)
+        expect(response.data.auth_token).toEqual("123456789")
+        expect(CookieHandler.prototype.setCookie).toHaveBeenCalledTimes(1)
+        expect(history.location.pathname).toBe(configuration["url-dashboard"])
+
     })
 })

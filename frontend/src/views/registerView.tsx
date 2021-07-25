@@ -23,7 +23,7 @@ import PasswordField from '../components/formFields/passwordComponent';
 import CountrySelect from '../components/formFields/countryComponent';
 import configuration from '../utils/config';
 
-import { accountsClient } from "../utils/APImethods";
+import { accountsClient } from "../modules/APImethods";
 
 
 const useStyles = makeStyles((theme) => ({

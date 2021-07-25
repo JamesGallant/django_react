@@ -1,6 +1,6 @@
 import axios from "axios";
 
-import configuration from "./config";
+import configuration from "../utils/config";
 
 class accountsClient  {
     /**

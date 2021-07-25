@@ -1,4 +1,4 @@
-# Documentation for [Django-React-Boilerplate]
+# Documentation for CookieCutter SaaS
 
 ## Todo
 Add a split between development and production. Right now in django this can be handled using the environ file
@@ -18,7 +18,7 @@ Things to implement
  - CI/CD
  
 ## Introduction
-This is the entry point for the django-react-postgres boilerplate documentation. This document serves as the total overview of the project 
+This is the entry point for the CookieCutter SaaS documentation. This document serves as the total overview of the project 
 and should contain information regarding each micro-service type in the project as well as a docker-compose to launch the 
 entire project. Each microservice must have its own documentation indicating the overall system design for that service.
 This is boilerplate and should only function as a guideline. Remember to update the documentation as you go or change 

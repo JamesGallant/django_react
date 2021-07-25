@@ -16,6 +16,7 @@ const configuration = {
     "url-home": "/",
     "url-login": "/auth/login/",
     "url-register": "/auth/register/",
+    "url-dashboard": "/dashboard/",
     "url-accountCreated": "/auth/account-created/",
     "url-acitvateAccount": "/auth/activate/:uid/:token/", // this also neeeds changing in the backend accounts service
 

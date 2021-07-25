@@ -2,7 +2,7 @@ import { FC, useState, useEffect } from "react";
 import { useParams, useHistory } from 'react-router-dom';
 
 import configuration from "../utils/config";
-import { accountsClient } from "../utils/APImethods";
+import { accountsClient } from "../modules/APImethods";
 
 const AccountActivationView: FC = () => {
     /**
@@ -27,6 +27,7 @@ const AccountActivationView: FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    
     switch (statusCode) {
         case 204: {
             // no content, account created successfully

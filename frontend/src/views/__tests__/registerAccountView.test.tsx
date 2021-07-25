@@ -6,7 +6,7 @@ import { mocked } from "ts-jest/dist/utils/testing";
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom';
 
-import RegisterView from '../../views/registerView'
+import RegisterView from '../registerView'
 import configuration from '../../utils/config'
 
 jest.mock('axios')
@@ -36,6 +36,7 @@ describe("Testing account registration", () => {
         render(<Router history={history}>
                     <RegisterView />
                 </Router>)
+                
         mocked(axios).mockResolvedValue(axiosResponse);
 
         const submitButton =screen.getByRole('button', {name: "Sign Up"})

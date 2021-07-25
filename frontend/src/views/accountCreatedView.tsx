@@ -4,7 +4,7 @@ import { useLocation, useHistory } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 
 import configuration from '../utils/config';
-import { accountsClient } from "../utils/APImethods";
+import { accountsClient } from "../modules/APImethods";
 
 
 interface stateType {
