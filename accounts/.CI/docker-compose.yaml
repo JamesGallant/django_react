@@ -5,9 +5,7 @@ services:
       dockerfile: ./Docker/Dockerfile
     image: backend_accounts_service
     container_name: backend_accounts
-    command: |
-      ls
-      python ./src/manage.py runserver 0.0.0.0:8000
+    command: python ./src/manage.py runserver 0.0.0.0:8000
     ports:
       - "8000:8001"
     env_file:
