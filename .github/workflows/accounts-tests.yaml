@@ -9,7 +9,6 @@ jobs:
   accounts_service_testing:
     runs-on: ubuntu-latest
     name: Unit tests for the accounts
-    environment: develop
     env:
       COMPOSE_FILE: ./accounts/.CI/docker-compose.yml
     steps:
@@ -19,5 +18,5 @@ jobs:
       - name: Build docker container
         run: |
           touch ./accounts/.CI/.env
-          echo TEST=${{ secrets.TEST }} >> ./accounts/.CI/.env
+          echo TEST=${{ secrets.TEST2 }} >> ./accounts/.CI/.env
           cat ./accounts/.CI/.env
