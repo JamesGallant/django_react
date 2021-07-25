@@ -43,6 +43,11 @@ jobs:
           echo DJOSER_FRONTEND_URL=${{ secrets.DJANGO_DJOSER_FRONTEND_URL }} >> ./accounts/.CI/.env
           echo DJOSER_PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND=${{ secrets.DJANGO_DJOSER_PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND }} >> ./accounts/.CI/.env
           echo DJOSER_USERNAME_RESET_SHOW_EMAIL_NOT_FOUND=${{ secrets.DJANGO_DJOSER_USERNAME_RESET_SHOW_EMAIL_NOT_FOUND }} >> ./accounts/.CI/.env
+
+          echo BACKEND_ACCOUNTS_EXPOSED=8001
+          echo BACKEND_ACCOUNTS_INTERNAL=8000
+          echo FRONTEND_EXPOSED=8000
+          echo FRONTEND_INTERNAL=3000
           cat ./accounts/.CI/.env
 
       - name: Build containers
