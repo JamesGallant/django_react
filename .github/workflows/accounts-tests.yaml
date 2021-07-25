@@ -11,7 +11,7 @@ jobs:
     name: Unit tests for the accounts
     environment: develop
     env:
-      COMPOSE_FILE: /accounts/.CI/docker-compose.yml
+      COMPOSE_FILE: accounts/.CI/docker-compose.yml
     steps:
       - name: check out codebase
         uses: actions/checkout@v2
