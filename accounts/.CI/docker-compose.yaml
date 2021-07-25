@@ -6,5 +6,7 @@ services:
     image: backend_accounts_service
     container_name: backend_accounts
     command: python ./src/manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000: 80001"
     env_file:
       - .CI/.env
