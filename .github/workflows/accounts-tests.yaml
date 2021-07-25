@@ -57,5 +57,4 @@ jobs:
           docker-compose run --rm backend_accounts python src/manage.py test
 
       - name: Cleanup
-        run: |
-        docker-compose down
+        run: docker-compose down
