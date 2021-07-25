@@ -21,4 +21,4 @@ jobs:
           touch ./accounts/.CI/.env
           cd ./accounts/.CI
           ls
-          echo ${{ secret.test }}
+          echo ${{ secrets.test }}
