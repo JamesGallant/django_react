@@ -9,4 +9,5 @@ services:
     ports:
       - "8000:8001"
     env_file:
-      - ./.CI/.env
+      - .CI/.env
+
