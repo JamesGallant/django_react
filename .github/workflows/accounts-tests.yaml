@@ -14,9 +14,9 @@ jobs:
     services:
       postgres:
         image: postgres:10
-        environment:
+        env:
           POSTGRES_USER: admin
-          POSTGRES_PASSWORD: admin
+          POSTGRES_PASSWORD: SomeStrongPassword1234
           POSTGRES_DB: postgres_db_dev
         ports:
           - 5432:5432
@@ -44,7 +44,7 @@ jobs:
           echo SQL_ENGINE=django.db.backends.postgresql >> ./accounts/.CI/.env
           echo SQL_DATABASE=postgres_db_dev >> ./accounts/.CI/.env
           echo SQL_USER=admin >> ./accounts/.CI/.env
-          echo SQL_PASSWORD=admin >> ./accounts/.CI/.env
+          echo SQL_PASSWORD=SomeStrongPassword1234 >> ./accounts/.CI/.env
           echo SQL_HOST=postgres_database >> ./accounts/.CI/.env
           echo SQL_PORT=5432 >> ./accounts/.CI/.env
 
