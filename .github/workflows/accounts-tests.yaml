@@ -16,6 +16,9 @@ jobs:
       - name: check out codebase
         uses: actions/checkout@v2
 
+      - name: psycopg2 dependencies
+        run: sudo apt-get install libpq-dev
+
       - name: Create .env file
         run: |
           echo DEBUG=1 >> ./accounts/.CI/.env
