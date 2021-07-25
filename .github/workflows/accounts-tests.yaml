@@ -47,4 +47,6 @@ jobs:
 
 
       - name: Build docker containers
-          run: docker-compose build
+          run: |
+          docker-compose build .
+          docker-compose up .
