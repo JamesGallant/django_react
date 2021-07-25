@@ -19,5 +19,5 @@ jobs:
       - name: Build docker container
         run: |
           touch ./accounts/.CI/.env
-          echo TEST=${{ secrets.test }} >> ./accounts/.CI/.env
+          echo TEST=${{ secrets.TEST }} >> ./accounts/.CI/.env
           cat ./accounts/.CI/.env
