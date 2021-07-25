@@ -27,7 +27,7 @@ jobs:
     steps:
       - name: check out codebase
         uses: actions/checkout@v2
-v
+
       - name: Create .env file
         run: |
           echo DEBUG=1 >> ./accounts/.CI/.env
