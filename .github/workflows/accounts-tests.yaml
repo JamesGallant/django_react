@@ -9,9 +9,14 @@ jobs:
   accounts_service_testing:
     runs-on: ubuntu-latest
     name: Unit tests for the accounts service
+    env:
+      COMPOSE_FILE: .ci/docker-compose.yml
     steps:
       - name: check out codebase
         uses: actions/checkout@v2
 
-      - name: show me
-        run: docker --version
+      - name: Build docker container
+        run: |
+          touch ./.CI/.env
+          cd ./accounts/.CI
+          echo ls
