@@ -45,3 +45,6 @@ jobs:
           echo DJOSER_USERNAME_RESET_SHOW_EMAIL_NOT_FOUND=${{ secrets.DJANGO_DJOSER_USERNAME_RESET_SHOW_EMAIL_NOT_FOUND }} >> ./accounts/.CI/.env
           cat ./accounts/.CI/.env
 
+
+      - name: Build docker containers
+          run: docker-compose build
