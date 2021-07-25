@@ -17,13 +17,15 @@ jobs:
       postgres_database:
         image: postgres:12.0-alpine
         volumes:
-           - ./:/var/lib/pgadmin/
+           - postgres_data:/var/lib/pgadmin/
         env:
           POSTGRES_USER: admin
           POSTGRES_PASSWORD: admin
           POSTGRES_DB: postgres_db_dev
         ports:
           - '5432:5432'
+      volumes:
+        postgres_data:
 
     steps:
       - name: check out codebase
