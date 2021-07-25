@@ -8,16 +8,17 @@ on:
 jobs:
   accounts_service_testing:
     runs-on: ubuntu-latest
-    name: Unit tests for the accounts service
+    name: Unit tests for the accounts
+    environment: develop
     env:
-      COMPOSE_FILE: .ci/docker-compose.yml
+      COMPOSE_FILE: ./accounts/.CI/docker-compose.yml
     steps:
       - name: check out codebase
         uses: actions/checkout@v2
 
       - name: Build docker container
         run: |
-          echo ls
           touch ./accounts/.CI/.env
           cd ./accounts/.CI
-          echo ls
+          ls
+          echo ${{ secret.test }}
