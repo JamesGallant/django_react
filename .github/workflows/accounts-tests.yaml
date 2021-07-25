@@ -18,7 +18,7 @@ jobs:
 
       - name: Create .env file
         run: |
-          echo DEBUG=${{ secrets.DJANGO_DEBUG }} >> ./accounts/.CI/.env
+          echo DEBUG=1 >> ./accounts/.CI/.env
           echo SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }} >> ./accounts/.CI/.env
           echo DJANGO_ALLOWED_HOSTS=${{ secrets.DJANGO_ALLOWED_HOSTS }} >> ./accounts/.CI/.env
           echo SITE_NAME=${{ secrets.DJANGO_SITE_NAME }} >> ./accounts/.CI/.env
