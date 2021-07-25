@@ -23,11 +23,11 @@ jobs:
           echo DJANGO_ALLOWED_HOSTS=${{ secrets.DJANGO_ALLOWED_HOSTS }} >> ./accounts/.CI/.env
           echo SITE_NAME=${{ secrets.DJANGO_SITE_NAME }} >> ./accounts/.CI/.env
 
-          echo SQL_ENGINE=${{ secrets.DJANGO_SQL_ENGINE }} >> ./accounts/.CI/.env
-          echo SQL_DATABASE=${{ secrets.DJANGO_SQL_DATABASE }} >> ./accounts/.CI/.env
-          echo SQL_USER=${{ secrets.DJANGO_SQL_USER }} >> ./accounts/.CI/.env
-          echo SQL_PASSWORD=${{ secrets.DJANGO_SQL_PASSWORD }} >> ./accounts/.CI/.env
-          echo SQL_HOST=${{ secrets.DJANGO_SQL_HOST }} >> ./accounts/.CI/.env
+          echo SQL_ENGINE=django.db.backends.postgresql >> ./accounts/.CI/.env
+          echo SQL_DATABASE=postgres_db_dev >> ./accounts/.CI/.env
+          echo SQL_USER=admin >> ./accounts/.CI/.env
+          echo SQL_PASSWORD=admin >> ./accounts/.CI/.env
+          echo SQL_HOST=postgres_database >> ./accounts/.CI/.env
           echo SQL_PORT=5432 >> ./accounts/.CI/.env
 
           echo EMAIL_BACKEND=${{ secrets.DJANGO_EMAIL_BACKEND }} >> ./accounts/.CI/.env
