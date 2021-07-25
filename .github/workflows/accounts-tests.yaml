@@ -10,6 +10,8 @@ jobs:
     runs-on: ubuntu-latest
     name: Unit tests for the accounts
     environment: develop
+    env:
+      COMPOSE_FILE: accounts/.CI/docker-compose.yaml
     steps:
       - name: check out codebase
         uses: actions/checkout@v2
@@ -45,7 +47,6 @@ jobs:
 
       - name: Build containers
         run: |
-          ls
-          docker-compose build -f ./accounts/.CI/docker-compose.yml
+          docker-compose build
           docker-compose up
           docker container ls
