@@ -17,6 +17,7 @@ jobs:
 
       - name: Build docker container
         run: |
-          touch ./.CI/.env
+          echo ls
+          touch ./accounts/.CI/.env
           cd ./accounts/.CI
           echo ls
