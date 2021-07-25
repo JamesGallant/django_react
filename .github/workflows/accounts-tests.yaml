@@ -23,7 +23,7 @@ jobs:
           echo DJANGO_ALLOWED_HOSTS=${{ secrets.DJANGO_ALLOWED_HOSTS }} >> ./accounts/.CI/.env
           echo SITE_NAME=${{ secrets.DJANGO_SITE_NAME }} >> ./accounts/.CI/.env
 
-          echo SQL_ENGINE=${{ secrets.DJANGO_SQL_ENGINE }} >> ./accounts/.CI/.env
+          echo SQL_ENGINE=django.db.backends.postgresql >> ./accounts/.CI/.env
           echo SQL_DATABASE=${{ secrets.DJANGO_SQL_DATABASE }} >> ./accounts/.CI/.env
           echo SQL_USER=${{ secrets.DJANGO_SQL_USER }} >> ./accounts/.CI/.env
           echo SQL_PASSWORD=${{ secrets.DJANGO_SQL_PASSWORD }} >> ./accounts/.CI/.env
@@ -46,7 +46,7 @@ jobs:
 
           cat ./accounts/.CI/.env
 
-      - name: Build containers
+      - name: Build containers and launch
         run: |
           docker-compose build
           docker-compose up -d
