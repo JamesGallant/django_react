@@ -9,7 +9,7 @@ services:
       ls
       python ./src/manage.py runserver 0.0.0.0:8000
     ports:
-      - "8000: 80001"
+      - "8000:8001"
     env_file:
       - .CI/.env
 
