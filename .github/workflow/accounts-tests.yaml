@@ -1,0 +1,17 @@
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  accounts_service_testing:
+    runs-on: ubuntu-latest
+    name: Unit tests for the accounts service
+    steps:
+      - name: check out codebase
+        uses: actions/checkout@v2
+
+      - name: show me
+        run: ls

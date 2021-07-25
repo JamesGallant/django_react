@@ -37,6 +37,4 @@ __pycache__/
 /frontend/yarn-debug.log*
 /frontend/yarn-error.log*
 
-# github Actions
-.github/
 
