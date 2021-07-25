@@ -53,7 +53,7 @@ jobs:
 
       - name: Run tests
         run: |
-          docker-compose run --rm backend_accounts ls
+          docker-compose run --rm backend_accounts python src/manage.py test
 
       - name: Cleanup
         run: docker-compose down
