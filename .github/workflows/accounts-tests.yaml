@@ -64,10 +64,10 @@ jobs:
 
           cat ./accounts/.CI/.env
 
-      - name: Build containers
+      - name: Build containers and launch
         run: docker-compose up -d
 
-      - name: launch and run tests
+      - name: make migrations
         run: |
           docker-compose run --rm backend_accounts python src/manage.py makemigrations users
 #          docker-compose run --rm backend_accounts python src/manage.py migrate
