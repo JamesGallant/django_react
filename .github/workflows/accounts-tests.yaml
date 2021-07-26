@@ -11,23 +11,23 @@ jobs:
     name: Unit tests for the accounts
     environment: develop
 
-#    services:
-#      postgres_database:
-#        # Docker Hub image
-#        image: postgres
-#        # Provide the password for postgres
-#        env:
-#          POSTGRES_PASSWORD: admin
-#          POSTGRES_USER: admin
-#          POSTGRES_DB: postgres_database
-#        # Set health checks to wait until postgres has started
-#        options: >-
-#          --health-cmd pg_isready
-#          --health-interval 10s
-#          --health-timeout 5s
-#          --health-retries 5
-#        ports:
-#          - 5432:5432
+    services:
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for postgres
+        env:
+          POSTGRES_PASSWORD: admin
+          POSTGRES_USER: admin
+          POSTGRES_DB: postgres
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432
 
     env:
       COMPOSE_FILE: accounts/.CI/docker-compose.yaml
@@ -44,10 +44,10 @@ jobs:
           echo SITE_NAME=${{ secrets.DJANGO_SITE_NAME }} >> ./accounts/.CI/.env
 
           echo SQL_ENGINE=django.db.backends.postgresql >> ./accounts/.CI/.env
-          echo SQL_DATABASE=postgres_database >> ./accounts/.CI/.env
+          echo SQL_DATABASE=postgres >> ./accounts/.CI/.env
           echo SQL_USER=admin >> ./accounts/.CI/.env
           echo SQL_PASSWORD=admin >> ./accounts/.CI/.env
-          echo SQL_HOST=postgres_database >> ./accounts/.CI/.env
+          echo SQL_HOST=postgres >> ./accounts/.CI/.env
           echo SQL_PORT=5432 >> ./accounts/.CI/.env
 
           echo EMAIL_BACKEND=${{ secrets.DJANGO_EMAIL_BACKEND }} >> ./accounts/.CI/.env

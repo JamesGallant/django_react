@@ -14,20 +14,20 @@ services:
     env_file:
       - .env
 
-  postgres_database:
-    # Docker Hub image
-    image: postgres
-    # Provide the password for postgres
-    restart: always
-    environment:
-      POSTGRES_PASSWORD: admin
-      POSTGRES_USER: admin
-      POSTGRES_DB: postgres_database
-    # Set health checks to wait until postgres has started
-    healthcheck:
-      test: pg_isready
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    ports:
-      - "5432:5432"
+#  postgres:
+#    # Docker Hub image
+#    image: postgres
+#    # Provide the password for postgres
+#    restart: always
+#    environment:
+#      POSTGRES_PASSWORD: admin
+#      POSTGRES_USER: admin
+#      POSTGRES_DB: postgres
+#    # Set health checks to wait until postgres has started
+#    healthcheck:
+#      test: pg_isready
+#      interval: 10s
+#      timeout: 5s
+#      retries: 5
+#    ports:
+#      - "5432:5432"
