@@ -12,7 +12,7 @@ jobs:
     environment: develop
 
     services:
-      postgres:
+      postgres_database:
         # Docker Hub image
         image: postgres
         # Provide the password for postgres
