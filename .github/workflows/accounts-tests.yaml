@@ -13,7 +13,7 @@ jobs:
 
     services:
       postgres:
-        image: postgres:10
+        image: postgres:11.5
         env:
           POSTGRES_USER: admin
           POSTGRES_PASSWORD: SomeStrongPassword1234
