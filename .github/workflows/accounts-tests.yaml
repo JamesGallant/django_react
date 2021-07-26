@@ -19,7 +19,7 @@ jobs:
         env:
           POSTGRES_PASSWORD: admin
           POSTGRES_USER: admin
-          POSTGRES_DB: postgres_db_dev
+          POSTGRES_DB: postgres_database
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -42,10 +42,10 @@ jobs:
           echo SITE_NAME=${{ secrets.DJANGO_SITE_NAME }} >> ./accounts/.CI/.env
 
           echo SQL_ENGINE=django.db.backends.postgresql >> ./accounts/.CI/.env
-          echo SQL_DATABASE=postgres_db_dev >> ./accounts/.CI/.env
+          echo SQL_DATABASE=postgres_database >> ./accounts/.CI/.env
           echo SQL_USER=admin >> ./accounts/.CI/.env
           echo SQL_PASSWORD=admin >> ./accounts/.CI/.env
-          echo SQL_HOST=postgres_database >> ./accounts/.CI/.env
+          echo SQL_HOST=localhost >> ./accounts/.CI/.env
           echo SQL_PORT=5432 >> ./accounts/.CI/.env
 
           echo EMAIL_BACKEND=${{ secrets.DJANGO_EMAIL_BACKEND }} >> ./accounts/.CI/.env
