@@ -26,9 +26,10 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=3
-      steps:
-        - name: Test
-          run: ls
+
+    steps:
+      - name: Test
+        run: ls
 
 #    env:
 #      COMPOSE_FILE: accounts/.CI/docker-compose.yaml
