@@ -69,7 +69,7 @@ jobs:
 
       - name: Migrate Database
         run: |
-          docker container ls
+          docker-compose run --rm backend_accounts ls
           docker-compose run --rm backend_accounts python src/manage.py makemigrations users
           docker-compose run --rm backend_accounts python src/manage.py migrate
 
