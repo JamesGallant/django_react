@@ -70,10 +70,10 @@ jobs:
       - name: make migrations
         run: docker-compose run --rm backend_accounts python src/manage.py makemigrations users
 
-      - name: migrate database
+      - name: Migrate Database
         run: |
-        docker container ls
-        docker-compose run --rm backend_accounts python src/manage.py migrate
+          docker container ls
+          docker-compose run --rm backend_accounts python src/manage.py migrate
 
 #          docker-compose run --rm backend_accounts python src/manage.py test
 
