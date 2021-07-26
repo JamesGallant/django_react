@@ -47,7 +47,7 @@ jobs:
           echo SQL_DATABASE=postgres_database >> ./accounts/.CI/.env
           echo SQL_USER=admin >> ./accounts/.CI/.env
           echo SQL_PASSWORD=admin >> ./accounts/.CI/.env
-          echo SQL_HOST=localhost >> ./accounts/.CI/.env
+          echo SQL_HOST=postgres_database >> ./accounts/.CI/.env
           echo SQL_PORT=5432 >> ./accounts/.CI/.env
 
           echo EMAIL_BACKEND=${{ secrets.DJANGO_EMAIL_BACKEND }} >> ./accounts/.CI/.env
@@ -64,8 +64,6 @@ jobs:
           echo DJOSER_PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND=${{ secrets.DJANGO_DJOSER_PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND }} >> ./accounts/.CI/.env
           echo DJOSER_USERNAME_RESET_SHOW_EMAIL_NOT_FOUND=${{ secrets.DJANGO_DJOSER_USERNAME_RESET_SHOW_EMAIL_NOT_FOUND }} >> ./accounts/.CI/.env
 
-          cat ./accounts/.CI/.env
-
       - name: Build containers and launch
         run: docker-compose up -d
 
@@ -73,7 +71,9 @@ jobs:
         run: docker-compose run --rm backend_accounts python src/manage.py makemigrations users
 
       - name: migrate database
-        run:  docker-compose run --rm backend_accounts python src/manage.py migrate
+        run: |
+        docker container ls
+        docker-compose run --rm backend_accounts python src/manage.py migrate
 
 #          docker-compose run --rm backend_accounts python src/manage.py test
 
