@@ -44,7 +44,7 @@ jobs:
           echo SQL_ENGINE=django.db.backends.postgresql >> ./accounts/.CI/.env
           echo SQL_DATABASE=postgres_db_dev >> ./accounts/.CI/.env
           echo SQL_USER=admin >> ./accounts/.CI/.env
-          echo SQL_PASSWORD=SomeStrongPassword1234 >> ./accounts/.CI/.env
+          echo SQL_PASSWORD=admin >> ./accounts/.CI/.env
           echo SQL_HOST=postgres_database >> ./accounts/.CI/.env
           echo SQL_PORT=5432 >> ./accounts/.CI/.env
 
@@ -65,8 +65,7 @@ jobs:
           cat ./accounts/.CI/.env
 
       - name: Build containers
-        run: |
-          docker-compose up -d
+        run: docker-compose up -d
 
       - name: launch and run tests
         run: |
