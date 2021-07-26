@@ -7,7 +7,26 @@ services:
     container_name: backend_accounts
     command: python ./src/manage.py runserver 0.0.0.0:8000
     restart: always
+    depends_on:
+      - postgres_database
     ports:
       - "8000:8001"
     env_file:
       - .env
+
+  postgres_database:
+    # Docker Hub image
+    image: postgres
+    # Provide the password for postgres
+    env:
+      POSTGRES_PASSWORD: admin
+      POSTGRES_USER: admin
+      POSTGRES_DB: postgres_database
+    # Set health checks to wait until postgres has started
+    options: >-
+      --health-cmd pg_isready
+      --health-interval 10s
+      --health-timeout 5s
+      --health-retries 5
+    ports:
+      - "5432:5432"
