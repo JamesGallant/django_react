@@ -22,7 +22,7 @@ RUN apt-get -qqy install build-essential libssl-dev libffi-dev python3-dev cargo
 RUN pip install --upgrade pip
 
 # copy project
-COPY ../ .
+COPY . .
 
 # install dependencies
 RUN pip install -r requirements/requirements.txt
