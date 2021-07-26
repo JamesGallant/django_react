@@ -27,57 +27,53 @@ jobs:
           --health-timeout 5s
           --health-retries 5
 
-    steps:
-      - name: Test
-        run: ls
+    env:
+      COMPOSE_FILE: accounts/.CI/docker-compose.yaml
 
-#    env:
-#      COMPOSE_FILE: accounts/.CI/docker-compose.yaml
-#
-#    steps:
-#      - name: check out codebase
-#        uses: actions/checkout@v2
-#
-#      - name: Create .env file
-#        run: |
-#          echo DEBUG=1 >> ./accounts/.CI/.env
-#          echo SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }} >> ./accounts/.CI/.env
-#          echo DJANGO_ALLOWED_HOSTS=${{ secrets.DJANGO_ALLOWED_HOSTS }} >> ./accounts/.CI/.env
-#          echo SITE_NAME=${{ secrets.DJANGO_SITE_NAME }} >> ./accounts/.CI/.env
-#
-#          echo SQL_ENGINE=django.db.backends.postgresql >> ./accounts/.CI/.env
-#          echo SQL_DATABASE=postgres_db_dev >> ./accounts/.CI/.env
-#          echo SQL_USER=admin >> ./accounts/.CI/.env
-#          echo SQL_PASSWORD=SomeStrongPassword1234 >> ./accounts/.CI/.env
-#          echo SQL_HOST=postgres_database >> ./accounts/.CI/.env
-#          echo SQL_PORT=5432 >> ./accounts/.CI/.env
-#
-#          echo EMAIL_BACKEND=${{ secrets.DJANGO_EMAIL_BACKEND }} >> ./accounts/.CI/.env
-#          echo EMAIL_HOST=${{ secrets.DJANGO_EMAIL_HOST }} >> ./accounts/.CI/.env
-#          echo EMAIL_HOST_USER=${{ secrets.DJANGO_EMAIL_HOST_USER }} >> ./accounts/.CI/.env
-#          echo EMAIL_HOST_PASSWORD=${{ secrets.DJANGO_EMAIL_HOST_PASSWORD }} >> ./accounts/.CI/.env
-#          echo EMAIL_PORT=${{ secrets.DJANGO_EMAIL_PORT }} >> ./accounts/.CI/.env
-#
-#          echo DJOSER_SEND_EMAIL=${{ secrets.DJANGO_DJOSER_SEND_EMAIL }} >> ./accounts/.CI/.env
-#          echo DJOSER_SEND_CONFIRMATION_EMAIL=${{ secrets.DJANGO_DJOSER_SEND_CONFIRMATION_EMAIL }} >> ./accounts/.CI/.env
-#          echo DJOSER_HIDE_USERS=${{ secrets.DJANGO_DJOSER_HIDE_USERS }} >> ./accounts/.CI/.env
-#          echo DJOSER_LOGIN_FIELD=${{ secrets.DJANGO_DJOSER_LOGIN_FIELD }} >> ./accounts/.CI/.env
-#          echo DJOSER_FRONTEND_URL=${{ secrets.DJANGO_DJOSER_FRONTEND_URL }} >> ./accounts/.CI/.env
-#          echo DJOSER_PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND=${{ secrets.DJANGO_DJOSER_PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND }} >> ./accounts/.CI/.env
-#          echo DJOSER_USERNAME_RESET_SHOW_EMAIL_NOT_FOUND=${{ secrets.DJANGO_DJOSER_USERNAME_RESET_SHOW_EMAIL_NOT_FOUND }} >> ./accounts/.CI/.env
-#
-#          cat ./accounts/.CI/.env
-#
-#      - name: Build containers and launch
-#        run: |
-#          docker-compose build
-#          docker-compose up -d
-#
-#      - name: Run tests
-#        run: |
-#          docker-compose run --rm backend_accounts python src/manage.py makemigrations users
-#          docker-compose run --rm backend_accounts python src/manage.py migrate
-#          docker-compose run --rm backend_accounts python src/manage.py test
-#
-#      - name: Cleanup
-#        run: docker-compose down
+    steps:
+      - name: check out codebase
+        uses: actions/checkout@v2
+
+      - name: Create .env file
+        run: |
+          echo DEBUG=1 >> ./accounts/.CI/.env
+          echo SECRET_KEY=${{ secrets.DJANGO_SECRET_KEY }} >> ./accounts/.CI/.env
+          echo DJANGO_ALLOWED_HOSTS=${{ secrets.DJANGO_ALLOWED_HOSTS }} >> ./accounts/.CI/.env
+          echo SITE_NAME=${{ secrets.DJANGO_SITE_NAME }} >> ./accounts/.CI/.env
+
+          echo SQL_ENGINE=django.db.backends.postgresql >> ./accounts/.CI/.env
+          echo SQL_DATABASE=postgres_db_dev >> ./accounts/.CI/.env
+          echo SQL_USER=admin >> ./accounts/.CI/.env
+          echo SQL_PASSWORD=SomeStrongPassword1234 >> ./accounts/.CI/.env
+          echo SQL_HOST=postgres_database >> ./accounts/.CI/.env
+          echo SQL_PORT=5432 >> ./accounts/.CI/.env
+
+          echo EMAIL_BACKEND=${{ secrets.DJANGO_EMAIL_BACKEND }} >> ./accounts/.CI/.env
+          echo EMAIL_HOST=${{ secrets.DJANGO_EMAIL_HOST }} >> ./accounts/.CI/.env
+          echo EMAIL_HOST_USER=${{ secrets.DJANGO_EMAIL_HOST_USER }} >> ./accounts/.CI/.env
+          echo EMAIL_HOST_PASSWORD=${{ secrets.DJANGO_EMAIL_HOST_PASSWORD }} >> ./accounts/.CI/.env
+          echo EMAIL_PORT=${{ secrets.DJANGO_EMAIL_PORT }} >> ./accounts/.CI/.env
+
+          echo DJOSER_SEND_EMAIL=${{ secrets.DJANGO_DJOSER_SEND_EMAIL }} >> ./accounts/.CI/.env
+          echo DJOSER_SEND_CONFIRMATION_EMAIL=${{ secrets.DJANGO_DJOSER_SEND_CONFIRMATION_EMAIL }} >> ./accounts/.CI/.env
+          echo DJOSER_HIDE_USERS=${{ secrets.DJANGO_DJOSER_HIDE_USERS }} >> ./accounts/.CI/.env
+          echo DJOSER_LOGIN_FIELD=${{ secrets.DJANGO_DJOSER_LOGIN_FIELD }} >> ./accounts/.CI/.env
+          echo DJOSER_FRONTEND_URL=${{ secrets.DJANGO_DJOSER_FRONTEND_URL }} >> ./accounts/.CI/.env
+          echo DJOSER_PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND=${{ secrets.DJANGO_DJOSER_PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND }} >> ./accounts/.CI/.env
+          echo DJOSER_USERNAME_RESET_SHOW_EMAIL_NOT_FOUND=${{ secrets.DJANGO_DJOSER_USERNAME_RESET_SHOW_EMAIL_NOT_FOUND }} >> ./accounts/.CI/.env
+
+          cat ./accounts/.CI/.env
+
+      - name: Build containers and launch
+        run: |
+          docker-compose build
+          docker-compose up -d
+
+      - name: Run tests
+        run: |
+          docker-compose run --rm backend_accounts python src/manage.py makemigrations users
+          docker-compose run --rm backend_accounts python src/manage.py migrate
+          docker-compose run --rm backend_accounts python src/manage.py test
+
+      - name: Cleanup
+        run: docker-compose down
