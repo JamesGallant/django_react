@@ -7,8 +7,6 @@ services:
     container_name: backend_accounts
     command: python ./src/manage.py runserver 0.0.0.0:8000
     restart: always
-    depends_on:
-      - postgres_database
     ports:
       - "8000:8001"
     env_file:
