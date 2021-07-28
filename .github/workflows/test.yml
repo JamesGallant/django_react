@@ -63,6 +63,4 @@ jobs:
         run: |
           python accounts/src/manage.py makemigrations users
           python accounts/src/manage.py migrate
-          cd accounts/src
-          ls
-          python manage.py test
+          python accounts/src/manage.py test accounts/src/users/tests
