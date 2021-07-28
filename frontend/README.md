@@ -1,3 +1,6 @@
+<!-- badges: start -->
+[![Node.js CI](https://github.com/JamesGallant/django_react/actions/workflows/service_frontend_tests.yml/badge.svg)](https://github.com/JamesGallant/django_react/actions/workflows/service_frontend_tests.yml)
+<!-- badges: stop -->
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
