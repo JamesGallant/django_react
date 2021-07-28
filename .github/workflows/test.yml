@@ -64,3 +64,6 @@ jobs:
           docker container ls
           python accounts/src/manage.py makemigrations users
           python accounts/src/manage.py migrate
+
+      - name: Run tests
+        run: python accounts/src/manage.py test
