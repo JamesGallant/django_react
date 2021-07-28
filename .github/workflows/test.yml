@@ -53,6 +53,8 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
 
       - name: Create migrations and migrate to DB
+        env:
+          DJANGO_ALLOWED_HOSTS: localhost 127.0.0.1 https://localhost:8000/ 127.0.0.1:8000 0.0.0.0 https://localhost:8001/
         run: |
           python accounts/src/manage.py makemigrations users
           python accounts/src/manage.py migrate
