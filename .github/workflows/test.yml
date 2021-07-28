@@ -52,7 +52,7 @@ jobs:
           python -m pip install -r accounts/requirements/requirements.txt
         if: steps.cache.outputs.cache-hit != 'true'
 
-      - name: Create migrations and migrate to DB
+      - name: Create migrations and run tests
         env:
           DJANGO_ALLOWED_HOSTS:  ${{ secrets.DJANGO_ALLOWED_HOSTS }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
@@ -64,6 +64,4 @@ jobs:
           docker container ls
           python accounts/src/manage.py makemigrations users
           python accounts/src/manage.py migrate
-
-      - name: Run tests
-        run: python accounts/src/manage.py test
+          python accounts/src/manage.py test
