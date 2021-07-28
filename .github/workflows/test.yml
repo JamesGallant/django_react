@@ -32,4 +32,5 @@ jobs:
     steps:
       - name: Checkout code base
         uses: actions/checkout@v2
+      - name: Test
         run: ls
