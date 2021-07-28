@@ -16,7 +16,7 @@ services:
     env_file:
       - frontend/environments/.develpment.env
     depends_on:
-      - postgres_database
+      - postgres
 
   backend_accounts:
     build:
@@ -33,9 +33,9 @@ services:
     env_file:
       - accounts/environments/.development.env
     depends_on:
-      - postgres_database
+      - postgres
 
-  postgres_database:
+  postgres:
     image: postgres:12.0-alpine
     restart: always
     volumes:
@@ -43,9 +43,9 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin
-      - POSTGRES_DB=postgres_db_dev
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
 
   pgadmin:
     image: dpage/pgadmin4:4.18
@@ -55,7 +55,7 @@ services:
     volumes:
       - pgadmin_data:/var/lib/pgadmin/
     links:
-      - "postgres_database:pgsql-server"
+      - "postgres:pgsql-server"
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: admin
