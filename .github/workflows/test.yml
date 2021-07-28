@@ -63,4 +63,4 @@ jobs:
         run: |
           python accounts/src/manage.py makemigrations users
           python accounts/src/manage.py migrate
-          python -m accounts/src/manage.py test src.users.test
+          python accounts/src/manage.py test src.users.test
