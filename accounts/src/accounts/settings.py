@@ -95,7 +95,7 @@ WSGI_APPLICATION = 'accounts.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": develop_configuration.get("sql_engine", "django.db.backends.sqlite3"),
-        "NAME": develop_configuration.get("sql_database", os.path.join(BASE_DIR, "db.sqlite3")),
+        "NAME": os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),
         "USER": os.environ.get("SQL_USER", None),
         "PASSWORD": os.environ.get("SQL_PASSWORD", None),
         "HOST": os.environ.get("SQL_HOST", "localhost"),
