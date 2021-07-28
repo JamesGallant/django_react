@@ -1,4 +1,4 @@
-name: Node.js CI
+name: service_frontend-tests
 
 on:
   push:
