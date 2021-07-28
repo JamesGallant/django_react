@@ -56,8 +56,8 @@ jobs:
         env:
           DJANGO_ALLOWED_HOSTS:  ${{ secrets.DJANGO_ALLOWED_HOSTS }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
-#          SQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
-#          SQL_USER: ${{ secrets.SQL_USER }}
+          SQL_PASSWORD: postgres
+          SQL_USER: postgres
           DATABASE_URL: 'postgres://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres'
         run: |
           docker container ls
