@@ -12,14 +12,14 @@ jobs:
     environment: develop
 
     services:
-      postgres_database:
+      postgres:
         # Docker Hub image
         image: postgres
         # Provide the password for
         env:
-          POSTGRES_PASSWORD: ${{secrets.SQL_PASSWORD}}
-          POSTGRES_USER:  ${{secrets.SQL_USER}}
-          POSTGRES_DB: postgres_db_dev
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_USER:  postgres
+          POSTGRES_DB: postgres
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -56,9 +56,10 @@ jobs:
         env:
           DJANGO_ALLOWED_HOSTS:  ${{ secrets.DJANGO_ALLOWED_HOSTS }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
-          SQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
-          SQL_USER: ${{ secrets.SQL_USER }}
+#          SQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
+#          SQL_USER: ${{ secrets.SQL_USER }}
+          DATABASE_URL: 'postgres://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres'
         run: |
           docker container ls
-#          python accounts/src/manage.py makemigrations users
-#          python accounts/src/manage.py migrate
+          python accounts/src/manage.py makemigrations users
+          python accounts/src/manage.py migrate

@@ -11,7 +11,6 @@ develop_configuration = {
     # Database
     "sql_engine": "django.db.backends.postgresql",
     "sql_database": "postgres_db_dev",
-    "sql_host": "postgres_database",
     "sql_port": 5432,
     "sql_test_database": "postgres_testing_database",
 
