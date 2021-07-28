@@ -15,7 +15,7 @@ jobs:
       postgres_database:
         # Docker Hub image
         image: postgres
-        # Provide the password for postgres
+        # Provide the password for
         env:
           POSTGRES_PASSWORD: ${{secrets.SQL_PASSWORD}}
           POSTGRES_USER:  ${{secrets.SQL_USER}}
