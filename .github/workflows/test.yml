@@ -52,7 +52,7 @@ jobs:
           python -m pip install -r accounts/requirements/requirements.txt
         if: steps.cache.outputs.cache-hit != 'true'
 
-      - name: Check container and venv
+      - name: Create migrations and migrate to DB
         run: |
-          docker container ls
-          pip freeze
+          python accounts/src/manage.py makemigrations users
+          python accounts/src/manage.py migrate
