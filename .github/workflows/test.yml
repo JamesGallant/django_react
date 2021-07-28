@@ -33,26 +33,26 @@ jobs:
       - name: Checkout code base
         uses: actions/checkout@v2
 
-      - name: Set up Python 3.8
+      - name: Setup Python 3.8
         uses: actions/setup-python@v1
-          with:
-            python-version: 3.8
+        with:
+          python-version: 3.8
 
       - name: Setup cache
         uses: actions/cache@v1
-          with:
-            path: ~/.cache/pip
-            key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
-            restore-keys: |
-              ${{ runner.os }}-pip-
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
 
       - name: Install dependencies
         run: |
-           python -m pip install --upgrade pip
-           python -m pip install -r accounts/requirements/requirements.txt
+          python -m pip install --upgrade pip
+          python -m pip install -r accounts/requirements/requirements.txt
         if: steps.cache.outputs.cache-hit != 'true'
 
-      - name: Check deps and venv
+      - name: Check container and venv
         run: |
           docker container ls
           pip freeze
