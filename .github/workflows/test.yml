@@ -54,9 +54,10 @@ jobs:
 
       - name: Create migrations and migrate to DB
         env:
-          DJANGO_ALLOWED_HOSTS: localhost 127.0.0.1 https://localhost:8000/ 127.0.0.1:8000 0.0.0.0 https://localhost:8001/
+          DJANGO_ALLOWED_HOSTS:  ${{ secrets.DJANGO_ALLOWED_HOSTS }}
           SECRET_KEY: ${{ secrets.SECRET_KEY }}
-
+          SQL_PASSWORD: ${{ secrets.SQL_PASSWORD }}
+          SQL_USER: ${{ secrets.SQL_USER }}
         run: |
           python accounts/src/manage.py makemigrations users
           python accounts/src/manage.py migrate
