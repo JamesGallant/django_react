@@ -1,0 +1,35 @@
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  accounts_service_testing:
+    runs-on: ubuntu-latest
+    name: Unit tests for the accounts
+    environment: develop
+
+        services:
+          postgres_database:
+            # Docker Hub image
+            image: postgres
+            # Provide the password for postgres
+            env:
+              POSTGRES_PASSWORD: ${{ secrets.SQL_PASSWORD }}
+              POSTGRES_USER: ${{ secrets.SQL_PASSWORD }}
+              POSTGRES_DB: postgres_db_dev
+            # Set health checks to wait until postgres has started
+            options: >-
+              --health-cmd pg_isready
+              --health-interval 10s
+              --health-timeout 5s
+              --health-retries 5
+            ports:
+              - 5432:5432
+
+    steps:
+      - name: Checkout code base
+        uses: actions/checkout@v2
+        run: ls
