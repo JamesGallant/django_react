@@ -15,18 +15,8 @@ jobs:
  frontend-service-tests:
   runs-on: ubuntu-latest
   steps:
-    - name: Checkout files
-      uses: actions/checkout@v2
-
-    - name: Setup Node
-      uses: actions/setup-node@v2
-      with:
-        node-version: 14
-        cache: 'npm'
-
-    - name: Run tests
-      run: |
-        cd frontend
-        ls
-        npm ci
-        npm test
+   - uses: actions/checkout@v2
+   - run: cd frontend
+   - uses: actions/setup-node@v2
+   - run: npm ci
+   - run: npm test
