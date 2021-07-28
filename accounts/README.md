@@ -12,11 +12,11 @@ The accounts service handles authentication mediated by the [djoser](https://djo
 package. At this time the infrastructure to do both JSON Web token, token based and social OAUTH is present but only token
 based is currently implemented.  
 
-a few basic commands in case you forget :)
+On first launch
 
 make migrations
 ```
-docker-compose run --rm backend_accounts python src/manage.py makemigrations
+docker-compose run --rm backend_accounts python src/manage.py makemigrations users
 ```
 
 migrate
