@@ -1,5 +1,7 @@
 # Accounts documentation
-
+<!-- badges: start -->
+[![.github/workflows/service_accounts_test.yml](https://github.com/JamesGallant/django_react/actions/workflows/service_accounts_test.yml/badge.svg)](https://github.com/JamesGallant/django_react/actions/workflows/service_accounts_test.yml)
+<!-- badges: stop -->
 # To Do
  - Email no longer available
  - phone verification

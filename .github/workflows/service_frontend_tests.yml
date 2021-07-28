@@ -1,0 +1,32 @@
+# CI/CD to run tests on commit
+on:
+ push:
+  branches:
+   - main
+   - dev
+  paths-ignore: '**.md'
+ pull_request:
+  branches:
+   - main
+   - dev
+  paths-ignore: '**.md'
+
+jobs:
+ frontend-service-tests:
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout files
+      uses: actions/checkout@v2
+
+    - name: Setup Node
+      uses: actions/setup-node@v2
+      with:
+        node-version: 14
+        cache: 'npm'
+
+    - name: Run tests
+      run: |
+        cd frontend
+        ls
+        npm ci
+        npm test
