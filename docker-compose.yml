@@ -6,31 +6,32 @@ services:
      context: ./frontend
      dockerfile: ./Docker/Dockerfile
     image: react_frontend_service
+    container_name: frontend
     restart: always
     command: npm start
     volumes:
       - ./frontend/:/usr/src/app/
-      - usr/src/app/node_modules
     ports:
-      - "8010:3000"
+      - "8000:3000"
     env_file:
-      - ./frontend/environments/.env
+      - frontend/environments/.develpment.env
     depends_on:
       - postgres_database
 
-  backend_service_1:
+  backend_accounts:
     build:
-     context: ./backend_service_1
+     context: accounts
      dockerfile: ./Docker/Dockerfile
-    image: django_backend_service_1
+    image: backend_accounts_service
+    container_name: backend_accounts
     restart: always
     command: python ./src/manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./backend_service_1/:/usr/src/app/
+      - ./accounts/:/usr/src/app/
     ports:
-      - "8011:8000"
+      - "8001:8000"
     env_file:
-      - ./backend_service_1/environments/.env
+      - accounts/environments/.development.env
     depends_on:
       - postgres_database
 
@@ -50,7 +51,7 @@ services:
     image: dpage/pgadmin4:4.18
     restart: always
     ports:
-      - "8000:80"
+      - "8010:80"
     volumes:
       - pgadmin_data:/var/lib/pgadmin/
     links:
@@ -64,7 +65,8 @@ services:
     image: mailhog/mailhog:v1.0.0
     container_name: mailhog
     ports:
-      - "8001:8025"
+      - "8011:8025"
+      - "1025:1025"
 
 volumes:
   postgres_data:

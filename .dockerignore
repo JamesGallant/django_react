@@ -1,0 +1,12 @@
+# main
+.dockerignore
+
+# accounts
+accounts/docker/
+accounts/venv/
+
+# frontend
+frontend/node_modules/
+frontend/package-lock.json/
+frontend/build
+frontend/Docker/Dockerfile

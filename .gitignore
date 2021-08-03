@@ -3,7 +3,7 @@
 
 # virtual environments
 venv_main/
-backend_service_1/venv/
+accounts/venv/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
@@ -11,12 +11,13 @@ __pycache__/
 *$py.class
 
 # django
-/backend_service_1/environments/.env
+/accounts/environments/.development.env
 /backend_service_1/*.log
-/backend_service_1/local_settings.py
-/backend_service_1/db.sqlite3
-/backend_service_1/db.sqlite3-journal
-/backend_service_1/coverage
+/accounts/local_settings.py
+/accounts/db.sqlite3
+/accounts/db.sqlite3-journal
+/accounts/coverage/
+/accounts/src/users/migrations/
 
 # react
 /frontend/dist/
@@ -25,8 +26,8 @@ __pycache__/
 /frontend/.npm
 /frontend/.pnp
 /frontend/.pnp.js
-/frontend/environments/.env
-/frontend/coverage
+/frontend/environments/.develpment.env
+/frontend/coverage/
 /frontend/.DS_Store
 /frontend/.env.local
 /frontend/.env.development.local
@@ -35,4 +36,5 @@ __pycache__/
 /frontend/npm-debug.log*
 /frontend/yarn-debug.log*
 /frontend/yarn-error.log*
+
 
