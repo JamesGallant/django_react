@@ -1,6 +1,4 @@
-name: service_frontend-tests
-
-on:
+  on:
   push:
   pull_request:
     branches:
