@@ -6,7 +6,8 @@ develop_configuration = {
     # Misc
     "debug": 1,
     "site_name": "test site",
-    "frontend_url": 'localhost:8000',
+    "frontend_url": "localhost:8000",
+    "backend_url": "localhost:8001",
 
     # Database
     "sql_engine": "django.db.backends.postgresql",

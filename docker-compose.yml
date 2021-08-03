@@ -1,37 +1,37 @@
 version: '3.7'
 
 services:
-  frontend:
+  service_frontend:
     build:
-     context: ./frontend
+     context: ./service_frontend
      dockerfile: ./Docker/Dockerfile
-    image: react_frontend_service
-    container_name: frontend
+    image: service_frontend
+    container_name: service_frontend
     restart: always
     command: npm start
     volumes:
-      - ./frontend/:/usr/src/app/
+      - ./service_frontend/:/usr/src/app/
     ports:
       - "8000:3000"
     env_file:
-      - frontend/environments/.develpment.env
+      - service_frontend/environments/.develpment.env
     depends_on:
       - postgres_database
 
-  backend_accounts:
+  service_accounts:
     build:
-     context: accounts
+     context: ./service_accounts
      dockerfile: ./Docker/Dockerfile
-    image: backend_accounts_service
-    container_name: backend_accounts
+    image: service_accounts
+    container_name: service_accounts
     restart: always
     command: python ./src/manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./accounts/:/usr/src/app/
+      - ./service_accounts/:/usr/src/app/
     ports:
       - "8001:8000"
     env_file:
-      - accounts/environments/.development.env
+      - service_accounts/environments/.development.env
     depends_on:
       - postgres_database
 
