@@ -5,7 +5,8 @@ from django.core import mail
 
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
-
+import os
+print(os.getcwd())
 # this should work in the container
 from service_accounts.config import develop_configuration
 
