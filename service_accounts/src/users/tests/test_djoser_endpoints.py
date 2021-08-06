@@ -1,4 +1,3 @@
-import os
 import json
 
 from django.contrib.auth import get_user_model
@@ -7,7 +6,8 @@ from django.core import mail
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
 
-from ...service_accounts.config import develop_configuration
+# this should work in the container
+from service_accounts.config import develop_configuration
 
 """
 Internal testing for the djoser authentications. https://djoser.readthedocs.io/en/latest/introduction.html
@@ -41,7 +41,7 @@ class TestDjoserAccountCreation(APITestCase):
         """
         # administrative
         self.client = APIClient()
-        self.base_url = f"http://{develop_configuration.get('backend_url'), 'localhost:8000'}/api/v1/auth/"
+        self.base_url = f"http://{develop_configuration.get('service_accounts_url')}/api/v1/auth"
 
         # dummy accounts
         self.valid_payload = {
@@ -126,7 +126,6 @@ class TestDjoserAccountCreation(APITestCase):
         ## missing data
         self.assertEqual(response_no_data.status_code, status.HTTP_400_BAD_REQUEST)
 
-        print(develop_configuration.get("djoser_frontend_url"))
 
 
 class TestDjoserLoginLogout(APITestCase):
@@ -149,7 +148,7 @@ class TestDjoserLoginLogout(APITestCase):
         """
         self.client = APIClient()
         self.user_model = get_user_model()
-        self.base_url = f"http://{develop_configuration.get('backend_url'), 'localhost:8000'}/api/v1/auth/"
+        self.base_url = f"http://{develop_configuration.get('service_accounts_url')}/api/v1/auth"
         self.user_data_url = f"{self.base_url}/users/me/"
         self.login_url = f"{self.base_url}/token/login/"
         self.logout_url = f"{self.base_url}/token/logout/"
@@ -217,7 +216,7 @@ class TestDjoserAccountDelete(APITestCase):
     def setUp(self) -> None:
         self.user_model = get_user_model()
         self.client = APIClient()
-        self.base_url = f"http://{develop_configuration.get('backend_url'), 'localhost:8000'}/api/v1/auth/"
+        self.base_url = f"http://{develop_configuration.get('service_accounts_url')}/api/v1/auth"
         self.user_data_url = f"{self.base_url}/users/me/"
         self.login_url = f"{self.base_url}/token/login/"
 
@@ -278,6 +277,7 @@ class TestDjoserAccountDelete(APITestCase):
         # login and delete accounts
         ## user
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + token_user.data.get('auth_token'))
+
         response_user_delete_badpwd = self.client.delete(self.user_data_url,
                                                          data=json.dumps({"current_password": "bad"}),
                                                          content_type="application/json")
@@ -319,7 +319,7 @@ class TestEmailVerification(APITestCase):
     def setUp(self) -> None:
         self.User_model = get_user_model()
         self.client = APIClient()
-        self.base_url = f"http://{develop_configuration.get('backend_url'), 'localhost:8000'}/api/v1/auth/"
+        self.base_url = f"http://{develop_configuration.get('service_accounts_url')}/api/v1/auth"
         self.valid_payload = {
             "first_name": "testuser3_firstname",
             "last_name": "testuser3_lastname",
@@ -381,7 +381,7 @@ class TestDjoserUpdateAccount(APITestCase):
     def setUp(self) -> None:
         self.client = APIClient()
         self.user_model = get_user_model()
-        self.base_url = f"http://{develop_configuration.get('backend_url'), 'localhost:8000'}/api/v1/auth/"
+        self.base_url = f"http://{develop_configuration.get('service_accounts_url')}/api/v1/auth"
         self.users_url = f"{self.base_url}/users/"
         self.login_url = f"{self.base_url}/token/login/"
 
@@ -503,7 +503,7 @@ class TestDjoserResets(APITestCase):
     def setUp(self) -> None:
         self.client = APIClient()
         self.user_model = get_user_model()
-        self.base_url = f"http://{develop_configuration.get('backend_url'), 'localhost:8000'}/api/v1/auth/"
+        self.base_url = f"http://{develop_configuration.get('service_accounts_url')}/api/v1/auth/"
         self.new_username = "regular_user_new@email.com"
         self.new_password = "newSecret"
 
@@ -660,7 +660,7 @@ class TestDjoserAuth(APITestCase):
     def setUp(self) -> None:
         self.user_model = get_user_model()
         self.client = APIClient()
-        self.base_url = f"http://{develop_configuration.get('backend_url'), 'localhost:8000'}/api/v1/auth/"
+        self.base_url = f"http://{develop_configuration.get('service_accounts_url')}/api/v1/auth"
         self.users_url = f"{self.base_url}/users/"
         self.login_url = f"{self.base_url}/token/login/"
 
@@ -787,6 +787,7 @@ class TestDjoserAuth(APITestCase):
         hostile user cannot delete other accounts
         :return:
         """
+
         self.client.credentials(HTTP_AUTHORIZATION='Token ' + self.token_hostile.data.get('auth_token'))
         response_hostile_delete = self.client.delete(f"{self.users_url}{self.admin.id}/",
                                                      data=json.dumps({"current_password": "secret"}),
