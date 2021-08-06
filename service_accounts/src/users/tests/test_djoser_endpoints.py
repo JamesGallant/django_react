@@ -6,7 +6,7 @@ from django.core import mail
 
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
-
+print(os.getcwd())
 """
 Internal testing for the djoser authentications. https://djoser.readthedocs.io/en/latest/introduction.html
 Since security is essential we will test these even if djoser has internal testing, if something fails we can fix
