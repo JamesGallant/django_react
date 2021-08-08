@@ -25,8 +25,8 @@ describe('testing countrySelect component', () => {
         const selectButton = rendered.getAllByRole('button');
         const combobox = rendered.getByRole('combobox');
         const textbox = rendered.getByRole('textbox');
-
-        fireEvent.click(selectButton[1]);
+        console.log(selectButton)
+        fireEvent.click(selectButton[0]);
         expect(combobox.getAttribute("aria-expanded")).toBe("true");
         expect(textbox.getAttribute("aria-activedescendant")).toBe("select-country-option-0");
         expect(screen.getByText("Andorra")).toBeInTheDocument();
