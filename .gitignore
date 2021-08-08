@@ -12,7 +12,7 @@ __pycache__/
 # backend_service
 /service_accounts/venv/
 /service_accounts/environments/.development.env
-/backend_service_1/*.log
+/service_accounts/*.log
 /service_accounts/local_settings.py
 /service_accounts/db.sqlite3
 /service_accounts/db.sqlite3-journal
@@ -24,6 +24,7 @@ __pycache__/
 /service_frontend/node_modules/
 /service_frontend/build/
 /service_frontend/.npm
+/service_frontend/package-lock.json
 /service_frontend/.pnp
 /service_frontend/.pnp.js
 /service_frontend/environments/.develpment.env

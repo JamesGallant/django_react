@@ -1,6 +1,6 @@
-import createMUITheme from '@material-ui/core/styles/createMuiTheme'
+import { createTheme } from '@material-ui/core/styles/';
 
-const MuiGlobalTheme = createMUITheme({
+const MuiGlobalTheme = createTheme({
     /**
      * @description Provides default values to style all material ui components across the entire site, component must be a child 
      * of <ThemeProvider theme={MuiGlobalTheme}>. Apart from props, CSS and other styles can be overidden as well. 
