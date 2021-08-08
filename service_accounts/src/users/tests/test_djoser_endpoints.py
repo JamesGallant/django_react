@@ -6,7 +6,9 @@ from django.core import mail
 
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
-print(os.getcwd())
+
+from service_accounts.config import develop_configuration
+
 """
 Internal testing for the djoser authentications. https://djoser.readthedocs.io/en/latest/introduction.html
 Since security is essential we will test these even if djoser has internal testing, if something fails we can fix
@@ -39,7 +41,8 @@ class TestDjoserAccountCreation(APITestCase):
         """
         # administrative
         self.client = APIClient()
-        self.base_url = f"http://{os.environ.get('SERVICE_ACCOUNTS_URL')}/api/v1/auth"
+        print(develop_configuration["frontend_url"])
+        self.base_url = f"http://{develop_configuration.get('frontend_url')}/api/v1/auth"
 
         # dummy accounts
         self.valid_payload = {
