@@ -33,7 +33,7 @@ docker-compose run --rm service_accounts python src/manage.py createsuperuser
 
 test
 ```
-docker-compose run --rm backend_accounts python src/manage.py test
+docker-compose run --rm service_accounts python src/manage.py test
 ```
 ## Testing
 Testing is done on custom implementations of models and views. However, since this is the security layer of the application

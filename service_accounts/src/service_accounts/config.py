@@ -6,7 +6,7 @@ develop_configuration = {
     # Misc
     "debug": 1,
     "site_name": "test site",
-    "frontend_url": 'localhost:8000',
+    "frontend_url": "localhost:8000",
     "service_accounts_url": "localhost:8001",
 
     # Database

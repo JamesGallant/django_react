@@ -3,38 +3,38 @@
 
 # virtual environments
 venv_main/
-accounts/venv/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
 
-# django
-/accounts/environments/.development.env
+# backend_service
+/service_accounts/venv/
+/service_accounts/environments/.development.env
 /backend_service_1/*.log
-/accounts/local_settings.py
-/accounts/db.sqlite3
-/accounts/db.sqlite3-journal
-/accounts/coverage/
-/accounts/src/users/migrations/
+/service_accounts/local_settings.py
+/service_accounts/db.sqlite3
+/service_accounts/db.sqlite3-journal
+/service_accounts/coverage/
+/service_accounts/src/users/migrations/
 
-# react
-/frontend/dist/
-/frontend/node_modules/
-/frontend/build/
-/frontend/.npm
-/frontend/.pnp
-/frontend/.pnp.js
-/frontend/environments/.develpment.env
-/frontend/coverage/
-/frontend/.DS_Store
-/frontend/.env.local
-/frontend/.env.development.local
-/frontend/.env.test.local
-/frontend/.env.production.local
-/frontend/npm-debug.log*
-/frontend/yarn-debug.log*
-/frontend/yarn-error.log*
+# fontend_service
+/service_frontend/dist/
+/service_frontend/node_modules/
+/service_frontend/build/
+/service_frontend/.npm
+/service_frontend/.pnp
+/service_frontend/.pnp.js
+/service_frontend/environments/.develpment.env
+/service_frontend/coverage/
+/service_frontend/.DS_Store
+/service_frontend/.env.local
+/service_frontend/.env.development.local
+/service_frontend/.env.test.local
+/service_frontend/.env.production.local
+/service_frontend/npm-debug.log*
+/service_frontend/yarn-debug.log*
+/service_frontend/yarn-error.log*
 
 

@@ -73,8 +73,8 @@ npm install
   frontend:
     
     build:
-     # the frontend working directory on the local system
-     context: ./frontend
+     # the service_frontend working directory on the local system
+     context: ./service_frontend
      # points to the dockerfile
      dockerfile: ./Docker/Dockerfile
     # image name
@@ -84,14 +84,14 @@ npm install
     command: npm start
     # mapping the working directory to the container dir for hot reloading
     volumes:
-      - ./frontend/:/usr/src/app/
+      - ./service_frontend/:/usr/src/app/
       - usr/src/app/node_modules
     # exposed ports
     ports:
       - "8010:3000"
     # points to the environment file
     env_file:
-      - ./frontend/environments/.development.env
+      - ./service_frontend/environments/.development.env
     depends_on:
       - postgres_database
 ```

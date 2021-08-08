@@ -1,5 +1,5 @@
 """
-ASGI util for accounts project.
+ASGI util for service_accounts project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'accounts.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'service_accounts.settings')
 
 application = get_asgi_application()

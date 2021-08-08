@@ -1,12 +1,12 @@
 # main
 .dockerignore
 
-# accounts
-accounts/docker/
-accounts/venv/
+# service_accounts
+service_accounts/docker/
+service_accounts/venv/
 
-# frontend
-frontend/node_modules/
-frontend/package-lock.json/
-frontend/build
-frontend/Docker/Dockerfile
+# service_frontend
+service_frontend/node_modules/
+service_frontend/package-lock.json/
+service_frontend/build
+service_frontend/Docker/Dockerfile
