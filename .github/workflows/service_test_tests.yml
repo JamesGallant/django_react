@@ -2,8 +2,8 @@ name: service_test
 on:
   pull_request:
     branches:
-      - dev
-      - main
+      dev:
+      main:
   push:
 
 jobs:
@@ -13,4 +13,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       name: test something
-      run: ls
+        run: ls
