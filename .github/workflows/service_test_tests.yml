@@ -4,8 +4,8 @@ jobs:
     name: Unit tests for service_test
     runs-on: ubuntu-latest
     steps:
-      name: microservices build
-      run: ls
+      - name: microservices build
+        run: ls
 name: service_test
 'on':
   pull_request:
