@@ -128,16 +128,15 @@ class FileGenerator:
         actions = {
             "name": service_name,
             "on": {"push": None,
-                   "pull_request": {"branches": {"main": None,
-                                                 "dev": None}}},
+                   "pull_request": {"branches": ["push", "pull_request"]}},
             "jobs": {"service_accounts_testing": {
                 "runs-on": "ubuntu-latest",
                 "name": f"Unit tests for {service_name}",
                 "environment": "develop",
                 "steps": {
-                    "name": {"test": None,
-                             "run": "ls"},
-                        }
+                    "name": "microservices build",
+                    "run": 'ls'
+                },
                 }
             }
         }
