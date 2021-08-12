@@ -12,5 +12,5 @@ jobs:
     name: Unit tests for service_test
     runs-on: ubuntu-latest
     steps:
-      name: test something
+      - name: test something
         run: ls
