@@ -1,16 +1,16 @@
+name: service_test
+on:
+  pull_request:
+    branches:
+      - dev
+      - main
+  push:
+
 jobs:
   service_accounts_testing:
     environment: develop
     name: Unit tests for service_test
     runs-on: ubuntu-latest
     steps:
-      name: test
-        run: ls
-
-name: service_test
-on:
-  pull_request:
-    branches:
-      dev: null
-      main: null
-  push: null
+      name: test something
+      run: ls

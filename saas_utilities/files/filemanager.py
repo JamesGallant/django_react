@@ -135,10 +135,11 @@ class FileGenerator:
                 "name": f"Unit tests for {service_name}",
                 "environment": "develop",
                 "steps": {
-                    "name": "test",
-                    "run": "ls"
+                    "name": {"test": None,
+                             "run": "ls"},
+                        }
                 }
-            }}
+            }
         }
 
         os.chdir(".")
