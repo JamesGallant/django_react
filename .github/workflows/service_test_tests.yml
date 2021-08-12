@@ -5,9 +5,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       name: test
-      run: ls
+        run: ls
+
 name: service_test
-'on':
+on:
   pull_request:
     branches:
       dev: null
