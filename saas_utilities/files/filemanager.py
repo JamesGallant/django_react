@@ -134,8 +134,7 @@ class FileGenerator:
                 "name": f"Unit tests for {service_name}",
                 "environment": "develop",
                 "steps": {
-                    "name": "microservices build",
-                    "run": 'ls'
+                    "run": "ls"
                 },
                 }
             }
