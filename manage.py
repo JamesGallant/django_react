@@ -51,7 +51,8 @@ class AppManager:
         files.create_service_readme(service_name=service_name)
         files.create_dev_environment(service_name=service_name)
         files.create_config_file(service_name=service_name, database=db)
-        files.create_github_actions_workflow(service_name=service_name)
+        files.create_gitignore(service_name=service_name)
+        files.create_dockerignore(service_name=service_name)
 
     def main(self, engine: str = None) -> None:
         if not engine:
@@ -72,5 +73,9 @@ class AppManager:
 if __name__ == '__main__':
     manager = AppManager()
     args = sys.argv
+
+    if not args[1]:
+        raise ValueError("Provide a value to manager, options are (create_microservice)")
+
     ENGINE = args[1]
     manager.main(ENGINE)

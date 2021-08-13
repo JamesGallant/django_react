@@ -1,5 +1,4 @@
 import os
-import yaml
 from django.core.management.utils import get_random_secret_key
 
 
@@ -119,33 +118,39 @@ class FileGenerator:
         filepath = f"{self.root_path}/src/service_test/config.py"
         self._filemanager(content=config, filepath=filepath)
 
-    def create_github_actions_workflow(self, service_name: str) -> None:
+    def create_gitignore(self, service_name: str) -> None:
         """
-        Creates a CI pipeline to create and migrate the django db, users have to provide their own tests later.
-        :param service_name Name of the microservice
-        :return None
+        appends gitignore paths to existing file
+        :param service_name: Name of the microservice
+        :return: None
         """
-        actions = {
-            "name": service_name,
-            "on": {"push": None,
-                   "pull_request": {"branches": ["push", "pull_request"]}},
-            "jobs": {"service_accounts_testing": {
-                "runs-on": "ubuntu-latest",
-                "name": f"Unit tests for {service_name}",
-                "environment": "develop",
-                "steps": {
-                    ("run","ls")
-                },
-                }
-            }
-        }
-
+        # go to root
         os.chdir(".")
-        project_root = os.getcwd()
-        filepath_actions = f"{project_root}/.github/workflows/{service_name}_tests.yml"
 
-        with open(filepath_actions, "w") as yaml_file:
-            yaml.dump(actions, yaml_file, default_flow_style=False)
+        gitignore = f"\n\n# {service_name}\n{service_name}/docker/\n{service_name}/venv/\n" \
+                    f"{service_name}/environments/.development.env\n{service_name}.log\n" \
+                    f"{service_name}/local_settings.py\n{service_name}/db.sqlite3\n" \
+                    f"{service_name}/db.sqlite3-journal\n{service_name}/coverage/\n" \
+                    f"{service_name}/src/**/migrations.py"
+
+        f = open(".gitignore", "a+")
+        f.write(gitignore)
+        f.close()
+
+    def create_dockerignore(self, service_name) -> None:
+        """
+        Appends new service to the dockerignore file in the root directory
+        :param service_name: name of the microservice
+        :return: None
+        """
+        os.chdir(".")
+
+        dockerignore = f"\n\n# {service_name}\n{service_name}/docker\n{service_name}/venv"
+
+        f = open(".dockerignore", "a+")
+        f.write(dockerignore)
+        f.close()
+
 
 class FileEditor:
     """

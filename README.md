@@ -227,6 +227,83 @@ These are the development credentials, do not save your actual credentials in ve
 |Django-admin|admin@admin.com|admin|localhost/8001/admin/|
 |pgadmin|admin@admin.com|admin|localhost/8010/|
 
+# Github actions
+This project uses github actions for continuous integration. Everytime a backend service is made it should have an entry
+in `./github/workflows/service_name_tests.yaml`. On the first push a badge can be created which should be added to the readme 
+in order to track the testing effectively. Below is an example yaml. 
+
+```yaml
+name: service_xxxx_test
+
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  service_accounts_testing:
+    runs-on: ubuntu-latest
+    name: Unit tests for the service_accounts
+    environment: develop
+
+    services:
+      postgres:
+        # Docker Hub image
+        image: postgres
+        # Provide the password for
+        env:
+          POSTGRES_PASSWORD: admin
+          POSTGRES_USER:  admin
+          POSTGRES_DB: db
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - '5432:5432'
+
+    steps:
+      - name: Checkout code base
+        uses: actions/checkout@v2
+
+      - name: Setup Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.8
+
+      - name: Setup cache
+        uses: actions/cache@v1
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r service_accounts/requirements/requirements.txt
+        if: steps.cache.outputs.cache-hit != 'true'
+
+      - name: Create migrations and run tests
+        env:
+          DJANGO_ALLOWED_HOSTS:  ${{ secrets.DJANGO_ALLOWED_HOSTS }}
+          SECRET_KEY: ${{ secrets.SECRET_KEY }}
+          SQL_PASSWORD: admin
+          SQL_USER: admin
+          SQL_DATABASE: db
+          SERVICE_ACCOUNTS_URL: 'localhost:8001'
+          DATABASE_URL: 'postgres://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres'
+        # make changes here
+        run: |
+          python service_accounts/src/manage.py makemigrations users
+          python service_accounts/src/manage.py migrate
+          python service_accounts/src/manage.py test users.tests
+```
 # Testing
 Each microservice runs its own unit tests and details on the tests can be found in README of the individual service. 
 Intergration tests are handled using selenium to mock web browsers. See selenium README for more details.
