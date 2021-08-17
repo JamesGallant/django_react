@@ -45,7 +45,7 @@ services:
     environment:
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=admin
-      - POSTGRES_DB=postgres_db_dev
+      - POSTGRES_DB=postgres_database
 
   pgadmin:
     image: dpage/pgadmin4:4.18

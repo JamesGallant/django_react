@@ -35,12 +35,8 @@ SITE_NAME = develop_configuration.get("site_name", "test site")
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    # ours
+    'users.apps.AccountsConfig',
 
     # third party
     'corsheaders',
@@ -49,8 +45,13 @@ INSTALLED_APPS = [
     'djoser',
     'phonenumber_field',
 
-    # ours
-    'users.apps.AccountsConfig',
+    # django
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
 ]
 
 MIDDLEWARE = [
@@ -93,10 +94,10 @@ WSGI_APPLICATION = 'service_accounts.wsgi.application'
 DATABASES = {
     "default": {
         "ENGINE": develop_configuration.get("sql_engine", "django.db.backends.sqlite3"),
-        "NAME": os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),
+        "NAME": develop_configuration.get("sql_database", os.path.join(BASE_DIR, "db.sqlite3")),
         "USER": os.environ.get("SQL_USER", None),
         "PASSWORD": os.environ.get("SQL_PASSWORD", None),
-        "HOST": os.environ.get("SQL_HOST", "localhost"),
+        "HOST": develop_configuration.get("sql_database"),
         "PORT": develop_configuration.get("sql_port", "5432"),
         "TEST": {
             "NAME": develop_configuration.get("sql_test_database", "test_db")
@@ -155,10 +156,11 @@ EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", None)
 AUTH_USER_MODEL = 'users.UserModel'
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
-# Rest framework options
+# Rest framework settings
 
 # CORS
-CORS_ORIGIN_WHITELIST = ['http://localhost:8000']
+CORS_ORIGIN_WHITELIST = [f"{develop_configuration.get('protocol')}{develop_configuration.get('frontend_url')}"]
+
 # restrict to api only
 CORS_ORIGIN_ALLOW_ALL = False
 

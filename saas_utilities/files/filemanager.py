@@ -1,4 +1,5 @@
 import os
+import yaml
 from django.core.management.utils import get_random_secret_key
 
 
@@ -11,7 +12,7 @@ class FileGenerator:
         self.service_port = 8002
 
     @staticmethod
-    def _filemanager(filepath: str,  content: str = None) -> None:
+    def _filemanager(filepath: str, content: str = None) -> None:
         """
         creates files in a directory
         :param filepath: Path to directory including filename
@@ -78,7 +79,6 @@ class FileGenerator:
                      "|name|value|\n|---|---|\n|SECRET_KEY|value|\n|DJANGO_ALLOWED_HOSTS|localhost 127.0.0.1 https://localhost:8000/ 127.0.0.1:8000 0.0.0.0 https://localhost:8001/| \n" \
                      f"|SQL_USER|admin|\n|SQL_PASSWORD|admin|\n|SQL_HOST|{service_name}_database|\n|SQL_DATABASE|{service_name}_database|"
 
-
         dotenv_file = f"# django settings \nSECRET_KEY={get_random_secret_key()} \n" \
                       "DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 https://localhost:8000/ 127.0.0.1:8000 0.0.0.0 https://localhost:8001/" \
                       f"\n\n# Databse settings \nSQL_USER=admin \nSQL_PASSWORD=admin \nSQL_HOST={service_name}_database \n" \
@@ -107,24 +107,23 @@ class FileGenerator:
         :param filepath: Path to directory including filename
         :return:
         """
-
+        # abstract port here
         config = "develop_configuration = {" \
-                 f"\n\t# Misc\n\t\"debug\": 1,\n\t\"site_name\": \"{self.site_name}\", \n\t\"frontend_url\": \"localhost:8000\",\n\t" \
-                f"\"{service_name}_url\": \"localhost:{self.service_port}\",\n\n\t# Database\n\t\"sql_engine\": \"django.db.backends.{database}\",\n\t" \
-                f"\"sql_database\": \"{service_name}_db\",\n\t\"sql_port\": {self.sql_port},\n\t\"sql_test_database\": \"{service_name}_db\", \n\n\t" \
+                 f"\n\t# Misc\n\t\"debug\": 1,\n\t\"site_name\": \"{self.site_name}\", \n\t\"protocol\": \"http://\",\n\t\"frontend_url\": \"localhost:8000\",\n\t" \
+                 f"\"{service_name}_url\": \"localhost:{self.service_port}\",\n\n\t# Database\n\t\"sql_engine\": \"django.db.backends.{database}\",\n\t" \
+                 f"\"sql_database\": \"{service_name}_db\",\n\t\"sql_port\": {self.sql_port},\n\t\"sql_test_database\": \"{service_name}_db\", \n\n\t" \
                  "# Email\n\t\"email_backend\": \"django.core.mail.backends.smtp.EmailBackend\",\n\t\"email_host\": \"mailhog\",\n\t" \
                  "\"email_port\": 1025,\n}"
 
         filepath = f"{self.root_path}/src/service_test/config.py"
         self._filemanager(content=config, filepath=filepath)
 
-    def create_gitignore(self, service_name: str) -> None:
+    def edit_gitignore(self, service_name: str) -> None:
         """
         appends gitignore paths to existing file
         :param service_name: Name of the microservice
         :return: None
         """
-        # go to root
         os.chdir(".")
 
         gitignore = f"\n\n# {service_name}\n{service_name}/docker/\n{service_name}/venv/\n" \
@@ -137,25 +136,132 @@ class FileGenerator:
         f.write(gitignore)
         f.close()
 
-    def create_dockerignore(self, service_name) -> None:
+    def edit_dockerignore(self, service_name) -> None:
         """
         Appends new service to the dockerignore file in the root directory
         :param service_name: name of the microservice
         :return: None
         """
         os.chdir(".")
-
         dockerignore = f"\n\n# {service_name}\n{service_name}/docker\n{service_name}/venv"
 
         f = open(".dockerignore", "a+")
         f.write(dockerignore)
         f.close()
 
+    def edit_django_settings(self, service_name: str) -> None:
+        """
+        Edits the django settings.py file to use the config file
+        :param service_name name of the microservice
+        :return:
+        """
+        filepath = f"{self.root_path}\\src\\{service_name}\\settings.py"
+
+        new_settings = []
+        with open(filepath, "r") as settings:
+            for line in settings:
+                # doing the ifs because we cannot use a switch without running O(N) to find the correct lines
+                # might be able to use line numbers but its subject to file changes
+                # build a value error checker
+                if "pathlib" in line:
+                    line = "import os\nfrom pathlib import Path\nfrom .config import develop_configuration\n"
+
+                if "SECRET_KEY" in line:
+                    line = "SECRET_KEY = os.environ.get(\"SECRET_KEY\")"
+
+                if "DEBUG" in line:
+                    line = "DEBUG = develop_configuration.get(\"debug\", 0)\n"
+
+                if "ALLOWED_HOSTS" in line:
+                    line = "ALLOWED_HOSTS = os.environ.get(\"DJANGO_ALLOWED_HOSTS\").split(" ")"
+
+                if "SITE_NAME" in line:
+                    line = "SITE_NAME = develop_configuration.get(\"site_name\", \"test site\")"
+
+                if "INSTALLED_APPS" in line:
+                    line = "INSTALLED_APPS = [\n\t# Your apps here\n\n\t# third party\n\t\'corsheaders\',\n\t\'rest_framework\'\n\t,"
+
+                if "MIDDLEWARE" in line:
+                    line = "MIDDLEWARE = [\n\t\'corsheaders.middleware.CorsMiddleware\',\n"
+
+                if "ENGINE" in line:
+                    line = "\t\t\"ENGINE\": develop_configuration.get(\"sql_engine\", \"django.db.backends.sqlite3\"),\n"
+
+                # need this keyword for the rest of DB
+                if "'NAME': BASE_DIR / 'db.sqlite3'," in line:
+                    line = "\t\t\"NAME\": os.environ.get(\"SQL_DATABASE\", os.path.join(BASE_DIR, \"db.sqlite3\"))," \
+                           "\n\t\t\"USER\": os.environ.get(\"SQL_USER\", None),\n\t\t\"PASSWORD\": os.environ.get(" \
+                           "\"SQL_PASSWORD\", None),\n\t\t\"HOST\": os.environ.get(\"SQL_HOST\", \"localhost\"),\n" \
+                           "\t\t\"PORT\": develop_configuration.get(\"sql_port\", 5432),\n\t\t\"TEST\": {" \
+                           "\n\t\t\t\"NAME\": develop_configuration.get(\"sql_test_database\", \"test_db\"),\n\t\t}\n\t"
+
+                new_settings.append(line)
+
+        # need to abstract these ports away
+        new_settings_data = f"# Rest framework settings\n\n# CORS\nCORS_ORIGIN_WHITELIST = ['http://localhost:8000']\n" \
+                            "# Restrict unknown urls\nCORS_ORIGIN_ALLOW_ALL = False\n\n" \
+                            "REST_FRAMEWORK = {\n\t\"DEFAULT_PERMISSION_CLASSES\": (\"rest_framework.permissions.IsAuthenticated\",),\n" \
+                            "\t\"DEFAULT_AUTHENTICATION_CLASSES\": (\n\t\t\"rest_framework.authentication.TokenAuthentication\",\n" \
+                            "\t),\n}"
+
+        new_settings.append(new_settings_data)
+        settings.close()
+
+        file = open(filepath, "w+")
+        file.writelines(new_settings)
+        file.close()
+
+    def edit_project_config(self, project_config_yaml: str, service_name: str) -> None:
+        """
+        Edits the project file. This maintains the current state of the project
+        :param project_config_yaml: the project.config.yaml file location
+        :param service_name: Name of the microservice
+        :return: void
+        """
+
+        with open(project_config_yaml, 'r+') as config:
+            try:
+                data = yaml.safe_load(config)
+            except yaml.YAMLError as e:
+                raise AssertionError(e)
+
+        config.close()
+
+        # get config
+        services = data.get("services")
+        site_name = data.get("site_name")
+        protocol = data.get("protocol")
+        ports = data.get("port_registry")
+
+        # edit config
+        services.append(service_name)
+
+        last_service_port = max(ports.get("services"))
+        new_service_port = last_service_port + 1
+        ports["services"].append(new_service_port)
+        ports[f"{service_name}"] = new_service_port
+
+        new_data = {
+            "port_registry": ports,
+            "services": services,
+            "site_name": site_name,
+            "protocol": protocol,
+        }
+
+        with open(project_config_yaml, 'w+', encoding="utf8") as outfile:
+            try:
+                yaml.dump(new_data, outfile, default_flow_style=False, allow_unicode=True)
+            except yaml.YAMLError as e:
+                raise AssertionError(e)
+
+        outfile.close()
+
 
 class FileEditor:
     """
     A runner used to edit files
     """
+
     def __init__(self, filepath):
         self.filepath = filepath
 

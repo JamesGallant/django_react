@@ -36,4 +36,4 @@ service_frontend/.env.test.local
 service_frontend/.env.production.local
 service_frontend/npm-debug.log*
 service_frontend/yarn-debug.log*
-service_frontend/yarn-error.log*# service_test
+service_frontend/yarn-error.log*

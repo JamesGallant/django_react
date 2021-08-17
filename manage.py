@@ -15,6 +15,12 @@ class AppManager:
         pass
 
     def microservice(self) -> None:
+        """
+        Creates a microservice by bootstrapping django boilerplate and configuring dockerfile, environment file
+         a config.py, overwrites django settings, adds the neccesary entries to gitignore and dockerignore and
+         updates project.config.yml to record the project state
+        :return:
+        """
         name = input("Service name: ")
         db = input("Database: ")
 
@@ -26,15 +32,15 @@ class AppManager:
         root_dir = pathlib.Path(__file__).parent.resolve()
         current_dirs = os.listdir(root_dir)
         service_name = f"service_{name.lower()}"
+        project_config_file = f"{root_dir}/saas_utilities/project.config.yaml"
 
         if service_name in current_dirs:
             raise ValueError(f"microservice {name} already exists")
 
-        subprocess.call(["django-admin", "startproject", f"{service_name}"])
-
-        target_folders = ["docker", "environments", "requirements", "src"]
+        subprocess.Popen(["django-admin", "startproject", f"{service_name}"]).wait()
 
         service_dir = os.path.join(root_dir, service_name)
+        target_folders = ["docker", "environments", "requirements", "src"]
 
         for folder in target_folders:
             os.mkdir(os.path.join(service_dir, folder))
@@ -44,6 +50,7 @@ class AppManager:
 
         files = FileGenerator(service_filepath=service_dir)
 
+        files.edit_project_config(project_config_yaml=project_config_file, service_name=service_name)
         files.create_init()
         files.create_service_readme(service_name=service_name)
         files.create_docker_file()
@@ -51,8 +58,11 @@ class AppManager:
         files.create_service_readme(service_name=service_name)
         files.create_dev_environment(service_name=service_name)
         files.create_config_file(service_name=service_name, database=db)
-        files.create_gitignore(service_name=service_name)
-        files.create_dockerignore(service_name=service_name)
+        # files.edit_gitignore(service_name=service_name)
+        # files.edit_dockerignore(service_name=service_name)
+        files.edit_django_settings(service_name=service_name)
+
+
 
     def main(self, engine: str = None) -> None:
         if not engine:
