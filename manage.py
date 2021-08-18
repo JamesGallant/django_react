@@ -1,5 +1,5 @@
 # from django.core.management.utils import get_random_secret_key
-from saas_utilities.files.filemanager import FileGenerator
+from saas_utilities.files.filemanager import FileGenerator, FileEditor
 import sys
 import os
 import pathlib
@@ -48,19 +48,20 @@ class AppManager:
         os.rename(f"{service_dir}/{service_name}", f"{service_dir}/src/{service_name}")
         os.rename(f"{service_dir}/manage.py", f"{service_dir}/src/manage.py")
 
-        files = FileGenerator(service_filepath=service_dir)
+        create_files = FileGenerator(service_filepath=service_dir)
+        edit_files = FileEditor(service_filepath=service_dir)
 
-        files.edit_project_config(project_config_yaml=project_config_file, service_name=service_name)
-        files.create_init()
-        files.create_service_readme(service_name=service_name)
-        files.create_docker_file()
-        files.create_python_requirement()
-        files.create_service_readme(service_name=service_name)
-        files.create_dev_environment(service_name=service_name)
-        files.create_config_file(service_name=service_name, database=db)
-        files.edit_gitignore(service_name=service_name)
-        files.edit_dockerignore(service_name=service_name)
-        files.edit_django_settings(service_name=service_name)
+        create_files.create_init()
+        create_files.create_service_readme(service_name=service_name)
+        create_files.create_docker_file()
+        create_files.create_python_requirement()
+        create_files.create_service_readme(service_name=service_name)
+        create_files.create_dev_environment(service_name=service_name)
+        create_files.create_config_file(service_name=service_name, database=db)
+        edit_files.edit_project_config(project_config_yaml=project_config_file, service_name=service_name)
+        edit_files.edit_gitignore(service_name=service_name)
+        edit_files.edit_dockerignore(service_name=service_name)
+        edit_files.edit_django_settings(service_name=service_name)
 
 
 

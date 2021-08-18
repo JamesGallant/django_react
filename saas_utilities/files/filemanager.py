@@ -117,36 +117,14 @@ class FileGenerator:
         filepath = f"{self.root_path}/src/service_test/config.py"
         self._filemanager(content=config, filepath=filepath)
 
-    def edit_gitignore(self, service_name: str) -> None:
-        """
-        appends gitignore paths to existing file
-        :param service_name: Name of the microservice
-        :return: None
-        """
-        os.chdir(".")
 
-        gitignore = f"\n\n# {service_name}\n{service_name}/docker/\n{service_name}/venv/\n" \
-                    f"{service_name}/environments/.development.env\n{service_name}.log\n" \
-                    f"{service_name}/local_settings.py\n{service_name}/db.sqlite3\n" \
-                    f"{service_name}/db.sqlite3-journal\n{service_name}/coverage/\n" \
-                    f"{service_name}/src/**/migrations.py"
+class FileEditor:
+    """
+    A runner used to edit files
+    """
 
-        f = open(".gitignore", "a+")
-        f.write(gitignore)
-        f.close()
-
-    def edit_dockerignore(self, service_name) -> None:
-        """
-        Appends new service to the dockerignore file in the root directory
-        :param service_name: name of the microservice
-        :return: None
-        """
-        os.chdir(".")
-        dockerignore = f"\n\n# {service_name}\n{service_name}/docker\n{service_name}/venv"
-
-        f = open(".dockerignore", "a+")
-        f.write(dockerignore)
-        f.close()
+    def __init__(self, service_filepath):
+        self.root_path = service_filepath
 
     def edit_django_settings(self, service_name: str) -> None:
         """
@@ -159,9 +137,6 @@ class FileGenerator:
         new_settings = []
         with open(filepath, "r") as settings:
             for line in settings:
-                # doing the ifs because we cannot use a switch without running O(N) to find the correct lines
-                # might be able to use line numbers but its subject to file changes
-                # build a value error checker
                 if "pathlib" in line:
                     line = "import os\nfrom pathlib import Path\nfrom .config import develop_configuration\n"
 
@@ -255,25 +230,33 @@ class FileGenerator:
 
         outfile.close()
 
-
-class FileEditor:
-    """
-    A runner used to edit files
-    """
-
-    def __init__(self, filepath):
-        self.filepath = filepath
-
-    def edit_django_settings(self) -> None:
+    def edit_gitignore(self, service_name: str) -> None:
         """
-        This function edits the django settings to make use of the config.py file.
+        appends gitignore paths to existing file
+        :param service_name: Name of the microservice
         :return: None
         """
-        pass
+        os.chdir(".")
 
-    def edit_docker_compose_file(self) -> None:
+        gitignore = f"\n\n# {service_name}\n{service_name}/docker/\n{service_name}/venv/\n" \
+                    f"{service_name}/environments/.development.env\n{service_name}.log\n" \
+                    f"{service_name}/local_settings.py\n{service_name}/db.sqlite3\n" \
+                    f"{service_name}/db.sqlite3-journal\n{service_name}/coverage/\n" \
+                    f"{service_name}/src/**/migrations.py"
+
+        f = open(".gitignore", "a+")
+        f.write(gitignore)
+        f.close()
+
+    def edit_dockerignore(self, service_name) -> None:
         """
-        Edits the docker-compose file by adding the user DB (if needed) and the new service
+        Appends new service to the dockerignore file in the root directory
+        :param service_name: name of the microservice
         :return: None
         """
-        pass
+        os.chdir(".")
+        dockerignore = f"\n\n# {service_name}\n{service_name}/docker\n{service_name}/venv"
+
+        f = open(".dockerignore", "a+")
+        f.write(dockerignore)
+        f.close()
