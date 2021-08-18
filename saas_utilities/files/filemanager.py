@@ -59,7 +59,6 @@ class FileGenerator:
         Creates a requirements.txt file that bootstraps the basic dependencies needed to build a django app
         :return: None
         """
-
         requirements = "# -- postgresql \npsycopg2==2.8.6 \n\n# -- django \nasgiref==3.3.4 \nDjango==3.2 \n" \
                        "pytz==2021.1 \nsqlparse==0.4.1 \n\n# -- django rest framework \ndjangorestframework==3.12.4 \n" \
                        "Markdown==3.3.4 \ndjango-cors-headers==3.7.0"
@@ -107,7 +106,7 @@ class FileGenerator:
         :param filepath: Path to directory including filename
         :return:
         """
-        # abstract port here
+
         config = "develop_configuration = {" \
                  f"\n\t# Misc\n\t\"debug\": 1,\n\t\"site_name\": \"{self.site_name}\", \n\t\"protocol\": \"http://\",\n\t\"frontend_url\": \"localhost:8000\",\n\t" \
                  f"\"{service_name}_url\": \"localhost:{self.service_port}\",\n\n\t# Database\n\t\"sql_engine\": \"django.db.backends.{database}\",\n\t" \

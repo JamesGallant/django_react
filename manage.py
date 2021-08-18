@@ -58,8 +58,8 @@ class AppManager:
         files.create_service_readme(service_name=service_name)
         files.create_dev_environment(service_name=service_name)
         files.create_config_file(service_name=service_name, database=db)
-        # files.edit_gitignore(service_name=service_name)
-        # files.edit_dockerignore(service_name=service_name)
+        files.edit_gitignore(service_name=service_name)
+        files.edit_dockerignore(service_name=service_name)
         files.edit_django_settings(service_name=service_name)
 
 

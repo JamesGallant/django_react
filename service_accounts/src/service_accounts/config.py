@@ -1,19 +1,14 @@
-"""
-    These are site wide configurations that are not neccesarily a site secret. Secrets are in the environment file.
 
-"""
 develop_configuration = {
     # Misc
     "debug": 1,
     "site_name": "test site",
     "protocol": "http://",
-    "frontend_url": "localhost:8000",
-    "service_accounts_url": "localhost:8001",
+    "frontend_url": f"localhost:8000",
+    "service_accounts_url": f"localhost:8001",
 
     # Database
     "sql_engine": "django.db.backends.postgresql",
-    "sql_database": "postgres_database",
-    "sql_port": 5432,
     "sql_test_database": "service_test_database",
 
     # Email
@@ -33,6 +28,5 @@ develop_configuration = {
     "djoser_email_activation_url": "auth/activate/{uid}/{token}",
     "djoser_username_reset_url": "reset/username/{uid}/{token}",
     "djoser_password_reset_url": "reset/password/{uid}/{token}",
-
 
 }
