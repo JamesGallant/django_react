@@ -12,7 +12,4 @@ protocol: http://
 services:
 - service_frontend
 - service_accounts
-- service_test
-- service_test2
-- service_test
 site_name: site_name
