@@ -7,6 +7,7 @@
 Add a split between development and production. Right now in django this can be handled using the environ file
 Auto documentation builder. 
 
+check badges
 Things to implement
  - second service
  - Redis caching
