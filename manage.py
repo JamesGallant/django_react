@@ -25,14 +25,15 @@ class AppManager:
         db = input("Database: ")
 
         db = db.lower()
-        db_options = ["mysql", "postgresql", "sqlite3", "oracle"]
+        # TODO add other dbs later
+        db_options = ["postgres"]
         if db not in db_options:
-            raise ValueError(f"Database {db} is not supported. Options are (mysql, postgresql, oracle)")
+            raise ValueError(f"Database {db} is not supported. Options are (postgres)")
 
         root_dir = pathlib.Path(__file__).parent.resolve()
         current_dirs = os.listdir(root_dir)
         service_name = f"service_{name.lower()}"
-        project_config_file = f"{root_dir}/saas_utilities/project.config.yaml"
+        project_config_file = f"{root_dir}/project.config.yml"
 
         if service_name in current_dirs:
             raise ValueError(f"microservice {name} already exists")
@@ -59,9 +60,10 @@ class AppManager:
         create_files.create_dev_environment(service_name=service_name)
         create_files.create_config_file(service_name=service_name, database=db)
         edit_files.edit_project_config(project_config_yaml=project_config_file, service_name=service_name)
-        edit_files.edit_gitignore(service_name=service_name)
-        edit_files.edit_dockerignore(service_name=service_name)
-        edit_files.edit_django_settings(service_name=service_name)
+        # edit_files.edit_gitignore(service_name=service_name)
+        # edit_files.edit_dockerignore(service_name=service_name)
+        # edit_files.edit_django_settings(service_name=service_name)
+        edit_files.edit_docker_compose(service_name=service_name, project_config_yaml=project_config_file, database=db)
 
 
 

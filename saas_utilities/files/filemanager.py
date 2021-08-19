@@ -124,7 +124,26 @@ class FileEditor:
     """
 
     def __init__(self, service_filepath):
-        self.root_path = service_filepath
+        self.service_root_path = service_filepath
+
+    def _read_yml_file(self, filepath: str) -> {}:
+        with open(filepath, 'r+') as config:
+            try:
+                data = yaml.safe_load(config)
+            except yaml.YAMLError as e:
+                raise AssertionError(e)
+
+        config.close()
+        return data
+
+    def _write_yml_file(self, filepath: str, data: dict) -> None:
+        with open(filepath, 'w+', encoding="utf8") as outfile:
+            try:
+                yaml.dump(data, outfile, default_flow_style=False, allow_unicode=True)
+            except yaml.YAMLError as e:
+                raise AssertionError(e)
+
+        outfile.close()
 
     def edit_django_settings(self, service_name: str) -> None:
         """
@@ -132,7 +151,7 @@ class FileEditor:
         :param service_name name of the microservice
         :return:
         """
-        filepath = f"{self.root_path}\\src\\{service_name}\\settings.py"
+        filepath = f"{self.service_root_path}\\src\\{service_name}\\settings.py"
 
         new_settings = []
         with open(filepath, "r") as settings:
@@ -193,13 +212,7 @@ class FileEditor:
         :return: void
         """
 
-        with open(project_config_yaml, 'r+') as config:
-            try:
-                data = yaml.safe_load(config)
-            except yaml.YAMLError as e:
-                raise AssertionError(e)
-
-        config.close()
+        data = self._read_yml_file(filepath=project_config_yaml)
 
         # get config
         services = data.get("services")
@@ -211,9 +224,14 @@ class FileEditor:
         services.append(service_name)
 
         last_service_port = max(ports.get("services"))
+        last_db_port = max(ports.get("databases"))
+
         new_service_port = last_service_port + 1
+        new_db_port = last_db_port + 1
         ports["services"].append(new_service_port)
+        ports["databases"].append(new_db_port)
         ports[f"{service_name}"] = new_service_port
+        ports[f"{service_name}_database"] = new_db_port
 
         new_data = {
             "port_registry": ports,
@@ -222,13 +240,7 @@ class FileEditor:
             "protocol": protocol,
         }
 
-        with open(project_config_yaml, 'w+', encoding="utf8") as outfile:
-            try:
-                yaml.dump(new_data, outfile, default_flow_style=False, allow_unicode=True)
-            except yaml.YAMLError as e:
-                raise AssertionError(e)
-
-        outfile.close()
+        self._write_yml_file(filepath=project_config_yaml, data=new_data)
 
     def edit_gitignore(self, service_name: str) -> None:
         """
@@ -260,3 +272,74 @@ class FileEditor:
         f = open(".dockerignore", "a+")
         f.write(dockerignore)
         f.close()
+
+    def edit_docker_compose(self, service_name: str, project_config_yaml: str, database: str) -> None:
+        """
+        Edits the docker-compsose file to add a new microservice This file must run after updating project.config.yml
+        :param service_name: name of the microservice
+        :param path to project.config.yml
+        :param database The database to be used
+        :return: None
+        """
+        os.chdir(".")
+
+        project_config_data = self._read_yml_file(filepath=project_config_yaml)
+        docker_compose_data = self._read_yml_file(filepath="docker-compose.yml")
+        database_name = f"{service_name}_database"
+
+        current_services = docker_compose_data.get("services", None)
+        current_volumes = docker_compose_data.get("volumes", None)
+
+        port_registry = project_config_data.get("port_registry")
+        service_port_exposed = port_registry.get(service_name, None)
+        database_port_exposed = port_registry.get(database_name)
+
+        if not current_services:
+            raise AssertionError("No services found in docker-file, first create a service")
+
+        if database_port_exposed is None:
+            raise ValueError(f"Expected a database port to be available however None were detected for {database_name},"
+                             "check project.config.yml")
+
+        if not service_port_exposed:
+            raise ValueError(f"expected {service_name} to have a registered port but found none, check that it has a "
+                             f"entry in project.config.yml")
+
+        if not current_volumes:
+            raise ValueError(f"Expected to have declared volumes but none are found in the docker-compose file")
+
+        new_service_compose_entry = {
+            "build": {
+                "context": f"./{service_name}",
+                "dockerfile": "./docker/Dockerfile"
+            },
+            "image": service_name,
+            "container_name": service_name,
+            "restart": "always",
+            "command": "python ./src/manage.py runserver 0.0.0.0:8000",
+            "volumes": [f"./{service_name}/:/usr/src/app/"],
+            "ports": [f"{service_port_exposed}:8000"],
+            "env_file": [f"{service_name}/environments/.development.env"],
+            "depends_on": [database_name]
+        }
+
+        new_database_compose_entry = {
+            # TODO this will change when we introduce more databases
+            "image": f"{database}:12.0-alpine",
+            "restart": "always",
+            "volumes": [f"{database_name}_data:/var/lib/postgresql/data/"],
+            "ports": [f"{database_port_exposed}:5432"],
+            "environment": ["POSTGRES_USER=admin", "POSTGRES_PASSWORD=admin", f"POSTGRES_DB={database_name}"]
+        }
+        current_volumes[f"{database_name}_data"] = None
+
+        current_services[service_name] = new_service_compose_entry
+        current_services[database_name] = new_database_compose_entry
+
+        new_docker_compose = {
+            "volumes": current_volumes,
+            "services": current_services,
+            "version": docker_compose_data.get("version")
+        }
+
+        self._write_yml_file(filepath="docker-compose.yml", data=new_docker_compose)

@@ -51,7 +51,7 @@ services:
     image: dpage/pgadmin4:4.18
     restart: always
     ports:
-      - "8010:80"
+      - "8100:80"
     volumes:
       - pgadmin_data:/var/lib/pgadmin/
     links:
@@ -65,7 +65,7 @@ services:
     image: mailhog/mailhog:v1.0.0
     container_name: mailhog
     ports:
-      - "8011:8025"
+      - "8101:8025"
       - "1025:1025"
 
 volumes:
