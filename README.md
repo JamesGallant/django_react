@@ -1,6 +1,6 @@
 # Documentation for CookieCutter SaaS
 <!-- badges: start -->
-[![service_backend_tests](https://github.com/JamesGallant/django_react/actions/workflows/service_accounts_test.yml/badge.svg)](https://github.com/JamesGallant/django_react/actions/workflows/service_accounts_test.yml)
+[![service_backend_tests](https://github.com/JamesGallant/django_react/actions/workflows/service_backend_test.yml/badge.svg)](https://github.com/JamesGallant/django_react/actions/workflows/service_backend_test.yml)
 [![service_frontend_tests](https://github.com/JamesGallant/django_react/actions/workflows/service_frontend_tests.yml/badge.svg)](https://github.com/JamesGallant/django_react/actions/workflows/service_frontend_tests.yml)
 <!-- badges: stop -->
 ## Todo

@@ -64,6 +64,6 @@ jobs:
           SERVICE_BACKEND_URL: 'localhost:8001'
           DATABASE_URL: 'postgres://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres'
         run: |
-          python service_backend/src/manage.py makemigrations users
+          python service_backend/src/manage.py makemigrations app_accounts
           python service_backend/src/manage.py migrate
           python service_backend/src/manage.py test app_accounts.tests
