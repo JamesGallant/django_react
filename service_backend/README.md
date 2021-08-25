@@ -1,6 +1,6 @@
 # Accounts documentation
 <!-- badges: start -->
-[![.github/workflows/service_accounts_test.yml](https://github.com/JamesGallant/django_react/actions/workflows/service_accounts_test.yml/badge.svg)](https://github.com/JamesGallant/django_react/actions/workflows/service_accounts_test.yml)
+[![.github/workflows/service_backend_test.yml](https://github.com/JamesGallant/django_react/actions/workflows/service_backend_test.yml/badge.svg)](https://github.com/JamesGallant/django_react/actions/workflows/service_backend_test.yml)
 <!-- badges: stop -->
 # To Do
  - Email no longer available
@@ -18,22 +18,22 @@ On first launch
 
 make migrations
 ```
-docker-compose run --rm service_accounts python src/manage.py makemigrations users
+docker compose run --rm service_backend python src/manage.py makemigrations app_accounts
 ```
 
 migrate
 ```
-docker-compose run --rm service_accounts python src/manage.py migrate
+docker compose run --rm service_backend python src/manage.py migrate
 ```
 
 create super user
 ```
-docker-compose run --rm service_accounts python src/manage.py createsuperuser
+docker compose run --rm service_backend python src/manage.py createsuperuser
 ```
 
 test
 ```
-docker-compose run --rm service_accounts python src/manage.py test
+docker compose run --rm service_backend python src/manage.py test
 ```
 ## Testing
 Testing is done on custom implementations of models and views. However, since this is the security layer of the application
@@ -42,7 +42,7 @@ needs. In this case its better to be safe than sorry.
 
 To run tests start the containers and run the following:
 ```
-docker-compose run --rm backend_accounts python src/manage.py test users/tests
+docker-compose run --rm backend_accounts python src/manage.py test app_accounts/tests
 ```
 
 ## Custom User Model

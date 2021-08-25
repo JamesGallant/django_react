@@ -6,7 +6,7 @@ from django.core import mail
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
 
-from service_accounts.config import develop_configuration
+from service_backend.config import develop_configuration
 
 """
 Internal testing for the djoser authentications. https://djoser.readthedocs.io/en/latest/introduction.html

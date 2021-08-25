@@ -12,39 +12,39 @@ services:
       PGADMIN_LISTEN_PORT: 80
     image: dpage/pgadmin4:4.18
     links:
-    - postgres_database:pgsql-server
+    - service_backend_database:pgsql-server
     ports:
     - 8100:80
     restart: always
     volumes:
     - pgadmin_data:/var/lib/pgadmin/
-  postgres_database:
+  service_backend:
+    build:
+      context: ./service_backend
+      dockerfile: ./docker/Dockerfile
+    command: python ./src/manage.py runserver 0.0.0.0:8000
+    container_name: service_backend
+    depends_on:
+    - service_backend_database
+    env_file:
+    - service_backend/environments/.development.env
+    image: service_backend
+    ports:
+    - 8001:8000
+    restart: always
+    volumes:
+    - ./service_backend/:/usr/src/app/
+  service_backend_database:
     environment:
     - POSTGRES_USER=admin
     - POSTGRES_PASSWORD=admin
-    - POSTGRES_DB=postgres_database
+    - POSTGRES_DB=service_backend_database
     image: postgres:12.0-alpine
     ports:
     - 5432:5432
     restart: always
     volumes:
-    - postgres_data:/var/lib/postgresql/data/
-  service_accounts:
-    build:
-      context: ./service_accounts
-      dockerfile: ./docker/Dockerfile
-    command: python ./src/manage.py runserver 0.0.0.0:8000
-    container_name: service_accounts
-    depends_on:
-    - postgres_database
-    env_file:
-    - service_accounts/environments/.development.env
-    image: service_accounts
-    ports:
-    - 8001:8000
-    restart: always
-    volumes:
-    - ./service_accounts/:/usr/src/app/
+    - service_backend_database_data:/var/lib/postgresql/data/
   service_frontend:
     build:
       context: ./service_frontend
@@ -63,5 +63,5 @@ services:
     - ./service_frontend/:/usr/src/app/
 version: '3.7'
 volumes:
-  pgadmin_data:
-  postgres_data:
+  pgadmin_data: null
+  service_backend_database_data: null

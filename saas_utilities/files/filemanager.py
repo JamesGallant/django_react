@@ -132,7 +132,7 @@ class FileGenerator:
                  "# Email\n\t\"email_backend\": \"django.core.mail.backends.smtp.EmailBackend\",\n\t\"email_host\": \"mailhog\",\n\t" \
                  "\"email_port\": 1025,\n}"
 
-        filepath = f"{self.root_path}/src/service_test/config.py"
+        filepath = f"{self.root_path}/src/{service_name}/config.py"
         self._filemanager(content=config, filepath=filepath)
 
 
