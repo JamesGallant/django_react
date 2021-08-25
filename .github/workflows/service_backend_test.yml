@@ -1,5 +1,5 @@
 
-name: service_accounts_tests
+name: service_backend_test
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
       - dev
 
 jobs:
-  accounts_service_testing:
+  service_backend_testing:
     runs-on: ubuntu-latest
     name: Unit tests for the accounts
     environment: develop
@@ -51,7 +51,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -r service_accounts/requirements/requirements.txt
+          python -m pip install -r service_backend/requirements/requirements.txt
         if: steps.cache.outputs.cache-hit != 'true'
 
       - name: Create migrations and run tests
@@ -61,9 +61,9 @@ jobs:
           SQL_PASSWORD: admin
           SQL_USER: admin
           SQL_DATABASE: db
-          SERVICE_ACCOUNTS_URL: 'localhost:8001'
+          SERVICE_BACKEND_URL: 'localhost:8001'
           DATABASE_URL: 'postgres://postgres:postgres@localhost:${{ job.services.postgres.ports[5432] }}/postgres'
         run: |
-          python service_accounts/src/manage.py makemigrations users
-          python service_accounts/src/manage.py migrate
-          python service_accounts/src/manage.py test users.tests
+          python service_backend/src/manage.py makemigrations users
+          python service_backend/src/manage.py migrate
+          python service_backend/src/manage.py test app_accounts.tests

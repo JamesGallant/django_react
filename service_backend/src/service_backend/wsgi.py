@@ -1,5 +1,5 @@
 """
-WSGI util for service_accounts project.
+WSGI util for service_backend project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'service_accounts.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'service_backend.settings')
 
 application = get_wsgi_application()

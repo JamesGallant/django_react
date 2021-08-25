@@ -5,11 +5,11 @@ develop_configuration = {
     "site_name": "test site",
     "protocol": "http://",
     "frontend_url": f"localhost:8000",
-    "service_accounts_url": f"localhost:8001",
+    "service_backend": f"localhost:8001",
 
     # Database
     "sql_engine": "django.db.backends.postgresql",
-    "sql_test_database": "service_test_database",
+    "sql_test_database": "test_database",
 
     # Email
     "email_backend": "django.core.mail.backends.smtp.EmailBackend",
