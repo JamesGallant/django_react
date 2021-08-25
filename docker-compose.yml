@@ -61,35 +61,7 @@ services:
     restart: always
     volumes:
     - ./service_frontend/:/usr/src/app/
-  service_test:
-    build:
-      context: ./service_test
-      dockerfile: ./docker/Dockerfile
-    command: python ./src/manage.py runserver 0.0.0.0:8000
-    container_name: service_test
-    depends_on:
-    - service_test_database
-    env_file:
-    - service_test/environments/.development.env
-    image: service_test
-    ports:
-    - 8002:8000
-    restart: always
-    volumes:
-    - ./service_test/:/usr/src/app/
-  service_test_database:
-    environment:
-    - POSTGRES_USER=admin
-    - POSTGRES_PASSWORD=admin
-    - POSTGRES_DB=service_test_database
-    image: postgres:12.0-alpine
-    ports:
-    - 5433:5432
-    restart: always
-    volumes:
-    - service_test_database_data:/var/lib/postgresql/data/
 version: '3.7'
 volumes:
-  pgadmin_data: null
-  postgres_data: null
-  service_test_database_data: null
+  pgadmin_data:
+  postgres_data:
