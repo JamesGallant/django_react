@@ -35,12 +35,8 @@ SITE_NAME = develop_configuration.get("site_name", "test site")
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    # ours
+    'users.apps.AccountsConfig',
 
     # third party
     'corsheaders',
@@ -49,8 +45,13 @@ INSTALLED_APPS = [
     'djoser',
     'phonenumber_field',
 
-    # ours
-    'users.apps.AccountsConfig',
+    # django
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
 ]
 
 MIDDLEWARE = [
@@ -155,10 +156,11 @@ EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", None)
 AUTH_USER_MODEL = 'users.UserModel'
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
-# Rest framework options
+# Rest framework settings
 
 # CORS
-CORS_ORIGIN_WHITELIST = ['http://localhost:8000']
+CORS_ORIGIN_WHITELIST = [f"{develop_configuration.get('protocol')}{develop_configuration.get('frontend_url')}"]
+
 # restrict to api only
 CORS_ORIGIN_ALLOW_ALL = False
 
