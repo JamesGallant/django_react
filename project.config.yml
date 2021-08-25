@@ -1,0 +1,17 @@
+port_registry:
+  databases:
+  - 5432
+  mailhog_backend: 1025
+  mailhog_frontend: 8101
+  pgadmin: 8100
+  service_backend: 8001
+  service_backend_database: 5432
+  service_frontend: 8000
+  services:
+  - 8000
+  - 8001
+protocol: http://
+services:
+- service_frontend
+- service_backend
+site_name: site_name

@@ -1,74 +1,67 @@
-version: '3.7'
-
 services:
-  service_frontend:
-    build:
-     context: ./service_frontend
-     dockerfile: ./Docker/Dockerfile
-    image: service_frontend
-    container_name: service_frontend
-    restart: always
-    command: npm start
-    volumes:
-      - ./service_frontend/:/usr/src/app/
+  mailhog:
+    container_name: mailhog
+    image: mailhog/mailhog:v1.0.0
     ports:
-      - "8000:3000"
-    env_file:
-      - service_frontend/environments/.develpment.env
-    depends_on:
-      - postgres_database
-
-  service_accounts:
-    build:
-     context: ./service_accounts
-     dockerfile: ./Docker/Dockerfile
-    image: service_accounts
-    container_name: service_accounts
-    restart: always
-    command: python ./src/manage.py runserver 0.0.0.0:8000
-    volumes:
-      - ./service_accounts/:/usr/src/app/
-    ports:
-      - "8001:8000"
-    env_file:
-      - service_accounts/environments/.development.env
-    depends_on:
-      - postgres_database
-
-  postgres_database:
-    image: postgres:12.0-alpine
-    restart: always
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    ports:
-      - "5432:5432"
-    environment:
-      - POSTGRES_USER=admin
-      - POSTGRES_PASSWORD=admin
-      - POSTGRES_DB=postgres_db_dev
-
+    - 8101:8025
+    - 1025:1025
   pgadmin:
-    image: dpage/pgadmin4:4.18
-    restart: always
-    ports:
-      - "8010:80"
-    volumes:
-      - pgadmin_data:/var/lib/pgadmin/
-    links:
-      - "postgres_database:pgsql-server"
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com
       PGADMIN_DEFAULT_PASSWORD: admin
       PGADMIN_LISTEN_PORT: 80
-
-  mailhog:
-    image: mailhog/mailhog:v1.0.0
-    container_name: mailhog
+    image: dpage/pgadmin4:4.18
+    links:
+    - service_backend_database:pgsql-server
     ports:
-      - "8011:8025"
-      - "1025:1025"
-
+    - 8100:80
+    restart: always
+    volumes:
+    - pgadmin_data:/var/lib/pgadmin/
+  service_backend:
+    build:
+      context: ./service_backend
+      dockerfile: ./docker/Dockerfile
+    command: python ./src/manage.py runserver 0.0.0.0:8000
+    container_name: service_backend
+    depends_on:
+    - service_backend_database
+    env_file:
+    - service_backend/environments/.development.env
+    image: service_backend
+    ports:
+    - 8001:8000
+    restart: always
+    volumes:
+    - ./service_backend/:/usr/src/app/
+  service_backend_database:
+    environment:
+    - POSTGRES_USER=admin
+    - POSTGRES_PASSWORD=admin
+    - POSTGRES_DB=service_backend_database
+    image: postgres:12.0-alpine
+    ports:
+    - 5432:5432
+    restart: always
+    volumes:
+    - service_backend_database_data:/var/lib/postgresql/data/
+  service_frontend:
+    build:
+      context: ./service_frontend
+      dockerfile: ./docker/Dockerfile
+    command: npm start
+    container_name: service_frontend
+    depends_on:
+    - postgres_database
+    env_file:
+    - service_frontend/environments/.development.env
+    image: service_frontend
+    ports:
+    - 8000:3000
+    restart: always
+    volumes:
+    - ./service_frontend/:/usr/src/app/
+version: '3.7'
 volumes:
-  postgres_data:
-  pgadmin_data:
-
+  pgadmin_data: null
+  service_backend_database_data: null
