@@ -11,6 +11,16 @@ class FileGenerator:
         self.sql_port = 5433
         self.service_port = 8002
 
+    def _read_yml_file(self, filepath: str) -> {}:
+        with open(filepath, 'r+') as config:
+            try:
+                data = yaml.safe_load(config)
+            except yaml.YAMLError as e:
+                raise AssertionError(e)
+
+        config.close()
+        return data
+
     @staticmethod
     def _filemanager(filepath: str, content: str = None) -> None:
         """
@@ -98,19 +108,27 @@ class FileGenerator:
         filepath = f"{self.root_path}/README.md"
         self._filemanager(content=f"# {service_name} documentation \n ", filepath=filepath)
 
-    def create_config_file(self, service_name: str, database: str) -> None:
+    def create_config_file(self, service_name: str, database: str, project_config_yaml: str) -> None:
         """
         Creates a base configuration file, user needs to fill in some parameters
         :param service_name:
         :param database: The backend database to use
         :param filepath: Path to directory including filename
+        :param project_config_yaml: Path to the project configuration file
         :return:
         """
+        data = self._read_yml_file(filepath=project_config_yaml)
+
+        # get config
+        site_name = data.get("site_name")
+        ports = data.get("port_registry")
+        service_port = ports.get(service_name)
+        database_port = ports.get(f"{service_name}_database")
 
         config = "develop_configuration = {" \
-                 f"\n\t# Misc\n\t\"debug\": 1,\n\t\"site_name\": \"{self.site_name}\", \n\t\"protocol\": \"http://\",\n\t\"frontend_url\": \"localhost:8000\",\n\t" \
-                 f"\"{service_name}_url\": \"localhost:{self.service_port}\",\n\n\t# Database\n\t\"sql_engine\": \"django.db.backends.{database}\",\n\t" \
-                 f"\"sql_database\": \"{service_name}_db\",\n\t\"sql_port\": {self.sql_port},\n\t\"sql_test_database\": \"{service_name}_db\", \n\n\t" \
+                 f"\n\t# Misc\n\t\"debug\": 1,\n\t\"site_name\": \"{site_name}\", \n\t\"protocol\": \"http://\",\n\t\"frontend_url\": \"localhost:8000\",\n\t" \
+                 f"\"{service_name}_url\": \"localhost:{service_port}\",\n\n\t# Database\n\t\"sql_engine\": \"django.db.backends.{database}\",\n\t" \
+                 f"\"sql_database\": \"{service_name}_db\",\n\t\"sql_port\": {database_port},\n\t\"sql_test_database\": \"{service_name}_db\", \n\n\t" \
                  "# Email\n\t\"email_backend\": \"django.core.mail.backends.smtp.EmailBackend\",\n\t\"email_host\": \"mailhog\",\n\t" \
                  "\"email_port\": 1025,\n}"
 
@@ -172,7 +190,7 @@ class FileEditor:
                     line = "SITE_NAME = develop_configuration.get(\"site_name\", \"test site\")"
 
                 if "INSTALLED_APPS" in line:
-                    line = "INSTALLED_APPS = [\n\t# Your apps here\n\n\t# third party\n\t\'corsheaders\',\n\t\'rest_framework\'\n\t,"
+                    line = "INSTALLED_APPS = [\n\t# Your apps here\n\n\t# third party\n\t\'corsheaders\',\n\t\'rest_framework\',\n\t"
 
                 if "MIDDLEWARE" in line:
                     line = "MIDDLEWARE = [\n\t\'corsheaders.middleware.CorsMiddleware\',\n"
@@ -250,7 +268,7 @@ class FileEditor:
         """
         os.chdir(".")
 
-        gitignore = f"\n\n# {service_name}\n{service_name}/docker/\n{service_name}/venv/\n" \
+        gitignore = f"\n\n# {service_name}\n{service_name}/venv/\n" \
                     f"{service_name}/environments/.development.env\n{service_name}.log\n" \
                     f"{service_name}/local_settings.py\n{service_name}/db.sqlite3\n" \
                     f"{service_name}/db.sqlite3-journal\n{service_name}/coverage/\n" \
@@ -275,7 +293,7 @@ class FileEditor:
 
     def edit_docker_compose(self, service_name: str, project_config_yaml: str, database: str) -> None:
         """
-        Edits the docker-compsose file to add a new microservice This file must run after updating project.config.yml
+        Edits the docker-compose file to add a new microservice This file must run after updating project.config.yml
         :param service_name: name of the microservice
         :param path to project.config.yml
         :param database The database to be used
@@ -286,6 +304,8 @@ class FileEditor:
         project_config_data = self._read_yml_file(filepath=project_config_yaml)
         docker_compose_data = self._read_yml_file(filepath="docker-compose.yml")
         database_name = f"{service_name}_database"
+        # this works for now but we will need better implementation later
+        database_img_name = database if database != "postgresql" else "postgres"
 
         current_services = docker_compose_data.get("services", None)
         current_volumes = docker_compose_data.get("volumes", None)
@@ -325,7 +345,7 @@ class FileEditor:
 
         new_database_compose_entry = {
             # TODO this will change when we introduce more databases
-            "image": f"{database}:12.0-alpine",
+            "image": f"{database_img_name}:12.0-alpine",
             "restart": "always",
             "volumes": [f"{database_name}_data:/var/lib/postgresql/data/"],
             "ports": [f"{database_port_exposed}:5432"],

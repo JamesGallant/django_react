@@ -27,7 +27,7 @@ service_frontend/.npm
 service_frontend/package-lock.json
 service_frontend/.pnp
 service_frontend/.pnp.js
-service_frontend/environments/.develpment.env
+service_frontend/environments/.development.env
 service_frontend/coverage/
 service_frontend/.DS_Store
 service_frontend/.env.local
