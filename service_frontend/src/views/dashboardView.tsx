@@ -1,6 +1,7 @@
-import react, { FC } from 'react';
+import react, { FC, useEffect } from 'react';
 
 const DashboardView: FC = (): JSX.Element => {
+    
     return(
         <h1> Hello World</h1>
     );

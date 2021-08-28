@@ -25,7 +25,7 @@ const HomeView: FC = () => {
                             <a href={ configuration["url-login"] }>Login </a>
                     </Grid>
                     <Grid item xs={12}>
-                            <a href={  "/auth/activate/Hello/World/" }>test page </a>
+                            <a href={  configuration["url-dashboard"] }>dashboard</a>
                     </Grid>
                 </Grid>
             </Grid>
