@@ -19,7 +19,6 @@ const App = () => (
       <Route exact path={ configuration["url-dashboard"] } component={DashboardView} />
       <Route path={ configuration["url-accountCreated"] } exact component={AccountCreatedView} />
       <Route path= { configuration["url-acitvateAccount"] } exact component={AccountActivationView} />
-      
     </Switch>
   </BrowserRouter>
 );
