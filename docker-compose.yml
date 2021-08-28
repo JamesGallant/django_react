@@ -52,7 +52,7 @@ services:
     command: npm start
     container_name: service_frontend
     depends_on:
-    - postgres_database
+    - service_backend_database
     env_file:
     - service_frontend/environments/.development.env
     image: service_frontend
