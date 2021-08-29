@@ -22,7 +22,7 @@ const  authenticate = async () => {
         } else {
             // successfully retrieved data
             console.log(userData) // add to state
-            console.log("TODO add userdata to state in home, from authenticate.ts")
+            console.log("TODO add userdata to state, from authenticate.ts")
             window.localStorage.setItem("authenticated", "true");
             // extendCookies
             const cookiePayload: cookieDataType = {

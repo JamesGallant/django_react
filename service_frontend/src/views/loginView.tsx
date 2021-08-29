@@ -66,7 +66,7 @@ const initialFormVals: formTypes = {
 
 const initialErrs: errTypes = {
     email: [""],
-    password: [""],
+    password: [""], 
 };
 
 const LoginViewPage: React.FC = (): JSX.Element => {
@@ -80,6 +80,7 @@ const LoginViewPage: React.FC = (): JSX.Element => {
     const history = useHistory();
     const [formValues, setFormValues] = useState(initialFormVals);
     const [errorMessage, setErrorMessage] = useState(initialErrs);
+    const [flashErrorMessage, setFlashErrorMessage] = useState("")
     const [flashError, setFlashError] = useState(false);
     const [checkboxValue, setCheckboxValue] = useState(false);
 
@@ -113,19 +114,25 @@ const LoginViewPage: React.FC = (): JSX.Element => {
          */
         event.preventDefault();
         setFlashError(false);
+        setFlashErrorMessage("")
 
         const getToken = client.tokenLogin(formValues.email, formValues.password)
         getToken.then((response) => {
             switch(response.status) {
                 case 400:
                     if (response.data.non_field_errors) {
-                        setFlashError(true)  
+                        setFlashError(true); 
+                        setFlashErrorMessage("Invalid username or password");
                     } else {
                         setErrorMessage({
                             email: typeof(response.data!.email) === "undefined" ? [""]: response.data!.email,
                             password: typeof(response.data!.password) === "undefined" ? [""]: response.data!.password
                         })
                     };
+                    break;
+                case 401:
+                    setFlashError(true);
+                    setFlashErrorMessage("No account found, please register first");
                     break;
                 case 200:
                     
@@ -169,7 +176,7 @@ const LoginViewPage: React.FC = (): JSX.Element => {
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <FlashError 
-                                    message="Incorrect username or password"
+                                    message={ flashErrorMessage }
                                     display={ flashError }
                                     />
                         </Grid>

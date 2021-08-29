@@ -24,7 +24,7 @@ describe("Testing login", () => {
         render(<LoginView/>)
     });
 
-    it("Error is displayd on invalid account", async () => {
+    it("Error is displayed on invalid account", async () => {
         let client = new accountsClient()
         
         const axiosResponse: AxiosResponse = {
@@ -48,7 +48,7 @@ describe("Testing login", () => {
         });
 
         expect(response.status).toBe(400);
-        expect(await wrapper.findByText("Incorrect username or password")).toBeInTheDocument();
+        expect(await wrapper.findByText("Invalid username or password")).toBeInTheDocument();
 
     })
 
