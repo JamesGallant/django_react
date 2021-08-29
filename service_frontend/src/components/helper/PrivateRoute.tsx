@@ -1,8 +1,8 @@
-import React, { FC, useState } from "react";
 import { Redirect, Route } from "react-router";
+
 import configuration from "../../utils/config";
 
-const PrivateRoute = (props: any): JSX.Element => {
+const PrivateRoute = (props: any) => {
     /**
      * @description Rerouting helper component to protect routes. This component will verify the user and either
      * redirect the user to the route or to login screen
@@ -11,14 +11,12 @@ const PrivateRoute = (props: any): JSX.Element => {
      */
 
     const { component: Component, ...rest } = props;
-
-    const [isauthenticated, setAuthentication] = useState(false);
-
+    const authenticated = window.localStorage.getItem("authenticated") === "true"
     return(
         <Route 
         { ...rest }
         render={elem => 
-            isauthenticated ? (
+            authenticated ? (
                 <Component {...elem} />
             ) : (
                 <Redirect to={{ pathname: configuration["url-login"], state: {from: elem.location} }} />

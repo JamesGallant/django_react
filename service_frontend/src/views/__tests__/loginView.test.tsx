@@ -10,11 +10,13 @@ import CookieHandler from '../../modules/cookies';
 import { accountsClient } from '../../modules/APImethods';
 import configuration from '../../utils/config';
 
+import authenticate from "../../modules/authenticate";
 
 jest.mock('axios');
+jest.mock("../../modules/authenticate");
 
 describe("Testing login", () => {
-    beforeEach(() => {
+    afterEach(() => {
         jest.resetAllMocks();
       });
 
@@ -102,9 +104,10 @@ describe("Testing login", () => {
             </Router>)
 
          mocked(axios).mockResolvedValue(axiosResponse);
+
         let response = await client.tokenLogin("", "");
         jest.spyOn(CookieHandler.prototype, 'setCookie')
-        
+        jest.spyOn(window.localStorage.__proto__, 'setItem')
         await waitFor(() => {
             fireEvent.click(screen.getByRole('button', {name: "Sign in"}));
         });
@@ -112,7 +115,20 @@ describe("Testing login", () => {
         expect(response.status).toBe(200)
         expect(response.data.auth_token).toEqual("123456789")
         expect(CookieHandler.prototype.setCookie).toHaveBeenCalledTimes(1)
+        expect(window.localStorage.setItem).toBeCalledWith("authenticated", "true");
         expect(history.location.pathname).toBe(configuration["url-dashboard"])
-
     })
+
+    it("redirects to dash if already authenticated", () => {
+        const history = createMemoryHistory();
+       
+        render(<Router history={history}>
+            <LoginView />
+            </Router>);
+
+       
+        expect(authenticate).toHaveBeenCalledTimes(1);
+        expect(history.location.pathname).toBe(configuration["url-dashboard"]);
+        
+    });
 })

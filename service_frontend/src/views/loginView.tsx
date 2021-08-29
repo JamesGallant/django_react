@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -21,6 +21,7 @@ import { accountsClient } from '../modules/APImethods';
 import CookieHandler from '../modules/cookies';
 
 import FlashError from '../components/helper/flashErrors';
+import authenticate from '../modules/authenticate';
 
 
 
@@ -58,11 +59,6 @@ interface errTypes {
     password: string[],
 };
 
-interface tokenTypes {
-    storeToken: boolean, 
-    token: string
-}
-
 const initialFormVals: formTypes = {
     email: "",
     password: "",
@@ -73,12 +69,7 @@ const initialErrs: errTypes = {
     password: [""],
 };
 
-const initialTokenVals: tokenTypes = {
-    storeToken: false,
-    token: ""
-};
-
-const LoginView: React.FC = (): JSX.Element => {
+const LoginViewPage: React.FC = (): JSX.Element => {
     /**
      * @description Component that handles the login logic. Sends a request to the accounts backend for a token.
      * API endpoint requires email and password and returns [status] and token or [errors]
@@ -146,16 +137,23 @@ const LoginView: React.FC = (): JSX.Element => {
                         secure: true
                     };
                     cookieHandler.setCookie(cookiePayload);
-                    // go to homepage and display welcome based on me endpoint
-                    
-                    history.push(configuration["url-dashboard"]);
+                    client.getUserData(response.data.auth_token).then((res) => {
+                        if (res["details"]) {
+                            window.localStorage.setItem("authenticated", "false")
+                            cookieHandler.deleteCookie("authToken")
+                            throw new Error("authentification failed due to malformed token, login again");
+                        };
+                        // TODO add user data to state
+                        console.log("TODO add userdata to state in login")
+                        window.localStorage.setItem("authenticated", "true");
+                        history.push(configuration["url-dashboard"]);
+                     })
                     break;
                 default:
                     throw new Error(`Status code ${response.status} is invalid. 
                     Check https://djoser.readthedocs.io/en/latest/token_endpoints.html#token-create`)
             }
         });
-        
     }
 
      return(
@@ -217,7 +215,7 @@ const LoginView: React.FC = (): JSX.Element => {
                     >
                         Sign in
                     </Button>
-                    <Grid container justify="flex-end">
+                    <Grid container justifyContent="flex-end">
                     <Grid item>
                         <Link href={configuration["url-register"]} variant="body2">
                             New to {process.env.REACT_APP_SITE_NAME}? create an account
@@ -233,5 +231,27 @@ const LoginView: React.FC = (): JSX.Element => {
         </div>
      )
 };
+
+const LoginView = () => {
+    
+    const history = useHistory();
+
+    useEffect(() => {
+        authenticate();
+    }, []);
+
+    if (window.localStorage.getItem("authenticated") === "true") {
+        history.push(configuration["url-dashboard"]);
+    } else {
+        return(
+            <LoginViewPage />
+        )
+    };
+
+    return (
+        <div></div>
+    );
+}
+
 
 export default LoginView;

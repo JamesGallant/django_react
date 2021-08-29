@@ -3,12 +3,21 @@ import axios, { AxiosResponse } from "axios";
 import { mocked } from "ts-jest/dist/utils/testing";
 
 import { accountsClient } from '../APImethods';
+import type { AxiosError } from '../../types/types';
 
 jest.mock("axios");
 
 describe("Testing authentication API calls", () => {
+    let client: accountsClient;
+    beforeEach(() => {
+        client = new accountsClient();
+    });
+
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
+
     it("activeUserAccount and sendEmail returns status code correctly", async () => {
-        let http = new accountsClient()
     
         const axiosResponse: AxiosResponse = {
             data: [""],
@@ -20,16 +29,15 @@ describe("Testing authentication API calls", () => {
     
         mocked(axios).mockResolvedValue(axiosResponse);
         
-        const response_activateUser = await http.activateUserAccount("Hello", "World")
-        const response_sendEmail = await http.sendEmail("email@email.com")
+        const response_activateUser = await client.activateUserAccount("Hello", "World")
+        const response_sendEmail = await client.sendEmail("email@email.com")
     
         expect(response_activateUser).toBe(400)
         expect(response_sendEmail).toBe(400)
     });
     
     it("registerUser returns error status code and data", async () => {
-        let client = new accountsClient()
-    
+
         const axiosResponse: AxiosResponse = {
             data: {
                 first_name: ["This is a error message"], 
@@ -53,8 +61,7 @@ describe("Testing authentication API calls", () => {
     });
 
     it("login retruns errors correctly", async () => {
-        let client = new accountsClient()
-    
+
         const axiosResponse: AxiosResponse = {
             data: {
                 non_field_errors: ["This is a error message"], 
@@ -74,8 +81,7 @@ describe("Testing authentication API calls", () => {
     });
 
     it("login retruns auth token correctly", async () => {
-        let client = new accountsClient()
-    
+
         const axiosResponse: AxiosResponse = {
             data: {
                 auth_token: "randomstringofints", 
@@ -93,4 +99,70 @@ describe("Testing authentication API calls", () => {
         expect(response.status).toEqual(200)
     
     });
+
+    it("returns user data correctly", async () => {
+        const data = {
+            first_name: "fname",
+            last_name: "lname",
+            mobile_number: "0600000000",
+            country: "country" 
+        }
+        const axiosResponse: AxiosResponse = {
+            data: {},
+            status: 200, 
+            statusText: "Ok", 
+            config: {},
+            headers: {}
+        };
+        axiosResponse.data = data;
+
+        mocked(axios).mockResolvedValue(axiosResponse);
+        const response = await client.getUserData("someEncryptedToken");
+
+        expect(response).toEqual(data);
+    });
+
+    it("displays error on nissing token", async () => {
+        const data = {
+            "detail": "Authentication credentials were not provided."
+        };
+
+        const axiosResponse: AxiosError = {
+            response: {
+                data: {},
+                status: 401, 
+                statusText: "Unauthorized", 
+                config: {},
+                headers: {}
+            }
+        };
+
+        axiosResponse.response.data = data;
+        mocked(axios).mockRejectedValue(axiosResponse);
+        const response = await client.getUserData("someEncryptedToken");
+
+        expect(response).toEqual(data);
+    });
+
+    it("displays error on malformed token", async () => {
+        const data = {
+            "detail": "Invalid token."
+        };
+
+        const axiosResponse: AxiosError = {
+            response: {
+                data: {},
+                status: 401, 
+                statusText: "Unauthorized", 
+                config: {},
+                headers: {}
+            }
+        };
+
+        axiosResponse.response.data = data;
+        mocked(axios).mockRejectedValue(axiosResponse);
+        const response = await client.getUserData("someEncryptedToken");
+
+        expect(response).toEqual(data);
+    })
 });

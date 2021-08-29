@@ -1,17 +1,10 @@
-
-interface cookieProps  {
-    name: string,
-    value: string,
-    duration: number, 
-    path: string,
-    secure: boolean
-    };
+import type { cookieDataType } from '../types/types';
 
 class CookieHandler {
     /**
      * @description functions for manipulating cookies in the DOM
      */
-    public setCookie(opts: cookieProps): void {
+    public setCookie(opts: cookieDataType): void {
         /**
          * @description sets a cookie in the document
          * @param opts.name Name of the cookie
@@ -21,7 +14,10 @@ class CookieHandler {
          * @param secure should secure and sameSite be set
          */
         
-        
+        if(opts.name === "") {
+            throw new Error("Cookies must have a name")
+        };
+
         const date = new Date();
         let payload = ""
 
@@ -44,38 +40,42 @@ class CookieHandler {
         };
     };
 
-    public getCookie(opts: cookieProps): string {
+    public getCookie(name: string): string {
         /**
          * @description get cookie information based on its name
          */
+         if(name === "") {
+            throw new Error("Cookies must have a name")
+        };
 
-        let name = opts.name + "=";
         let decodedCookies = decodeURIComponent(document.cookie);
         let cookieList = decodedCookies.split(";");
 
         for(let idx=0; idx < cookieList.length; idx++) {
             let cookie = cookieList[idx];
-
-            while (cookie.charAt(0) === '') {
-                cookie = cookie.substring(1);
-            };
-
-            if (cookie.indexOf(name) == 0) {
-                return cookie.substring(name.length, cookie.length);
+            let cookieName: string = cookie.split("=")[0]?.trim();
+            let cookieValue: string = cookie.split("=")[1]?.trim();
+        
+            if (cookieName === name) {
+                return cookieValue
             }
         }
         return "";
     };
 
-    public deleteCookie(opts: cookieProps): void {
+    public deleteCookie(name: string): void {
         /**
          * @description deletes a cookie by specifying the experation to one day earlier
          */
+
+         if (name === "") {
+            throw new Error("Cookies must have a name")
+        };
         const date = new Date()
         date.setTime(date.getTime() - 86400)
         let expires = "exprires="+ date.toUTCString();
 
-        const payload = opts.name + "=" + opts.value + ";" + expires + ";path=" + opts.path;
+        const payload = name + "=deleted;" + expires + ";path=/";
         document.cookie = payload
 
     };

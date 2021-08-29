@@ -9,6 +9,7 @@ const configuration = {
     "api-base": `${process.env.REACT_APP_BASE_API}`,
     "api-activateAccount": "auth/users/activation/",
     "api-createAccount": "auth/users/",
+    "api-getUserData": "auth/users/me/",
     "api-resendActivationEmail": "auth/users/resend_activation/",
     "api-tokenLogin": "auth/token/login/",
 

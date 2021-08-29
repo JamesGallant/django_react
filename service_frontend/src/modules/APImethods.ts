@@ -1,4 +1,5 @@
 import axios from "axios";
+import { AxiosResponse } from "axios";
 
 import configuration from "../utils/config";
 
@@ -95,6 +96,27 @@ class accountsClient  {
         } catch(err) {
             return err.response
         };
+    };
+
+    public async getUserData(authToken: string) {
+        /**
+         * @description gets user model from backend using a authentication token
+         * 
+         * @statusCode 200 OK | 401 Unauthorised | 
+         * 
+         * @returns promise resolved to user model or error model 
+         */
+
+        try {
+            const response: AxiosResponse = await axios({
+                method: "get",
+                url: configuration["api-base"].concat(configuration["api-getUserData"]),
+                headers: {"Authorization": `Token ${authToken}`}
+            });
+            return response.data
+        } catch (err) {
+            return err.response.data
+        }
     }
 };
 
