@@ -6,7 +6,7 @@ const PrivateRoute = (props: any) => {
     /**
      * @description Rerouting helper component to protect routes. This component will verify the user and either
      * redirect the user to the route or to login screen
-     * 
+     *          
      * @verifcations user in state | authToken present | auth token valid
      */
 
