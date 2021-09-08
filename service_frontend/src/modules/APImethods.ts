@@ -26,7 +26,7 @@ class accountsClient  {
                 headers: {'Content-type': 'application/json'}
             })
             return {status: response.status, data: response.data}
-        } catch(err) {
+        } catch(err: any) {
             return {status: err.response.status, data: err.response.data}
         };
     }
@@ -49,7 +49,7 @@ class accountsClient  {
             });
             return response.status
 
-        } catch(err) {
+        } catch(err: any) {
             return err.response.status
 
         }
@@ -72,7 +72,7 @@ class accountsClient  {
                                     });
             
             return response.status
-        } catch(err) {
+        } catch(err: any) {
             return err.response.status
         };
     };
@@ -93,7 +93,7 @@ class accountsClient  {
                 headers: {'Content-type': 'application/json'}
             });
             return response
-        } catch(err) {
+        } catch(err: any) {
             return err.response
         };
     };
@@ -114,7 +114,7 @@ class accountsClient  {
                 headers: {"Authorization": `Token ${authToken}`}
             });
             return response.data
-        } catch (err) {
+        } catch (err: any) {
             return err.response.data
         }
     }
