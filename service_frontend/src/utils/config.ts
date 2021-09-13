@@ -12,10 +12,12 @@ const configuration = {
     "api-getUserData": "auth/users/me/",
     "api-resendActivationEmail": "auth/users/resend_activation/",
     "api-tokenLogin": "auth/token/login/",
+    "api-tokenLogout": "auth/token/logout/",
 
     // internal urls registry
     "url-home": "/",
     "url-login": "/auth/login/",
+    "url-logout": "/auth/logout/",
     "url-register": "/auth/register/",
     "url-dashboard": "/dashboard/",
     "url-accountCreated": "/auth/account-created/",

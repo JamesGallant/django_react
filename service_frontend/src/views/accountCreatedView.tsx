@@ -33,6 +33,8 @@ const AccountCreatedView : FC = () => {
         switch(code) {
             case 204: 
                 //success
+                // TODO change to error dialog
+                console.log("change to error dialog")
                 alert(`email sent to ${email}`)
                 break;
             case 400:

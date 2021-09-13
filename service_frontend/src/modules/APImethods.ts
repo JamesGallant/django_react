@@ -18,8 +18,7 @@ class accountsClient  {
          */
 
         try {
-
-            const response = await axios({
+            const response: AxiosResponse = await axios({
                 method: "post",
                 url: configuration['api-base'].concat(configuration["api-createAccount"]),
                 data: data, 
@@ -41,7 +40,7 @@ class accountsClient  {
          */
 
         try {
-            const response = await axios({
+            const response: AxiosResponse = await axios({
                 method: "post", 
                 url: configuration['api-base'].concat(configuration["api-resendActivationEmail"]),
                 data: {email: email},
@@ -64,7 +63,7 @@ class accountsClient  {
          * @returns Promise that resolves to status code
          */
         try {
-            const response = await axios({
+            const response: AxiosResponse = await axios({
                                         method: "post", 
                                         url: configuration["api-base"].concat(configuration["api-activateAccount"]),
                                         data: {'uid': uid, 'token': token},
@@ -77,6 +76,27 @@ class accountsClient  {
         };
     };
 
+    public async tokenLogout(authToken: string) {
+        /**
+         * @description logs out a user from the djoser backend. 
+         *
+         * @statusCodes 204 No content
+         * 
+         * @returns Promise resolves to response or err.response
+         */
+
+        try {
+            const response: AxiosResponse = await axios({
+                method: "post",
+                url: configuration["api-base"].concat(configuration["api-tokenLogout"]),
+                headers: {"Authorization": `Token ${authToken}`} 
+            })
+            return response;
+        } catch(err: any) {
+            return err
+        }
+    };
+
     public async tokenLogin(email: string, password: string) {
         /**
          * @description logs in a user by sending their email (username field) and password via ajax calls using axios. 
@@ -86,7 +106,7 @@ class accountsClient  {
          * @returns Promise resolves to response or err.response
          */
         try {
-            const response = await axios({
+            const response:AxiosResponse = await axios({
                 method: "post",
                 url: configuration["api-base"].concat(configuration["api-tokenLogin"]),
                 data: {email: email, password: password},

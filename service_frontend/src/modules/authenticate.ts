@@ -3,7 +3,23 @@ import { accountsClient } from "./APImethods";
 import CookieHandler from "./cookies";
 
 import type { cookieDataType } from "../types/types";
+import { AxiosResponse } from "axios";
 
+export const logout = async () => {
+    const cookies = new CookieHandler();
+    const client = new accountsClient();
+
+    const authToken: string = cookies.getCookie("authToken");
+
+    if (authToken === "" || authToken === "deleted") return;
+    
+    const logoutResponse: AxiosResponse = await client.tokenLogout(authToken);
+   
+    if (logoutResponse.status === 204) {
+        cookies.deleteCookie("authToken");
+        window.localStorage.setItem("authenticated", "false");
+    };
+};
 
 export const login = async () => {
     const cookies = new CookieHandler();
@@ -15,6 +31,7 @@ export const login = async () => {
     } else {
         // auth token present
         const userData = await client.getUserData(authToken);
+
         // unsuccesfull use of token
         if (userData["detail"]) {
             window.localStorage.setItem("authenticated", "false")

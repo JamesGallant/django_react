@@ -1,4 +1,4 @@
-import {login} from "../authenticate";
+import {login, logout} from "../authenticate";
 import CookieHandler from "../cookies";
 import { accountsClient } from "../APImethods";
 import configuration from "../../utils/config";
@@ -7,8 +7,34 @@ import type { cookieDataType } from '../../types/types';
 import  { AxiosResponse } from "axios";
 
 jest.mock("axios");
+describe("Testing logout", () => {
+    beforeEach(()=> {});
+    afterEach(() => {
+        jest.clearAllMocks();
+    });
 
-describe("Testing authentication", () => {
+    it("removes local storage and cookies on logout", async () => {
+        let data = {
+            data: {},
+            status: 204,
+        }
+        const spyGetCookie = jest.spyOn(CookieHandler.prototype, 'getCookie').mockImplementation(() => "1234");
+        const spyOnApiHandler =  jest.spyOn(accountsClient.prototype, 'tokenLogout').mockImplementation(() => Promise.resolve(data));
+        const spyDeleteCookie = jest.spyOn(CookieHandler.prototype, 'deleteCookie');
+        const spyLocalStorage = jest.spyOn(window.localStorage.__proto__, 'setItem')
+
+        logout();
+
+        expect(spyGetCookie).toBeCalledTimes(1);
+        expect(spyOnApiHandler).toHaveBeenCalledTimes(1);
+        await spyOnApiHandler
+        expect(spyDeleteCookie).toBeCalledTimes(1);
+        expect(spyLocalStorage).toHaveBeenCalledWith("authenticated", "false");
+
+    })
+});
+
+describe("Testing login", () => {
     let axiosResponse : AxiosResponse;
     beforeAll(() => {
 

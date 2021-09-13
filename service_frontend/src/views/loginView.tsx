@@ -237,7 +237,7 @@ const LoginViewPage: React.FC = (): JSX.Element => {
      )
 };
 
-const LoginView = () => {
+const LoginView = (): JSX.Element => {
     
     const history = useHistory();
 

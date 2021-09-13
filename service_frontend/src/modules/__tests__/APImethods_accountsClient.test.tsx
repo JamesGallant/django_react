@@ -10,68 +10,84 @@ jest.mock("axios");
 
 describe("Testing authentication API calls", () => {
     let client: accountsClient;
+    let axiosResponse: AxiosResponse;
+    let axiosErrorResponse: AxiosError
+
     beforeEach(() => {
         client = new accountsClient();
+        axiosResponse = {
+            data: {},
+            status: 123, 
+            statusText: "OK", 
+            config: {},
+            headers: {}
+        };
+
+        axiosErrorResponse = {
+            response: {
+                data: {},
+                status: 400, 
+                statusText: "Unauthorized", 
+                config: {},
+                headers: {}
+            }
+        };
+
     });
 
     afterEach(() => {
         jest.clearAllMocks();
     });
 
+    it("logs out successfully", async () => {
+        axiosResponse.status = 204;
+        mocked(axios).mockResolvedValue(axiosResponse);
+
+        const response: AxiosResponse = await client.tokenLogout("123");
+
+        expect(response.status).toBe(204);
+    });
+
     it("activeUserAccount and sendEmail returns status code correctly", async () => {
-    
-        const axiosResponse: AxiosResponse = {
-            data: [""],
-            status: 400, 
-            statusText: "OK", 
-            config: {},
-            headers: {}
-        };
-    
+
+        axiosResponse.status = 200;
         mocked(axios).mockResolvedValue(axiosResponse);
         
         const response_activateUser = await client.activateUserAccount("Hello", "World")
         const response_sendEmail = await client.sendEmail("email@email.com")
     
-        expect(response_activateUser).toBe(400)
-        expect(response_sendEmail).toBe(400)
+        expect(response_activateUser).toBe(200)
+        expect(response_sendEmail).toBe(200)
     });
     
     it("registerUser returns error status code and data", async () => {
-
-        const axiosResponse: AxiosResponse = {
-            data: {
-                first_name: ["This is a error message"], 
-                last_name: ["This is a error message"],
-                email: ["This is a error message", "This is also a error message"],
-                country: ["This is a error message"],
-                password: ["This is a error message"]
-            },
-            status: 201, 
-            statusText: "OK", 
-            config: {},
-            headers: {}
+        let data = {
+            first_name: ["This is a error message"], 
+            last_name: ["This is a error message"],
+            email: ["This is a error message", "This is also a error message"],
+            country: ["This is a error message"],
+            password: ["This is a error message"]
         };
+
+        axiosResponse.status = 201;
+        axiosResponse.data = data;
+
         mocked(axios).mockResolvedValue(axiosResponse);
     
         const response = await client.registerUser({})
-        expect(response.data.first_name).toEqual(["This is a error message"])
-        expect(response.data.email).toEqual(["This is a error message", "This is also a error message"])
+        expect(response.data).toEqual(data)
         expect(response.status).toEqual(201)
     
     });
 
     it("login retruns errors correctly", async () => {
-
-        const axiosResponse: AxiosResponse = {
-            data: {
-                non_field_errors: ["This is a error message"], 
-            },
-            status: 400, 
-            statusText: "Bad Request", 
-            config: {},
-            headers: {}
+        let data = {
+            non_field_errors: ["This is a error message"], 
         };
+
+        axiosResponse.data = data;
+        axiosResponse.status = 400;
+
         mocked(axios).mockResolvedValue(axiosResponse);
     
         const response = await client.tokenLogin("email@email.com", "invalidPassword")
@@ -82,16 +98,13 @@ describe("Testing authentication API calls", () => {
     });
 
     it("login retruns auth token correctly", async () => {
-
-        const axiosResponse: AxiosResponse = {
-            data: {
-                auth_token: "randomstringofints", 
-            },
-            status: 200, 
-            statusText: "Ok", 
-            config: {},
-            headers: {}
+        const  data = {
+            auth_token: "randomstringofints", 
         };
+
+        axiosResponse.data = data;
+        axiosResponse.status = 200;
+
         mocked(axios).mockResolvedValue(axiosResponse);
     
         const response = await client.tokenLogin("email@email.com", "validPassword")
@@ -102,20 +115,15 @@ describe("Testing authentication API calls", () => {
     });
 
     it("returns user data correctly", async () => {
-        const data = {
+        let data = {
             first_name: "fname",
             last_name: "lname",
             mobile_number: "0600000000",
             country: "country" 
         }
-        const axiosResponse: AxiosResponse = {
-            data: {},
-            status: 200, 
-            statusText: "Ok", 
-            config: {},
-            headers: {}
-        };
+        
         axiosResponse.data = data;
+        axiosResponse.status = 200;
 
         mocked(axios).mockResolvedValue(axiosResponse);
         const response = await client.getUserData("someEncryptedToken");
@@ -123,45 +131,27 @@ describe("Testing authentication API calls", () => {
         expect(response).toEqual(data);
     });
 
-    it("displays error on nissing token", async () => {
-        const data = {
+    it("displays error on missing token", async () => {
+        let data = {
             "detail": "Authentication credentials were not provided."
         };
 
-        const axiosResponse: AxiosError = {
-            response: {
-                data: {},
-                status: 401, 
-                statusText: "Unauthorized", 
-                config: {},
-                headers: {}
-            }
-        };
-
-        axiosResponse.response.data = data;
-        mocked(axios).mockRejectedValue(axiosResponse);
+        axiosErrorResponse.response.data = data;
+        axiosErrorResponse.response.status = 401;
+        mocked(axios).mockRejectedValue(axiosErrorResponse);
         const response = await client.getUserData("someEncryptedToken");
 
         expect(response).toEqual(data);
     });
 
     it("displays error on malformed token", async () => {
-        const data = {
+        let data = {
             "detail": "Invalid token."
         };
 
-        const axiosResponse: AxiosError = {
-            response: {
-                data: {},
-                status: 401, 
-                statusText: "Unauthorized", 
-                config: {},
-                headers: {}
-            }
-        };
-
-        axiosResponse.response.data = data;
-        mocked(axios).mockRejectedValue(axiosResponse);
+        axiosErrorResponse.response.data = data;
+        axiosErrorResponse.response.status = 401;
+        mocked(axios).mockRejectedValue(axiosErrorResponse);
         const response = await client.getUserData("someEncryptedToken");
 
         expect(response).toEqual(data);

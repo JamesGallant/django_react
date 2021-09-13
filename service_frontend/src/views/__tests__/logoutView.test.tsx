@@ -1,9 +1,8 @@
 import { render } from '@testing-library/react';
-
-import DashboardView from '../dashboardView';
+import LogoutView from '../logoutView';
 
 describe("Testing the dashboard view", () => {
     it("mounts", () => {
-        render(<DashboardView />)
-    })
+        render(<LogoutView />)
+    });
 })
