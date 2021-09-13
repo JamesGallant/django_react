@@ -1,12 +1,10 @@
-import authenticate from "../authenticate";
+import {login} from "../authenticate";
 import CookieHandler from "../cookies";
 import { accountsClient } from "../APImethods";
 import configuration from "../../utils/config";
 
-import { mocked } from "ts-jest/dist/utils/testing";
-
 import type { cookieDataType } from '../../types/types';
-import axios, { AxiosResponse } from "axios";
+import  { AxiosResponse } from "axios";
 
 jest.mock("axios");
 
@@ -33,7 +31,7 @@ describe("Testing authentication", () => {
 
         const spyGetCookie = jest.spyOn(CookieHandler.prototype, 'getCookie').mockImplementation(() => "")
         const spyLocalStorage = jest.spyOn(window.localStorage.__proto__, 'setItem')
-        authenticate()
+        login()
 
         expect(spyGetCookie).toBeCalledTimes(1)
         expect(spyLocalStorage).toHaveBeenCalledWith("authenticated", "false")
@@ -47,7 +45,7 @@ describe("Testing authentication", () => {
         const spyDeleteCookie = jest.spyOn(CookieHandler.prototype, 'deleteCookie')
         const spyLocalStorage = jest.spyOn(window.localStorage.__proto__, 'setItem').mockReset();
 
-        authenticate()
+        login()
        
         expect(spyGetCookie).toBeCalledTimes(1);
         expect(spyOnApiHandler).toHaveBeenCalledTimes(1);
@@ -72,7 +70,7 @@ describe("Testing authentication", () => {
         const spyOnApiHandler =  jest.spyOn(accountsClient.prototype, 'getUserData').mockImplementation(() => Promise.resolve(axiosResponse));
         const spyLocalStorage = jest.spyOn(window.localStorage.__proto__, 'setItem').mockReset();
 
-        authenticate()
+        login()
        
         expect(spyGetCookie).toBeCalledTimes(1);
         expect(spyOnApiHandler).toHaveBeenCalledTimes(1);

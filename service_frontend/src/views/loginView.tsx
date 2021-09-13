@@ -21,9 +21,7 @@ import { accountsClient } from '../modules/APImethods';
 import CookieHandler from '../modules/cookies';
 
 import FlashError from '../components/helper/flashErrors';
-import authenticate from '../modules/authenticate';
-
-
+import {login} from '../modules/authenticate';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -244,7 +242,7 @@ const LoginView = () => {
     const history = useHistory();
 
     useEffect(() => {
-        authenticate();
+        login();
     }, []);
 
     if (window.localStorage.getItem("authenticated") === "true") {

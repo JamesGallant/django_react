@@ -5,7 +5,7 @@ import CookieHandler from "./cookies";
 import type { cookieDataType } from "../types/types";
 
 
-const  authenticate = async () => {
+export const login = async () => {
     const cookies = new CookieHandler();
     const client = new accountsClient();
     const authToken: string = cookies.getCookie("authToken");
@@ -37,5 +37,3 @@ const  authenticate = async () => {
         }
     }
 }
-
-export default authenticate;

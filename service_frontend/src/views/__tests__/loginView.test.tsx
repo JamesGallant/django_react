@@ -10,7 +10,7 @@ import CookieHandler from '../../modules/cookies';
 import { accountsClient } from '../../modules/APImethods';
 import configuration from '../../utils/config';
 
-import authenticate from "../../modules/authenticate";
+import {login} from "../../modules/authenticate";
 
 jest.mock('axios');
 jest.mock("../../modules/authenticate");
@@ -127,7 +127,7 @@ describe("Testing login", () => {
             </Router>);
 
        
-        expect(authenticate).toHaveBeenCalledTimes(1);
+        expect(login).toHaveBeenCalledTimes(1);
         expect(history.location.pathname).toBe(configuration["url-dashboard"]);
         
     });

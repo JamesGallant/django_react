@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 
 import configuration from "../utils/config";
-import authenticate from "../modules/authenticate";
+import {login} from "../modules/authenticate";
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({
@@ -18,7 +18,7 @@ const HomeView: FC = () => {
 
     const classes = useStyles();
     useEffect(() => {
-        authenticate();
+        login();
     }, [])
 
     return(
