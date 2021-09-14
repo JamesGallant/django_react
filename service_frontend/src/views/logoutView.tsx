@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import configuration from '../utils/config';
-import { logout } from '../modules/authenticate';
+import { logout } from '../modules/authentication';
 const LogoutView: FC = () => {
     const history = useHistory();
     

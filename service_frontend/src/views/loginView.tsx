@@ -17,11 +17,12 @@ import PasswordField from '../components/formFields/passwordComponent';
 import Copyright from '../components/helper/copyrightComponent';
 
 import configuration from '../utils/config';
-import { accountsClient } from '../modules/APImethods';
+import { postTokenLogin, getUserData } from '../api/authentication';
 import CookieHandler from '../modules/cookies';
 
 import FlashError from '../components/helper/flashErrors';
-import {login} from '../modules/authenticate';
+import {login} from '../modules/authentication';
+import { AxiosResponse } from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -82,11 +83,8 @@ const LoginViewPage: React.FC = (): JSX.Element => {
     const [flashError, setFlashError] = useState(false);
     const [checkboxValue, setCheckboxValue] = useState(false);
 
-
-    let client = new accountsClient();
     let cookieHandler = new CookieHandler();
     
-
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target
        
@@ -105,7 +103,7 @@ const LoginViewPage: React.FC = (): JSX.Element => {
         setCheckboxValue(event.target.checked)
     };
 
-    const submit = (event: React.FormEvent<HTMLFormElement>) => {
+    const submit = async (event: React.FormEvent<HTMLFormElement>) => {
         /**
          * @description Handles the form submission. Should send a AJAX request to the user login endpoint
          * @resource https://djoser.readthedocs.io/en/latest/token_endpoints.html#token-create
@@ -114,52 +112,54 @@ const LoginViewPage: React.FC = (): JSX.Element => {
         setFlashError(false);
         setFlashErrorMessage("")
 
-        const getToken = client.tokenLogin(formValues.email, formValues.password)
-        getToken.then((response) => {
-            switch(response.status) {
-                case 400:
-                    if (response.data.non_field_errors) {
-                        setFlashError(true); 
-                        setFlashErrorMessage("Invalid username or password");
-                    } else {
-                        setErrorMessage({
-                            email: typeof(response.data!.email) === "undefined" ? [""]: response.data!.email,
-                            password: typeof(response.data!.password) === "undefined" ? [""]: response.data!.password
-                        })
-                    };
-                    break;
-                case 401:
-                    setFlashError(true);
-                    setFlashErrorMessage("No account found, please register first");
-                    break;
-                case 200:
-                    
-                    const cookiePayload = {
-                        name: "authToken",
-                        value: response.data.auth_token,
-                        duration: checkboxValue ? configuration["cookie-maxAuthDuration"] : 0,
-                        path: "/",
-                        secure: true
-                    };
-                    cookieHandler.setCookie(cookiePayload);
-                    client.getUserData(response.data.auth_token).then((res) => {
-                        if (res["details"]) {
-                            window.localStorage.setItem("authenticated", "false")
-                            cookieHandler.deleteCookie("authToken")
-                            throw new Error("authentification failed due to malformed token, login again");
-                        };
-                        // TODO add user data to state
-                        console.log("TODO add userdata to state in login")
-                        window.localStorage.setItem("authenticated", "true");
-                        history.push(configuration["url-dashboard"]);
-                     })
-                    break;
-                default:
-                    throw new Error(`Status code ${response.status} is invalid. 
-                    Check https://djoser.readthedocs.io/en/latest/token_endpoints.html#token-create`)
-            }
-        });
-    }
+        const response: AxiosResponse = await postTokenLogin(formValues.email, formValues.password);
+        const statusCode: number = response.status;
+
+        switch(statusCode) {
+            case 400:
+                if (response.data.non_field_errors) {
+                    setFlashError(true); 
+                    setFlashErrorMessage("Invalid username or password");
+                } else {
+                    setErrorMessage({
+                        email: typeof(response.data!.email) === "undefined" ? [""]: response.data!.email,
+                        password: typeof(response.data!.password) === "undefined" ? [""]: response.data!.password
+                    })
+                };
+                break;
+            case 401:
+                setFlashError(true);
+                setFlashErrorMessage("No account found, please register first");
+                break;
+            case 200:
+                
+                const cookiePayload = {
+                    name: "authToken",
+                    value: response.data.auth_token,
+                    duration: checkboxValue ? configuration["cookie-maxAuthDuration"] : 0,
+                    path: "/",
+                    secure: true
+                };
+                cookieHandler.setCookie(cookiePayload);
+                // get user data
+                const userDataResponse: AxiosResponse = await getUserData(response.data.auth_token);
+                if (userDataResponse.data["details"]) {
+                    window.localStorage.setItem("authenticated", "false")
+                    cookieHandler.deleteCookie("authToken")
+                    throw new Error("authentification failed due to malformed token, login again");
+                }
+
+                // TODO add user data to state
+                console.log("TODO add userdata to state in login")
+                window.localStorage.setItem("authenticated", "true");
+                history.push(configuration["url-dashboard"]);
+
+                break;
+            default:
+                throw new Error(`Status code ${response.status} is invalid. 
+                Check https://djoser.readthedocs.io/en/latest/token_endpoints.html#token-create`)
+        };
+    };
 
      return(
         <div className = {classes.root}>
