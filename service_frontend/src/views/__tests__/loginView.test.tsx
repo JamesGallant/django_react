@@ -7,13 +7,13 @@ import { Router } from 'react-router-dom';
 
 import LoginView from '../loginView';
 import CookieHandler from '../../modules/cookies';
-import { accountsClient } from '../../modules/APImethods';
+import { postTokenLogin } from '../../api/authentication';
 import configuration from '../../utils/config';
 
-import {login} from "../../modules/authenticate";
+import {login} from "../../modules/authentication";
 
 jest.mock('axios');
-jest.mock("../../modules/authenticate");
+jest.mock("../../modules/authentication");
 
 describe("Testing login", () => {
     afterEach(() => {
@@ -25,8 +25,7 @@ describe("Testing login", () => {
     });
 
     it("Error is displayed on invalid account", async () => {
-        let client = new accountsClient()
-        
+
         const axiosResponse: AxiosResponse = {
             data: {
                 non_field_errors: ["Some error"]
@@ -39,9 +38,9 @@ describe("Testing login", () => {
 
         const wrapper = render(<LoginView />);
         const submitButton = wrapper.getByRole('button', {name: "Sign in"});
-
+        
         mocked(axios).mockResolvedValue(axiosResponse);
-        let response = await client.tokenLogin("", "");
+        let response = await postTokenLogin("", "");
 
         await waitFor(() => {
             fireEvent.click(submitButton);
@@ -53,7 +52,6 @@ describe("Testing login", () => {
     })
 
     it("displays field errors if input is invalid or missing", async () => {
-        let client = new accountsClient()
 
         const axiosResponse: AxiosResponse = {
             data: {
@@ -72,7 +70,8 @@ describe("Testing login", () => {
         const submitButton = wrapper.getByRole('button', {name: "Sign in"});
 
         mocked(axios).mockResolvedValue(axiosResponse);
-        let response = await client.tokenLogin("", "");
+        let response = await postTokenLogin("", "");
+
 
         await waitFor(() => {
             fireEvent.click(submitButton);
@@ -86,8 +85,6 @@ describe("Testing login", () => {
 
     it("sets cookies and routes to dashboard on successfull login", async () => {
         const history = createMemoryHistory();
-        
-        let client = new accountsClient()
 
         const axiosResponse: AxiosResponse = {
             data: {
@@ -105,7 +102,7 @@ describe("Testing login", () => {
 
          mocked(axios).mockResolvedValue(axiosResponse);
 
-        let response = await client.tokenLogin("", "");
+        let response = await postTokenLogin("", "");
         jest.spyOn(CookieHandler.prototype, 'setCookie')
         jest.spyOn(window.localStorage.__proto__, 'setItem')
         await waitFor(() => {

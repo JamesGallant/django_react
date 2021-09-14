@@ -23,7 +23,9 @@ import PasswordField from '../components/formFields/passwordComponent';
 import CountrySelect from '../components/formFields/countryComponent';
 import configuration from '../utils/config';
 
-import { accountsClient } from "../modules/APImethods";
+import { postRegisterUser } from '../api/authentication';
+import { AxiosResponse } from 'axios';
+import { UserModel } from '../types/authentication';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -139,10 +141,9 @@ const handleCountryData = (event: React.ChangeEvent<HTMLInputElement>, value: {c
 };
 
 
-const  submit = (event: React.FormEvent<HTMLFormElement>) => {
+const  submit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    // this should probs not be in submit
-    let client = new accountsClient()
+
     const country: any = countryCode
     const parsedPhoneNumber = parsePhoneNumber(formValues.mobileNumber, country)
     var phonenumber = formValues.mobileNumber
@@ -150,7 +151,7 @@ const  submit = (event: React.FormEvent<HTMLFormElement>) => {
          phonenumber = parsedPhoneNumber.number.toString()
      } 
     
-    const userData = {
+    const userData: UserModel = {
         first_name: formValues.firstName,
         last_name: formValues.lastName,
         mobile_number: phonenumber,
@@ -159,32 +160,33 @@ const  submit = (event: React.FormEvent<HTMLFormElement>) => {
         password: formValues.password
     };
     
-    const registerNewAccount = client.registerUser(userData)
-    registerNewAccount.then((res) => {
-        switch(res.status) {
-            case 201:
-                //account creation successfull
-                history.push(configuration["url-accountCreated"], {
-                    email: formValues.email,
-                    firstName: formValues.firstName,
-                });
-                break;
-            case 400:
-                // account creation failed
-                setErrorMessage({
-                    firstName: typeof(res.data!.first_name) === "undefined" ? [""]:  res.data!.first_name,
-                    lastName: typeof(res.data!.last_name) === "undefined" ? [""]:  res.data!.last_name,
-                    email: typeof(res.data!.email) === "undefined" ? [""]: res.data!.email,
-                    mobile: typeof(res.data!.mobile_number) === "undefined" ? [""]: res.data!.mobile_number,
-                    country: typeof(res.data!.country) === "undefined" ? [""]: res.data!.country,
-                    password: typeof(res.data!.password) === "undefined" ? [""]: res.data!.password,
-                });
-                break;
+    const registerNewAccountResponse: AxiosResponse = await postRegisterUser(userData);
+    const statusCode: number = registerNewAccountResponse.status;
+    const responseData = registerNewAccountResponse.data;
+    
+    switch(statusCode) {
+        case 201:
+            //account creation successfull
+            history.push(configuration["url-accountCreated"], {
+                email: formValues.email,
+                firstName: formValues.firstName,
+            });
+            break;
+        case 400:
+            // account creation failed
+            setErrorMessage({
+                firstName: typeof(responseData!.first_name) === "undefined" ? [""]: responseData!.first_name,
+                lastName: typeof(responseData!.last_name) === "undefined" ? [""]:  responseData!.last_name,
+                email: typeof(responseData!.email) === "undefined" ? [""]: responseData!.email,
+                mobile: typeof(responseData!.mobile_number) === "undefined" ? [""]: responseData!.mobile_number,
+                country: typeof(responseData!.country) === "undefined" ? [""]: responseData!.country,
+                password: typeof(responseData!.password) === "undefined" ? [""]: responseData!.password,
+            });
+            break;
 
-            default:
-                throw new Error("Status code invalid, should be 400 or 201. See https://djoser.readthedocs.io/en/latest/base_endpoints.html#user-create")
-        };
-    });
+        default:
+            throw new Error("Status code invalid, should be 400 or 201. See https://djoser.readthedocs.io/en/latest/base_endpoints.html#user-create")
+    };
 };
 
 return (
