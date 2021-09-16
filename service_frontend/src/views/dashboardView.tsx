@@ -1,9 +1,13 @@
-import react, { FC, useEffect } from 'react';
+import { FC } from 'react';
+import { useHistory } from 'react-router-dom';
 
-const DashboardView: FC = (): JSX.Element => {
-    
+import configuration from '../utils/config';
+
+const DashboardView: FC = (): null => {
+    const history = useHistory();
+    history.push(configuration["url-statisticsApplication"]);
     return(
-        <h1> Hello World</h1>
+       null
     );
 };
 

@@ -12,16 +12,16 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Box from '@material-ui/core/Box';
 
-import TextField from '../components/formFields/TextFieldComponent';
-import PasswordField from '../components/formFields/passwordComponent';
-import Copyright from '../components/helper/copyrightComponent';
+import TextField from '../../components/formFields/TextFieldComponent';
+import PasswordField from '../../components/formFields/passwordComponent';
+import Copyright from '../../components/helper/copyrightComponent';
 
-import configuration from '../utils/config';
-import { postTokenLogin, getUserData } from '../api/authentication';
-import CookieHandler from '../modules/cookies';
+import configuration from '../../utils/config';
+import { postTokenLogin, getUserData } from '../../api/authentication';
+import CookieHandler from '../../modules/cookies';
 
-import FlashError from '../components/helper/flashErrors';
-import {login} from '../modules/authentication';
+import FlashError from '../../components/helper/flashErrors';
+import {login} from '../../modules/authentication';
 import { AxiosResponse } from 'axios';
 
 const useStyles = makeStyles((theme) => ({

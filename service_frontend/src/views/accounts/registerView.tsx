@@ -17,15 +17,15 @@ import Container from '@material-ui/core/Container';
 import parsePhoneNumber from 'libphonenumber-js';
 
 // own
-import Copyright from '../components/helper/copyrightComponent'; 
-import TextField from '../components/formFields/TextFieldComponent';
-import PasswordField from '../components/formFields/passwordComponent';
-import CountrySelect from '../components/formFields/countryComponent';
-import configuration from '../utils/config';
+import Copyright from '../../components/helper/copyrightComponent'; 
+import TextField from '../../components/formFields/TextFieldComponent';
+import PasswordField from '../../components/formFields/passwordComponent';
+import CountrySelect from '../../components/formFields/countryComponent';
+import configuration from '../../utils/config';
 
-import { postRegisterUser } from '../api/authentication';
+import { postRegisterUser } from '../../api/authentication';
 import { AxiosResponse } from 'axios';
-import { UserModel } from '../types/authentication';
+import { UserModel } from '../../types/authentication';
 
 
 const useStyles = makeStyles((theme) => ({

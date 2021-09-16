@@ -2,18 +2,18 @@ import React from 'react';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import axios, { AxiosResponse } from "axios";
 import { mocked } from "ts-jest/dist/utils/testing";
-import { createMemoryHistory } from 'history'
+import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 
 import LoginView from '../loginView';
-import CookieHandler from '../../modules/cookies';
-import { postTokenLogin } from '../../api/authentication';
-import configuration from '../../utils/config';
+import CookieHandler from '../../../modules/cookies';
+import { postTokenLogin } from '../../../api/authentication';
+import configuration from '../../../utils/config';
 
-import {login} from "../../modules/authentication";
+import {login} from "../../../modules/authentication";
 
 jest.mock('axios');
-jest.mock("../../modules/authentication");
+jest.mock("../../../modules/authentication");
 
 describe("Testing login", () => {
     afterEach(() => {

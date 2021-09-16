@@ -3,8 +3,8 @@ import { useLocation, useHistory } from 'react-router-dom';
 
 import Button from '@material-ui/core/Button';
 
-import configuration from '../utils/config';
-import { postSendEmail } from "../api/authentication";
+import configuration from '../../utils/config';
+import { postSendEmail } from "../../api/authentication";
 import { AxiosResponse } from "axios";
 
 

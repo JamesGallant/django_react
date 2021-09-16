@@ -6,8 +6,8 @@ import { mocked } from "ts-jest/dist/utils/testing";
 import { createMemoryHistory } from 'history'
 import { Router } from 'react-router-dom';
 
-import RegisterView from '../registerView'
-import configuration from '../../utils/config'
+import RegisterView from '../registerView';
+import configuration from '../../../utils/config';
 
 jest.mock('axios')
 
