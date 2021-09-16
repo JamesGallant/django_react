@@ -1,9 +1,21 @@
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import {getUser} from "../../modules/redux/userSlice";
+import CookieHandler from '../../modules/cookies';
+import { getUserData } from '../../api/authentication';
 
 const ApplicationStatisticsView: FC = (): JSX.Element => {
+    const cookies = new CookieHandler()
+    const user = useAppSelector((state) => state.userReducer.user)
+    const dispatch = useAppDispatch();
     
+    useEffect(() => {
+        const token = cookies.getCookie("authToken")
+        dispatch(getUser(token))
+    }, [])
+
     return(
-        <h1> Hello stats</h1>
+        <h1> Hello stats: {user.data.email}</h1>
     );
 };
 

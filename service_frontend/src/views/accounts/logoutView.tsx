@@ -14,6 +14,7 @@ const LogoutView: FC = () => {
                 history.push(configuration["url-home"])
             }
         });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return(

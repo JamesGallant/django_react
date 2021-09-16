@@ -3,13 +3,6 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 import configuration from './utils/config';
 import PrivateRoute from './components/helper/privateRoute';
-// import HomeView from "./views/homeView"
-// import AccountActivationView from "./views/accounts/accountActivationView"
-// import RegisterView from "./views/accounts/registerView";
-// import LoginView from "./views/accounts/loginView";
-// import LogoutView from './views/accounts/logoutView';
-// import AccountCreatedView from './views/accounts/accountCreatedView';
-// import DashboardView  from './views/dashboardView';
 import views from './views';
 
 const App = () => {
