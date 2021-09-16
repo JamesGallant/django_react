@@ -1,5 +1,5 @@
 import { render, fireEvent, waitFor } from '@testing-library/react';
-import FlashError from '../../../components/helper/flashErrors';
+import FlashError from '../flashErrors';
 
 
 describe("Testing flashError component", () => {

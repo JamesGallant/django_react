@@ -48,7 +48,7 @@ const FlashError = (props: propTypes): JSX.Element | null => {
         if (toggleDisplay) {
             return(<div>
                 <Paper className={classes.root} variant="outlined" color="primary">
-                    <Grid container  justify="space-between">
+                    <Grid container  justifyContent="space-between">
                         <Grid item>
                         <Typography className={classes.text}>
                             { message }

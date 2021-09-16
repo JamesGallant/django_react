@@ -2,19 +2,21 @@ import React from 'react';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import axios, { AxiosResponse } from "axios";
 import { mocked } from "ts-jest/dist/utils/testing";
-import { createMemoryHistory } from 'history'
+import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
 
 import LoginView from '../loginView';
-import CookieHandler from '../../modules/cookies';
-import { accountsClient } from '../../modules/APImethods';
-import configuration from '../../utils/config';
+import CookieHandler from '../../../modules/cookies';
+import { postTokenLogin } from '../../../api/authentication';
+import configuration from '../../../utils/config';
 
+import {login} from "../../../modules/authentication";
 
 jest.mock('axios');
+jest.mock("../../../modules/authentication");
 
 describe("Testing login", () => {
-    beforeEach(() => {
+    afterEach(() => {
         jest.resetAllMocks();
       });
 
@@ -22,9 +24,8 @@ describe("Testing login", () => {
         render(<LoginView/>)
     });
 
-    it("Error is displayd on invalid account", async () => {
-        let client = new accountsClient()
-        
+    it("Error is displayed on invalid account", async () => {
+
         const axiosResponse: AxiosResponse = {
             data: {
                 non_field_errors: ["Some error"]
@@ -37,21 +38,20 @@ describe("Testing login", () => {
 
         const wrapper = render(<LoginView />);
         const submitButton = wrapper.getByRole('button', {name: "Sign in"});
-
+        
         mocked(axios).mockResolvedValue(axiosResponse);
-        let response = await client.tokenLogin("", "");
+        let response = await postTokenLogin("", "");
 
         await waitFor(() => {
             fireEvent.click(submitButton);
         });
 
         expect(response.status).toBe(400);
-        expect(await wrapper.findByText("Incorrect username or password")).toBeInTheDocument();
+        expect(await wrapper.findByText("Invalid username or password")).toBeInTheDocument();
 
     })
 
     it("displays field errors if input is invalid or missing", async () => {
-        let client = new accountsClient()
 
         const axiosResponse: AxiosResponse = {
             data: {
@@ -70,7 +70,8 @@ describe("Testing login", () => {
         const submitButton = wrapper.getByRole('button', {name: "Sign in"});
 
         mocked(axios).mockResolvedValue(axiosResponse);
-        let response = await client.tokenLogin("", "");
+        let response = await postTokenLogin("", "");
+
 
         await waitFor(() => {
             fireEvent.click(submitButton);
@@ -84,8 +85,6 @@ describe("Testing login", () => {
 
     it("sets cookies and routes to dashboard on successfull login", async () => {
         const history = createMemoryHistory();
-        
-        let client = new accountsClient()
 
         const axiosResponse: AxiosResponse = {
             data: {
@@ -102,9 +101,10 @@ describe("Testing login", () => {
             </Router>)
 
          mocked(axios).mockResolvedValue(axiosResponse);
-        let response = await client.tokenLogin("", "");
+
+        let response = await postTokenLogin("", "");
         jest.spyOn(CookieHandler.prototype, 'setCookie')
-        
+        jest.spyOn(window.localStorage.__proto__, 'setItem')
         await waitFor(() => {
             fireEvent.click(screen.getByRole('button', {name: "Sign in"}));
         });
@@ -112,7 +112,20 @@ describe("Testing login", () => {
         expect(response.status).toBe(200)
         expect(response.data.auth_token).toEqual("123456789")
         expect(CookieHandler.prototype.setCookie).toHaveBeenCalledTimes(1)
+        expect(window.localStorage.setItem).toBeCalledWith("authenticated", "true");
         expect(history.location.pathname).toBe(configuration["url-dashboard"])
-
     })
+
+    it("redirects to dash if already authenticated", () => {
+        const history = createMemoryHistory();
+       
+        render(<Router history={history}>
+            <LoginView />
+            </Router>);
+
+       
+        expect(login).toHaveBeenCalledTimes(1);
+        expect(history.location.pathname).toBe(configuration["url-dashboard"]);
+        
+    });
 })

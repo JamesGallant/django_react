@@ -1,19 +1,26 @@
-import React, { FC } from "react"
-
-import configuration from "../utils/config";
+import React, { FC, useEffect } from "react";
 
 import Grid from '@material-ui/core/Grid';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+
+import configuration from "../utils/config";
+import {login} from "../modules/authentication";
 
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({
         root: {
             padding: theme.spacing(5)
         }
-    }));
-    
+    })
+);
+
 const HomeView: FC = () => {
+
     const classes = useStyles();
+    useEffect(() => {
+        login();
+    }, [])
+
     return(
         <div className={classes.root}>
             <Grid>
@@ -25,7 +32,10 @@ const HomeView: FC = () => {
                             <a href={ configuration["url-login"] }>Login </a>
                     </Grid>
                     <Grid item xs={12}>
-                            <a href={  "/auth/activate/Hello/World/" }>test page </a>
+                            <a href={  configuration["url-dashboard"] }>dashboard</a>
+                    </Grid>
+                    <Grid item xs={12}>
+                            <a href={  configuration["url-logout"] }>logout</a>
                     </Grid>
                 </Grid>
             </Grid>

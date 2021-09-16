@@ -1,8 +1,9 @@
 import { FC, useState, useEffect } from "react";
 import { useParams, useHistory } from 'react-router-dom';
 
-import configuration from "../utils/config";
-import { accountsClient } from "../modules/APImethods";
+import configuration from "../../utils/config";
+import { postActivateUserAccount } from "../../api/authentication";
+import { AxiosResponse } from "axios";
 
 const AccountActivationView: FC = () => {
     /**
@@ -21,9 +22,14 @@ const AccountActivationView: FC = () => {
     // api calls using useEffect hook
     // Note: the empty deps array [] means it will run once after react updates the DOM, otherwise the email is sent twice.
     useEffect(() => {
-        let client = new accountsClient()
-        const getStatus = client.activateUserAccount(uid, token);
-        getStatus.then((status) => setStatusCode(status))
+        const activateUser = async () => {
+            const response: AxiosResponse = await postActivateUserAccount(uid, token);
+            const statusCode: number = response.status;
+            setStatusCode(statusCode);
+        };
+
+        activateUser();
+        
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

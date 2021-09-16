@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,17 +12,17 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import Box from '@material-ui/core/Box';
 
-import TextField from '../components/formFields/TextFieldComponent';
-import PasswordField from '../components/formFields/passwordComponent';
-import Copyright from '../components/helper/copyrightComponent';
+import TextField from '../../components/formFields/TextFieldComponent';
+import PasswordField from '../../components/formFields/passwordComponent';
+import Copyright from '../../components/helper/copyrightComponent';
 
-import configuration from '../utils/config';
-import { accountsClient } from '../modules/APImethods';
-import CookieHandler from '../modules/cookies';
+import configuration from '../../utils/config';
+import { postTokenLogin, getUserData } from '../../api/authentication';
+import CookieHandler from '../../modules/cookies';
 
-import FlashError from '../components/helper/flashErrors';
-
-
+import FlashError from '../../components/helper/flashErrors';
+import {login} from '../../modules/authentication';
+import { AxiosResponse } from 'axios';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -58,11 +58,6 @@ interface errTypes {
     password: string[],
 };
 
-interface tokenTypes {
-    storeToken: boolean, 
-    token: string
-}
-
 const initialFormVals: formTypes = {
     email: "",
     password: "",
@@ -70,15 +65,10 @@ const initialFormVals: formTypes = {
 
 const initialErrs: errTypes = {
     email: [""],
-    password: [""],
+    password: [""], 
 };
 
-const initialTokenVals: tokenTypes = {
-    storeToken: false,
-    token: ""
-};
-
-const LoginView: React.FC = (): JSX.Element => {
+const LoginViewPage: React.FC = (): JSX.Element => {
     /**
      * @description Component that handles the login logic. Sends a request to the accounts backend for a token.
      * API endpoint requires email and password and returns [status] and token or [errors]
@@ -89,14 +79,12 @@ const LoginView: React.FC = (): JSX.Element => {
     const history = useHistory();
     const [formValues, setFormValues] = useState(initialFormVals);
     const [errorMessage, setErrorMessage] = useState(initialErrs);
+    const [flashErrorMessage, setFlashErrorMessage] = useState("")
     const [flashError, setFlashError] = useState(false);
     const [checkboxValue, setCheckboxValue] = useState(false);
 
-
-    let client = new accountsClient();
     let cookieHandler = new CookieHandler();
     
-
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target
        
@@ -115,48 +103,63 @@ const LoginView: React.FC = (): JSX.Element => {
         setCheckboxValue(event.target.checked)
     };
 
-    const submit = (event: React.FormEvent<HTMLFormElement>) => {
+    const submit = async (event: React.FormEvent<HTMLFormElement>) => {
         /**
          * @description Handles the form submission. Should send a AJAX request to the user login endpoint
          * @resource https://djoser.readthedocs.io/en/latest/token_endpoints.html#token-create
          */
         event.preventDefault();
         setFlashError(false);
+        setFlashErrorMessage("")
 
-        const getToken = client.tokenLogin(formValues.email, formValues.password)
-        getToken.then((response) => {
-            switch(response.status) {
-                case 400:
-                    if (response.data.non_field_errors) {
-                        setFlashError(true)  
-                    } else {
-                        setErrorMessage({
-                            email: typeof(response.data!.email) === "undefined" ? [""]: response.data!.email,
-                            password: typeof(response.data!.password) === "undefined" ? [""]: response.data!.password
-                        })
-                    };
-                    break;
-                case 200:
-                    
-                    const cookiePayload = {
-                        name: "authToken",
-                        value: response.data.auth_token,
-                        duration: checkboxValue ? configuration["cookie-maxAuthDuration"] : 0,
-                        path: "/",
-                        secure: true
-                    };
-                    cookieHandler.setCookie(cookiePayload);
-                    // go to homepage and display welcome based on me endpoint
-                    
-                    history.push(configuration["url-dashboard"]);
-                    break;
-                default:
-                    throw new Error(`Status code ${response.status} is invalid. 
-                    Check https://djoser.readthedocs.io/en/latest/token_endpoints.html#token-create`)
-            }
-        });
-        
-    }
+        const response: AxiosResponse = await postTokenLogin(formValues.email, formValues.password);
+        const statusCode: number = response.status;
+
+        switch(statusCode) {
+            case 400:
+                if (response.data.non_field_errors) {
+                    setFlashError(true); 
+                    setFlashErrorMessage("Invalid username or password");
+                } else {
+                    setErrorMessage({
+                        email: typeof(response.data!.email) === "undefined" ? [""]: response.data!.email,
+                        password: typeof(response.data!.password) === "undefined" ? [""]: response.data!.password
+                    })
+                };
+                break;
+            case 401:
+                setFlashError(true);
+                setFlashErrorMessage("No account found, please register first");
+                break;
+            case 200:
+                
+                const cookiePayload = {
+                    name: "authToken",
+                    value: response.data.auth_token,
+                    duration: checkboxValue ? configuration["cookie-maxAuthDuration"] : 0,
+                    path: "/",
+                    secure: true
+                };
+                cookieHandler.setCookie(cookiePayload);
+                // get user data
+                const userDataResponse: AxiosResponse = await getUserData(response.data.auth_token);
+                if (userDataResponse.data["details"]) {
+                    window.localStorage.setItem("authenticated", "false")
+                    cookieHandler.deleteCookie("authToken")
+                    throw new Error("authentification failed due to malformed token, login again");
+                }
+
+                // TODO add user data to state
+                console.log("TODO add userdata to state in login")
+                window.localStorage.setItem("authenticated", "true");
+                history.push(configuration["url-dashboard"]);
+
+                break;
+            default:
+                throw new Error(`Status code ${response.status} is invalid. 
+                Check https://djoser.readthedocs.io/en/latest/token_endpoints.html#token-create`)
+        };
+    };
 
      return(
         <div className = {classes.root}>
@@ -171,7 +174,7 @@ const LoginView: React.FC = (): JSX.Element => {
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <FlashError 
-                                    message="Incorrect username or password"
+                                    message={ flashErrorMessage }
                                     display={ flashError }
                                     />
                         </Grid>
@@ -217,7 +220,7 @@ const LoginView: React.FC = (): JSX.Element => {
                     >
                         Sign in
                     </Button>
-                    <Grid container justify="flex-end">
+                    <Grid container justifyContent="flex-end">
                     <Grid item>
                         <Link href={configuration["url-register"]} variant="body2">
                             New to {process.env.REACT_APP_SITE_NAME}? create an account
@@ -233,5 +236,27 @@ const LoginView: React.FC = (): JSX.Element => {
         </div>
      )
 };
+
+const LoginView = (): JSX.Element => {
+    
+    const history = useHistory();
+
+    useEffect(() => {
+        login();
+    }, []);
+
+    if (window.localStorage.getItem("authenticated") === "true") {
+        history.push(configuration["url-dashboard"]);
+    } else {
+        return(
+            <LoginViewPage />
+        )
+    };
+
+    return (
+        <div></div>
+    );
+}
+
 
 export default LoginView;
