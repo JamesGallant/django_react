@@ -1,11 +1,11 @@
 import { FC, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import {getUser} from "../../modules/redux/userSlice";
+import {getUser, selectUserData} from "../../store/slices/userSlice";
 import CookieHandler from '../../modules/cookies';
 
 const ApplicationStatisticsView: FC = (): JSX.Element => {
     const cookies = new CookieHandler()
-    const user = useAppSelector((state) => state.userData.user)
+    const user = useAppSelector(selectUserData);
     const dispatch = useAppDispatch();
     
     useEffect(() => {
@@ -14,7 +14,7 @@ const ApplicationStatisticsView: FC = (): JSX.Element => {
     }, [])
 
     return(
-        <h1> Hello stats: {user.data.email}</h1>
+        <h1> Hello stats: {user.email}</h1>
     );
 };
 

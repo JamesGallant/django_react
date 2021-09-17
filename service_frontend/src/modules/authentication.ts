@@ -38,8 +38,6 @@ export const login = async () => {
             cookies.deleteCookie("authToken")
         } else {
             // successfully retrieved data
-            console.log(userData) // add to state
-            console.log("TODO add userdata to state, from authenticate.ts")
             window.localStorage.setItem("authenticated", "true");
             // extendCookies
             const cookiePayload: cookieDataType = {

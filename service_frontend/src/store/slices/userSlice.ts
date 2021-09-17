@@ -3,7 +3,7 @@ import { AxiosResponse } from "axios";
 
 import { getUserData } from "../../api/authentication";
 
-import type { RootState } from "../../store/store";
+import type { RootState } from "../store";
 import type { UserData } from "../../types/authentication";
 
 interface userDataState {
@@ -56,7 +56,7 @@ export const userSlice = createSlice({
 
             [getUser.fulfilled.type]: (state, action: PayloadAction<UserData>) => {
                 state.user = {
-                    stateStatus: "idle",
+                    stateStatus: "success",
                     data: {
                         id: action.payload.id,
                         first_name: action.payload.first_name,
@@ -69,12 +69,13 @@ export const userSlice = createSlice({
                 };
             },
             [getUser.rejected.type]: (state, action: PayloadAction<userDataError>) => {
-                state.user.stateStatus = "idle";
+                state.user.stateStatus = "failed";
                 state.user.error = action.payload.data;
             },
         }
 });
 
-export const selectUser = (state: RootState) => state.userData.user.data
+export const selectUserReducer = (state: RootState) => state.userReducer.user
+export const selectUserData = (state: RootState) => state.userReducer.user.data
 
 export default userSlice.reducer;
