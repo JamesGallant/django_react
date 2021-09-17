@@ -2,11 +2,10 @@ import { FC, useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import {getUser} from "../../modules/redux/userSlice";
 import CookieHandler from '../../modules/cookies';
-import { getUserData } from '../../api/authentication';
 
 const ApplicationStatisticsView: FC = (): JSX.Element => {
     const cookies = new CookieHandler()
-    const user = useAppSelector((state) => state.userReducer.user)
+    const user = useAppSelector((state) => state.userData.user)
     const dispatch = useAppDispatch();
     
     useEffect(() => {
