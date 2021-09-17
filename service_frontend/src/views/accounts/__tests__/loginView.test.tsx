@@ -4,6 +4,8 @@ import axios, { AxiosResponse } from "axios";
 import { mocked } from "ts-jest/dist/utils/testing";
 import { createMemoryHistory } from 'history';
 import { Router } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from '../../../store/store';
 
 import LoginView from '../loginView';
 import CookieHandler from '../../../modules/cookies';
@@ -21,7 +23,11 @@ describe("Testing login", () => {
       });
 
     it("component renders correctly", () => {
-        render(<LoginView/>)
+        render(
+            <Provider store={store}>
+                <LoginView/>
+            </Provider>
+        );
     });
 
     it("Error is displayed on invalid account", async () => {
@@ -36,7 +42,11 @@ describe("Testing login", () => {
             headers: {}
         };
 
-        const wrapper = render(<LoginView />);
+        const wrapper = render(
+            <Provider store={store}>
+                <LoginView/>
+            </Provider>
+        );
         const submitButton = wrapper.getByRole('button', {name: "Sign in"});
         
         mocked(axios).mockResolvedValue(axiosResponse);
@@ -64,7 +74,12 @@ describe("Testing login", () => {
             headers: {}
         };
 
-        const wrapper = render(<LoginView />);
+        const wrapper = render(
+            <Provider store={store}>
+                <LoginView/>
+            </Provider>
+        );
+        
         const email = wrapper.getByRole('textbox', {name: "email"})
 
         const submitButton = wrapper.getByRole('button', {name: "Sign in"});
@@ -96,9 +111,12 @@ describe("Testing login", () => {
             headers: {}
         };
 
-        render(<Router history={history}>
-            <LoginView />
-            </Router>)
+        render(
+            <Provider store={store}>
+                <Router history={history}>
+                    <LoginView />
+                </Router>
+            </Provider>);
 
          mocked(axios).mockResolvedValue(axiosResponse);
 
@@ -119,11 +137,13 @@ describe("Testing login", () => {
     it("redirects to dash if already authenticated", () => {
         const history = createMemoryHistory();
        
-        render(<Router history={history}>
-            <LoginView />
-            </Router>);
+        render(
+            <Provider store={store}>
+                <Router history={history}>
+                    <LoginView />
+                </Router>
+            </Provider>);
 
-       
         expect(login).toHaveBeenCalledTimes(1);
         expect(history.location.pathname).toBe(configuration["url-dashboard"]);
         

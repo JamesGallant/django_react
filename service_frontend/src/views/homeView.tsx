@@ -32,9 +32,6 @@ const HomeView: FC = () => {
                             <a href={ configuration["url-login"] }>Login </a>
                     </Grid>
                     <Grid item xs={12}>
-                            <a href={  configuration["url-dashboard"] }>dashboard</a>
-                    </Grid>
-                    <Grid item xs={12}>
                             <a href={  configuration["url-logout"] }>logout</a>
                     </Grid>
                 </Grid>

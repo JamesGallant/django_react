@@ -19,6 +19,8 @@ import Copyright from '../../components/helper/copyrightComponent';
 import configuration from '../../utils/config';
 import { postTokenLogin, getUserData } from '../../api/authentication';
 import CookieHandler from '../../modules/cookies';
+import { useAppDispatch } from '../../store/hooks';
+import {getUser } from "../../store/slices/userSlice";
 
 import FlashError from '../../components/helper/flashErrors';
 import {login} from '../../modules/authentication';
@@ -238,7 +240,8 @@ const LoginViewPage: React.FC = (): JSX.Element => {
 };
 
 const LoginView = (): JSX.Element => {
-    
+    const cookies = new CookieHandler()
+    const dispatch = useAppDispatch();
     const history = useHistory();
 
     useEffect(() => {
@@ -246,6 +249,8 @@ const LoginView = (): JSX.Element => {
     }, []);
 
     if (window.localStorage.getItem("authenticated") === "true") {
+        const token = cookies.getCookie("authToken")
+        dispatch(getUser(token))
         history.push(configuration["url-dashboard"]);
     } else {
         return(
