@@ -56,5 +56,4 @@ class TestAdditionalAuthEndpoints(APITestCase):
         self.client.credentials()
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-        self.assertEqual(response.data.get('detail'), 'Invalid token')
 

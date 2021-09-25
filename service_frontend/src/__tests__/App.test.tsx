@@ -1,6 +1,6 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from '../App';
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "../App";
 
 /**
  * @author James Gallant
@@ -10,7 +10,7 @@ import App from '../App';
  **/
 
 // smoke test
-it('App component renders', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
+it("App component renders", () => {
+	const div = document.createElement("div");
+	ReactDOM.render(<App />, div);
 });

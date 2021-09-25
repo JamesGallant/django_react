@@ -13,14 +13,14 @@ import RegisterView from "./accounts/registerView";
 import ApplicationStatisticsView from "./applications/applicationStatisticsView";
 
 const views = {
-    HomeView,
-    DashboardView,
-    AccountActivationView,
-    AccountCreatedView,
-    LoginView,
-    LogoutView,
-    RegisterView,
-    ApplicationStatisticsView,
-}
+	HomeView,
+	DashboardView,
+	AccountActivationView,
+	AccountCreatedView,
+	LoginView,
+	LogoutView,
+	RegisterView,
+	ApplicationStatisticsView,
+};
 
 export default views;
