@@ -26,6 +26,7 @@ import FlashError from '../../components/helper/flashErrors';
 import {login} from '../../modules/authentication';
 import { AxiosResponse } from 'axios';
 
+
 const useStyles = makeStyles((theme) => ({
     root: {
         position: 'absolute',
@@ -84,8 +85,19 @@ const LoginViewPage: React.FC = (): JSX.Element => {
     const [flashErrorMessage, setFlashErrorMessage] = useState("")
     const [flashError, setFlashError] = useState(false);
     const [checkboxValue, setCheckboxValue] = useState(false);
+    const [isAuthenticated, setIsAuthenticated] = useState(false)
 
     let cookieHandler = new CookieHandler();
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        const token: string = cookieHandler.getCookie("authToken");
+
+        if (token !== "") {
+            dispatch(getUser(token));
+        }
+
+    }, [isAuthenticated])
     
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target
@@ -150,10 +162,9 @@ const LoginViewPage: React.FC = (): JSX.Element => {
                     cookieHandler.deleteCookie("authToken")
                     throw new Error("authentification failed due to malformed token, login again");
                 }
-
-                // TODO add user data to state
-                console.log("TODO add userdata to state in login")
+                
                 window.localStorage.setItem("authenticated", "true");
+                setIsAuthenticated(true)
                 history.push(configuration["url-dashboard"]);
 
                 break;
