@@ -1,16 +1,14 @@
 name: service_frontend_tests
 on:
-  push:
-  pull_request:
-    branches:
-      - main
-      - dev
+#  push:
+#  pull_request:
+#    branches:
+#      - main
+#      - dev
 
 jobs:
-  build:
-
+  service_frontend_testing:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [12.x, 14.x]

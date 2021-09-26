@@ -2,11 +2,11 @@
 name: service_backend_test
 
 on:
-  push:
-  pull_request:
-    branches:
-      - main
-      - dev
+#  push:
+#  pull_request:
+#    branches:
+#      - main
+#      - dev
 
 jobs:
   service_backend_testing:
