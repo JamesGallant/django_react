@@ -1,3 +1,6 @@
+# -- linting
+black==21.9b0
+
 # -- postgresql
 psycopg2==2.8.6
 

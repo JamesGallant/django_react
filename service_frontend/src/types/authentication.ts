@@ -10,3 +10,12 @@ export interface UserModel {
     country: string,
     password: string
 }
+
+export interface UserData {
+    id: number | null
+    first_name: string | null,
+    last_name: string | null,
+    mobile_number: string | number | null,
+    email: string | null,
+    country: string | null,
+}

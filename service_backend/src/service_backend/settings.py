@@ -36,56 +36,54 @@ SITE_NAME = develop_configuration.get("site_name", "test site")
 
 INSTALLED_APPS = [
     # ours
-    'app_accounts.apps.AccountsConfig',
-
+    "app_accounts.apps.AccountsConfig",
     # third party
-    'corsheaders',
-    'rest_framework',
-    'rest_framework.authtoken',
-    'djoser',
-    'phonenumber_field',
-
+    "corsheaders",
+    "rest_framework",
+    "rest_framework.authtoken",
+    "djoser",
+    "phonenumber_field",
     # django
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.security.SecurityMiddleware",
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = 'service_backend.urls'
+ROOT_URLCONF = "service_backend.urls"
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, "templates")],
-        'APP_DIRS': True,
-        'OPTIONS': {
-            'context_processors': [
-                'django.template.context_processors.debug',
-                'django.template.context_processors.request',
-                'django.contrib.auth.context_processors.auth',
-                'django.contrib.messages.context_processors.messages',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [os.path.join(BASE_DIR, "templates")],
+        "APP_DIRS": True,
+        "OPTIONS": {
+            "context_processors": [
+                "django.template.context_processors.debug",
+                "django.template.context_processors.request",
+                "django.contrib.auth.context_processors.auth",
+                "django.contrib.messages.context_processors.messages",
                 # ours
-                'service_backend.context_processors.frontend_url'
+                "service_backend.context_processors.frontend_url",
             ],
         },
     },
 ]
 
-WSGI_APPLICATION = 'service_backend.wsgi.application'
+WSGI_APPLICATION = "service_backend.wsgi.application"
 
 
 # Database
@@ -99,9 +97,7 @@ DATABASES = {
         "PASSWORD": os.environ.get("SQL_PASSWORD", None),
         "HOST": os.environ.get("SQL_HOST", "localhost"),
         "PORT": develop_configuration.get("sql_port", "5432"),
-        "TEST": {
-            "NAME": develop_configuration.get("sql_test_database", "test_db")
-        }
+        "TEST": {"NAME": develop_configuration.get("sql_test_database", "test_db")},
     }
 }
 
@@ -111,16 +107,16 @@ DATABASES = {
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
     },
     {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
 ]
 
@@ -128,9 +124,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = "UTC"
 
 USE_I18N = True
 
@@ -142,7 +138,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 
 
 # Email support
@@ -153,39 +149,51 @@ EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", None)
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", None)
 
 # app_accounts model
-AUTH_USER_MODEL = 'app_accounts.UserModel'
-DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+AUTH_USER_MODEL = "app_accounts.UserModel"
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 # Rest framework settings
 
 # CORS
-CORS_ORIGIN_WHITELIST = [f"{develop_configuration.get('protocol')}{develop_configuration.get('frontend_url')}"]
+CORS_ORIGIN_WHITELIST = [
+    f"{develop_configuration.get('protocol')}{develop_configuration.get('frontend_url')}"
+]
 
 # restrict to api only
 CORS_ORIGIN_ALLOW_ALL = False
 
 REST_FRAMEWORK = {
-     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
-     "DEFAULT_AUTHENTICATION_CLASSES": (
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.TokenAuthentication",
-     ),
- }
+    ),
+}
 
 # djoser
 DJOSER = {
-    'SEND_ACTIVATION_EMAIL': develop_configuration.get("djoser_send_mail", False),
-    'SEND_CONFIRMATION_EMAIL': develop_configuration.get("djoser_send_confirmation_email", False),
-    'PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND': develop_configuration.get("djoser_password_reset", False),
-    'USERNAME_RESET_SHOW_EMAIL_NOT_FOUND': develop_configuration.get("djoser_username_reset", False),
-    "LOGIN_FIELD":  develop_configuration.get('djoser_login_field', "username"),
-    'HIDE_USERS': develop_configuration.get('djoser_hide_users', True),
-    'ACTIVATION_URL': develop_configuration.get("djoser_email_activation_url", None),
-    'USERNAME_RESET_CONFIRM_URL': develop_configuration.get("djoser_username_reset_url", None),
-    'PASSWORD_RESET_CONFIRM_URL':develop_configuration.get("djoser_password_reset_url", None),
-    'SERIALIZERS': {},
-    'EMAIL': {
-        'activation': 'app_accounts.email.activation_email.ActivationEmail',
-        'username_changed_confirmation': 'app_accounts.email.username_reset_confirmation.UsernameChangedConfirmationEmail',
-        'username_reset': 'app_accounts.email.username_reset.UsernameResetEmail',
-    }
+    "SEND_ACTIVATION_EMAIL": develop_configuration.get("djoser_send_mail", False),
+    "SEND_CONFIRMATION_EMAIL": develop_configuration.get(
+        "djoser_send_confirmation_email", False
+    ),
+    "PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND": develop_configuration.get(
+        "djoser_password_reset", False
+    ),
+    "USERNAME_RESET_SHOW_EMAIL_NOT_FOUND": develop_configuration.get(
+        "djoser_username_reset", False
+    ),
+    "LOGIN_FIELD": develop_configuration.get("djoser_login_field", "username"),
+    "HIDE_USERS": develop_configuration.get("djoser_hide_users", True),
+    "ACTIVATION_URL": develop_configuration.get("djoser_email_activation_url", None),
+    "USERNAME_RESET_CONFIRM_URL": develop_configuration.get(
+        "djoser_username_reset_url", None
+    ),
+    "PASSWORD_RESET_CONFIRM_URL": develop_configuration.get(
+        "djoser_password_reset_url", None
+    ),
+    "SERIALIZERS": {},
+    "EMAIL": {
+        "activation": "app_accounts.email.activation_email.ActivationEmail",
+        "username_changed_confirmation": "app_accounts.email.username_reset_confirmation.UsernameChangedConfirmationEmail",
+        "username_reset": "app_accounts.email.username_reset.UsernameResetEmail",
+    },
 }

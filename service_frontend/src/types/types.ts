@@ -6,7 +6,7 @@ export interface cookieDataType {
     duration: number, 
     path: string,
     secure: boolean
-};
+}
 
 export interface AxiosError {
     response: AxiosResponse

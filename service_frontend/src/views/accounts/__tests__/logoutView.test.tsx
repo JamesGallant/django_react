@@ -1,8 +1,9 @@
-import { render } from '@testing-library/react';
-import LogoutView from '../logoutView';
+import React from "react";
+import { render } from "@testing-library/react";
+import LogoutView from "../logoutView";
 
 describe("Testing the dashboard view", () => {
-    it("mounts", () => {
-        render(<LogoutView />)
-    });
-})
+	it("mounts", () => {
+		render(<LogoutView />);
+	});
+});

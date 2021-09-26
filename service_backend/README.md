@@ -1,6 +1,7 @@
 # Accounts documentation
 <!-- badges: start -->
-[![.github/workflows/service_backend_test.yml](https://github.com/JamesGallant/django_react/actions/workflows/service_backend_test.yml/badge.svg)](https://github.com/JamesGallant/django_react/actions/workflows/service_backend_test.yml)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![continous integration tests](https://github.com/JamesGallant/django_react/actions/workflows/CI.yml/badge.svg)](https://github.com/JamesGallant/django_react/actions/workflows/CI.yml)
 <!-- badges: stop -->
 # To Do
  - Email no longer available
