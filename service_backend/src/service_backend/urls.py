@@ -21,7 +21,7 @@ from rest_framework import routers
 router = routers.DefaultRouter()
 
 urlpatterns = [
-    path('api/v1/', include('app_accounts.urls')),
-    path('admin/', admin.site.urls),
-    path('api-auth', include('rest_framework.urls', namespace='rest_framework'))
+    path("api/v1/", include("app_accounts.urls")),
+    path("admin/", admin.site.urls),
+    path("api-auth", include("rest_framework.urls", namespace="rest_framework")),
 ]

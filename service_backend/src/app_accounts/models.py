@@ -14,8 +14,8 @@ class UserModel(AbstractUser):
     country = models.CharField(null=False, blank=False, max_length=100)
 
     # sets email to be the unique field, usernames cause issues and is annoying to users
-    USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name', 'mobile_number', 'country']
+    USERNAME_FIELD = "email"
+    REQUIRED_FIELDS = ["first_name", "last_name", "mobile_number", "country"]
 
     objects = AccountsManager()
 
