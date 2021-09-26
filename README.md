@@ -1,7 +1,6 @@
 # Documentation for CookieCutter SaaS
 <!-- badges: start -->
-[![service_backend_tests](https://github.com/JamesGallant/django_react/actions/workflows/service_backend_test.yml/badge.svg)](https://github.com/JamesGallant/django_react/actions/workflows/service_backend_test.yml)
-[![service_frontend_tests](https://github.com/JamesGallant/django_react/actions/workflows/service_frontend_tests.yml/badge.svg)](https://github.com/JamesGallant/django_react/actions/workflows/service_frontend_tests.yml)
+[![continous integration tests](https://github.com/JamesGallant/django_react/actions/workflows/CI.yml/badge.svg)](https://github.com/JamesGallant/django_react/actions/workflows/CI.yml)
 <!-- badges: stop -->
 ## Todo
 Add a split between development and production. Right now in django this can be handled using the environ file
