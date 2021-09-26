@@ -26,6 +26,7 @@ jobs:
 #  testing
   service_frontend_testing:
     runs-on: ubuntu-latest
+    name: frontend unit tests
     needs: eslint
     strategy:
       matrix:
@@ -47,7 +48,7 @@ jobs:
   service_backend_testing:
     runs-on: ubuntu-latest
     needs: black
-    name: Unit tests for the accounts
+    name: backend unit tests
     environment: develop
 
     services:
