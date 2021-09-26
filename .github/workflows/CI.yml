@@ -5,13 +5,21 @@ on:
       - main
       - dev
 jobs:
-  linting:
-    - name: eslint
-      runs-on: ubuntu-latest
-      steps:
-        - uses: actions/checkout@v2
-        - uses: actions/setup-node@v2
-        - run: npm install
-          working-directory: ./service_frontend/
-        - run: npm run eslint
-          working-directory: ./service_frontend/
+  eslint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
+      - run: npm install
+        working-directory: ./service_frontend/
+      - run: npm run eslint
+        working-directory: ./service_frontend/
+
+  black:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: psf/black@stable
+        with:
+          options: "--check --verbose"
+          src: "./service_backend/src"
