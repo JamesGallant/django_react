@@ -1,9 +1,8 @@
 name: continous integration
 on:
   push:
-    branches:
-      - main
-      - dev
+  pull_request:
+
 jobs:
   eslint:
     runs-on: ubuntu-latest
@@ -14,6 +13,7 @@ jobs:
         working-directory: ./service_frontend/
       - run: npm run eslint
         working-directory: ./service_frontend/
+
   black:
     runs-on: ubuntu-latest
     steps:
