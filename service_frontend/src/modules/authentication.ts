@@ -46,8 +46,6 @@ export const login = async (): Promise<void> => {
 				const lastServerLogin: Date = new Date (userData["message"].last_login);
 				const currentLogin: Date = new Date();
 				const diffInLogin: number = currentLogin.getMonth() - lastServerLogin.getMonth();
-				console.log(diffInLogin);
-				console.log( configuration["misc-loginDurationMonths"]);
 
 				if (diffInLogin > configuration["misc-loginDurationMonths"]) {
 					window.localStorage.setItem("authenticated", "false");
