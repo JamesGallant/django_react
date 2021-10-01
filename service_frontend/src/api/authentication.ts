@@ -3,9 +3,9 @@ import { AxiosResponse } from "axios";
 
 import configuration from "../utils/config";
 
-import type {UserModel} from "../types/authentication";
+import type { UserDataInterface } from "../types/authentication";
 
-export async function postRegisterUser(data: UserModel ): Promise<AxiosResponse> {
+export async function postRegisterUser(data: UserDataInterface ): Promise<AxiosResponse> {
 	/**
      * @description API sends user data to the backend to create a user account. This call also sends a email to the user that is handled internally.
      * 
@@ -127,6 +127,21 @@ export async function getUserData(authToken: string): Promise<AxiosResponse> {
 		const response: AxiosResponse = await axios({
 			method: "get",
 			url: configuration["api-base"].concat(configuration["api-getUserData"]),
+			headers: {"Authorization": `Token ${authToken}`}
+		});
+		return response;
+		/* eslint-disable */
+	} catch(error: any) {
+		/* eslint-enable */
+		return error.response;
+	}
+}
+
+export async function getIsActiveUser(authToken: string): Promise<AxiosResponse> {
+	try {
+		const response: AxiosResponse = await axios({
+			method: "get",
+			url: configuration["api-base"].concat(configuration["api-isActiveUser"]),
 			headers: {"Authorization": `Token ${authToken}`}
 		});
 		return response;

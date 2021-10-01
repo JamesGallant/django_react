@@ -26,7 +26,7 @@ import configuration from "../../utils/config";
 import { postRegisterUser } from "../../api/authentication";
 import { AxiosResponse } from "axios";
 
-import type { UserModel } from "../../types/authentication";
+import type { UserDataInterface } from "../../types/authentication";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -151,7 +151,7 @@ const RegisterView: React.FC = (): JSX.Element => {
 			phonenumber = parsedPhoneNumber.number.toString();
 		} 
     
-		const userData: UserModel = {
+		const userData: UserDataInterface = {
 			first_name: formValues.firstName,
 			last_name: formValues.lastName,
 			mobile_number: phonenumber,

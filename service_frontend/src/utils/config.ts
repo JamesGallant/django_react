@@ -2,6 +2,9 @@
  * @description Configurations for sitewide changes
  */
 const configuration = {
+	// misc
+	"misc-loginDurationMonths": 3,
+	
 	// material ui configuration
 	"mui-InputVariant": "outlined",
 
@@ -13,6 +16,7 @@ const configuration = {
 	"api-resendActivationEmail": "auth/users/resend_activation/",
 	"api-tokenLogin": "auth/token/login/",
 	"api-tokenLogout": "auth/token/logout/",
+	"api-isActiveUser": "auth/isActiveUser",
 
 	// internal urls registry
 	"url-home": "/",
