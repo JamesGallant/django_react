@@ -42,16 +42,19 @@ export const login = async (): Promise<void> => {
 				window.localStorage.setItem("authenticated", "false");
 				cookies.deleteCookie("authToken");
 			} else {
-				// user is active but needs to login again
+				// user is active
 				const lastServerLogin: Date = new Date (userData["message"].last_login);
 				const currentLogin: Date = new Date();
 				const diffInLogin: number = currentLogin.getMonth() - lastServerLogin.getMonth();
-
+				console.log(lastServerLogin);
+				// user has not loggen in a long time
 				if (diffInLogin > configuration["misc-loginDurationMonths"]) {
+					
 					window.localStorage.setItem("authenticated", "false");
 					cookies.deleteCookie("authToken");
 				} else {
 					// login allowed
+					
 					window.localStorage.setItem("authenticated", "true");
 
 					const cookiePayload: cookieDataType = {
