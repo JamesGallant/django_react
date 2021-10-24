@@ -28,7 +28,9 @@ class AppManager:
         # TODO add other dbs later
         db_options = ["postgresql"]
         if db not in db_options:
-            raise ValueError(f"Database {db} is not supported. Options are (postgresql)")
+            raise ValueError(
+                f"Database {db} is not supported. Options are (postgresql)"
+            )
 
         root_dir = pathlib.Path(__file__).parent.resolve()
         current_dirs = os.listdir(root_dir)
@@ -59,35 +61,47 @@ class AppManager:
         create_files.create_python_requirement()
         create_files.create_service_readme(service_name=service_name)
         create_files.create_dev_environment(service_name=service_name)
-        create_files.create_config_file(service_name=service_name, database=db, project_config_yaml=project_config_file)
-        edit_files.edit_project_config(project_config_yaml=project_config_file, service_name=service_name)
+        create_files.create_config_file(
+            service_name=service_name,
+            database=db,
+            project_config_yaml=project_config_file,
+        )
+        edit_files.edit_project_config(
+            project_config_yaml=project_config_file, service_name=service_name
+        )
         edit_files.edit_gitignore(service_name=service_name)
         edit_files.edit_dockerignore(service_name=service_name)
         edit_files.edit_django_settings(service_name=service_name)
-        edit_files.edit_docker_compose(service_name=service_name, project_config_yaml=project_config_file, database=db)
+        edit_files.edit_docker_compose(
+            service_name=service_name,
+            project_config_yaml=project_config_file,
+            database=db,
+        )
 
     def main(self, engine: str = None) -> None:
         if not engine:
             raise ValueError("engine must be a value")
 
-        switch = {
-            "create_microservice": self.microservice
-        }
+        switch = {"create_microservice": self.microservice}
 
         switch_keys = [key for key, _ in switch.items()]
 
         if engine not in switch_keys:
-            raise ValueError("invalid parameter to engine, options are (create_microservice)")
+            raise ValueError(
+                "invalid parameter to engine, options are (create_microservice)"
+            )
 
         switch[engine]()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     manager = AppManager()
     args = sys.argv
 
     if not args[1]:
-        raise ValueError("Provide a value to manager, options are (create_microservice)")
+        raise ValueError(
+            "Provide a value to manager, options are (create_microservice)"
+        )
 
     ENGINE = args[1]
     manager.main(ENGINE)

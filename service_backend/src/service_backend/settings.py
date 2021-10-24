@@ -196,8 +196,8 @@ DJOSER = {
     "EMAIL": {
         "activation": "app_accounts.email.activation_email.ActivationEmail",
         "username_changed_confirmation": "app_accounts.email.username_reset_confirmation"
-                                         ".UsernameChangedConfirmationEmail",
+        ".UsernameChangedConfirmationEmail",
         "username_reset": "app_accounts.email.username_reset.UsernameResetEmail",
-        "password_reset": "app_accounts.email.password_reset.PasswordResetEmail"
+        "password_reset": "app_accounts.email.password_reset.PasswordResetEmail",
     },
 }
