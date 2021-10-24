@@ -192,9 +192,12 @@ DJOSER = {
     ),
     "PASSWORD_RESET_CONFIRM_RETYPE": True,
     "SERIALIZERS": {},
+    # https://github.com/sunscrapers/djoser/tree/master/djoser/templates/email
     "EMAIL": {
         "activation": "app_accounts.email.activation_email.ActivationEmail",
-        "username_changed_confirmation": "app_accounts.email.username_reset_confirmation.UsernameChangedConfirmationEmail",
+        "username_changed_confirmation": "app_accounts.email.username_reset_confirmation"
+                                         ".UsernameChangedConfirmationEmail",
         "username_reset": "app_accounts.email.username_reset.UsernameResetEmail",
+        "password_reset": "app_accounts.email.password_reset.PasswordResetEmail"
     },
 }

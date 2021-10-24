@@ -689,7 +689,7 @@ class TestDjoserResets(APITestCase):
         response_new_password = self.client.post(
             f"{self.base_url}users/reset_password_confirm/",
             data=json.dumps(
-                {"uid": uid, "token": token, "new_password": self.new_password}
+                {"uid": uid, "token": token, "new_password": self.new_password, "re_new_password": self.new_password}
             ),
             content_type="application/json",
         )
