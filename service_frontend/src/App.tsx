@@ -18,6 +18,7 @@ const App = () => {
 				<Route path={ configuration["url-accountCreated"] } exact component={views.AccountCreatedView}/>
 				<Route path= { configuration["url-acitvateAccount"] } exact component={views.AccountActivationView}/>
 				<Route exact path={ configuration["url-resetPassword"] } component={views.ResetPassword}/>
+				<Route exact path={ configuration["url-resetPasswordConfirm"] } component={views.ResetPasswordConfirm}/>
 				<PrivateRoute path={ configuration["url-dashboard"] } component={views.DashboardView}/>
 			</Switch>
 		</BrowserRouter>

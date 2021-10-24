@@ -153,6 +153,23 @@ export async function resetPassword(email: string): Promise<AxiosResponse> {
 		return error.response;
 	}
 }
+
+export async function resetPasswordConfirm(uid: string, token: string, password: string, rePassword: string): Promise<AxiosResponse> {
+	try {
+		const response: AxiosResponse = await axios({
+			method: "post",
+			url: configuration["api-base"].concat(configuration["api-resetPasswordConfirm"]),
+			data: {"uid": uid, "token": token, "new_password": password, "re_new_password": rePassword},
+			headers: {"Content-type": "application/json"}
+		});
+		return response;
+		/* eslint-disable*/
+	} catch(error: any) {
+		/* eslint-enable */
+		return error.response;
+	}
+}
+
 export async function getIsActiveUser(authToken: string): Promise<AxiosResponse> {
 	try {
 		const response: AxiosResponse = await axios({

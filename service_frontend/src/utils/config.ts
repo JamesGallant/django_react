@@ -18,6 +18,7 @@ const configuration = {
 	"api-tokenLogout": "auth/token/logout/",
 	"api-isActiveUser": "auth/isActiveUser",
 	"api-resetPassword": "auth/users/reset_password/",
+	"api-resetPasswordConfirm": "auth/users/reset_password_confirm/",
 
 	// internal urls registry
 	"url-home": "/",

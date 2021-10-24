@@ -88,7 +88,7 @@ const LoginViewPage: React.FC = (): JSX.Element => {
     
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
-       
+
 		setFormValues({
 			...formValues,
 			[name]: value,

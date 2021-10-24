@@ -81,7 +81,7 @@ const ResetPassword: FC = (): JSX.Element => {
 				<form className={classes.paper} noValidate={true} onSubmit = { submit }>
 					<Grid container spacing={2}>
 						<Grid item xs={12}>
-							<Typography component="div" variant="h5">
+							<Typography component="div" variant="h5" align="center">
 								<strong>Forgot your password?</strong>
 							</Typography>
 						</Grid>

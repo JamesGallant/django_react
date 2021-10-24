@@ -1,5 +1,5 @@
 import React from "react";
-import { render, fireEvent, waitFor, screen } from "@testing-library/react";
+import { render, fireEvent, waitFor } from "@testing-library/react";
 import axios, { AxiosResponse } from "axios";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
