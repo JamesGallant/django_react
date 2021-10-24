@@ -46,7 +46,6 @@ export const login = async (): Promise<void> => {
 				const lastServerLogin: Date = new Date (userData["message"].last_login);
 				const currentLogin: Date = new Date();
 				const diffInLogin: number = currentLogin.getMonth() - lastServerLogin.getMonth();
-				console.log(lastServerLogin);
 				// user has not loggen in a long time
 				if (diffInLogin > configuration["misc-loginDurationMonths"]) {
 					

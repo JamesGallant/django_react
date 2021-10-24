@@ -17,6 +17,7 @@ const configuration = {
 	"api-tokenLogin": "auth/token/login/",
 	"api-tokenLogout": "auth/token/logout/",
 	"api-isActiveUser": "auth/isActiveUser",
+	"api-resetPassword": "auth/users/reset_password/",
 
 	// internal urls registry
 	"url-home": "/",
@@ -24,9 +25,10 @@ const configuration = {
 	"url-logout": "/auth/logout/",
 	"url-register": "/auth/register/",
 	"url-dashboard": "/dashboard/",
-	"url-statisticsApplication": "/statistics/",
 	"url-accountCreated": "/auth/account-created/",
 	"url-acitvateAccount": "/auth/activate/:uid/:token/", // this also neeeds changing in the backend accounts service
+	"url-resetPassword": "/auth/reset/password/",
+	"url-resetPasswordConfirm": "/auth/reset/password/:uid/:token",
 
 	// cookies
 	"cookie-maxAuthDuration": 90

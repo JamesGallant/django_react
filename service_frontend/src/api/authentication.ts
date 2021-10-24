@@ -4,6 +4,7 @@ import { AxiosResponse } from "axios";
 import configuration from "../utils/config";
 
 import type { UserDataInterface } from "../types/authentication";
+import { setTimeout } from "timers";
 
 export async function postRegisterUser(data: UserDataInterface ): Promise<AxiosResponse> {
 	/**
@@ -137,6 +138,21 @@ export async function getUserData(authToken: string): Promise<AxiosResponse> {
 	}
 }
 
+export async function resetPassword(email: string): Promise<AxiosResponse> {
+	try {
+		const response: AxiosResponse = await axios({
+			method: "post",
+			url: configuration["api-base"].concat(configuration["api-resetPassword"]),
+			data: {"email": email},
+			headers: {"Content-type": "application/json"}
+		});
+		return response;
+		/* eslint-disable*/
+	} catch(error: any) {
+		/* eslint-enable */
+		return error.response;
+	}
+}
 export async function getIsActiveUser(authToken: string): Promise<AxiosResponse> {
 	try {
 		const response: AxiosResponse = await axios({

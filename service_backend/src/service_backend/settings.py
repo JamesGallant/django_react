@@ -190,6 +190,7 @@ DJOSER = {
     "PASSWORD_RESET_CONFIRM_URL": develop_configuration.get(
         "djoser_password_reset_url", None
     ),
+    "PASSWORD_RESET_CONFIRM_RETYPE": True,
     "SERIALIZERS": {},
     "EMAIL": {
         "activation": "app_accounts.email.activation_email.ActivationEmail",
