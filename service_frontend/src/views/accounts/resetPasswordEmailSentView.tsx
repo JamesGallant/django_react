@@ -1,12 +1,13 @@
 import React, { FC, useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 
-import { CssBaseline, Typography, Button, Link, Container, Grid, Box, ListItem} from "@material-ui/core";
+import { CssBaseline, Typography, Button, Link, Container, Grid, Box} from "@material-ui/core";
 import { makeStyles, Theme } from "@material-ui/core/styles";
 
 import configuration from "../../utils/config";
 import { resetPassword } from "../../api/authentication";
 import FlashError from "../../components/helper/flashErrors";
+import { AxiosResponse } from "axios";
 
 interface StateInterface {
 	email: string
@@ -48,13 +49,13 @@ const ResetPasswordEmailSent: FC = (): JSX.Element => {
 	const resendEmail = async (): Promise<void> => {
 		setFlashError(false);
 		setFlashErrorMessage("");
-		const response = await resetPassword(location.state.email);
-
+		const response: AxiosResponse = await resetPassword(location.state.email);
+		console.log(response);
 		if (response.status === 204) {
 			setFlashErrorMessage("Email sent");
 			setFlashError(true);
 		} else {
-			setFlashErrorMessage("failed to send email");
+			setFlashErrorMessage("Failed to send email");
 			setFlashError(true);
 		}
 	};

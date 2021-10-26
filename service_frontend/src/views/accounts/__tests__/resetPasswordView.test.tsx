@@ -103,8 +103,8 @@ describe("Testing reset password component", () => {
 		await waitFor(() => {
 			fireEvent.click(submitButton);
 		});
-		
-		expect(history.location.pathname).toBe(configuration["url-login"]);
+
+		expect(history.location.pathname).toBe(configuration["url-resetPasswordEmailSent"]);
 	});
 
 });

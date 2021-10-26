@@ -190,7 +190,7 @@ DJOSER = {
     "PASSWORD_RESET_CONFIRM_URL": develop_configuration.get(
         "djoser_password_reset_url", None
     ),
-    "PASSWORD_RESET_CONFIRM_RETYPE": True,
+    "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
     "SERIALIZERS": {},
     # https://github.com/sunscrapers/djoser/tree/master/djoser/templates/email
     "EMAIL": {
