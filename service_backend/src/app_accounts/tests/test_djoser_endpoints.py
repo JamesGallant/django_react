@@ -718,7 +718,7 @@ class TestDjoserResets(APITestCase):
         self.assertEqual(
             response_reset_pw_request.status_code, status.HTTP_204_NO_CONTENT
         )
-        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(len(mail.outbox), 2)
         self.assertEqual(response_new_password.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(response_login_new_pw.status_code, status.HTTP_200_OK)
 
