@@ -29,11 +29,11 @@ const configuration = {
 	"url-accountCreated": "/auth/account-created/",
 	"url-acitvateAccount": "/auth/activate/:uid/:token/", // this also neeeds changing in the backend accounts service
 	"url-resetPassword": "/auth/reset/password/",
-	"url-resetPasswordConfirm": "/auth/reset/password/:uid/:token",
+	"url-resetPasswordConfirm": "/auth/reset/password/:uid/:token", // this also neeeds changing in the backend accounts service
+	"url-resetPasswordEmailSent": "/auth/reset/password/email-sent",
 
 	// cookies
 	"cookie-maxAuthDuration": 90
-
 };
 
 export default configuration;

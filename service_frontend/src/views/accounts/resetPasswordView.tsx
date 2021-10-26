@@ -1,17 +1,13 @@
 import React, {FC, useState} from "react";
 import { useHistory } from "react-router";
+
 // material ui
 import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Container from "@material-ui/core/Container";
-import { CssBaseline, Typography, Button, Link} from "@material-ui/core";
+import { CssBaseline, Typography, Button, Link, Container, Grid} from "@material-ui/core";
 
-// components
 import TextField from "../../components/formFields/TextFieldComponent";
-
-// helpers
 import configuration from "../../utils/config";
-import {resetPassword} from "../../api/authentication";
+import { resetPassword } from "../../api/authentication";
 import { logout } from "../../modules/authentication";
 
 
@@ -52,7 +48,6 @@ const ResetPassword: FC = (): JSX.Element => {
 	const submit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
 		event.preventDefault();
 		const response = await resetPassword(formValue);
-
 		switch(response.status) {
 		case 400: {
 			let errorMessageResponse: string[];
@@ -73,7 +68,9 @@ const ResetPassword: FC = (): JSX.Element => {
 		}
 		case 204: {
 			//@TODO reroute to info view
-			history.push(configuration["url-login"]);
+			history.push(configuration["url-resetPasswordEmailSent"], {
+				email: formValue,
+			});
 			break;
 		}
 		default: {

@@ -9,7 +9,6 @@ import { mocked } from "ts-jest/dist/utils/testing";
 import configuration from "../../../utils/config";
 import ResetPasswordConfirm from "../resetPasswordConfirmView";
 import * as authentication from "../../../modules/authentication";
-import * as authAPI from "../../../api/authentication";
 
 jest.mock("axios");
 describe("Testing the resetPasswordConfirm view", () => {
