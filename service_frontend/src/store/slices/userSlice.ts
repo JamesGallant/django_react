@@ -4,12 +4,12 @@ import { AxiosResponse } from "axios";
 import { getUserData } from "../../api/authentication";
 
 import type { RootState } from "../store";
-import type { UserData } from "../../types/authentication";
+import type { UserDataInterface } from "../../types/authentication";
 
 interface userDataState {
     user: {
         stateStatus: string,
-        data: UserData,
+        data: UserDataInterface,
         error: {
 			detail: string
 		} | unknown
@@ -39,7 +39,7 @@ const initialState: userDataState = {
 
 export const getUser = createAsyncThunk(
 	"users/getCurrentUser",
-	async (authToken: string, thunkAPI) => {
+	async (authToken: string) => {
 		if (authToken === "" || authToken === null) {
 			throw new Error("Invalid authentication token provided");
 		}
@@ -52,11 +52,11 @@ export const userSlice = createSlice({
 	initialState, 
 	reducers: {},
 	extraReducers: {
-		[getUser.pending.type]: (state, action: PayloadAction) => {
+		[getUser.pending.type]: (state) => {
 			state.user.stateStatus = "loading";
 		}, 
 
-		[getUser.fulfilled.type]: (state, action: PayloadAction<UserData>) => {
+		[getUser.fulfilled.type]: (state, action: PayloadAction<UserDataInterface>) => {
 			state.user = {
 				stateStatus: "success",
 				data: {
@@ -72,12 +72,13 @@ export const userSlice = createSlice({
 		},
 		[getUser.rejected.type]: (state, action: PayloadAction<userDataError>) => {
 			state.user.stateStatus = "failed";
-			state.user.error = action.payload.data;
+			state.user.error = action.payload;
 		},
 	}
 });
 
-export const selectUserReducer = (state: RootState) => state.userReducer.user;
-export const selectUserData = (state: RootState) => state.userReducer.user.data;
+export const selectUserReducer = (state: RootState): userDataState => state.userReducer;
+export const selectUserData = (state: RootState): UserDataInterface => state.userReducer.user.data;
+export const selectUserStateStatus = (state: RootState): string => state.userReducer.user.stateStatus;
 
 export default userSlice.reducer;

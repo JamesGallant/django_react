@@ -689,7 +689,12 @@ class TestDjoserResets(APITestCase):
         response_new_password = self.client.post(
             f"{self.base_url}users/reset_password_confirm/",
             data=json.dumps(
-                {"uid": uid, "token": token, "new_password": self.new_password}
+                {
+                    "uid": uid,
+                    "token": token,
+                    "new_password": self.new_password,
+                    "re_new_password": self.new_password,
+                }
             ),
             content_type="application/json",
         )
@@ -713,7 +718,7 @@ class TestDjoserResets(APITestCase):
         self.assertEqual(
             response_reset_pw_request.status_code, status.HTTP_204_NO_CONTENT
         )
-        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(len(mail.outbox), 2)
         self.assertEqual(response_new_password.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(response_login_new_pw.status_code, status.HTTP_200_OK)
 

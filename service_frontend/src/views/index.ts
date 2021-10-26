@@ -8,9 +8,9 @@ import AccountCreatedView from "./accounts/accountCreatedView";
 import LoginView from "./accounts/loginView";
 import LogoutView from "./accounts/logoutView";
 import RegisterView from "./accounts/registerView";
-
-// Apps
-import ApplicationStatisticsView from "./applications/applicationStatisticsView";
+import ResetPassword from "./accounts/resetPasswordView";
+import ResetPasswordConfirm from "./accounts/resetPasswordConfirmView";
+import ResetPasswordEmailSent from "./accounts/resetPasswordEmailSentView";
 
 const views = {
 	HomeView,
@@ -20,7 +20,9 @@ const views = {
 	LoginView,
 	LogoutView,
 	RegisterView,
-	ApplicationStatisticsView,
+	ResetPassword,
+	ResetPasswordConfirm,
+	ResetPasswordEmailSent
 };
 
 export default views;

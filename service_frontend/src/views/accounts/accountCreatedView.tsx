@@ -34,7 +34,6 @@ const AccountCreatedView : FC = () => {
 		switch(statusCode) {
 		case 204: 
 			// TODO change to error dialog
-			console.log("change to error dialog");
 			alert(`email sent to ${email}`);
 			break;
 		case 400:
@@ -44,7 +43,7 @@ const AccountCreatedView : FC = () => {
 			throw new Error("Invalid status code, options are 400 or 200. see: https://djoser.readthedocs.io/en/latest/base_endpoints.html#user-resend-activation-e-mail");
 		}
 	};
-
+	//@TODO beutify this
 	return(
 		<div>
 			<h1> Thank you for creating an account with {process.env.REACT_APP_SITE_NAME} </h1>

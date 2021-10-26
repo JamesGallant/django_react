@@ -88,7 +88,7 @@ const LoginViewPage: React.FC = (): JSX.Element => {
     
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
-       
+
 		setFormValues({
 			...formValues,
 			[name]: value,
@@ -212,6 +212,11 @@ const LoginViewPage: React.FC = (): JSX.Element => {
 									label="Remember me"
 								/>
 							</Grid>
+							<Grid item xs={12}>
+								<Link href={configuration["url-resetPassword"]}>
+									<strong>Forgot Password?</strong>
+								</Link>
+							</Grid>
 						</Grid>
 						<Button
 							fullWidth
@@ -223,7 +228,7 @@ const LoginViewPage: React.FC = (): JSX.Element => {
 						>
                         Sign in
 						</Button>
-						<Grid container justifyContent="flex-end">
+						<Grid container>
 							<Grid item>
 								<Link href={configuration["url-register"]} variant="body2">
                             New to {process.env.REACT_APP_SITE_NAME}? create an account

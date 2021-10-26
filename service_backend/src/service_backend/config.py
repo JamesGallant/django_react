@@ -21,6 +21,6 @@ develop_configuration = {
     "djoser_username_reset": True,
     # these are configured on service_frontend
     "djoser_email_activation_url": "auth/activate/{uid}/{token}",
-    "djoser_username_reset_url": "reset/username/{uid}/{token}",
-    "djoser_password_reset_url": "reset/password/{uid}/{token}",
+    "djoser_username_reset_url": "auth/reset/username/{uid}/{token}",
+    "djoser_password_reset_url": "auth/reset/password/{uid}/{token}",
 }

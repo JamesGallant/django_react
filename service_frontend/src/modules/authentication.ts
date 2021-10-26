@@ -1,10 +1,9 @@
 import configuration from "../utils/config";
-import { getUserData } from "../api/authentication";
 import CookieHandler from "./cookies";
 
 import type { cookieDataType } from "../types/types";
 import { AxiosResponse } from "axios";
-import { postTokenLogout } from "../api/authentication";
+import { postTokenLogout, getIsActiveUser } from "../api/authentication";
 
 export const logout = async (): Promise<void> => {
 	const cookies = new CookieHandler();
@@ -29,26 +28,45 @@ export const login = async (): Promise<void> => {
 		window.localStorage.setItem("authenticated", "false");
 	} else {
 		// auth token present
-		const response: AxiosResponse = await getUserData(authToken);
+		const response: AxiosResponse = await getIsActiveUser(authToken);
 		const userData = response.data;
 
-		// unsuccesfull use of token
+		// unsuccesfull use of token block login
 		if (userData["detail"]) {
 			window.localStorage.setItem("authenticated", "false");
 			cookies.deleteCookie("authToken");
 		} else {
 			// successfully retrieved data
-			window.localStorage.setItem("authenticated", "true");
-			// extendCookies
-			const cookiePayload: cookieDataType = {
-				name: "authToken",
-				value: authToken,
-				duration: configuration["cookie-maxAuthDuration"],
-				path: "/",
-				secure: true
-			};
+			// user Is no longer active
+			if(!userData["message"].is_active) {
+				window.localStorage.setItem("authenticated", "false");
+				cookies.deleteCookie("authToken");
+			} else {
+				// user is active
+				const lastServerLogin: Date = new Date (userData["message"].last_login);
+				const currentLogin: Date = new Date();
+				const diffInLogin: number = currentLogin.getMonth() - lastServerLogin.getMonth();
+				// user has not loggen in a long time
+				if (diffInLogin > configuration["misc-loginDurationMonths"]) {
+					
+					window.localStorage.setItem("authenticated", "false");
+					cookies.deleteCookie("authToken");
+				} else {
+					// login allowed
+					
+					window.localStorage.setItem("authenticated", "true");
 
-			cookies.setCookie(cookiePayload);
+					const cookiePayload: cookieDataType = {
+						name: "authToken",
+						value: authToken,
+						duration: configuration["cookie-maxAuthDuration"],
+						path: "/",
+						secure: true
+					};
+		
+					cookies.setCookie(cookiePayload);
+				}
+			}
 		}
 	}
 };
