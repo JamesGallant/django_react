@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { Input, FilledInput, OutlinedInput, Zoom, IconButton, Typography, FormControl, InputLabel,
 	InputAdornment, FormHelperText, Tooltip, ClickAwayListener} from "@material-ui/core";
 
-import { ThemeProvider, } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/core/styles";
 import {Visibility, VisibilityOff } from "@material-ui/icons";
 import InfoIcon from "@material-ui/icons/Info";
 
@@ -106,7 +106,7 @@ const PasswordField = (props: any): JSX.Element => {
      * @returns JSX.Element
      */
 
-	const { value, fullWidth=true, onChange, showTooltip, errorMessage=[""], ...other } = props;
+	const { value, fullWidth=true, onChange, showTooltip, inputLabel=null, errorMessage=[""], ...other } = props;
 
 	const [showPassword, setShowPassword] = useState(false);
 	const [openTooltip, setOpenTooltip] = useState(false);
@@ -152,11 +152,13 @@ const PasswordField = (props: any): JSX.Element => {
 	return(
 		<FormControl fullWidth={ fullWidth } >
 			<ThemeProvider theme={MuiGlobalTheme}>
-				<InputLabel>Password</InputLabel>
+				<InputLabel>{inputLabel === null ? "Password": inputLabel}</InputLabel>
 			</ThemeProvider>
-			<InputVariant   variant={ muiVariant }
+			<InputVariant   
+				variant={ muiVariant }
 				label="Password"
 				name="password"
+				fullWidth
 				value = { value }
 				onChange = { onChange }
 				type = { showPassword ? "text": "password"}

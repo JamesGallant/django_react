@@ -12,6 +12,7 @@ import TextField from "../../components/formFields/TextFieldComponent";
 // helpers
 import configuration from "../../utils/config";
 import {resetPassword} from "../../api/authentication";
+import { logout } from "../../modules/authentication";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -51,6 +52,7 @@ const ResetPassword: FC = (): JSX.Element => {
 	const submit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
 		event.preventDefault();
 		const response = await resetPassword(formValue);
+
 		switch(response.status) {
 		case 400: {
 			let errorMessageResponse: string[];
@@ -64,12 +66,18 @@ const ResetPassword: FC = (): JSX.Element => {
 			setErrorMessage(errorMessageResponse);
 			break;
 		}
+		case 401: {
+			logout();
+			history.push(configuration["url-login"]);
+			break;
+		}
 		case 204: {
+			//@TODO reroute to info view
 			history.push(configuration["url-login"]);
 			break;
 		}
 		default: {
-			throw new Error(`Expected Http errors 400 or 204 but recieved ${response.status}`);
+			throw new Error(`Expected Http errors 400, 401 or 204 but recieved ${response.status}`);
 		}
 		}
 	};

@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { useParams, useHistory } from "react-router";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -11,6 +11,7 @@ import {resetPasswordConfirm} from "../../api/authentication";
 import PasswordField from "../../components/formFields/passwordComponent";
 import configuration from "../../utils/config";
 import FlashError from "../../components/helper/flashErrors";
+import { logout } from "../../modules/authentication";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -89,10 +90,10 @@ const ResetPasswordConfirm: FC = (): JSX.Element => {
 		setFlashError(false);
 		setFlashErrorMessage("");
 		const response: AxiosResponse = await resetPasswordConfirm(uid, token, formValues.new_password, formValues.re_new_password);
-		console.log(response);
 		switch(response.status) {
 		case 400: {
 			if (response.data.non_field_errors) {
+				
 				setFlashError(true);
 				setFlashErrorMessage(response.data.non_field_errors[0]);
 				setErrorMessage({
@@ -107,12 +108,18 @@ const ResetPasswordConfirm: FC = (): JSX.Element => {
 			}
 			break;
 		}
+		case 401: {
+			logout();
+			setFlashError(true);
+			setFlashErrorMessage("Auth error detected, try logging in again");
+			break;
+		}
 		case 204: {
 			history.push(configuration["url-login"]);
 			break;
 		}
 		default: {
-			throw new Error(`Expected Http errors 400 or 204 but recieved ${response.status}`);
+			throw new Error(`Expected Http errors 400, 401 or 204 but recieved ${response.status}`);
 		}
 		}
 	};
@@ -150,12 +157,10 @@ const ResetPasswordConfirm: FC = (): JSX.Element => {
 								onChange={ handleChange }/>
 						</Grid>
 						<Grid item xs={12}>
-							<Typography component="div" variant="subtitle2" gutterBottom>
-								<strong>Retype password</strong>
-							</Typography>
 							<PasswordField
 								id="rePassword"
 								name="re_new_password"
+								inputLabel="Confirm password"
 								showTooltip= {false}
 								value={ formValues.re_new_password }
 								errorMessage={ errorMessage.re_new_password }
@@ -171,6 +176,13 @@ const ResetPasswordConfirm: FC = (): JSX.Element => {
 							>
 							Update Password
 							</Button>
+						</Grid>
+						<Grid item xs={12}>
+							<Link 
+								href={configuration["url-login"]}
+								variant="body2">
+								<strong>Back to Login</strong>
+							</Link>
 						</Grid>
 					</Grid>
 				</form>

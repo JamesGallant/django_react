@@ -7,6 +7,7 @@ import { mocked } from "ts-jest/dist/utils/testing";
 
 import configuration from "../../../utils/config";
 import ResetPassword from "../resetPasswordView";
+import * as authentication from "../../../modules/authentication";
 
 jest.mock("axios");
 
@@ -68,10 +69,11 @@ describe("Testing reset password component", () => {
 		expect(wrapper.getAllByText(message)[0]).toBeInTheDocument();
 	});
 
-	it("Correct email returns user to login screen", async () => {
-		AxiosResponse.status = 204;
+	it("Mangled headers returns user to login screen", async () => {
+		AxiosResponse.status = 401;
 		const history = createMemoryHistory();
-		
+		const spyOnLogout = jest.spyOn(authentication, "logout");
+
 		const wrapper = render(<Router history={history}>
 			<ResetPassword />		
 		</Router>);
@@ -82,8 +84,27 @@ describe("Testing reset password component", () => {
 		await waitFor(() => {
 			fireEvent.click(submitButton);
 		});
+
+		expect(spyOnLogout).toHaveBeenCalledTimes(1);
 		expect(history.location.pathname).toBe(configuration["url-login"]);
 	});
 
+	it("Successfull reset request reroutes user", async () => {
+		AxiosResponse.status = 204;
+		const history = createMemoryHistory();
+
+		const wrapper = render(<Router history={history}>
+			<ResetPassword />		
+		</Router>);
+
+		mocked(axios).mockResolvedValue(AxiosResponse);
+		const submitButton = wrapper.getByRole("button", {name: "Reset Password"});
+
+		await waitFor(() => {
+			fireEvent.click(submitButton);
+		});
+		
+		expect(history.location.pathname).toBe(configuration["url-login"]);
+	});
 
 });
