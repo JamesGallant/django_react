@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction  } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 
 import { getUserData } from "../../api/authentication";
@@ -6,20 +6,22 @@ import { getUserData } from "../../api/authentication";
 import type { RootState } from "../store";
 import type { UserDataInterface } from "../../types/authentication";
 
+interface stateError {
+	message: string,
+	name: string,
+	stack: string
+}
+
 interface userDataState {
     user: {
         stateStatus: string,
         data: UserDataInterface,
-        error: {
-			detail: string
-		} | unknown
+        error: stateError | unknown
     }
 }
 
-interface userDataError {
-    data: {
-        detail: string
-    }
+interface UserDataError {
+	detail: string
 }
 
 const initialState: userDataState = {
@@ -37,8 +39,8 @@ const initialState: userDataState = {
 	}
 };
 
-export const getUser = createAsyncThunk(
-	"users/getCurrentUser",
+export const setUser = createAsyncThunk(
+	"users/setCurrentUser",
 	async (authToken: string) => {
 		if (authToken === "" || authToken === null) {
 			throw new Error("Invalid authentication token provided");
@@ -47,16 +49,19 @@ export const getUser = createAsyncThunk(
 		return response.data;
 	}
 );
+
 export const userSlice = createSlice({
 	name: "userData",
 	initialState, 
 	reducers: {},
 	extraReducers: {
-		[getUser.pending.type]: (state) => {
+		[setUser.pending.type]: (state) => {
 			state.user.stateStatus = "loading";
 		}, 
 
-		[getUser.fulfilled.type]: (state, action: PayloadAction<UserDataInterface>) => {
+		[setUser.fulfilled.type]: (state, action: PayloadAction<UserDataInterface>) => {
+			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+			/**@ts-ignore */
 			state.user = {
 				stateStatus: "success",
 				data: {
@@ -67,12 +72,24 @@ export const userSlice = createSlice({
 					country: action.payload.country,
 					mobile_number: action.payload.mobile_number,
 				},
-				error: {}
+				error: {},
 			};
 		},
-		[getUser.rejected.type]: (state, action: PayloadAction<userDataError>) => {
-			state.user.stateStatus = "failed";
-			state.user.error = action.payload;
+		[setUser.rejected.type]: (state, action: PayloadAction<any>) => {
+			state.user = {
+				stateStatus: "failed",
+				data: {
+					id: null,
+					first_name: null,
+					last_name: null,
+					email: null,
+					country: null,
+					mobile_number: null,
+				},
+				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+				/**@ts-ignore */
+				error: action.error
+			};
 		},
 	}
 });

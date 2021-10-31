@@ -50,7 +50,6 @@ const ResetPasswordEmailSent: FC = (): JSX.Element => {
 		setFlashError(false);
 		setFlashErrorMessage("");
 		const response: AxiosResponse = await resetPassword(location.state.email);
-		console.log(response);
 		if (response.status === 204) {
 			setFlashErrorMessage("Email sent");
 			setFlashError(true);

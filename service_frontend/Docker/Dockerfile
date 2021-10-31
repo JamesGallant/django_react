@@ -1,5 +1,5 @@
-# pull official base image
-FROM node:current-alpine
+# pull official base image ---> Current node version 17 has issues with build
+FROM node:16-alpine3.11
 
 # set working directory
 WORKDIR /usr/src/app

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { AxiosResponse } from "axios";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -15,15 +16,12 @@ import Box from "@material-ui/core/Box";
 import TextField from "../../components/formFields/TextFieldComponent";
 import PasswordField from "../../components/formFields/passwordComponent";
 import Copyright from "../../components/helper/copyrightComponent";
+import FlashError from "../../components/helper/flashErrors";
 
 import configuration from "../../utils/config";
 import { postTokenLogin, getUserData } from "../../api/authentication";
 import CookieHandler from "../../modules/cookies";
-
-import FlashError from "../../components/helper/flashErrors";
-import {login} from "../../modules/authentication";
-import { AxiosResponse } from "axios";
-
+import { login } from "../../modules/authentication";
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -78,6 +76,7 @@ const LoginViewPage: React.FC = (): JSX.Element => {
 
 	const classes = useStyles();
 	const history = useHistory();
+
 	const [formValues, setFormValues] = useState(initialFormVals);
 	const [errorMessage, setErrorMessage] = useState(initialErrs);
 	const [flashErrorMessage, setFlashErrorMessage] = useState("");
@@ -245,7 +244,7 @@ const LoginViewPage: React.FC = (): JSX.Element => {
 	);
 };
 
-const LoginView = (): JSX.Element => {
+const LoginView: React.FC = (): JSX.Element => {
 	const history = useHistory();
 
 	useEffect(() => {
@@ -254,6 +253,7 @@ const LoginView = (): JSX.Element => {
 
 	if (window.localStorage.getItem("authenticated") === "true") {
 		history.push(configuration["url-dashboard"]);
+
 	} else {
 		return(
 			<LoginViewPage />
