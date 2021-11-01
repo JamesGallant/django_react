@@ -1,15 +1,12 @@
 import React from "react";
 import { render, fireEvent, waitFor, screen } from "@testing-library/react";
 import axios, { AxiosResponse } from "axios";
-import { mocked } from "ts-jest/dist/utils/testing";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
-import { Provider } from "react-redux";
-import { store } from "../../../store/store";
 
 import LoginView from "../loginView";
 import CookieHandler from "../../../modules/cookies";
-import { postTokenLogin } from "../../../api/authentication";
+import * as API from "../../../api/authentication";
 import configuration from "../../../utils/config";
 
 import {login} from "../../../modules/authentication";
@@ -18,81 +15,73 @@ jest.mock("axios");
 jest.mock("../../../modules/authentication");
 
 describe("Testing login", () => {
+	let axiosResponse: AxiosResponse;
+	beforeEach(() => {
+		axiosResponse = {
+			data: {},
+			status: 123, 
+			statusText: "test", 
+			config: {},
+			headers: {}
+		};
+	})
 	afterEach(() => {
 		jest.resetAllMocks();
 	});
 
 	it("component renders correctly", () => {
 		render(
-			<Provider store={store}>
-				<LoginView/>
-			</Provider>
+			<LoginView/>
 		);
 	});
 
 	it("Error is displayed on invalid account", async () => {
-
-		const axiosResponse: AxiosResponse = {
-			data: {
-				non_field_errors: ["Some error"]
-			},
-			status: 400, 
-			statusText: "Bad Request", 
-			config: {},
-			headers: {}
+		axiosResponse.data = {
+			non_field_errors: ["Some error"]
 		};
+		axiosResponse.statusText = "Bad Request";
+		axiosResponse.status = 400;
+
+		const spyOnTokenLogin: jest.SpyInstance = jest.spyOn(API, "postTokenLogin").mockImplementation(() => Promise.resolve(axiosResponse));
 
 		const wrapper = render(
-			<Provider store={store}>
-				<LoginView/>
-			</Provider>
+			<LoginView/>
 		);
+
 		const submitButton = wrapper.getByRole("button", {name: "Sign in"});
         
-		mocked(axios).mockResolvedValue(axiosResponse);
-		const response = await postTokenLogin("", "");
-
 		await waitFor(() => {
 			fireEvent.click(submitButton);
 		});
 
-		expect(response.status).toBe(400);
+		await spyOnTokenLogin;
+		expect(spyOnTokenLogin).toBeCalledTimes(1);
 		expect(await wrapper.findByText("Invalid username or password")).toBeInTheDocument();
-
 	});
 
 	it("displays field errors if input is invalid or missing", async () => {
-
-		const axiosResponse: AxiosResponse = {
-			data: {
-				email: ["This field is required"],
-				password: ["This field is required"]
-			},
-			status: 400, 
-			statusText: "Bad Request", 
-			config: {},
-			headers: {}
+		axiosResponse.data = {
+			email: ["This field is required"],
+			password: ["This field is required"]
 		};
+		axiosResponse.statusText = "Bad Request";
+		axiosResponse.status = 400;
+
+		const spyOnTokenLogin: jest.SpyInstance = jest.spyOn(API, "postTokenLogin").mockImplementation(() => Promise.resolve(axiosResponse));
 
 		const wrapper = render(
-			<Provider store={store}>
-				<LoginView/>
-			</Provider>
+			<LoginView/>
 		);
         
 		const email = wrapper.getByRole("textbox", {name: "email"});
-
 		const submitButton = wrapper.getByRole("button", {name: "Sign in"});
-
-		mocked(axios).mockResolvedValue(axiosResponse);
-		const response = await postTokenLogin("", "");
-
 
 		await waitFor(() => {
 			fireEvent.click(submitButton);
 		});
 
-		expect(response.status).toBe(400);
+		await spyOnTokenLogin;
+		expect(spyOnTokenLogin).toBeCalledTimes(1);
 		expect(wrapper.getAllByText("This field is required")[0]).toBeInTheDocument();
 		expect(wrapper.getAllByText("This field is required").length).toBe(2);
 		expect(email).toHaveAttribute("aria-invalid", "true");
@@ -100,35 +89,37 @@ describe("Testing login", () => {
 
 	it("sets cookies and routes to dashboard on successfull login", async () => {
 		const history = createMemoryHistory();
+		const axiosToken:  AxiosResponse = axiosResponse;
+		const axiosUser: AxiosResponse = axiosResponse;
 
-		const axiosResponse: AxiosResponse = {
-			data: {
-				auth_token: "123456789"
-			},
-			status: 200, 
-			statusText: "Ok", 
-			config: {},
-			headers: {}
+		axiosToken.data = {
+			auth_token: "123456789"
 		};
+		axiosToken.statusText = "Bad Request";
+		axiosToken.status = 200;
 
-		render(
-			<Provider store={store}>
-				<Router history={history}>
-					<LoginView />
-				</Router>
-			</Provider>);
+		axiosUser.statusText = "Bad Request";
+		axiosUser.status = 200;
 
-		mocked(axios).mockResolvedValue(axiosResponse);
-
-		const response = await postTokenLogin("", "");
+		const spyOnTokenLogin: jest.SpyInstance = jest.spyOn(API, "postTokenLogin").mockImplementation(() => Promise.resolve(axiosToken));
+		const spyOnUser: jest.SpyInstance = jest.spyOn(API, "getUserData").mockImplementation(() => Promise.resolve(axiosUser));
 		jest.spyOn(CookieHandler.prototype, "setCookie");
 		jest.spyOn(window.localStorage.__proto__, "setItem");
+
+		render(
+			<Router history={history}>
+				<LoginView />
+			</Router>);
+
 		await waitFor(() => {
 			fireEvent.click(screen.getByRole("button", {name: "Sign in"}));
 		});
         
-		expect(response.status).toBe(200);
-		expect(response.data.auth_token).toEqual("123456789");
+		await spyOnTokenLogin;
+		await spyOnUser;
+		expect(spyOnTokenLogin).toBeCalledTimes(1);
+		expect(spyOnUser).toBeCalledTimes(1);
+		expect(spyOnUser).toBeCalledWith(axiosToken.data.auth_token);
 		expect(CookieHandler.prototype.setCookie).toHaveBeenCalledTimes(1);
 		expect(window.localStorage.setItem).toBeCalledWith("authenticated", "true");
 		expect(history.location.pathname).toBe(configuration["url-dashboard"]);
@@ -138,14 +129,11 @@ describe("Testing login", () => {
 		const history = createMemoryHistory();
        
 		render(
-			<Provider store={store}>
-				<Router history={history}>
-					<LoginView />
-				</Router>
-			</Provider>);
+			<Router history={history}>
+				<LoginView />
+			</Router>);
 
 		expect(login).toHaveBeenCalledTimes(1);
 		expect(history.location.pathname).toBe(configuration["url-dashboard"]);
-        
 	});
 });

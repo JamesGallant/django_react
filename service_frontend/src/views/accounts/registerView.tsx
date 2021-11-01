@@ -136,7 +136,6 @@ const RegisterView: React.FC = (): JSX.Element => {
 		}
 	};
 
-
 	const  submit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
 

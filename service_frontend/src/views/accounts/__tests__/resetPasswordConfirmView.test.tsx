@@ -4,11 +4,11 @@ import axios, { AxiosResponse } from "axios";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 import ReactRouter from "react-router";
-import { mocked } from "ts-jest/dist/utils/testing";
 
 import configuration from "../../../utils/config";
 import ResetPasswordConfirm from "../resetPasswordConfirmView";
 import * as authentication from "../../../modules/authentication";
+import * as API from "../../../api/authentication";
 
 jest.mock("axios");
 describe("Testing the resetPasswordConfirm view", () => {
@@ -35,16 +35,19 @@ describe("Testing the resetPasswordConfirm view", () => {
 	it("bad request response throws flash error when field errors are unknown", async() => {
 		AxiosResponse.data = {non_field_errors: ["other error"]};
 		AxiosResponse.status = 400;
+
 		jest.spyOn(ReactRouter, "useParams").mockReturnValue({uid: "test", token: "123"});
+		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetPasswordConfirm").mockImplementation(() => Promise.resolve(AxiosResponse));
 
 		const wrapper = render(<ResetPasswordConfirm/>);
 		const submitButton = wrapper.getByRole("button", {name: "Update Password"});
 
-		mocked(axios).mockResolvedValue(AxiosResponse);
 		await waitFor(() => {
 			fireEvent.click(submitButton);
 		});
 
+		await spyOnApi;
+		expect(spyOnApi).toBeCalledTimes(1);
 		expect(wrapper.getByText("other error")).toBeInTheDocument();
 	});
 
@@ -52,15 +55,17 @@ describe("Testing the resetPasswordConfirm view", () => {
 		AxiosResponse.data = {new_password: ["error password"], re_new_password: ["error new password"]};
 		AxiosResponse.status = 400;
 		jest.spyOn(ReactRouter, "useParams").mockReturnValue({uid: "test", token: "123"});
-		
+		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetPasswordConfirm").mockImplementation(() => Promise.resolve(AxiosResponse));
+
 		const wrapper = render(<ResetPasswordConfirm/>);
 		const submitButton = wrapper.getByRole("button", {name: "Update Password"});
 
-		mocked(axios).mockResolvedValue(AxiosResponse);
 		await waitFor(() => {
 			fireEvent.click(submitButton);
 		});
 
+		await spyOnApi;
+		expect(spyOnApi).toBeCalledTimes(1);
 		expect(wrapper.getByText("error password")).toBeInTheDocument();
 		expect(wrapper.getByText("error new password")).toBeInTheDocument();
 	});
@@ -68,15 +73,18 @@ describe("Testing the resetPasswordConfirm view", () => {
 	it("Unauthorised user throws flash error and logs out", async() => {
 		AxiosResponse.status = 401;
 		jest.spyOn(ReactRouter, "useParams").mockReturnValue({uid: "test", token: "123"});
+		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetPasswordConfirm").mockImplementation(() => Promise.resolve(AxiosResponse));
+
 		const spyOnLogout = jest.spyOn(authentication, "logout");
 		const wrapper = render(<ResetPasswordConfirm/>);
 		const submitButton = wrapper.getByRole("button", {name: "Update Password"});
 
-		mocked(axios).mockResolvedValue(AxiosResponse);
 		await waitFor(() => {
 			fireEvent.click(submitButton);
 		});
 
+		await spyOnApi;
+		expect(spyOnApi).toBeCalledTimes(1);
 		expect(wrapper.getByText("Auth error detected, try logging in again")).toBeInTheDocument();
 		expect(spyOnLogout).toHaveBeenCalledTimes(1);
 	});
@@ -84,6 +92,8 @@ describe("Testing the resetPasswordConfirm view", () => {
 	it("Succcessfull password change redirects user to login", async() => {
 		AxiosResponse.status = 204;
 		jest.spyOn(ReactRouter, "useParams").mockReturnValue({uid: "test", token: "123"});
+		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetPasswordConfirm").mockImplementation(() => Promise.resolve(AxiosResponse));
+
 		const history = createMemoryHistory();
 		const wrapper = render(<Router history={history}>
 			<ResetPasswordConfirm/>
@@ -91,11 +101,12 @@ describe("Testing the resetPasswordConfirm view", () => {
 
 		const submitButton = wrapper.getByRole("button", {name: "Update Password"});
 
-		mocked(axios).mockResolvedValue(AxiosResponse);
 		await waitFor(() => {
 			fireEvent.click(submitButton);
 		});
 		
+		await spyOnApi;
+		expect(spyOnApi).toBeCalledTimes(1);
 		expect(history.location.pathname).toBe(configuration["url-login"]);
 	});
 });

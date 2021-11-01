@@ -7,7 +7,7 @@ import Grid from "@material-ui/core/Grid";
 import Container from "@material-ui/core/Container";
 import { CssBaseline, Typography, Button, Link} from "@material-ui/core";
 
-import {resetPasswordConfirm} from "../../api/authentication";
+import { resetPasswordConfirm } from "../../api/authentication";
 import PasswordField from "../../components/formFields/passwordComponent";
 import configuration from "../../utils/config";
 import FlashError from "../../components/helper/flashErrors";

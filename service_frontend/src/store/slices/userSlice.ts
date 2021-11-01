@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AsyncThunk, createAsyncThunk, createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 
 import { getUserData } from "../../api/authentication";
@@ -18,10 +18,6 @@ interface userDataState {
         data: UserDataInterface,
         error: stateError | unknown
     }
-}
-
-interface UserDataError {
-	detail: string
 }
 
 const initialState: userDataState = {
@@ -50,7 +46,7 @@ export const setUser = createAsyncThunk(
 	}
 );
 
-export const userSlice = createSlice({
+export const userSlice: Slice<userDataState> = createSlice({
 	name: "userData",
 	initialState, 
 	reducers: {},
@@ -94,7 +90,6 @@ export const userSlice = createSlice({
 	}
 });
 
-export const selectUserReducer = (state: RootState): userDataState => state.userReducer;
 export const selectUserData = (state: RootState): UserDataInterface => state.userReducer.user.data;
 export const selectUserStateStatus = (state: RootState): string => state.userReducer.user.stateStatus;
 

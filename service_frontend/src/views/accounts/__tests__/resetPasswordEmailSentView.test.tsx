@@ -1,7 +1,6 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import ResetPasswordEmailSent from "../resetPasswordEmailSentView";
-import { mocked } from "ts-jest/dist/utils/testing";
 import axios, { AxiosResponse } from "axios";
 
 import * as authenticationAPI from "../../../api/authentication";
@@ -43,12 +42,13 @@ describe("Testing view after email has been sent to reset users password", () =>
 
 		const wrapper = render(<ResetPasswordEmailSent/>);
 		const resendEmail = wrapper.getByRole("button", {name: "Resend email"});
-		const spyOnResetPassword = jest.spyOn(authenticationAPI, "resetPassword");
-		mocked(axios).mockResolvedValue(AxiosResponse);
+		const spyOnResetPassword: jest.SpyInstance = jest.spyOn(authenticationAPI, "resetPassword").mockImplementation(() => Promise.resolve(AxiosResponse));
+
 		await waitFor(() => {
 			fireEvent.click(resendEmail);
 		});
-
+		
+		await spyOnResetPassword;
 		expect(spyOnResetPassword).toHaveBeenCalledTimes(1);
 		expect(wrapper.getByText("Email sent")).toBeInTheDocument();
 	});
