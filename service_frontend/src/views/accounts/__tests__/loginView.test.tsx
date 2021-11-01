@@ -24,7 +24,7 @@ describe("Testing login", () => {
 			config: {},
 			headers: {}
 		};
-	})
+	});
 	afterEach(() => {
 		jest.resetAllMocks();
 	});
