@@ -5,9 +5,8 @@ import configuration from "./utils/config";
 import PrivateRoute from "./components/helper/privateRoute";
 import views from "./views";
 
-/* eslint-disable */
-const App = () => {
-/* eslint-enable */
+
+const App = (): JSX.Element => {
 	return(
 		<BrowserRouter>
 			<Switch>

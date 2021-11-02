@@ -1,7 +1,7 @@
 import React from "react";
 import {render, screen, fireEvent, waitFor } from "@testing-library/react";
 
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 import * as API from "../../../api/authentication";

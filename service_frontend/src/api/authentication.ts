@@ -4,7 +4,7 @@ import { AxiosResponse } from "axios";
 import configuration from "../utils/config";
 
 import type { UserDataInterface } from "../types/authentication";
-import { setTimeout } from "timers";
+
 
 export async function postRegisterUser(data: UserDataInterface ): Promise<AxiosResponse> {
 	/**
