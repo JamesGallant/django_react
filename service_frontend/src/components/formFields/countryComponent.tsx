@@ -1,68 +1,42 @@
-import React, {useState} from "react";
-import { TextField as MuiTextField }from "@material-ui/core";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import { makeStyles } from "@material-ui/core/styles";
+import * as React from "react";
+import Box from "@mui/material/Box";
+import { TextField as MuiTextField } from "@mui/material/";
+import Autocomplete from "@mui/material/Autocomplete";
 
 import countries from "../../utils/countryData";
 
-
-interface CountryType {
-    code: string;
-    label: string;
-    phone: string;
-  }
-
-function countryToFlag(isoCode: string) {
-	return typeof String.fromCodePoint !== "undefined"
-		? isoCode
-			.toUpperCase()
-			.replace(/./g, (char) => String.fromCodePoint(char.charCodeAt(0) + 127397))
-		: isoCode;
-}
-  
-const useStyles = makeStyles({
-	option: {
-		fontSize: 15,
-		"& > span": {
-			marginRight: 10,
-			fontSize: 18,
-		},
-	},
-});
-
-
-export default function CountrySelect(props:any): JSX.Element {
-
+export default function CountrySelect(props: any): JSX.Element {
 	const { onChange, errorMessage=[""] } = props;
-	const classes = useStyles();
-	const [country, setCountry] = useState("");
-    
+
 	return (
 		<Autocomplete
 			id="select-country"
-			options={countries as CountryType[]}
-			classes={{
-				option: classes.option,
-			}}
-			autoHighlight
-			inputValue={country}
+			options={countries}
 			onChange={ onChange }
-			onInputChange = {(event: any, value: string) => { setCountry(value); }}
+			autoHighlight
 			getOptionLabel={(option) => option.label}
-			renderOption={(option) => (
-				<React.Fragment>
-					<span>{countryToFlag(option.code)}</span>
-					{option.label} 
-				</React.Fragment>
+			renderOption={(props, option) => (
+				<Box 
+					component="li" 
+					sx={{ "& > img": { mr: 2, flexShrink: 0 } }} 
+					{...props}>
+					<img
+						loading="lazy"
+						width="20"
+						src={`https://flagcdn.com/w20/${option.code.toLowerCase()}.png`}
+						srcSet={`https://flagcdn.com/w40/${option.code.toLowerCase()}.png 2x`}
+						alt=""
+					/>
+					{option.label} ({option.code}) +{option.phone}
+				</Box>
 			)}
 			renderInput={(params) => (
 				<MuiTextField
-					onChange={onChange}
-					variant="outlined"
 					{...params}
-					label="Country"
-					error={ errorMessage.length === 1 &&  errorMessage[0] === "" ? false: true }
+					onChange={onChange}
 					helperText={ errorMessage.join(" ") }
+					error={ errorMessage.length === 1 &&  errorMessage[0] === "" ? false: true }
+					label="Country"
 					inputProps={{
 						...params.inputProps,
 						autoComplete: "new-password", // disable autocomplete and autofill
@@ -72,4 +46,3 @@ export default function CountrySelect(props:any): JSX.Element {
 		/>
 	);
 }
-  

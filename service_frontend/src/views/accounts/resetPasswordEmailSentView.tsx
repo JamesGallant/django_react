@@ -13,7 +13,6 @@ const PREFIX = "ResetPasswordEmailSent";
 const classes = {
 	root: `${PREFIX}-root`,
 	paper: `${PREFIX}-paper`,
-	buttons: `${PREFIX}-buttons`
 };
 
 const Root = styled("div")(({theme}) => ({
@@ -30,12 +29,6 @@ const Root = styled("div")(({theme}) => ({
 		wordWrap: "break-word",
 		minWidth: 500
 	},
-
-	[`& .${classes.buttons}`]: {
-		"&:hover": {
-			backgroundcolor: "red",
-		},
-	}
 }));
 
 interface StateInterface {
