@@ -2,10 +2,7 @@ import React, { FC, useState } from "react";
 import { useParams, useHistory } from "react-router";
 import { AxiosResponse } from "axios";
 
-import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Container from "@material-ui/core/Container";
-import { CssBaseline, Typography, Button, Link} from "@material-ui/core";
+import { styled, Grid, Container, CssBaseline, Typography, Button, Link } from "@mui/material";
 
 import { resetPasswordConfirm } from "../../api/authentication";
 import PasswordField from "../../components/formFields/passwordComponent";
@@ -13,9 +10,17 @@ import configuration from "../../utils/config";
 import FlashError from "../../components/helper/flashErrors";
 import { logout } from "../../modules/authentication";
 
+const PREFIX = "ResetPasswordConfirm";
 
-const useStyles = makeStyles((theme) => ({
-	root: {
+const classes = {
+	root: `${PREFIX}-root`,
+	paper: `${PREFIX}-paper`,
+	form: `${PREFIX}-form`,
+	submit: `${PREFIX}-submit`
+};
+
+const Root = styled("div")(({theme}) => ({
+	[`&.${classes.root}`]: {
 		position: "absolute",
 		flexGrow: 1, 
 		left: "50%", 
@@ -23,16 +28,24 @@ const useStyles = makeStyles((theme) => ({
 		overflow: "90%",
 		transform: "translate(-50%, -50%)",
 	},
-	paper: {
+
+	[`& .${classes.paper}`]: {
 		marginTop: theme.spacing(8),
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
 		flexWrap: "wrap",
 	},
-	form: {
+
+	[`& .${classes.form}`]: {
 		width: "100%", // Fix IE 11 issue.
 		marginTop: theme.spacing(3),
+	},
+	[`& .${classes.submit}`]: {
+		margin: theme.spacing(3, 0, 2),
+		padding: "5px",
+		color: "white",
+		backgroundColor: "#0063cc",
 	}
 }));
 
@@ -62,7 +75,7 @@ const initialErrors: initialErrInterface = {
 };
 
 const ResetPasswordConfirm: FC = (): JSX.Element => {
-	const classes = useStyles();
+
 	const history = useHistory();
 
 	const {uid, token} = useParams<ParamTypes>();
@@ -124,8 +137,8 @@ const ResetPasswordConfirm: FC = (): JSX.Element => {
 		}
 	};
 
-	return(		
-		<div className={classes.root}>
+	return (
+		<Root className={classes.root}>
 			<Container component = "main" maxWidth="xs">
 				<CssBaseline />
 				<form className={classes.paper} noValidate={true} onSubmit = { submit }>
@@ -168,10 +181,10 @@ const ResetPasswordConfirm: FC = (): JSX.Element => {
 						</Grid>
 						<Grid item xs={12}>
 							<Button
+								className={classes.submit}
 								fullWidth
 								name="s"
 								variant="contained"
-								color="primary"
 								type="submit"
 							>
 							Update Password
@@ -187,7 +200,8 @@ const ResetPasswordConfirm: FC = (): JSX.Element => {
 					</Grid>
 				</form>
 			</Container>
-		</div>);
+		</Root>
+	);
 };
 
 export default ResetPasswordConfirm;

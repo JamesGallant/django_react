@@ -1,12 +1,14 @@
 import React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { ThemeProvider, createMuiTheme, makeStyles } from "@material-ui/core/styles";
+import { createTheme, ThemeProvider } from "@mui/material";
 
 import configuration from "./utils/config";
 import PrivateRoute from "./components/helper/privateRoute";
 import views from "./views";
 
-const theme = createMuiTheme();
+const theme = createTheme({
+});
+
 const App = (): JSX.Element => {
 	return(
 		<ThemeProvider theme={theme}>

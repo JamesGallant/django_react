@@ -2,16 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { AxiosResponse } from "axios";
 
-import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
-import Link from "@material-ui/core/Link";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Box from "@material-ui/core/Box";
+import { styled } from "@mui/system";
+import { Grid, Button, CssBaseline, Typography, Container, Link, FormControlLabel, Checkbox, Box  } from "@mui/material";
 
 import TextField from "../../components/formFields/TextFieldComponent";
 import PasswordField from "../../components/formFields/passwordComponent";
@@ -23,28 +15,42 @@ import { postTokenLogin, getUserData } from "../../api/authentication";
 import CookieHandler from "../../modules/cookies";
 import { login } from "../../modules/authentication";
 
-const useStyles = makeStyles((theme) => ({
-	root: {
+const PREFIX = "LoginView";
+
+const classes = {
+	root: `${PREFIX}-root`,
+	paper: `${PREFIX}-paper`,
+	form: `${PREFIX}-form`,
+	submit: `${PREFIX}-submit`
+};
+
+const Root = styled("div")(({theme}) => ({
+	[`&.${classes.root}`]: {
 		position: "absolute",
 		flexGrow: 1, 
 		left: "50%", 
 		top: "50%",
 		transform: "translate(-50%, -50%)"
 	},
-	paper: {
-		marginTop: theme.spacing(8),
+
+	[`& .${classes.paper}`]: {
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
 		flexWrap: "wrap",
 	},
-	form: {
+
+	[`& .${classes.form}`]: {
 		width: "100%", // Fix IE 11 issue.
 		marginTop: theme.spacing(3),
 	},
-	submit: {
+
+	[`& .${classes.submit}`]: {
 		margin: theme.spacing(3, 0, 2),
-	},
+		padding: "5px",
+		color: "white",
+		backgroundColor: "#0063cc",
+	}
 }));
 
 interface formTypes {
@@ -74,7 +80,7 @@ const LoginViewPage: React.FC = (): JSX.Element => {
      * @resource securely saving auth tokens: https://www.rdegges.com/2018/please-stop-using-local-storage/
      */
 
-	const classes = useStyles();
+
 	const history = useHistory();
 
 	const [formValues, setFormValues] = useState(initialFormVals);
@@ -163,8 +169,8 @@ const LoginViewPage: React.FC = (): JSX.Element => {
 		}
 	};
 
-	return(
-		<div className = {classes.root}>
+	return (
+		<Root className = {classes.root}>
 			<Container component = "main" maxWidth="xs">
 				<CssBaseline />
 				<div className={classes.paper}>
@@ -221,7 +227,6 @@ const LoginViewPage: React.FC = (): JSX.Element => {
 							fullWidth
 							name="s"
 							variant="contained"
-							color="primary"
 							type="submit"
 							className={classes.submit}
 						>
@@ -240,7 +245,7 @@ const LoginViewPage: React.FC = (): JSX.Element => {
 					<Copyright />
 				</Box>
 			</Container>
-		</div>
+		</Root>
 	);
 };
 

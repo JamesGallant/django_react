@@ -3,13 +3,10 @@ import React, { useState, useEffect } from "react";
 import { Input, FilledInput, OutlinedInput, Zoom, IconButton, Typography, FormControl, InputLabel,
 	InputAdornment, FormHelperText, Tooltip, ClickAwayListener} from "@material-ui/core";
 
-import { ThemeProvider } from "@material-ui/core/styles";
 import {Visibility, VisibilityOff } from "@material-ui/icons";
 import InfoIcon from "@material-ui/icons/Info";
 
-
 import configuration from "../../utils/config";
-import MuiGlobalTheme from "../../utils/themes";
 
 
 type mouseEvent = (event: React.MouseEvent<HTMLButtonElement>) => void;
@@ -150,10 +147,8 @@ const PasswordField = (props: any): JSX.Element => {
 	};
 
 	return(
-		<FormControl fullWidth={ fullWidth } >
-			<ThemeProvider theme={MuiGlobalTheme}>
-				<InputLabel>{inputLabel === null ? "Password": inputLabel}</InputLabel>
-			</ThemeProvider>
+		<FormControl fullWidth={ fullWidth } >	
+			<InputLabel variant="outlined">{inputLabel === null ? "Password": inputLabel}</InputLabel>
 			<InputVariant   
 				variant={ muiVariant }
 				label="Password"

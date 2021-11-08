@@ -3,21 +3,13 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
 // material ui
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Link from "@material-ui/core/Link";
-import Grid from "@material-ui/core/Grid";
-import Box from "@material-ui/core/Box";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-
+import { Button, CssBaseline, Link, Grid, Box, Typography, styled,Container } from "@mui/material";
 
 // third party
 import parsePhoneNumber from "libphonenumber-js";
 
 // own
-import Copyright from "../../components/helper/copyrightComponent"; 
+import Copyright from "../../components/helper/copyrightComponent";
 import TextField from "../../components/formFields/TextFieldComponent";
 import PasswordField from "../../components/formFields/passwordComponent";
 import CountrySelect from "../../components/formFields/countryComponent";
@@ -28,27 +20,42 @@ import { AxiosResponse } from "axios";
 
 import type { UserDataInterface } from "../../types/authentication";
 
-const useStyles = makeStyles((theme) => ({
-	root: {
+const PREFIX = "RegisterView";
+
+const classes = {
+	root: `${PREFIX}-root`,
+	paper: `${PREFIX}-paper`,
+	form: `${PREFIX}-form`,
+	submit: `${PREFIX}-submit`
+};
+
+const Root = styled("div")(({theme}) => ({
+	[`&.${classes.root}`]: {
 		position: "absolute",
 		flexGrow: 1, 
 		left: "50%", 
 		top: "50%",
 		transform: "translate(-50%, -50%)"
 	},
-	paper: {
+
+	[`& .${classes.paper}`]: {
 		marginTop: theme.spacing(8),
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
 	},
-	form: {
+
+	[`& .${classes.form}`]: {
 		width: "100%", // Fix IE 11 issue.
 		marginTop: theme.spacing(3),
 	},
-	submit: {
+
+	[`& .${classes.submit}`]: {
 		margin: theme.spacing(3, 0, 2),
-	},
+		padding: "5px",
+		color: "white",
+		backgroundColor: "#0063cc",
+	}
 }));
 
 interface FormTypes {
@@ -97,7 +104,7 @@ const RegisterView: React.FC = (): JSX.Element => {
  *@Resource https://djoser.readthedocs.io/en/latest/base_endpoints.html#user-create
  */
 
-	const classes = useStyles();
+
 	const history = useHistory();
 
 	const [formValues, setFormValues] = useState(initialVals);
@@ -185,7 +192,7 @@ const RegisterView: React.FC = (): JSX.Element => {
 	};
 
 	return (
-		<div className={classes.root} >
+		<Root className={classes.root} >
 			<Container component="main" maxWidth="xs">
 				<CssBaseline />
 				<div className={classes.paper}>
@@ -269,7 +276,7 @@ const RegisterView: React.FC = (): JSX.Element => {
 						>
             Sign Up
 						</Button>
-						<Grid container justifyContent="flex-end">
+						<Grid container justifyContent="flex-start">
 							<Grid item>
 								<Link href={configuration["url-login"]} variant="body2">
                 Already have an account? Sign in
@@ -282,7 +289,7 @@ const RegisterView: React.FC = (): JSX.Element => {
 					<Copyright />
 				</Box>
 			</Container>
-		</div>
+		</Root>
 	);
 };
 

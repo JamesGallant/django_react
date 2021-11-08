@@ -2,8 +2,7 @@ import React, {FC, useState} from "react";
 import { useHistory } from "react-router";
 
 // material ui
-import { makeStyles } from "@material-ui/core/styles";
-import { CssBaseline, Typography, Button, Link, Container, Grid} from "@material-ui/core";
+import { Button, styled, CssBaseline, Typography, Link, Container, Grid } from "@mui/material";
 
 import TextField from "../../components/formFields/TextFieldComponent";
 import configuration from "../../utils/config";
@@ -11,8 +10,16 @@ import { resetPassword } from "../../api/authentication";
 import { logout } from "../../modules/authentication";
 
 
-const useStyles = makeStyles((theme) => ({
-	root: {
+const PREFIX = "ResetPassword";
+
+const classes = {
+	root: `${PREFIX}-root`,
+	paper: `${PREFIX}-paper`,
+	form: `${PREFIX}-form`
+};
+
+const Root = styled("div")(({theme}) => ({
+	[`&.${classes.root}`]: {
 		position: "absolute",
 		flexGrow: 1, 
 		left: "50%", 
@@ -20,21 +27,23 @@ const useStyles = makeStyles((theme) => ({
 		overflow: "90%",
 		transform: "translate(-50%, -50%)",
 	},
-	paper: {
+
+	[`& .${classes.paper}`]: {
 		marginTop: theme.spacing(8),
 		display: "flex",
 		flexDirection: "column",
 		alignItems: "center",
 		flexWrap: "wrap",
 	},
-	form: {
+
+	[`& .${classes.form}`]: {
 		width: "100%", // Fix IE 11 issue.
 		marginTop: theme.spacing(3),
 	}
 }));
 
 const ResetPassword: FC = (): JSX.Element => {
-	const classes = useStyles();
+
 	const history = useHistory();
 
 	const [formValue, setFormValues] = useState("");
@@ -79,8 +88,8 @@ const ResetPassword: FC = (): JSX.Element => {
 		}
 	};
 
-	return(
-		<div className={classes.root}>
+	return (
+		<Root className={classes.root}>
 			<Container component = "main" maxWidth="xs">
 				<CssBaseline />
 				<form className={classes.paper} noValidate={true} onSubmit = { submit }>
@@ -128,7 +137,7 @@ const ResetPassword: FC = (): JSX.Element => {
 					</Grid>
 				</form>
 			</Container>
-		</div>
+		</Root>
 	);
 };
 
