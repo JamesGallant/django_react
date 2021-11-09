@@ -1,28 +1,29 @@
 import React, { FC, useEffect } from "react";
 
-import Grid from "@material-ui/core/Grid";
-import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import { Grid, styled } from "@mui/material";
 
 import configuration from "../utils/config";
 import { login } from "../modules/authentication";
 
-const useStyles = makeStyles((theme: Theme) => 
-	createStyles({
-		root: {
-			padding: theme.spacing(5)
-		}
-	})
-);
+const PREFIX = "HomeView";
+
+const classes = {
+	root: `${PREFIX}-root`
+};
+
+const Root = styled("div")(({theme}) => ({
+	[`&.${classes.root}`]: {
+		padding: theme.spacing(5),
+	}
+}));
 
 const HomeView: FC = () => {
-
-	const classes = useStyles();
 	useEffect(() => {
 		login();
 	}, []);
 
-	return(
-		<div className={classes.root}>
+	return (
+		<Root className={classes.root}>
 			<Grid>
 				<Grid container spacing={1}>
 					<Grid item xs={12}>
@@ -36,7 +37,7 @@ const HomeView: FC = () => {
 					</Grid>
 				</Grid>
 			</Grid>
-		</div>
+		</Root>
 	);
 };
 

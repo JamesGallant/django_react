@@ -2,16 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { AxiosResponse } from "axios";
 
-import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import Typography from "@material-ui/core/Typography";
-import Container from "@material-ui/core/Container";
-import Link from "@material-ui/core/Link";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Box from "@material-ui/core/Box";
+import { Grid, Button, CssBaseline, Typography, Container, Link, FormControlLabel, Checkbox, Box  } from "@mui/material";
+import { CentredSubmitFormRoot } from "../../utils/commonStyles";
 
 import TextField from "../../components/formFields/TextFieldComponent";
 import PasswordField from "../../components/formFields/passwordComponent";
@@ -23,29 +15,7 @@ import { postTokenLogin, getUserData } from "../../api/authentication";
 import CookieHandler from "../../modules/cookies";
 import { login } from "../../modules/authentication";
 
-const useStyles = makeStyles((theme) => ({
-	root: {
-		position: "absolute",
-		flexGrow: 1, 
-		left: "50%", 
-		top: "50%",
-		transform: "translate(-50%, -50%)"
-	},
-	paper: {
-		marginTop: theme.spacing(8),
-		display: "flex",
-		flexDirection: "column",
-		alignItems: "center",
-		flexWrap: "wrap",
-	},
-	form: {
-		width: "100%", // Fix IE 11 issue.
-		marginTop: theme.spacing(3),
-	},
-	submit: {
-		margin: theme.spacing(3, 0, 2),
-	},
-}));
+const { Root, classes} = CentredSubmitFormRoot("LoginView");
 
 interface formTypes {
     email: string,
@@ -74,7 +44,7 @@ const LoginViewPage: React.FC = (): JSX.Element => {
      * @resource securely saving auth tokens: https://www.rdegges.com/2018/please-stop-using-local-storage/
      */
 
-	const classes = useStyles();
+
 	const history = useHistory();
 
 	const [formValues, setFormValues] = useState(initialFormVals);
@@ -163,17 +133,18 @@ const LoginViewPage: React.FC = (): JSX.Element => {
 		}
 	};
 
-	return(
-		<div className = {classes.root}>
+	return (
+		<Root className = {classes.root}>
 			<Container component = "main" maxWidth="xs">
 				<CssBaseline />
-				<div className={classes.paper}>
-					<Typography component="h1" variant="h5">
-                        Sign in to {process.env.REACT_APP_SITE_NAME}
-					</Typography>
+				<Box boxShadow={5} className={classes.paper}>
 					<form className={classes.form} noValidate={true} onSubmit = { submit }>
-                    
 						<Grid container spacing={2}>
+							<Grid item xs={12}>
+								<Typography variant="h5" align="center">
+									<strong>Sign in to {process.env.REACT_APP_SITE_NAME}</strong>
+								</Typography>
+							</Grid>
 							<Grid item xs={12}>
 								<FlashError 
 									message={ flashErrorMessage }
@@ -185,7 +156,7 @@ const LoginViewPage: React.FC = (): JSX.Element => {
 									id="email"
 									name="email"
 									label="email"
-									fullWidth = {true}           
+									fullWidth = {true}      
 									required={true}
 									value = {formValues.email}
 									onChange={ handleChange }
@@ -203,7 +174,8 @@ const LoginViewPage: React.FC = (): JSX.Element => {
 							</Grid>
 							<Grid item xs={12}>
 								<FormControlLabel
-									control={<Checkbox 
+									control={<Checkbox
+										sx={{margin: 20}} 
 										value="remember" 
 										color="primary"
 										onChange = { handleCheckbox }
@@ -212,35 +184,34 @@ const LoginViewPage: React.FC = (): JSX.Element => {
 								/>
 							</Grid>
 							<Grid item xs={12}>
-								<Link href={configuration["url-resetPassword"]}>
+								<Link href={configuration["url-resetPassword"]} variant="subtitle1">
 									<strong>Forgot Password?</strong>
 								</Link>
 							</Grid>
-						</Grid>
-						<Button
-							fullWidth
-							name="s"
-							variant="contained"
-							color="primary"
-							type="submit"
-							className={classes.submit}
-						>
-                        Sign in
-						</Button>
-						<Grid container>
-							<Grid item>
-								<Link href={configuration["url-register"]} variant="body2">
-                            New to {process.env.REACT_APP_SITE_NAME}? create an account
+							<Grid item xs={12}>
+								<Button
+									fullWidth
+									name="s"
+									variant="contained"
+									type="submit"
+									className={classes.submit}
+								>
+									Sign in
+								</Button>
+							</Grid>
+							<Grid item xs={12}>
+								<Link href={configuration["url-register"]} variant="subtitle1">
+									Create an account
 								</Link>
 							</Grid>
 						</Grid>
 					</form>
-				</div>
-				<Box mt={5}>
-					<Copyright />
 				</Box>
 			</Container>
-		</div>
+			<Box mt={5}>
+				<Copyright />
+			</Box>
+		</Root>
 	);
 };
 

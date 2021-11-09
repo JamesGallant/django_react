@@ -1,12 +1,34 @@
 import React, { FC } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 
-import Button from "@material-ui/core/Button";
+import {Button, Box, styled, Container, CssBaseline, Grid, Typography, Link } from "@mui/material";
 
 import configuration from "../../utils/config";
 import { postSendEmail } from "../../api/authentication";
 import { AxiosResponse } from "axios";
 
+const PREFIX = "accountCreated";
+
+const classes = {
+	root: `${PREFIX}-root`,
+	paper: `${PREFIX}-paper`
+};
+
+const Root = styled("div")(({theme}) => ({
+	[`&.${classes.root}`]: {
+		position: "absolute",
+		flexGrow: 1, 
+		left: "50%", 
+		top: "50%",
+		transform: "translate(-50%, -50%)"
+	},
+
+	[`& .${classes.paper}`]: {
+		padding: theme.spacing(3),
+		wordWrap: "break-word",
+		minWidth: 500
+	}
+}));
 
 interface stateType {
     email: string, 
@@ -45,13 +67,27 @@ const AccountCreatedView : FC = () => {
 	};
 	//@TODO beutify this
 	return(
-		<div>
-			<h1> Thank you for creating an account with {process.env.REACT_APP_SITE_NAME} </h1>
-			<p> Hi { firstName }, thank you for creating an account with us.</p>
-			<p>We have sent a email to { email } which contains a link to activate your account. </p>
-			<p> Please activate your account before logging in. </p>
-			<Button color="primary" onClick={ resendEmail }> Resend activation email </Button>
-		</div>
+		<Root className={classes.root}>
+			<Box boxShadow={5} className={classes.paper}>
+				<Container component = "main" maxWidth="xs">
+					<CssBaseline />
+					<Grid container spacing={2}>
+						<Grid item xs={12}>
+							<Typography component="div" variant="h5" align="center">
+								<strong>Thank you for creating an account with {process.env.REACT_APP_SITE_NAME}</strong>
+							</Typography>
+						</Grid>
+						<Grid item>
+							<Typography variant="subtitle1" align="justify" gutterBottom={true} paragraph={true}>
+								Hi { firstName }, thank you for creating an account with us. We have sent an email to <Link href={`mailto:${email}`} target="_blank" rel="noreferrer">{ email }
+								</Link> which contains a link to activate your account. Please activate your account before logging in.
+							</Typography>
+						</Grid>
+					</Grid>
+					<Button variant="text" color="primary" size="medium" onClick={ resendEmail }> Resend activation email </Button>
+				</Container>
+			</Box>
+		</Root>
 	);
 };
 

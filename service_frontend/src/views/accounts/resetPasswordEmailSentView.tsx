@@ -1,42 +1,44 @@
 import React, { FC, useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 
-import { CssBaseline, Typography, Button, Link, Container, Grid, Box} from "@material-ui/core";
-import { makeStyles, Theme } from "@material-ui/core/styles";
+import { Button, CssBaseline, Typography,  Link, Container, Grid, Box , styled, Stack } from "@mui/material";
 
 import configuration from "../../utils/config";
 import { resetPassword } from "../../api/authentication";
 import FlashError from "../../components/helper/flashErrors";
 import { AxiosResponse } from "axios";
 
-interface StateInterface {
-	email: string
-}
+const PREFIX = "ResetPasswordEmailSent";
 
-const useStyles = makeStyles((theme: Theme) => ({
-	root: {
+const classes = {
+	root: `${PREFIX}-root`,
+	paper: `${PREFIX}-paper`,
+};
+
+const Root = styled("div")(({theme}) => ({
+	[`&.${classes.root}`]: {
 		position: "absolute",
 		flexGrow: 1, 
 		left: "50%", 
 		top: "50%",
 		transform: "translate(-50%, -50%)"
 	},
-	paper: {
+
+	[`& .${classes.paper}`]: {
 		padding: theme.spacing(3),
 		wordWrap: "break-word",
 		minWidth: 500
 	},
-	buttons: {
-		"& > *": {
-			margin: theme.spacing(1),
-		},
-	}
 }));
+
+interface StateInterface {
+	email: string
+}
 
 const ResetPasswordEmailSent: FC = (): JSX.Element => {
 	const history = useHistory();
 	const location = useLocation<StateInterface>();
-	const classes = useStyles();
+
 
 	const [flashErrorMessage, setFlashErrorMessage] = useState("");
 	const [flashError, setFlashError] = useState(false);
@@ -58,8 +60,8 @@ const ResetPasswordEmailSent: FC = (): JSX.Element => {
 			setFlashError(true);
 		}
 	};
-	return(
-		<div className={classes.root}>
+	return (
+		<Root className={classes.root}>
 			<Container component = "main" maxWidth="xs">
 				<CssBaseline />
 				<Box boxShadow={5} className={classes.paper}>
@@ -83,17 +85,17 @@ const ResetPasswordEmailSent: FC = (): JSX.Element => {
 							</Typography>
 						</Grid>
 						<Grid item xs={12}>
-							<div className={classes.buttons}>
+							<Stack direction="row" spacing={2}>
 								<Button variant="text" onClick={ resendEmail } color="primary" size="medium" >Resend email</Button>
 								<Button variant="text" color="primary" size="medium" href={configuration["url-login"]}>Login</Button>
 								<Button variant="text" color="primary" size="medium" href={configuration["url-register"]}>Register</Button>
 								<Button variant="text" color="primary" size="medium" href={configuration["url-home"]}>Home</Button>	
-							</div>
+							</Stack>
 						</Grid>
 					</Grid>
 				</Box>
 			</Container>
-		</div>
+		</Root>
 	);
 };
 

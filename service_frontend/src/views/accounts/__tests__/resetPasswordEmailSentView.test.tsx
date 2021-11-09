@@ -1,7 +1,7 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import ResetPasswordEmailSent from "../resetPasswordEmailSentView";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 
 import * as authenticationAPI from "../../../api/authentication";
 

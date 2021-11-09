@@ -1,12 +1,7 @@
 import React from "react";
 
 //third party
-import { TextField as MuiTextField }from "@material-ui/core";
-
-//ours
-import configuration from "../../utils/config";
-
-
+import { TextField as MuiTextField }from "@mui/material";
 
 const TextField = (props: any): JSX.Element => {
 	/**
@@ -18,14 +13,11 @@ const TextField = (props: any): JSX.Element => {
     * @param props: Input props
     * @returns JSX element
     */
-
-	const muiVariant = configuration["mui-InputVariant"];
    
 	const { name, label, id, value, onChange, errorMessage=[""], ...other } = props;
 
 	return(
 		<MuiTextField
-			variant={ muiVariant }
 			name={name}
 			label={label}
 			id={id}
