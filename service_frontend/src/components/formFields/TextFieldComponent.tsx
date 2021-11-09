@@ -3,11 +3,6 @@ import React from "react";
 //third party
 import { TextField as MuiTextField }from "@mui/material";
 
-//ours
-import configuration from "../../utils/config";
-
-
-
 const TextField = (props: any): JSX.Element => {
 	/**
     * @description Textfield component extended from material ui. Inludes error handling internally based on validate prop
@@ -18,8 +13,6 @@ const TextField = (props: any): JSX.Element => {
     * @param props: Input props
     * @returns JSX element
     */
-
-	const muiVariant = configuration["mui-InputVariant"];
    
 	const { name, label, id, value, onChange, errorMessage=[""], ...other } = props;
 
