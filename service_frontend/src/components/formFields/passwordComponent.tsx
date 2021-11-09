@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 
 import { Input, FilledInput, OutlinedInput, Zoom, IconButton, Typography, FormControl, InputLabel,
-	InputAdornment, FormHelperText, Tooltip, ClickAwayListener} from "@material-ui/core";
+	InputAdornment, FormHelperText, Tooltip, ClickAwayListener} from "@mui/material";
 
-import {Visibility, VisibilityOff } from "@material-ui/icons";
-import InfoIcon from "@material-ui/icons/Info";
+import {Visibility, VisibilityOff } from "@mui/icons-material";
+import InfoIcon from "@mui/icons-material/Info";
 
 import configuration from "../../utils/config";
 
@@ -58,7 +58,6 @@ const displayFullAdornment = (fn: adornmentType): JSX.Element => {
 							</Typography>
 						</React.Fragment>
 					} 
-					interactive
 					open={fn.openToolTip}
 					TransitionComponent={Zoom}
 					placement="right"

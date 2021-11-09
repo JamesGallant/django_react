@@ -1,7 +1,7 @@
 import React from "react";
 
 //third party
-import { TextField as MuiTextField }from "@material-ui/core";
+import { TextField as MuiTextField }from "@mui/material";
 
 //ours
 import configuration from "../../utils/config";
@@ -25,7 +25,6 @@ const TextField = (props: any): JSX.Element => {
 
 	return(
 		<MuiTextField
-			variant={ muiVariant }
 			name={name}
 			label={label}
 			id={id}
