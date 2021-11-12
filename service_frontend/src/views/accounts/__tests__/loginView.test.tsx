@@ -48,7 +48,7 @@ describe("Testing login", () => {
 			<LoginView/>
 		);
 
-		const submitButton = wrapper.getByRole("button", {name: "Sign in"});
+		const submitButton = wrapper.getByRole("button", {name: "Log in"});
         
 		await waitFor(() => {
 			fireEvent.click(submitButton);
@@ -74,7 +74,7 @@ describe("Testing login", () => {
 		);
         
 		const email = wrapper.getByRole("textbox", {name: "email"});
-		const submitButton = wrapper.getByRole("button", {name: "Sign in"});
+		const submitButton = wrapper.getByRole("button", {name: "Log in"});
 
 		await waitFor(() => {
 			fireEvent.click(submitButton);
@@ -112,7 +112,7 @@ describe("Testing login", () => {
 			</Router>);
 
 		await waitFor(() => {
-			fireEvent.click(screen.getByRole("button", {name: "Sign in"}));
+			fireEvent.click(screen.getByRole("button", {name: "Log in"}));
 		});
         
 		await spyOnTokenLogin;

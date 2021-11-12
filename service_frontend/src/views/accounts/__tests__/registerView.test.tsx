@@ -44,7 +44,7 @@ describe("Testing account registration", () => {
 			<RegisterView />
 		</Router>);
 
-		const submitButton =screen.getByRole("button", {name: "Sign Up"});
+		const submitButton =screen.getByRole("button", {name: "Register"});
 		const fname = screen.getByRole("textbox", {name: "First Name"});
 		const lname = screen.getByRole("textbox", {name: "Last Name"});
 		const email = screen.getByRole("textbox", {name: "Email"});
@@ -81,7 +81,7 @@ describe("Testing account registration", () => {
 		
 		render(<RegisterView />);
 
-		const submitButton =screen.getByRole("button", {name: "Sign Up"});
+		const submitButton =screen.getByRole("button", {name: "Register"});
 		const fname = screen.getByRole("textbox", {name: "First Name"});
 		const lname = screen.getByRole("textbox", {name: "Last Name"});
 		const email = screen.getByRole("textbox", {name: "Email"});
@@ -115,7 +115,7 @@ describe("Testing account registration", () => {
 
 		render(<RegisterView />);
 		
-		const submitButton = screen.getByRole("button", {name: "Sign Up"});
+		const submitButton = screen.getByRole("button", {name: "Register"});
 		const email = screen.getByRole("textbox", {name: "Email"});
 		const mobile = screen.getByRole("textbox", {name: "mobile number"});
 
@@ -146,7 +146,7 @@ describe("Testing account registration", () => {
 
 		render(<RegisterView />);
 
-		const submitButton = screen.getByRole("button", {name: "Sign Up"});
+		const submitButton = screen.getByRole("button", {name: "Register"});
 
 		await waitFor(() => {
 			fireEvent.click(submitButton);

@@ -243,12 +243,12 @@ const RegisterView: React.FC = (): JSX.Element => {
 									type="submit"
 									className={classes.submit}
 								>
-									Sign Up
+									Register
 								</Button>
 							</Grid>
 							<Grid item  xs={12}>
 								<Link href={configuration["url-login"]} variant="body2">
-									Sign in instead
+									log in instead
 								</Link>
 							</Grid>
 						</Grid>

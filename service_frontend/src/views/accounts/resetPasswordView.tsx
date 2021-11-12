@@ -102,7 +102,7 @@ const ResetPassword: FC = (): JSX.Element => {
 								<Link 
 									href={configuration["url-login"]}
 									variant="subtitle1">
-									Login instead
+									Log in instead
 								</Link>
 							</Grid>
 						</Grid>

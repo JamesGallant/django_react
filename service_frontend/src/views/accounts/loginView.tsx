@@ -142,7 +142,7 @@ const LoginViewPage: React.FC = (): JSX.Element => {
 						<Grid container spacing={2}>
 							<Grid item xs={12}>
 								<Typography variant="h5" align="center">
-									<strong>Sign in to {process.env.REACT_APP_SITE_NAME}</strong>
+									<strong>Log in to {process.env.REACT_APP_SITE_NAME}</strong>
 								</Typography>
 							</Grid>
 							<Grid item xs={12}>
@@ -175,7 +175,6 @@ const LoginViewPage: React.FC = (): JSX.Element => {
 							<Grid item xs={12}>
 								<FormControlLabel
 									control={<Checkbox
-										sx={{margin: 20}} 
 										value="remember" 
 										color="primary"
 										onChange = { handleCheckbox }
@@ -196,7 +195,7 @@ const LoginViewPage: React.FC = (): JSX.Element => {
 									type="submit"
 									className={classes.submit}
 								>
-									Sign in
+									Log in
 								</Button>
 							</Grid>
 							<Grid item xs={12}>
@@ -224,7 +223,6 @@ const LoginView: React.FC = (): JSX.Element => {
 
 	if (window.localStorage.getItem("authenticated") === "true") {
 		history.push(configuration["url-dashboard"]);
-
 	} else {
 		return(
 			<LoginViewPage />
