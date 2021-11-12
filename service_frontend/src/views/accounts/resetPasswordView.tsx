@@ -2,39 +2,18 @@ import React, {FC, useState} from "react";
 import { useHistory } from "react-router";
 
 // material ui
-import { makeStyles } from "@material-ui/core/styles";
-import { CssBaseline, Typography, Button, Link, Container, Grid} from "@material-ui/core";
+import { Button, CssBaseline, Typography, Link, Container, Grid, Box } from "@mui/material";
+import { CentredSubmitFormRoot } from "../../utils/commonStyles";
 
 import TextField from "../../components/formFields/TextFieldComponent";
 import configuration from "../../utils/config";
 import { resetPassword } from "../../api/authentication";
 import { logout } from "../../modules/authentication";
+import Copyright from "../../components/helper/copyrightComponent";
 
-
-const useStyles = makeStyles((theme) => ({
-	root: {
-		position: "absolute",
-		flexGrow: 1, 
-		left: "50%", 
-		top: "50%",
-		overflow: "90%",
-		transform: "translate(-50%, -50%)",
-	},
-	paper: {
-		marginTop: theme.spacing(8),
-		display: "flex",
-		flexDirection: "column",
-		alignItems: "center",
-		flexWrap: "wrap",
-	},
-	form: {
-		width: "100%", // Fix IE 11 issue.
-		marginTop: theme.spacing(3),
-	}
-}));
+const { Root, classes} = CentredSubmitFormRoot("ResetPassword");
 
 const ResetPassword: FC = (): JSX.Element => {
-	const classes = useStyles();
 	const history = useHistory();
 
 	const [formValue, setFormValues] = useState("");
@@ -79,56 +58,61 @@ const ResetPassword: FC = (): JSX.Element => {
 		}
 	};
 
-	return(
-		<div className={classes.root}>
+	return (
+		<Root className={classes.root}>
 			<Container component = "main" maxWidth="xs">
 				<CssBaseline />
-				<form className={classes.paper} noValidate={true} onSubmit = { submit }>
-					<Grid container spacing={2}>
-						<Grid item xs={12}>
-							<Typography component="div" variant="h5" align="center">
-								<strong>Forgot your password?</strong>
-							</Typography>
-						</Grid>
-						<Grid item xs={12}>
-							<Typography component="div" variant="subtitle1">
+				<Box boxShadow={5} className={classes.paper}>
+					<form className={classes.form} noValidate={true} onSubmit = { submit }>
+						<Grid container spacing={2}>
+							<Grid item xs={12}>
+								<Typography component="div" variant="h5" align="center">
+									<strong>Forgot your password?</strong>
+								</Typography>
+							</Grid>
+							<Grid item xs={12}>
+								<Typography component="div" variant="subtitle1">
 								Provide the email used for your account, we will send a reset link.
-							</Typography>
-						</Grid>
-						<Grid item xs={12}>
-							<TextField 
-								id="email"
-								name="email"
-								label="email"
-								fullWidth = {true}           
-								required={true}
-								value = {formValue}
-								onChange={ handleChange }
-								errorMessage={ errorMessage}
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<Button
-								fullWidth
-								name="s"
-								variant="contained"
-								color="primary"
-								type="submit"
-							>
+								</Typography>
+							</Grid>
+							<Grid item xs={12}>
+								<TextField 
+									id="email"
+									name="email"
+									label="email"
+									fullWidth = {true}           
+									required={true}
+									value = {formValue}
+									onChange={ handleChange }
+									errorMessage={ errorMessage}
+								/>
+							</Grid>
+							<Grid item xs={12}>
+								<Button
+									fullWidth
+									name="s"
+									variant="contained"
+									color="primary"
+									type="submit"
+								>
 								Reset Password
-							</Button>
+								</Button>
+							</Grid>
+							<Grid item xs={12}>
+								<Link 
+									href={configuration["url-login"]}
+									variant="subtitle1">
+									Log in instead
+								</Link>
+							</Grid>
 						</Grid>
-						<Grid item xs={12}>
-							<Link 
-								href={configuration["url-login"]}
-								variant="body2">
-								Remembered it? Login
-							</Link>
-						</Grid>
-					</Grid>
-				</form>
+					</form>
+				</Box>
 			</Container>
-		</div>
+			<Box mt={5}>
+				<Copyright />
+			</Box>
+		</Root>
 	);
 };
 

@@ -2,39 +2,17 @@ import React, { FC, useState } from "react";
 import { useParams, useHistory } from "react-router";
 import { AxiosResponse } from "axios";
 
-import { makeStyles } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Container from "@material-ui/core/Container";
-import { CssBaseline, Typography, Button, Link} from "@material-ui/core";
+import { Grid, Container, CssBaseline, Typography, Button, Link, Box } from "@mui/material";
+import { CentredSubmitFormRoot } from "../../utils/commonStyles";
 
-import {resetPasswordConfirm} from "../../api/authentication";
+import { resetPasswordConfirm } from "../../api/authentication";
 import PasswordField from "../../components/formFields/passwordComponent";
 import configuration from "../../utils/config";
 import FlashError from "../../components/helper/flashErrors";
 import { logout } from "../../modules/authentication";
+import Copyright from "../../components/helper/copyrightComponent";
 
-
-const useStyles = makeStyles((theme) => ({
-	root: {
-		position: "absolute",
-		flexGrow: 1, 
-		left: "50%", 
-		top: "50%",
-		overflow: "90%",
-		transform: "translate(-50%, -50%)",
-	},
-	paper: {
-		marginTop: theme.spacing(8),
-		display: "flex",
-		flexDirection: "column",
-		alignItems: "center",
-		flexWrap: "wrap",
-	},
-	form: {
-		width: "100%", // Fix IE 11 issue.
-		marginTop: theme.spacing(3),
-	}
-}));
+const { Root, classes} = CentredSubmitFormRoot("ResetPasswordConfirm");
 
 interface ParamTypes {
 	uid: string,
@@ -62,7 +40,7 @@ const initialErrors: initialErrInterface = {
 };
 
 const ResetPasswordConfirm: FC = (): JSX.Element => {
-	const classes = useStyles();
+
 	const history = useHistory();
 
 	const {uid, token} = useParams<ParamTypes>();
@@ -124,70 +102,76 @@ const ResetPasswordConfirm: FC = (): JSX.Element => {
 		}
 	};
 
-	return(		
-		<div className={classes.root}>
+	return (
+		<Root className={classes.root}>
 			<Container component = "main" maxWidth="xs">
 				<CssBaseline />
-				<form className={classes.paper} noValidate={true} onSubmit = { submit }>
-					<Grid container spacing={2}>
-						<Grid item xs={12}>
-							<Typography component="div" variant="h5" align="center">
-								<strong>Update your password</strong>
-							</Typography>
-						</Grid>
-						<Grid item xs={12}>
-							<Typography component="div" variant="subtitle1">
+				<Box boxShadow={5} className={classes.paper}>
+					<form className={classes.form} noValidate={true} onSubmit = { submit }>	
+						<Grid container spacing={2}>
+							<Grid item xs={12}>
+								<Typography component="div" variant="h5" align="center">
+									<strong>Update your password</strong>
+								</Typography>
+							</Grid>
+							<Grid item xs={12}>
+								<Typography variant="subtitle1" align="justify">
 								Provide a new strong password for your account. We will send a confirmation email once
 								your password is updated.
-							</Typography>
-						</Grid>
-						<Grid item xs={12}>
-							<FlashError 
-								message={ flashErrorMessage }
-								display={ flashError }
-							/>
-						</Grid>
-						<Grid item xs={12}>
-							<PasswordField
-								id="password"
-								name="new_password"
-								showTooltip= {true}
-								value={ formValues.new_password }
-								errorMessage={ errorMessage.new_password }
-								onChange={ handleChange }/>
-						</Grid>
-						<Grid item xs={12}>
-							<PasswordField
-								id="rePassword"
-								name="re_new_password"
-								inputLabel="Confirm password"
-								showTooltip= {false}
-								value={ formValues.re_new_password }
-								errorMessage={ errorMessage.re_new_password }
-								onChange={ handleChange }/>
-						</Grid>
-						<Grid item xs={12}>
-							<Button
-								fullWidth
-								name="s"
-								variant="contained"
-								color="primary"
-								type="submit"
-							>
+								</Typography>
+							</Grid>
+							<Grid item xs={12}>
+								<FlashError 
+									message={ flashErrorMessage }
+									display={ flashError }
+								/>
+							</Grid>
+							<Grid item xs={12}>
+								<PasswordField
+									id="password"
+									name="new_password"
+									showTooltip= {true}
+									value={ formValues.new_password }
+									errorMessage={ errorMessage.new_password }
+									onChange={ handleChange }/>
+							</Grid>
+							<Grid item xs={12}>
+								<PasswordField
+									id="rePassword"
+									name="re_new_password"
+									inputLabel="Confirm password"
+									showTooltip= {false}
+									value={ formValues.re_new_password }
+									errorMessage={ errorMessage.re_new_password }
+									onChange={ handleChange }/>
+							</Grid>
+							<Grid item xs={12}>
+								<Button
+									className={classes.submit}
+									fullWidth
+									name="s"
+									variant="contained"
+									type="submit"
+								>
 							Update Password
-							</Button>
+								</Button>
+							</Grid>
+							<Grid item xs={12}>
+								<Link 
+									href={configuration["url-login"]}
+									variant="body2">
+									Back to Login
+								</Link>
+							</Grid>
 						</Grid>
-						<Grid item xs={12}>
-							<Link 
-								href={configuration["url-login"]}
-								variant="body2">
-								<strong>Back to Login</strong>
-							</Link>
-						</Grid>
-					</Grid>
-				</form>
+					</form>
+				</Box>
 			</Container>
-		</div>);
+			<Box mt={5}>
+				<Copyright />
+			</Box>
+		</Root>
+	);
 };
 
 export default ResetPasswordConfirm;
