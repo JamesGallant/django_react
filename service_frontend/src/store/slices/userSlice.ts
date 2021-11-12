@@ -89,7 +89,7 @@ export const userSlice: Slice<userDataState> = createSlice({
 		},
 	}
 });
-
+export const selectState = (state: RootState): userDataState => state.userReducer;
 export const selectUserData = (state: RootState): UserDataInterface => state.userReducer.user.data;
 export const selectUserStateStatus = (state: RootState): string => state.userReducer.user.stateStatus;
 
