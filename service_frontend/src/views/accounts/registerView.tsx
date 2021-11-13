@@ -10,10 +10,10 @@ import { CentredSubmitFormRoot } from "../../utils/commonStyles";
 import parsePhoneNumber from "libphonenumber-js";
 
 // own
-import Copyright from "../../components/helper/copyrightComponent";
-import TextField from "../../components/formFields/TextFieldComponent";
-import PasswordField from "../../components/formFields/passwordComponent";
-import CountrySelect from "../../components/formFields/countryComponent";
+import Copyright from "../../components/common/helper/copyrightComponent";
+import TextField from "../../components/common/formFields/TextFieldComponent";
+import PasswordField from "../../components/common/formFields/passwordComponent";
+import CountrySelect from "../../components/common/formFields/countryComponent";
 import configuration from "../../utils/config";
 
 import { postRegisterUser } from "../../api/authentication";

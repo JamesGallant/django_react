@@ -1,5 +1,5 @@
 import React from "react";
-import { CentredSubmitFormRoot } from "../../utils/commonStyles";
+import { CentredSubmitFormRoot } from "../../../utils/commonStyles";
 
 import { Box, CircularProgress } from "@mui/material";
 

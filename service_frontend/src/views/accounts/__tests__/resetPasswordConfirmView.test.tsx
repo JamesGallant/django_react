@@ -39,7 +39,7 @@ describe("Testing the resetPasswordConfirm view", () => {
 		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetPasswordConfirm").mockImplementation(() => Promise.resolve(AxiosResponse));
 
 		const wrapper = render(<ResetPasswordConfirm/>);
-		const submitButton = wrapper.getByRole("button", {name: "Update Password"});
+		const submitButton: HTMLElement = wrapper.getByRole("button", {name: "Update Password"});
 
 		await waitFor(() => {
 			fireEvent.click(submitButton);
@@ -58,7 +58,7 @@ describe("Testing the resetPasswordConfirm view", () => {
 		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetPasswordConfirm").mockImplementation(() => Promise.resolve(AxiosResponse));
 
 		const wrapper = render(<ResetPasswordConfirm/>);
-		const submitButton = wrapper.getByRole("button", {name: "Update Password"});
+		const submitButton: HTMLElement = wrapper.getByRole("button", {name: "Update Password"});
 
 		await waitFor(() => {
 			fireEvent.click(submitButton);
@@ -76,7 +76,7 @@ describe("Testing the resetPasswordConfirm view", () => {
 		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetPasswordConfirm").mockImplementation(() => Promise.resolve(AxiosResponse));
 
 		const wrapper = render(<ResetPasswordConfirm/>);
-		const submitButton = wrapper.getByRole("button", {name: "Update Password"});
+		const submitButton: HTMLElement = wrapper.getByRole("button", {name: "Update Password"});
 
 		await waitFor(() => {
 			fireEvent.click(submitButton);
@@ -95,7 +95,7 @@ describe("Testing the resetPasswordConfirm view", () => {
 
 		const spyOnLogout = jest.spyOn(authentication, "logout");
 		const wrapper = render(<ResetPasswordConfirm/>);
-		const submitButton = wrapper.getByRole("button", {name: "Update Password"});
+		const submitButton: HTMLElement = wrapper.getByRole("button", {name: "Update Password"});
 
 		await waitFor(() => {
 			fireEvent.click(submitButton);

@@ -2,10 +2,11 @@ import React, { FC } from "react";
 import { useLocation, useHistory } from "react-router-dom";
 
 import {Button, Box, styled, Container, CssBaseline, Grid, Typography, Link } from "@mui/material";
+import { AxiosResponse } from "axios";
 
 import configuration from "../../utils/config";
 import { postSendEmail } from "../../api/authentication";
-import { AxiosResponse } from "axios";
+
 
 const PREFIX = "accountCreated";
 

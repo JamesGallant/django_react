@@ -5,10 +5,10 @@ import { AxiosResponse } from "axios";
 import { Grid, Button, CssBaseline, Typography, Container, Link, FormControlLabel, Checkbox, Box  } from "@mui/material";
 import { CentredSubmitFormRoot } from "../../utils/commonStyles";
 
-import TextField from "../../components/formFields/TextFieldComponent";
-import PasswordField from "../../components/formFields/passwordComponent";
-import Copyright from "../../components/helper/copyrightComponent";
-import FlashError from "../../components/helper/flashErrors";
+import TextField from "../../components/common/formFields/TextFieldComponent";
+import PasswordField from "../../components/common/formFields/passwordComponent";
+import Copyright from "../../components/common/helper/copyrightComponent";
+import FlashError from "../../components/common/helper/flashErrors";
 
 import configuration from "../../utils/config";
 import { postTokenLogin, getUserData } from "../../api/authentication";

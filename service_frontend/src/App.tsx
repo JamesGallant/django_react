@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material";
 
 import configuration from "./utils/config";
-import PrivateRoute from "./components/helper/privateRoute";
+import PrivateRoute from "./components/common/helper/privateRoute";
 import views from "./views";
 
 const theme = createTheme({

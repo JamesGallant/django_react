@@ -1,12 +1,13 @@
 import React, { FC, useState } from "react";
 import { useLocation, useHistory } from "react-router-dom";
+import { AxiosResponse } from "axios";
 
 import { Button, CssBaseline, Typography,  Link, Container, Grid, Box , styled, Stack } from "@mui/material";
 
 import configuration from "../../utils/config";
 import { resetPassword } from "../../api/authentication";
-import FlashError from "../../components/helper/flashErrors";
-import { AxiosResponse } from "axios";
+
+import FlashError from "../../components/common/helper/flashErrors";
 
 const PREFIX = "ResetPasswordEmailSent";
 

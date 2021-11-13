@@ -6,11 +6,13 @@ import { Grid, Container, CssBaseline, Typography, Button, Link, Box } from "@mu
 import { CentredSubmitFormRoot } from "../../utils/commonStyles";
 
 import { resetPasswordConfirm } from "../../api/authentication";
-import PasswordField from "../../components/formFields/passwordComponent";
 import configuration from "../../utils/config";
-import FlashError from "../../components/helper/flashErrors";
 import { logout } from "../../modules/authentication";
-import Copyright from "../../components/helper/copyrightComponent";
+
+import PasswordField from "../../components/common/formFields/passwordComponent";
+import FlashError from "../../components/common/helper/flashErrors";
+import Copyright from "../../components/common/helper/copyrightComponent";
+
 
 const { Root, classes} = CentredSubmitFormRoot("ResetPasswordConfirm");
 

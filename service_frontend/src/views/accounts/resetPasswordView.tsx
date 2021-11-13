@@ -5,11 +5,12 @@ import { useHistory } from "react-router";
 import { Button, CssBaseline, Typography, Link, Container, Grid, Box } from "@mui/material";
 import { CentredSubmitFormRoot } from "../../utils/commonStyles";
 
-import TextField from "../../components/formFields/TextFieldComponent";
+import TextField from "../../components/common/formFields/TextFieldComponent";
+import Copyright from "../../components/common/helper/copyrightComponent";
 import configuration from "../../utils/config";
 import { resetPassword } from "../../api/authentication";
 import { logout } from "../../modules/authentication";
-import Copyright from "../../components/helper/copyrightComponent";
+
 
 const { Root, classes} = CentredSubmitFormRoot("ResetPassword");
 

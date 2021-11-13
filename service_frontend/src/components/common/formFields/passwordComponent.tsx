@@ -6,7 +6,7 @@ import { Input, FilledInput, OutlinedInput, Zoom, IconButton, Typography, FormCo
 import {Visibility, VisibilityOff } from "@mui/icons-material";
 import InfoIcon from "@mui/icons-material/Info";
 
-import configuration from "../../utils/config";
+import configuration from "../../../utils/config";
 
 
 type mouseEvent = (event: React.MouseEvent<HTMLButtonElement>) => void;

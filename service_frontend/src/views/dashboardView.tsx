@@ -4,7 +4,8 @@ import { useHistory } from "react-router-dom";
 import { useAppSelector, useAppDispatch } from "../store/hooks";
 import { setUser, selectUserData, selectUserStateStatus } from "../store/slices/userSlice";
 
-import BasicSpinner from "../components/spinner/basicSpinnerComponent";
+import BasicSpinner from "../components/common/spinner/basicSpinnerComponent";
+import Navbar from "../components/dashboard/Navbar";
 
 import CookieHandler from "../modules/cookies";
 import configuration from "../utils/config";
@@ -41,9 +42,7 @@ const DashboardView: FC = (): JSX.Element => {
 		);
 	} else {
 		return(
-			<div>
-				<h1> Hello {user.first_name} Welcome to the dash</h1>
-			</div>	
+			<Navbar />
 		);
 	}
 };

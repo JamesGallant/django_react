@@ -1,7 +1,7 @@
 import React from "react";
 import { Redirect, Route } from "react-router";
 
-import configuration from "../../utils/config";
+import configuration from "../../../utils/config";
 
 const PrivateRoute = (props: any): JSX.Element => {
 	/**
