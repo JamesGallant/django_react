@@ -32,6 +32,24 @@ describe("Testing the resetPasswordConfirm view", () => {
 		render(<ResetPasswordConfirm></ResetPasswordConfirm>);
 	});
 
+	it("Bad request throws flash error when token is invalid", async() => {
+		AxiosResponse.data = {token: ["random error"]};
+		AxiosResponse.status = 400;
+		jest.spyOn(ReactRouter, "useParams").mockReturnValue({uid: "test", token: "123"});
+		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetPasswordConfirm").mockImplementation(() => Promise.resolve(AxiosResponse));
+
+		const wrapper = render(<ResetPasswordConfirm/>);
+		const submitButton = wrapper.getByRole("button", {name: "Update Password"});
+
+		await waitFor(() => {
+			fireEvent.click(submitButton);
+		});
+
+		await spyOnApi;
+		expect(spyOnApi).toBeCalledTimes(1);
+		expect(wrapper.getByText("Invalid token, resend email")).toBeInTheDocument();
+	});
+
 	it("bad request response throws flash error when field errors are unknown", async() => {
 		AxiosResponse.data = {non_field_errors: ["other error"]};
 		AxiosResponse.status = 400;
