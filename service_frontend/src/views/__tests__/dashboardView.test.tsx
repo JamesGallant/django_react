@@ -64,7 +64,7 @@ describe("Testing the dashboard view", () => {
 			</Provider>);
 		
 		expect(spyOnCookies).toBeCalledWith("authToken");
-		expect(spyOnDispatch).toBeCalledTimes(2);
+		expect(spyOnDispatch).toBeCalledTimes(3);
 		expect(spyOnUserState).toBeCalledTimes(1);
 	});
 });

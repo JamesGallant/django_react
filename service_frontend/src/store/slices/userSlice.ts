@@ -5,23 +5,10 @@ import { getUserData } from "../../api/authentication";
 
 import type { RootState } from "../store";
 import type { UserDataInterface } from "../../types/authentication";
+import type { UserStateInterface } from "../../types/store";
 
-interface stateError {
-	message: string,
-	name: string,
-	stack: string
-}
-
-interface userDataState {
-    user: {
-        stateStatus: string,
-        data: UserDataInterface,
-        error: stateError | unknown
-    }
-}
-
-const initialState: userDataState = {
-	user: {
+const initialState: UserStateInterface = {
+	userReducer: {
 		stateStatus: "idle",
 		data: {
 			id: null,
@@ -46,19 +33,19 @@ export const setUser = createAsyncThunk(
 	}
 );
 
-export const userSlice: Slice<userDataState> = createSlice({
+export const userSlice: Slice<UserStateInterface> = createSlice({
 	name: "userData",
 	initialState, 
 	reducers: {},
 	extraReducers: {
 		[setUser.pending.type]: (state) => {
-			state.user.stateStatus = "loading";
+			state.userReducer.stateStatus = "loading";
 		}, 
 
 		[setUser.fulfilled.type]: (state, action: PayloadAction<UserDataInterface>) => {
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			/**@ts-ignore */
-			state.user = {
+			state.userReducer = {
 				stateStatus: "success",
 				data: {
 					id: action.payload.id,
@@ -72,7 +59,7 @@ export const userSlice: Slice<userDataState> = createSlice({
 			};
 		},
 		[setUser.rejected.type]: (state, action: PayloadAction<any>) => {
-			state.user = {
+			state.userReducer = {
 				stateStatus: "failed",
 				data: {
 					id: null,
@@ -89,8 +76,9 @@ export const userSlice: Slice<userDataState> = createSlice({
 		},
 	}
 });
-export const selectState = (state: RootState): userDataState => state.userReducer;
-export const selectUserData = (state: RootState): UserDataInterface => state.userReducer.user.data;
-export const selectUserStateStatus = (state: RootState): string => state.userReducer.user.stateStatus;
+
+export const selectState = (state: RootState): UserStateInterface => state.users;
+export const selectUserData = (state: RootState): UserDataInterface => state.users.userReducer.data;
+export const selectUserStateStatus = (state: RootState): string => state.users.userReducer.stateStatus;
 
 export default userSlice.reducer;

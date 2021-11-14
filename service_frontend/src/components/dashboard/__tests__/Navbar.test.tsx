@@ -2,6 +2,8 @@ import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
+import { Provider } from "react-redux";
+import { store } from "../../../store/store";
 
 import configuration from "../../../utils/config";
 
@@ -13,15 +15,21 @@ describe("Testing navbar from dashboard", () => {
 	});
 
 	it("Should mount", () => {
-		render(<Navbar />);
+		render(
+			<Provider store={store}>
+				<Navbar />
+			</Provider>);
 	});
 
 	it("Profile item logout functions properly", async () => {
 		const history = createMemoryHistory();
 
-		const wrapper = render(<Router history={history}>
-			<Navbar/>
-		</Router>);
+		const wrapper = render(
+			<Provider store={store}>
+				<Router history={history}>
+					<Navbar/>
+				</Router>
+			</Provider>);
 
 		const ProfileButton: HTMLElement = wrapper.getByRole("button", {name: "userAccount"});
 
