@@ -1,12 +1,11 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
-
 import { store } from "../../../store/store";
 
-import AppStore from "../AppStore";
+import ProfileMain from "../ProfileMain";
 
-describe("Testing AppStore component", () => {
+describe("Testing Profile component", () => {
 	afterEach(() => {
 		jest.clearAllMocks();
 	});
@@ -14,7 +13,7 @@ describe("Testing AppStore component", () => {
 	it("Mounts", () => {
 		render(
 			<Provider store={store}>
-				<AppStore />
+				<ProfileMain />
 			</Provider>
 		);
 	});

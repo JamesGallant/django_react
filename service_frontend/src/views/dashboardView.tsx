@@ -9,8 +9,8 @@ import { Box, Grid } from "@mui/material";
 import BasicSpinner from "../components/common/spinner/basicSpinnerComponent";
 import Navbar from "../components/dashboard/Navbar";
 import SettingsMain from "../components/dashboard/SettingsMain";
-import AppStore from "../components/dashboard/AppStore";
-import Profile from "../components/dashboard/Profile";
+import AppStoreMain from "../components/dashboard/AppStoreMain";
+import ProfileMain from "../components/dashboard/ProfileMain";
 
 import CookieHandler from "../modules/cookies";
 import configuration from "../utils/config";
@@ -54,8 +54,8 @@ const DashboardView: FC = (): JSX.Element => {
 					<Grid container sx={{position: "fixed"}} spacing={1}>]
 						<Grid item xs={12}>
 							<SettingsMain />
-							<AppStore />
-							<Profile/>
+							<AppStoreMain />
+							<ProfileMain/>
 						</Grid>
 					</Grid>
 				</Box>
