@@ -4,7 +4,7 @@ import { selectVeiwDashboard } from "../../store/slices/viewSlice";
 
 import { Box, Tabs, Tab} from "@mui/material";
 
-import type { TabPanelPropsInterface } from "../../types/Components";
+import type { TabPanelPropsInterface } from "../../types/components";
 
 const SettingsMain = (): JSX.Element | null => {
 	const [tabValue, setTabValue] = useState(0);

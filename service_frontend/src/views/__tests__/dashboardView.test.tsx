@@ -4,7 +4,9 @@ import React from "react";
 import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { store } from "../../store/store";
+import viewsReducer, { toggleDashboardView } from "../../store/slices/viewSlice";
 
+import type { ViewsStateInterface } from "../../types/store";
 import * as reduxHooks from "../../store/hooks";
 import * as userFunctions from "../../store/slices/userSlice";
 
@@ -18,8 +20,19 @@ import * as authenticationModules from "../../modules/authentication";
 
 describe("Testing the dashboard view", () => {
 	let history: any;
+	let mockViewStore: ViewsStateInterface;
 	beforeEach(() => {
 		history = createMemoryHistory();
+		mockViewStore = {
+			viewReducer: {
+				stateStatus: "idle",
+				dashboard: {
+					settings: false,
+					profile: false,
+					appstore: true,
+				}
+			}
+		};
 	});
 
 	afterEach(() => {
