@@ -31,8 +31,7 @@ const DashboardView: FC = (): JSX.Element => {
 				history.push(configuration["url-login"]);
 			} else {
 				const result = await dispatch(setUser(token));
-				console.log(result);
-				if (result.meta.requestStatus === "rejected" || result.payload.detail) {
+				if (result.meta.requestStatus === "rejected" || result.payload.detail || result.payload.email === null) {
 					logout();
 					history.push(configuration["url-login"]);
 				}
