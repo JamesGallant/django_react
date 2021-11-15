@@ -4,6 +4,11 @@ import { selectVeiwDashboard } from "../../store/slices/viewSlice";
 
 import { Box, Tabs, Tab} from "@mui/material";
 
+import SettingsProfile from "./SettingsProfile";
+import SetingsAppearance from "./SettingsAppearance";
+import SettingsAccount from "./SettingsAccount";
+import SettingsBilling from "./SettingsBilling";
+import SettingsApps from "./SettingsApps";
 import type { TabPanelPropsInterface } from "../../types/components";
 
 const SettingsMain = (): JSX.Element | null => {
@@ -58,19 +63,19 @@ const SettingsMain = (): JSX.Element | null => {
 					<Tab label="Connencted apps" disabled {...tabProps(4)}/>
 				</Tabs>
 				<TabPanel value={tabValue} index={0}>
-					<h1>Edit profile</h1>					
+					<SettingsProfile />				
 				</TabPanel>
 				<TabPanel value={tabValue} index={1}>
-					<h1>Edit appearance</h1>					
+					<SetingsAppearance />					
 				</TabPanel>
 				<TabPanel value={tabValue} index={2}>
-					<h1>Edit Account</h1>					
+					<SettingsAccount />					
 				</TabPanel>
 				<TabPanel value={tabValue} index={3}>
-					<h1>Edit Billing</h1>					
+					<SettingsBilling />				
 				</TabPanel>
 				<TabPanel value={tabValue} index={4}>
-					<h1>Edit Apps</h1>					
+					<SettingsApps />				
 				</TabPanel>
 			</Box>
 		);
