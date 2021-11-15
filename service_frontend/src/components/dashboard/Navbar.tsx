@@ -58,7 +58,7 @@ const Navbar: FC = (): JSX.Element => {
 						open={isProfileMenuOpen}
 						onClick={handleProfileMenuClose}
 					>
-						<MenuItem>
+						<MenuItem disabled>
 							<Typography variant="overline" display="block"><strong>{user.email}</strong></Typography>
 						</MenuItem>
 						<Divider />

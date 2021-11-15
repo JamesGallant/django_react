@@ -8,7 +8,7 @@ const ProfileMain: FC = (): JSX.Element | null => {
 
 	if(dashboardView.profile) {
 		return (
-			<div>Profile Information</div>
+			<h1>Profile Information</h1>
 		);
 	} else {
 		return(null);

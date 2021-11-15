@@ -2,7 +2,7 @@ import React, {FC, useState} from "react";
 import { useAppSelector } from "../../store/hooks";
 import { selectVeiwDashboard } from "../../store/slices/viewSlice";
 
-import { Box, Tabs, Tab} from "@mui/material";
+import { Box, Tabs, Tab, AppBar } from "@mui/material";
 
 import SettingsProfile from "./SettingsProfile";
 import SetingsAppearance from "./SettingsAppearance";
@@ -10,6 +10,7 @@ import SettingsAccount from "./SettingsAccount";
 import SettingsBilling from "./SettingsBilling";
 import SettingsApps from "./SettingsApps";
 import type { TabPanelPropsInterface } from "../../types/components";
+import { ThemeProvider } from "@emotion/react";
 
 const SettingsMain = (): JSX.Element | null => {
 	const [tabValue, setTabValue] = useState(0);
@@ -18,12 +19,14 @@ const SettingsMain = (): JSX.Element | null => {
 	const handleTabSwitch = (event: React.SyntheticEvent, tabValue: number): void => {
 		setTabValue(tabValue);
 	};
+
 	const tabProps = (index: number) => {
 		return {
 			id: `settings-tab-${index}`,
 			"aria-controls": `settings-tab-${index}`,
 		};
 	};
+
 	const TabPanel = (props: TabPanelPropsInterface): JSX.Element => {
 		const { children, value, index, ...other } = props;
 
@@ -36,7 +39,7 @@ const SettingsMain = (): JSX.Element | null => {
 				{...other}
 			>
 				{value === index && (
-					<Box sx={{ p: 3 }}>
+					<Box sx={{ marginLeft: 10, paddingTop: 3 }}>
 						{children}
 					</Box>
 				)}
@@ -50,9 +53,10 @@ const SettingsMain = (): JSX.Element | null => {
 				<Tabs
 					orientation="vertical"
 					aria-label="settings-tabpanel"
-					sx={{ borderRight: 1, borderColor: "divider", alignItems: "flex-start" }}
-					textColor="primary"
-					indicatorColor="primary"
+					sx={{ borderRight: 2, borderColor: "divider", alignItems: "flex-end" }}
+					textColor="inherit"
+					indicatorColor="secondary"
+					variant="fullWidth"
 					value={tabValue}
 					onChange={handleTabSwitch}
 				>
