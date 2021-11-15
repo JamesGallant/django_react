@@ -1,17 +1,20 @@
 import React, { FC } from "react";
 import { useHistory } from "react-router-dom";
-import { useAppDispatch } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { toggleDashboardView } from "../../store/slices/viewSlice";
+import { selectUserData } from "../../store/slices/userSlice";
 
-import { Box, AppBar, Toolbar, IconButton, Menu, MenuItem, ListItemIcon, Divider } from "@mui/material";
+import { Box, AppBar, Toolbar, IconButton, Menu, MenuItem, ListItemIcon, Divider, Typography } from "@mui/material";
 import {AccountCircle, Settings, Logout } from "@mui/icons-material";
 import AppsIcon from "@mui/icons-material/Apps";
 import configuration from "../../utils/config";
 
+import type { UserDataInterface } from "../../types/authentication";
+
 const Navbar: FC = (): JSX.Element => {
 	const history = useHistory();
 	const dispatch = useAppDispatch();
-
+	const user: UserDataInterface = useAppSelector(selectUserData);
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const isProfileMenuOpen = Boolean(anchorEl);
 
@@ -55,6 +58,10 @@ const Navbar: FC = (): JSX.Element => {
 						open={isProfileMenuOpen}
 						onClick={handleProfileMenuClose}
 					>
+						<MenuItem>
+							<Typography variant="overline" display="block"><strong>{user.email}</strong></Typography>
+						</MenuItem>
+						<Divider />
 						<MenuItem onClick={() => dispatch(toggleDashboardView("profile"))}>
 							<ListItemIcon>
 								<AccountCircle fontSize="small" />

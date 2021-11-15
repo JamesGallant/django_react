@@ -14,6 +14,7 @@ import Copyright from "../../components/common/helper/copyrightComponent";
 import TextField from "../../components/common/formFields/TextFieldComponent";
 import PasswordField from "../../components/common/formFields/passwordComponent";
 import CountrySelect from "../../components/common/formFields/countryComponent";
+import FlashError from "../../components/common/helper/flashErrors";
 import configuration from "../../utils/config";
 
 import { postRegisterUser } from "../../api/authentication";
@@ -77,6 +78,8 @@ const RegisterView: React.FC = (): JSX.Element => {
 	const [formValues, setFormValues] = useState(initialVals);
 	const [countryCode, setCountryCode] = useState("");
 	const [errorMessage, setErrorMessage] = useState(initialErrs);
+	const [flashErrorMessage, setFlashErrorMessage] = useState("");
+	const [flashError, setFlashError] = useState(false);
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
@@ -112,7 +115,8 @@ const RegisterView: React.FC = (): JSX.Element => {
 
 	const  submit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-
+		setFlashError(false);
+		setFlashErrorMessage("");
 		const country: any = countryCode;
 		const parsedPhoneNumber = parsePhoneNumber(formValues.mobileNumber, country);
 		let phonenumber = formValues.mobileNumber;
@@ -133,7 +137,6 @@ const RegisterView: React.FC = (): JSX.Element => {
 		const registerNewAccountResponse: AxiosResponse = await postRegisterUser(userData);
 		const statusCode: number = registerNewAccountResponse.status;
 		const responseData = registerNewAccountResponse.data;
-		
 		switch(statusCode) {
 		case 201:
 			//account creation successfull
@@ -142,8 +145,15 @@ const RegisterView: React.FC = (): JSX.Element => {
 				firstName: formValues.firstName,
 			});
 			break;
+		case 401:
+			// has modheaders
+			setFlashError(true);
+			setFlashErrorMessage("Unauthorised token detected");
+			break;
 		case 400:
 			// account creation failed
+			setFlashError(true);
+			setFlashErrorMessage("Account creation failed");
 			setErrorMessage({
 				firstName: typeof(responseData?.first_name) === "undefined" ? [""]: responseData?.first_name,
 				lastName: typeof(responseData?.last_name) === "undefined" ? [""]:  responseData?.last_name,
@@ -170,6 +180,12 @@ const RegisterView: React.FC = (): JSX.Element => {
 								<Typography variant="h5" align="center">
 									<strong>Create your {process.env.REACT_APP_SITE_NAME} account</strong>
 								</Typography>
+							</Grid>
+							<Grid item xs = {12}>
+								<FlashError 
+									message={flashErrorMessage}
+									display={flashError}
+								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
 								<TextField
