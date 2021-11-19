@@ -1,10 +1,10 @@
-import { createAsyncThunk, createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
+import { AsyncThunk, createAsyncThunk, createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 
-import { getUserData } from "../../api/authentication";
+import { getUserData, putRegisterUser } from "../../api/authentication";
 
 import type { RootState } from "../store";
-import type { UserDataInterface } from "../../types/authentication";
+import type { UserDataInterface, UserPutInterface, UserPutResponseInterface,  } from "../../types/authentication";
 import type { UserStateInterface } from "../../types/store";
 
 const initialState: UserStateInterface = {
@@ -22,8 +22,8 @@ const initialState: UserStateInterface = {
 	}
 };
 
-export const setUser = createAsyncThunk(
-	"users/setCurrentUser",
+export const getUser = createAsyncThunk(
+	"users/getUser",
 	async (authToken: string) => {
 		if (authToken === "" || authToken === null) {
 			throw new Error("Invalid authentication token provided");
@@ -36,13 +36,14 @@ export const setUser = createAsyncThunk(
 export const userSlice: Slice<UserStateInterface> = createSlice({
 	name: "userData",
 	initialState, 
-	reducers: {},
+	reducers: {
+
+	},
 	extraReducers: {
-		[setUser.pending.type]: (state) => {
+		[getUser.pending.type]: (state) => {
 			state.userReducer.stateStatus = "loading";
 		}, 
-
-		[setUser.fulfilled.type]: (state, action: PayloadAction<UserDataInterface>) => {
+		[getUser.fulfilled.type]: (state, action: PayloadAction<UserDataInterface>) => {
 			// eslint-disable-next-line @typescript-eslint/ban-ts-comment
 			/**@ts-ignore */
 			state.userReducer = {
@@ -58,7 +59,7 @@ export const userSlice: Slice<UserStateInterface> = createSlice({
 				error: {},
 			};
 		},
-		[setUser.rejected.type]: (state, action: PayloadAction<any>) => {
+		[getUser.rejected.type]: (state, action: PayloadAction<any>) => {
 			state.userReducer = {
 				stateStatus: "failed",
 				data: {

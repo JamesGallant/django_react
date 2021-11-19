@@ -3,8 +3,23 @@ import { AxiosResponse } from "axios";
 
 import configuration from "../utils/config";
 
-import type { UserDataInterface } from "../types/authentication";
+import type { UserDataInterface, UserPutInterface } from "../types/authentication";
 
+export async function putRegisterUser(data: UserPutInterface, authToken: string): Promise<AxiosResponse> {
+	try {
+		const response: AxiosResponse = await axios({
+			method: "put",
+			url: configuration["api-base"].concat(configuration["api-getUserData"]),
+			data: data, 
+			headers: {"Content-type": "application/json","Authorization": `Token ${authToken}`}
+		});
+		return response;
+	/* eslint-disable */
+	} catch(error: any) {
+	/* eslint-enable */
+		return error.response;
+	}
+}
 
 export async function postRegisterUser(data: UserDataInterface ): Promise<AxiosResponse> {
 	/**

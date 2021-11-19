@@ -39,7 +39,7 @@ const SettingsMain = (): JSX.Element | null => {
 				{...other}
 			>
 				{value === index && (
-					<Box sx={{ marginLeft: 10, paddingTop: 3 }}>
+					<Box sx={{ marginLeft: 30, paddingTop: 3 }}>
 						{children}
 					</Box>
 				)}
@@ -48,8 +48,9 @@ const SettingsMain = (): JSX.Element | null => {
 	};
 
 	if(dashboardView.settings) {
+		//TODO make styles here
 		return (
-			<Box sx={{ flexGrow: 1, bgcolor: "background.paper", display: "flex", height: "80vh", paddingLeft: "5%"}}>
+			<Box sx={{ flexGrow: 1, bgcolor: "background.paper", display: "flex", height: "80vh", marginLeft: "5%"}}>
 				<Tabs
 					orientation="vertical"
 					aria-label="settings-tabpanel"

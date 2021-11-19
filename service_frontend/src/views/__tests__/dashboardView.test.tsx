@@ -67,7 +67,7 @@ describe("Testing the dashboard view", () => {
 	it("Token dispatches failed login thunk", () => {
 		const spyOnCookies: jest.SpyInstance<string> = jest.spyOn(CookieHandler.prototype, "getCookie").mockImplementation(() => "validToken");
 		const spyOnDispatch: jest.SpyInstance = jest.spyOn(reduxHooks, "useAppDispatch");
-		const spyOnUserState = jest.spyOn(userFunctions, "setUser");
+		const spyOnUserState = jest.spyOn(userFunctions, "getUser");
 
 		render(
 			<Provider store={store}>

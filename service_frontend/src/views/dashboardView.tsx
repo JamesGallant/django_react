@@ -2,7 +2,7 @@ import React, { useEffect, FC } from "react";
 import { useHistory } from "react-router-dom";
 
 import { useAppSelector, useAppDispatch } from "../store/hooks";
-import { setUser, selectUserStateStatus } from "../store/slices/userSlice";
+import { getUser, selectUserStateStatus } from "../store/slices/userSlice";
 
 import { Box, Grid } from "@mui/material"; 
 
@@ -30,7 +30,7 @@ const DashboardView: FC = (): JSX.Element => {
 				logout();
 				history.push(configuration["url-login"]);
 			} else {
-				const result = await dispatch(setUser(token));
+				const result = await dispatch(getUser(token));
 				if (result.meta.requestStatus === "rejected" || result.payload.detail || result.payload.email === null) {
 					logout();
 					history.push(configuration["url-login"]);

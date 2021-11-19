@@ -47,7 +47,6 @@ const ResetPassword: FC = (): JSX.Element => {
 			break;
 		}
 		case 204: {
-			//@TODO reroute to info view
 			history.push(configuration["url-resetPasswordEmailSent"], {
 				email: formValue,
 			});

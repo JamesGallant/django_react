@@ -1,54 +1,138 @@
-import React, { FC } from "react";
-import { useAppSelector } from "../../store/hooks";
-import { selectUserData } from "../../store/slices/userSlice";
+import React, { FC, useState } from "react";
+import { parsePhoneNumber } from "libphonenumber-js";
+import { useAppSelector, useAppDispatch } from "../../store/hooks";
+import { selectUserData, selectUserStateStatus, getUser } from "../../store/slices/userSlice";
 
-import { Grid, Box, Typography, Divider, Button } from "@mui/material";
+import { Grid, Box, Typography, Divider } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
 
 import TextField from "../common/formFields/TextFieldComponent";
 import CountrySelect from "../common/formFields/countryComponent";
-import type { UserDataInterface } from "../../types/authentication";
+import FlashError from "../common/helper/flashErrors";
 
-interface formTypes {
-	firstName: string,
-	lastName: string,
-	country: string,
-    mobileNumber: string,
-
-}
+import { putRegisterUser } from "../../api/authentication";
+import CookieHandler from "../../modules/cookies";
+import type { UserDataInterface, UserPutInterface, UserPutResponseInterface } from "../../types/authentication";
 
 const SettingsProfile: FC = (): JSX.Element => {
 	const user: UserDataInterface = useAppSelector(selectUserData);
+	const dispatch = useAppDispatch();
+	const [flashErrorMessage, setFlashErrorMessage] = useState("");
+	const [flashError, setFlashError] = useState(false);
 
-	function handleClick() {
-		console.log("clicked");
-	}
+	const initialValues: UserPutInterface = {
+		first_name: user.first_name,
+		last_name: user.last_name,
+		country: user.country,
+		mobile_number: user.mobile_number,
+	};
+
+	const [formValues, setFormValues] = useState(initialValues);
+	const [countryCode, setCountryCode] = useState("");
+	const [loading, setLoading] = useState(false);
+
+	const handleCountryData = (event: React.ChangeEvent<HTMLInputElement>, value: {code: string, label: string, phone: string}) => {
+
+		const label = value && value.label; 
+		const code = value && value.code;
+		if (label === null) {
+			setCountryCode("");
+			setFormValues({
+				...formValues,
+				country: "",
+			});
+
+		} else {
+			setCountryCode(code);
+			setFormValues({
+				...formValues,
+				country: label,
+			});
+		}
+	};
+
+	const handleFormInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const { name, value } = event.target;
+		console.log(name, value);
+		setFormValues({
+			...formValues,
+			[name]: value,
+		});
+	};
+
+	const submit = async () => {
+		setLoading(true);
+		setFlashError(false);
+
+		const cookies: CookieHandler = new CookieHandler();
+		const country: any = countryCode;
+		let phonenumber: any = formValues.mobile_number;
+
+		const parsedPhoneNumber = parsePhoneNumber(phonenumber, country);
+		
+		if (parsedPhoneNumber) {
+			phonenumber = parsedPhoneNumber.number.toString();
+		} 
+    
+		const updatedProfileData: UserPutInterface = {
+			first_name: formValues.first_name,
+			last_name: formValues.last_name,
+			mobile_number: phonenumber,
+			country: formValues.country,
+		};
+		const authToken: string = cookies.getCookie("authToken");
+		const response: UserPutResponseInterface = await putRegisterUser(updatedProfileData, authToken);
+		if (response.status === 200) {
+			const getUserData = await dispatch(getUser(authToken));
+			console.log(getUserData);
+			if (getUserData.meta.requestStatus === "rejected" || getUserData.payload.detail) {
+				setFlashError(true);
+				setFlashErrorMessage("Error fetching user data, try again");
+			}
+
+		} else {
+			setFlashError(true);
+			setFlashErrorMessage(response.data.detail);
+		}
+
+		// unauthorised
+		// 200
+		setLoading(false);
+	};
 
 	return(
-		<Box sx={{maxWidth: "40%"}}>
-			<Grid container spacing={1.5}>
+		<Box sx={{width: "30vw"}}>
+			<Grid container spacing={1}>
 				<Grid item xs={12}>
 					<Typography gutterBottom variant="subtitle1"> <strong> Update Profile</strong></Typography>
 					<Divider/>
+				</Grid>
+				<Grid item xs = {12}>
+					<FlashError 
+						message={flashErrorMessage}
+						display={flashError}
+					/>
 				</Grid>
 				<Grid item xs={12} sx={{marginTop: 2}}>
 					<Typography  variant="subtitle2"> <strong>Change your name</strong></Typography>
 				</Grid>
 				<Grid item xs={6}>
 					<TextField 
-						name="firstName"
+						name="first_name"
 						id="fname"
 						label="First name"
-						value={ user.first_name }
+						onChange={handleFormInput}
+						value={ formValues.first_name }
 					/>
 				</Grid>
 				<Grid item xs={6}>
 					<TextField 
-						name="lastName"
+						name="last_name"
 						id="lname"
 						label="Last name"
-						value={ user.last_name }
+						onChange={handleFormInput}
+						value={ formValues.last_name }
 					/>
 				</Grid>
 				<Grid item xs={12}>
@@ -56,8 +140,8 @@ const SettingsProfile: FC = (): JSX.Element => {
 				</Grid>
 				<Grid item xs={12}>
 					<CountrySelect 
-						onChange={ console.log("hello")} 
-						required
+						width="30vw"
+						onChange={ handleCountryData} 
 					/>
 					<Typography variant="subtitle2">Your country is currently set to {user.country}</Typography>
 				</Grid>
@@ -66,20 +150,21 @@ const SettingsProfile: FC = (): JSX.Element => {
 				</Grid>
 				<Grid item xs={6}>
 					<TextField 
-						required
 						fullWidth
-						id="mobileNumber"
-						name="mobileNumber"
+						id="mobile_number"
+						name="mobile_number"
 						label="mobile number"
-						value={ user.mobile_number }
+						onChange={handleFormInput}
+						value={ formValues.mobile_number }
 					/>
 				</Grid>
 				<Grid item xs={12}>
 					<LoadingButton
-						onClick={handleClick}
+						onClick={submit}
 						endIcon={<SaveIcon />}
-						loading={false}
-						size="large"
+						loading={loading}
+						size="medium"
+						sx={{width: "15vw"}}
 						loadingPosition="end"
 						variant="contained"
 					>
