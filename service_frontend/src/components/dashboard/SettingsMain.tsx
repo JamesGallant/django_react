@@ -10,7 +10,6 @@ import SettingsAccount from "./SettingsAccount";
 import SettingsBilling from "./SettingsBilling";
 import SettingsApps from "./SettingsApps";
 import type { TabPanelPropsInterface } from "../../types/components";
-import { ThemeProvider } from "@emotion/react";
 
 const SettingsMain = (): JSX.Element | null => {
 	const [tabValue, setTabValue] = useState(0);

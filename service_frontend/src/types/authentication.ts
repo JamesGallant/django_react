@@ -4,6 +4,7 @@ import { AxiosResponse } from "axios";
  */
 
 
+
 export interface UserPutResponseInterface extends AxiosResponse {
     data:   UserDataInterface
 }

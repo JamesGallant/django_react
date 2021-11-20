@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { parsePhoneNumber } from "libphonenumber-js";
 import { useAppSelector, useAppDispatch } from "../../store/hooks";
-import { selectUserData, selectUserStateStatus, getUser } from "../../store/slices/userSlice";
+import { selectUserData, getUser } from "../../store/slices/userSlice";
 
 import { Grid, Box, Typography, Divider } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -52,7 +52,7 @@ const SettingsProfile: FC = (): JSX.Element => {
 		}
 	};
 
-	const handleFormInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleFormInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
 		const { name, value } = event.target;
 		console.log(name, value);
 		setFormValues({
@@ -61,7 +61,7 @@ const SettingsProfile: FC = (): JSX.Element => {
 		});
 	};
 
-	const submit = async () => {
+	const submit = async (): Promise<void> => {
 		setLoading(true);
 		setFlashError(false);
 
@@ -81,29 +81,25 @@ const SettingsProfile: FC = (): JSX.Element => {
 			mobile_number: phonenumber,
 			country: formValues.country,
 		};
+
 		const authToken: string = cookies.getCookie("authToken");
 		const response: UserPutResponseInterface = await putRegisterUser(updatedProfileData, authToken);
 		if (response.status === 200) {
 			const getUserData = await dispatch(getUser(authToken));
-			console.log(getUserData);
 			if (getUserData.meta.requestStatus === "rejected" || getUserData.payload.detail) {
 				setFlashError(true);
 				setFlashErrorMessage("Error fetching user data, try again");
 			}
-
 		} else {
 			setFlashError(true);
 			setFlashErrorMessage(response.data.detail);
 		}
-
-		// unauthorised
-		// 200
 		setLoading(false);
 	};
 
 	return(
-		<Box sx={{width: "30vw"}}>
-			<Grid container spacing={1}>
+		<Box sx={{width: "25vw"}}>
+			<Grid container spacing={2}>
 				<Grid item xs={12}>
 					<Typography gutterBottom variant="subtitle1"> <strong> Update Profile</strong></Typography>
 					<Divider/>
@@ -140,7 +136,7 @@ const SettingsProfile: FC = (): JSX.Element => {
 				</Grid>
 				<Grid item xs={12}>
 					<CountrySelect 
-						width="30vw"
+						width="25vw"
 						onChange={ handleCountryData} 
 					/>
 					<Typography variant="subtitle2">Your country is currently set to {user.country}</Typography>
@@ -151,6 +147,7 @@ const SettingsProfile: FC = (): JSX.Element => {
 				<Grid item xs={6}>
 					<TextField 
 						fullWidth
+						sx={{width: "15vw"}}
 						id="mobile_number"
 						name="mobile_number"
 						label="mobile number"

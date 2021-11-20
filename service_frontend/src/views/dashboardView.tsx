@@ -26,6 +26,7 @@ const DashboardView: FC = (): JSX.Element => {
 		const setUserState = async () => {
 			const cookies: CookieHandler = new CookieHandler();
 			const token: string = cookies.getCookie("authToken");
+			
 			if (token === "" || token === undefined) {
 				logout();
 				history.push(configuration["url-login"]);
