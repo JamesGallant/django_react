@@ -119,6 +119,7 @@ const RegisterView: React.FC = (): JSX.Element => {
 		setFlashErrorMessage("");
 		const country: any = countryCode;
 		const parsedPhoneNumber = parsePhoneNumber(formValues.mobileNumber, country);
+		const parsedEmail = formValues.email.toLowerCase();
 		let phonenumber = formValues.mobileNumber;
 
 		if (parsedPhoneNumber) {
@@ -129,9 +130,10 @@ const RegisterView: React.FC = (): JSX.Element => {
 			first_name: formValues.firstName,
 			last_name: formValues.lastName,
 			mobile_number: phonenumber,
-			email: formValues.email,
+			email: parsedEmail,
 			country: formValues.country,
-			password: formValues.password
+			password: formValues.password,
+			re_password: formValues.password
 		};
     
 		const registerNewAccountResponse: AxiosResponse = await postRegisterUser(userData);
@@ -141,7 +143,7 @@ const RegisterView: React.FC = (): JSX.Element => {
 		case 201:
 			//account creation successfull
 			history.push(configuration["url-accountCreated"], {
-				email: formValues.email,
+				email: parsedEmail,
 				firstName: formValues.firstName,
 			});
 			break;

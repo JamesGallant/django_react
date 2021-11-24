@@ -19,6 +19,8 @@ const configuration = {
 	"api-isActiveUser": "auth/isActiveUser",
 	"api-resetPassword": "auth/users/reset_password/",
 	"api-resetPasswordConfirm": "auth/users/reset_password_confirm/",
+	"api-resetUsername": "auth/users/reset_email/",
+	"api-resetUsernameConfirm": "auth/users/reset_email_confirm/",
 
 	// internal urls registry
 	"url-home": "/",
@@ -30,7 +32,8 @@ const configuration = {
 	"url-acitvateAccount": "/auth/activate/:uid/:token/", // this also neeeds changing in the backend accounts service
 	"url-resetPassword": "/auth/reset/password/",
 	"url-resetPasswordConfirm": "/auth/reset/password/:uid/:token", // this also neeeds changing in the backend accounts service
-	"url-resetPasswordEmailSent": "/auth/reset/password/email-sent",
+	"url-resetUsernameConfirm": "/auth/reset/username/:uid/:token", // this also neeeds changing in the backend accounts service
+	"url-resetEmailSent": "/auth/reset/password/email-sent",
 
 	// cookies
 	"cookie-maxAuthDuration": 90

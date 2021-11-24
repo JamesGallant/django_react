@@ -12,11 +12,11 @@ const initialState: UserStateInterface = {
 		stateStatus: "idle",
 		data: {
 			id: null,
-			first_name: null,
-			last_name: null,
-			country: null,
-			mobile_number: null,
-			email: null
+			first_name: "",
+			last_name: "",
+			country: "",
+			mobile_number: "",
+			email: ""
 		},
 		error: {}
 	}
@@ -60,20 +60,8 @@ export const userSlice: Slice<UserStateInterface> = createSlice({
 			};
 		},
 		[getUser.rejected.type]: (state, action: PayloadAction<any>) => {
-			state.userReducer = {
-				stateStatus: "failed",
-				data: {
-					id: null,
-					first_name: null,
-					last_name: null,
-					email: null,
-					country: null,
-					mobile_number: null,
-				},
-				// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-				/**@ts-ignore */
-				error: action.error
-			};
+			state.userReducer.stateStatus = "failed";
+			state.userReducer.error = action.payload.error;
 		},
 	}
 });

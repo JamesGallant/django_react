@@ -64,7 +64,7 @@ const SettingsProfile: FC = (): JSX.Element => {
 	const submit = async (): Promise<void> => {
 		setLoading(true);
 		setFlashError(false);
-
+		
 		const cookies: CookieHandler = new CookieHandler();
 		const country: any = countryCode;
 		let phonenumber: any = formValues.mobile_number;
@@ -98,78 +98,75 @@ const SettingsProfile: FC = (): JSX.Element => {
 	};
 
 	return(
-		<Box sx={{width: "25vw"}}>
-			<Grid container spacing={2}>
-				<Grid item xs={12}>
-					<Typography gutterBottom variant="subtitle1"> <strong> Update Profile</strong></Typography>
-					<Divider/>
-				</Grid>
-				<Grid item xs = {12}>
-					<FlashError 
-						message={flashErrorMessage}
-						display={flashError}
-					/>
-				</Grid>
-				<Grid item xs={12} sx={{marginTop: 2}}>
-					<Typography  variant="subtitle2"> <strong>Change your name</strong></Typography>
-				</Grid>
-				<Grid item xs={6}>
-					<TextField 
-						name="first_name"
-						id="fname"
-						label="First name"
-						onChange={handleFormInput}
-						value={ formValues.first_name }
-					/>
-				</Grid>
-				<Grid item xs={6}>
-					<TextField 
-						name="last_name"
-						id="lname"
-						label="Last name"
-						onChange={handleFormInput}
-						value={ formValues.last_name }
-					/>
-				</Grid>
-				<Grid item xs={12}>
-					<Typography variant="subtitle2"> <strong>Update your country</strong></Typography>
-				</Grid>
-				<Grid item xs={12}>
-					<CountrySelect 
-						width="25vw"
-						onChange={ handleCountryData} 
-					/>
-					<Typography variant="subtitle2">Your country is currently set to {user.country}</Typography>
-				</Grid>
-				<Grid item xs={12}>
-					<Typography gutterBottom variant="subtitle2"> <strong>Update your mobile number</strong></Typography>
-				</Grid>
-				<Grid item xs={6}>
-					<TextField 
-						fullWidth
-						sx={{width: "15vw"}}
-						id="mobile_number"
-						name="mobile_number"
-						label="mobile number"
-						onChange={handleFormInput}
-						value={ formValues.mobile_number }
-					/>
-				</Grid>
-				<Grid item xs={12}>
-					<LoadingButton
-						onClick={submit}
-						endIcon={<SaveIcon />}
-						loading={loading}
-						size="medium"
-						sx={{width: "15vw"}}
-						loadingPosition="end"
-						variant="contained"
-					>
-						Update
-					</LoadingButton>
-				</Grid>
+		<Grid container spacing={2}>
+			<Grid item xs={12}>
+				<Typography gutterBottom variant="subtitle1"> <strong> Update Profile</strong></Typography>
+				<Divider/>
 			</Grid>
-		</Box>
+			<Grid item xs = {12}>
+				<FlashError 
+					message={flashErrorMessage}
+					display={flashError}
+				/>
+			</Grid>
+			<Grid item xs={12} sx={{marginTop: 1}}>
+				<Typography  variant="subtitle2"> <strong>Change your name</strong></Typography>
+			</Grid>
+			<Grid item xs={6}>
+				<TextField 
+					name="first_name"
+					id="fname"
+					label="First name"
+					onChange={handleFormInput}
+					value={ formValues.first_name }
+				/>
+			</Grid>
+			<Grid item xs={6}>
+				<TextField 
+					name="last_name"
+					id="lname"
+					label="Last name"
+					onChange={handleFormInput}
+					value={ formValues.last_name }
+				/>
+			</Grid>
+			<Grid item xs={12}>
+				<Typography variant="subtitle2"> <strong>Update your country</strong></Typography>
+			</Grid>
+			<Grid item xs={12}>
+				<CountrySelect 
+					onChange={ handleCountryData} 
+				/>
+				<Typography variant="subtitle2">Your country is currently set to {user.country}</Typography>
+			</Grid>
+			<Grid item xs={12}>
+				<Typography gutterBottom variant="subtitle2"> <strong>Update your mobile number</strong></Typography>
+			</Grid>
+			<Grid item xs={6}>
+				<TextField 
+					fullWidth
+					sx={{width: "15vw"}}
+					id="mobile_number"
+					name="mobile_number"
+					label="mobile number"
+					onChange={handleFormInput}
+					value={ formValues.mobile_number }
+				/>
+			</Grid>
+			<Grid item xs={12}>
+				<LoadingButton
+					onClick={ submit }
+					endIcon={<SaveIcon />}
+					loading={loading}
+					size="medium"
+					sx={{width: "15vw"}}
+					loadingPosition="end"
+					variant="contained"
+				>
+				Update
+				</LoadingButton>
+			</Grid>
+		</Grid>
 	);
 };
 

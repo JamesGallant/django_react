@@ -1,6 +1,6 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
-import ResetPasswordEmailSent from "../resetPasswordEmailSentView";
+import ResetPasswordEmailSent from "../resetEmailSentView";
 import { AxiosResponse } from "axios";
 
 import * as authenticationAPI from "../../../api/authentication";
@@ -10,7 +10,8 @@ jest.mock("react-router-dom", () => ({
 	useLocation: () => ({
 		pathname: "/auth/reset/password/email-sent",
 		state: {
-			email: "test@test.com"
+			email: "test@test.com",
+			changed: "password"
 		}
 	})
 }));

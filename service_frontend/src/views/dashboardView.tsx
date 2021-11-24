@@ -32,7 +32,7 @@ const DashboardView: FC = (): JSX.Element => {
 				history.push(configuration["url-login"]);
 			} else {
 				const result = await dispatch(getUser(token));
-				if (result.meta.requestStatus === "rejected" || result.payload.detail || result.payload.email === null) {
+				if (result.meta.requestStatus === "rejected" || result.payload.detail || result.payload.email === "") {
 					logout();
 					history.push(configuration["url-login"]);
 				}
@@ -53,7 +53,9 @@ const DashboardView: FC = (): JSX.Element => {
 					<Navbar />
 					<Grid container sx={{position: "fixed"}} spacing={1}>]
 						<Grid item xs={12}>
-							<SettingsMain />
+							<Box sx={{maxHeight: "87vh", overflow: "auto" }}>
+								<SettingsMain />
+							</Box>
 							<AppStoreMain />
 							<ProfileMain/>
 						</Grid>

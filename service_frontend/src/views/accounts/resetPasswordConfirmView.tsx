@@ -13,13 +13,8 @@ import PasswordField from "../../components/common/formFields/passwordComponent"
 import FlashError from "../../components/common/helper/flashErrors";
 import Copyright from "../../components/common/helper/copyrightComponent";
 
+import type { UrlAuthTokenTypes } from "../../types/authentication";
 
-const { Root, classes} = CentredSubmitFormRoot("ResetPasswordConfirm");
-
-interface ParamTypes {
-	uid: string,
-	token: string,
-}
 
 interface initialValInterface {
 	new_password: string,
@@ -44,8 +39,9 @@ const initialErrors: initialErrInterface = {
 const ResetPasswordConfirm: FC = (): JSX.Element => {
 
 	const history = useHistory();
+	const { Root, classes} = CentredSubmitFormRoot("ResetPasswordConfirm");
 
-	const {uid, token} = useParams<ParamTypes>();
+	const {uid, token} = useParams<UrlAuthTokenTypes>();
 	const [formValues, setFormValues] = useState(initalValues);
 	const [errorMessage, setErrorMessage] = useState(initialErrors);
 	const [flashErrorMessage, setFlashErrorMessage] = useState("");

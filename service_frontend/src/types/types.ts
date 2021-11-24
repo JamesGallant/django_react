@@ -11,3 +11,4 @@ export interface cookieDataType {
 export interface AxiosError {
     response: AxiosResponse
 }
+

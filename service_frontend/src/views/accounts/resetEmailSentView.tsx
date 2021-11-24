@@ -5,11 +5,11 @@ import { AxiosResponse } from "axios";
 import { Button, CssBaseline, Typography,  Link, Container, Grid, Box , styled, Stack } from "@mui/material";
 
 import configuration from "../../utils/config";
-import { resetPassword } from "../../api/authentication";
+import { resetPassword, resetUsername } from "../../api/authentication";
 
 import FlashError from "../../components/common/helper/flashErrors";
 
-const PREFIX = "ResetPasswordEmailSent";
+const PREFIX = "ResetEmailSent";
 
 const classes = {
 	root: `${PREFIX}-root`,
@@ -33,13 +33,13 @@ const Root = styled("div")(({theme}) => ({
 }));
 
 interface StateInterface {
-	email: string
+	email: string,
+	changed: string
 }
 
-const ResetPasswordEmailSent: FC = (): JSX.Element => {
+const ResetEmailSent: FC = (): JSX.Element => {
 	const history = useHistory();
 	const location = useLocation<StateInterface>();
-
 
 	const [flashErrorMessage, setFlashErrorMessage] = useState("");
 	const [flashError, setFlashError] = useState(false);
@@ -52,7 +52,16 @@ const ResetPasswordEmailSent: FC = (): JSX.Element => {
 	const resendEmail = async (): Promise<void> => {
 		setFlashError(false);
 		setFlashErrorMessage("");
-		const response: AxiosResponse = await resetPassword(location.state.email);
+		const email: string = location.state.email.toLowerCase();
+		let response: AxiosResponse;
+		
+		if (location.state.changed === "password") {
+			response = await resetPassword(email);
+		} else {
+			const email: string = location.state.email.toLowerCase();
+			response = await resetUsername(email);
+		}
+		
 		if (response.status === 204) {
 			setFlashErrorMessage("Email sent");
 			setFlashError(true);
@@ -69,7 +78,7 @@ const ResetPasswordEmailSent: FC = (): JSX.Element => {
 					<Grid container spacing={2}>
 						<Grid item xs={12}>
 							<Typography component="div" variant="h5" align="center">
-								<strong>Password change requested</strong>
+								<strong>You requested a {location.state.changed} change</strong>
 							</Typography>
 						</Grid>
 						<Grid item xs={12}>
@@ -80,7 +89,7 @@ const ResetPasswordEmailSent: FC = (): JSX.Element => {
 						</Grid>
 						<Grid item xs={12}>
 							<Typography component="div" variant="subtitle1" align="justify">
-								A request to change your password has been processed and we have sent an email to 
+								A request to change your {location.state.changed} has been processed and we have sent an email to 
 								<Link href={`mailto:${location.state?.email}`} target="_blank" rel="noreferrer"> {location.state?.email}</Link>. 
 								No email in your inbox? Check your spam folder. 
 							</Typography>
@@ -100,4 +109,4 @@ const ResetPasswordEmailSent: FC = (): JSX.Element => {
 	);
 };
 
-export default ResetPasswordEmailSent;
+export default ResetEmailSent;

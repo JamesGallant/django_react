@@ -82,7 +82,7 @@ const LoginViewPage: React.FC = (): JSX.Element => {
 		setFlashError(false);
 		setFlashErrorMessage("");
 
-		const response: AxiosResponse = await postTokenLogin(formValues.email, formValues.password);
+		const response: AxiosResponse = await postTokenLogin(formValues.email.toLowerCase(), formValues.password);
 		const statusCode: number = response.status;
 
 		switch(statusCode) {

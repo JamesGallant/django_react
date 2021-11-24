@@ -7,4 +7,5 @@ describe("Testing profile settings", () => {
 	it("Mounts", () => {
 		render(<SettingsAppearance />);
 	});
+
 });

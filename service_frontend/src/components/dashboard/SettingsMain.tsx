@@ -2,7 +2,7 @@ import React, {FC, useState} from "react";
 import { useAppSelector } from "../../store/hooks";
 import { selectVeiwDashboard } from "../../store/slices/viewSlice";
 
-import { Box, Tabs, Tab, AppBar } from "@mui/material";
+import { Box, Tabs, Tab } from "@mui/material";
 
 import SettingsProfile from "./SettingsProfile";
 import SetingsAppearance from "./SettingsAppearance";
@@ -30,6 +30,7 @@ const SettingsMain = (): JSX.Element | null => {
 		const { children, value, index, ...other } = props;
 
 		return(
+			//@TODO makestyles div below
 			<div
 				role="tabpanel"
 				hidden={value !== index}
@@ -38,9 +39,9 @@ const SettingsMain = (): JSX.Element | null => {
 				{...other}
 			>
 				{value === index && (
-					<Box sx={{ marginLeft: 30, paddingTop: 3 }}>
+					<div style={{ marginLeft: "5vw", paddingTop: "1vh", width: "30vw"}}>
 						{children}
-					</Box>
+					</div>
 				)}
 			</div>
 		);
@@ -49,11 +50,11 @@ const SettingsMain = (): JSX.Element | null => {
 	if(dashboardView.settings) {
 		//TODO make styles here
 		return (
-			<Box sx={{ flexGrow: 1, bgcolor: "background.paper", display: "flex", height: "80vh", marginLeft: "5%"}}>
+			<Box sx={{ flexGrow: 1, bgcolor: "background.paper", display: "flex", marginLeft: "5%"}}>
 				<Tabs
 					orientation="vertical"
 					aria-label="settings-tabpanel"
-					sx={{ borderRight: 2, borderColor: "divider", alignItems: "flex-end" }}
+					sx={{ borderRight: 2, borderColor: "divider", alignItems: "flex-end", height: "80vh" }}
 					textColor="inherit"
 					indicatorColor="secondary"
 					variant="fullWidth"
