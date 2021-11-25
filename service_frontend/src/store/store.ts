@@ -1,11 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import users from "./slices/userSlice";
 import views from "./slices/viewSlice";
+import siteConfiguration from "./slices/siteConfigurationSlice";
 
 export const store = configureStore({
 	reducer: {
 		users,
 		views,
+		siteConfiguration,
 	},
 });
 

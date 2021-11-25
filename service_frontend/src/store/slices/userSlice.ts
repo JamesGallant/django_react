@@ -1,10 +1,10 @@
-import { AsyncThunk, createAsyncThunk, createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 
-import { getUserData, putRegisterUser } from "../../api/authentication";
+import { getUserData } from "../../api/authentication";
 
 import type { RootState } from "../store";
-import type { UserDataInterface, UserPutInterface, UserPutResponseInterface,  } from "../../types/authentication";
+import type { UserDataInterface } from "../../types/authentication";
 import type { UserStateInterface } from "../../types/store";
 
 const initialState: UserStateInterface = {

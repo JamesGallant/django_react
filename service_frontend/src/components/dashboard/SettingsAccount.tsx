@@ -1,7 +1,9 @@
 import React, { FC, useState } from "react";
-import { useAppSelector } from "../../store/hooks";
-import { selectUserData } from "../../store/slices/userSlice";
 import { useHistory } from "react-router";
+
+import { useAppSelector, useAppDispatch } from "../../store/hooks";
+import { selectUserData } from "../../store/slices/userSlice";
+import { selectSiteConfigData, toggleClearLoginCache } from "../../store/slices/siteConfigurationSlice";
 
 import { Grid, Typography, Divider, Switch, Stack, useTheme } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
@@ -14,6 +16,8 @@ import { logout } from "../../modules/authentication";
 import CookieHandler from "../../modules/cookies";
 
 import type { UserDataInterface } from "../../types/authentication";
+import type { SiteConfigDataInterface } from "../../types/store";
+
 import { AxiosResponse } from "axios";
 
 interface LoadingTypes {
@@ -22,22 +26,23 @@ interface LoadingTypes {
 	deleteUser: boolean
 }
 
-const SettingsAccount: FC = (): JSX.Element => {
-	const user: UserDataInterface = useAppSelector(selectUserData);
+const initialLoadingValues: LoadingTypes = {
+	emailChangeUsername: false,
+	emailChangePassword: false,
+	deleteUser: false,
+};
 
-	const initialLoadingValues: LoadingTypes = {
-		emailChangeUsername: false,
-		emailChangePassword: false,
-		deleteUser: false,
-	};
+const SettingsAccount: FC = (): JSX.Element => {
+	const dispatch = useAppDispatch();
+	const user: UserDataInterface = useAppSelector(selectUserData);
+	const siteConfig: SiteConfigDataInterface = useAppSelector(selectSiteConfigData);
+	const cookies = new CookieHandler();
+	const theme = useTheme();
+	const history = useHistory();
 
 	const [errorMessage, setErrorMessage] = useState([""]);
 	const [password, setPassword] = useState("");
 	const [loading, setLoading] = useState(initialLoadingValues);
-
-	const cookies = new CookieHandler();
-	const theme = useTheme();
-	const history = useHistory();
 
 	const handleFormInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
 		setPassword(event.target.value);
@@ -45,7 +50,7 @@ const SettingsAccount: FC = (): JSX.Element => {
 	};
 
 	const toggleLogout = (): void => {
-		console.log("dispatch logout state");
+		dispatch(toggleClearLoginCache());
 	};
 
 	const submitUpdateEmail = async (): Promise<void> => {
@@ -149,7 +154,7 @@ const SettingsAccount: FC = (): JSX.Element => {
 
 		const authToken: string = cookies.getCookie("authToken");
 		const response: AxiosResponse = await deleteUser(authToken, password);
-		console.log(response);
+
 		switch (response.status) {
 		case 401: {
 			setLoading({
@@ -193,7 +198,7 @@ const SettingsAccount: FC = (): JSX.Element => {
 					<Stack spacing={1}>
 						<Typography  variant="subtitle2"><strong>Clear cache on log out</strong></Typography>
 						<Switch 
-							defaultChecked 
+							checked={siteConfig.data.clearLoginCache}
 							color="secondary"
 							onChange={ toggleLogout } 
 						/>
@@ -202,7 +207,7 @@ const SettingsAccount: FC = (): JSX.Element => {
 							paragraph 
 							sx={{fontSize: 12}}
 						>
-		Disabling this will allow to login without providing a password for a maximum of {configuration["cookie-maxAuthDuration"]} days if remember me is acitivated. 
+							By enabling this feature your account will not persist your login details. 
 						</Typography>
 						<Divider/>
 					</Stack>

@@ -30,3 +30,19 @@ export interface DashboardInterface {
 	appstore: boolean
 }
 //#endregion
+
+//#region site configuration
+export interface SiteConfigInterface {
+	siteConfigReducer: {
+		data: {
+			clearLoginCache: boolean
+		}
+	}
+}
+
+export interface SiteConfigDataInterface {
+	data: {
+		clearLoginCache: boolean
+	}
+}
+//#endregion

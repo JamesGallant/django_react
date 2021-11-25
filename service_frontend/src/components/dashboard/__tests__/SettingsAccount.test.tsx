@@ -12,13 +12,13 @@ import * as AuthModules from "../../../modules/authentication";
 import configuration from "../../../utils/config";
 import SettingsAccount from "../SettingsAccount";
 
-
 describe("Testing profile settings", () => {
 	let AxiosResponse: AxiosResponse;
 	let history: MemoryHistory;
-
+	store.dispatch = jest.fn();
 	beforeEach(() => {
 		history = createMemoryHistory();
+
 		AxiosResponse = {
 			data: {},
 			status: 123, 
@@ -40,6 +40,21 @@ describe("Testing profile settings", () => {
 		render(<Provider store={store}>
 			<SettingsAccount />
 		</Provider>);
+	});
+
+	it("Toggle login dispatches function to toggle clearLoginCache state", async () => {
+		const wrapper = render(
+			<Provider store={store}>
+				<SettingsAccount />
+			</Provider>);
+
+		const checkbox: HTMLElement = wrapper.getByRole("checkbox");
+		await waitFor(() => {
+			fireEvent.click(checkbox);
+		});
+
+		expect(store.dispatch).toHaveBeenCalledTimes(1);
+		expect(store.dispatch).toHaveBeenCalledWith({payload: undefined, type: "siteConfiguration/toggleClearLoginCache"});
 	});
 
 	it("Update email by unauthorised token logs user out and reroutes to login", async () => {
