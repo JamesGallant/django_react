@@ -36,7 +36,9 @@ const configuration = {
 	"url-resetEmailSent": "/auth/reset/password/email-sent",
 
 	// cookies
-	"cookie-maxAuthDuration": 90
+	"cookie-maxAuthDuration": 90,
+	// store
+	"persistKey-siteConfiguraton": "siteConfiguration"
 };
 
 export default configuration;

@@ -24,7 +24,8 @@ describe("Testing logout", () => {
 		const spyGetCookie: jest.SpyInstance = jest.spyOn(CookieHandler.prototype, "getCookie").mockImplementation(() => "1234");
 		const spyOnApiHandler: jest.SpyInstance = jest.spyOn(authenticationAPI, "postTokenLogout").mockImplementation(() => Promise.resolve(data));
 		const spyDeleteCookie: jest.SpyInstance = jest.spyOn(CookieHandler.prototype, "deleteCookie");
-		const spyLocalStorage: jest.SpyInstance = jest.spyOn(window.localStorage.__proto__, "setItem");
+		const spyLsSetItem: jest.SpyInstance = jest.spyOn(window.localStorage.__proto__, "setItem");
+		const spyLsRemoveItem: jest.SpyInstance = jest.spyOn(window.localStorage.__proto__, "removeItem");
 
 		logout();
 
@@ -32,8 +33,8 @@ describe("Testing logout", () => {
 		expect(spyOnApiHandler).toHaveBeenCalledTimes(1);
 		await spyOnApiHandler;
 		expect(spyDeleteCookie).toBeCalledTimes(1);
-		expect(spyLocalStorage).toHaveBeenCalledWith("authenticated", "false");
-
+		expect(spyLsSetItem).toHaveBeenCalledWith("authenticated", "false");
+		expect(spyLsRemoveItem).toHaveBeenCalledWith(`persist:${configuration["persistKey-siteConfiguraton"]}`);
 	});
 });
 

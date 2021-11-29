@@ -6,7 +6,11 @@ import { selectUserData } from "../../store/slices/userSlice";
 
 import { Box, AppBar, Toolbar, IconButton, Menu, MenuItem, ListItemIcon, Divider, Typography } from "@mui/material";
 import {AccountCircle, Settings, Logout } from "@mui/icons-material";
+
+import SwitchAccountIcon from "@mui/icons-material/SwitchAccount";
 import AppsIcon from "@mui/icons-material/Apps";
+
+import { logout } from "../../modules/authentication";
 import configuration from "../../utils/config";
 
 import type { UserDataInterface } from "../../types/authentication";
@@ -15,6 +19,7 @@ const Navbar: FC = (): JSX.Element => {
 	const history = useHistory();
 	const dispatch = useAppDispatch();
 	const user: UserDataInterface = useAppSelector(selectUserData);
+
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const isProfileMenuOpen = Boolean(anchorEl);
 
@@ -24,6 +29,15 @@ const Navbar: FC = (): JSX.Element => {
 	
 	const handleProfileMenuClose = () => {
 		setAnchorEl(null);
+	};
+
+	const handleLogout = (): void => {
+		history.push(configuration["url-logout"]);
+	};
+
+	const handleSwitchAccounts = (): void => {
+		logout();
+		history.push(configuration["url-login"]);
 	};
 
 	return(
@@ -75,7 +89,13 @@ const Navbar: FC = (): JSX.Element => {
 						Settings
 						</MenuItem>
 						<Divider />
-						<MenuItem onClick={() => history.push(configuration["url-logout"])}>
+						<MenuItem onClick={ handleSwitchAccounts }>
+							<SwitchAccountIcon >
+								<Logout fontSize="small" />
+							</SwitchAccountIcon >
+						Switch accounts
+						</MenuItem>
+						<MenuItem onClick={ handleLogout }>
 							<ListItemIcon>
 								<Logout fontSize="small" />
 							</ListItemIcon>

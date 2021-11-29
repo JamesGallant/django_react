@@ -8,6 +8,7 @@ import viewsReducer, { toggleDashboardView } from "../../../store/slices/viewSli
 import type { ViewsStateInterface } from "../../../types/store";
 
 import configuration from "../../../utils/config";
+import * as AuthModules from "../../../modules/authentication";
 
 import Navbar from "../Navbar";
 
@@ -36,31 +37,6 @@ describe("Testing navbar from dashboard", () => {
 			<Provider store={store}>
 				<Navbar />
 			</Provider>);
-	});
-
-	it("Profile item logout functions properly", async () => {
-		const history = createMemoryHistory();
-
-		const wrapper = render(
-			<Provider store={store}>
-				<Router history={history}>
-					<Navbar/>
-				</Router>
-			</Provider>);
-
-		const ProfileButton: HTMLElement = wrapper.getByRole("button", {name: "userAccount"});
-
-		await waitFor(() => {
-			fireEvent.click(ProfileButton);
-		});
-
-		const logout: HTMLElement[] = wrapper.getAllByRole("menuitem");
-
-		await waitFor(() => {
-			fireEvent.click(logout[3]);
-		});
-
-		expect(history.location.pathname).toBe(configuration["url-logout"]);
 	});
 
 	it("Profile menu item profile changes state", async () => {
@@ -113,4 +89,57 @@ describe("Testing navbar from dashboard", () => {
 		expect(store.dispatch).toHaveBeenCalledWith({payload: "settings", type: "views/toggleDashboardView"});
 		expect(viewsReducer(mockViewStore, toggleDashboardView("settings"))).toEqual(newState);
 	});
+
+	it("Profile item logout functions properly", async () => {
+		const history = createMemoryHistory();
+
+		const wrapper = render(
+			<Provider store={store}>
+				<Router history={history}>
+					<Navbar/>
+				</Router>
+			</Provider>);
+
+		const ProfileButton: HTMLElement = wrapper.getByRole("button", {name: "userAccount"});
+
+		await waitFor(() => {
+			fireEvent.click(ProfileButton);
+		});
+
+		const logout: HTMLElement[] = wrapper.getAllByRole("menuitem");
+
+		await waitFor(() => {
+			fireEvent.click(logout[4]);
+		});
+
+		expect(history.location.pathname).toBe(configuration["url-logout"]);
+	});
+
+	it("Switch account hard logs out and routes to login", async () => {
+		const history = createMemoryHistory();
+		const spyOnLogout: jest.SpyInstance = jest.spyOn(AuthModules, "logout");
+		const wrapper = render(
+			<Provider store={store}>
+				<Router history={history}>
+					<Navbar/>
+				</Router>
+			</Provider>);
+
+		const ProfileButton: HTMLElement = wrapper.getByRole("button", {name: "userAccount"});
+
+		await waitFor(() => {
+			fireEvent.click(ProfileButton);
+		});
+
+		const logout: HTMLElement[] = wrapper.getAllByRole("menuitem");
+
+		await waitFor(() => {
+			fireEvent.click(logout[3]);
+		});
+		
+		expect(spyOnLogout).toBeCalledTimes(1);
+		expect(history.location.pathname).toBe(configuration["url-login"]);
+	});
+
+
 });
