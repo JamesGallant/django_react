@@ -109,7 +109,7 @@ const SettingsProfile: FC = (): JSX.Element => {
 					display={flashError}
 				/>
 			</Grid>
-			<Grid item xs={12} sx={{marginTop: 1}}>
+			<Grid item xs={12}>
 				<Typography  variant="subtitle2"> <strong>Change your name</strong></Typography>
 			</Grid>
 			<Grid item xs={6}>
@@ -130,22 +130,19 @@ const SettingsProfile: FC = (): JSX.Element => {
 					value={ formValues.last_name }
 				/>
 			</Grid>
-			<Grid item xs={12}>
-				<Typography variant="subtitle2"> <strong>Update your country</strong></Typography>
-			</Grid>
-			<Grid item xs={12}>
+			<Grid item xs={6}>
+				<Typography gutterBottom variant="subtitle2"> <strong>Update your country</strong></Typography>
 				<CountrySelect 
+					width={"90%"}
 					onChange={ handleCountryData} 
 				/>
 				<Typography variant="subtitle2">Your country is currently set to {user.country}</Typography>
 			</Grid>
-			<Grid item xs={12}>
-				<Typography gutterBottom variant="subtitle2"> <strong>Update your mobile number</strong></Typography>
-			</Grid>
 			<Grid item xs={6}>
+				<Typography gutterBottom variant="subtitle2"> <strong>Update your mobile number</strong></Typography>
 				<TextField 
 					fullWidth
-					sx={{width: "15vw"}}
+					sx={{width: "90%"}}
 					id="mobile_number"
 					name="mobile_number"
 					label="mobile number"
@@ -159,7 +156,7 @@ const SettingsProfile: FC = (): JSX.Element => {
 					endIcon={<SaveIcon />}
 					loading={loading}
 					size="medium"
-					sx={{width: "15vw"}}
+					sx={{width: "95%"}}
 					loadingPosition="end"
 					variant="contained"
 				>

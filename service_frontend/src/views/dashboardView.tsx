@@ -57,7 +57,7 @@ const DashboardView: FC = (): JSX.Element => {
 								<SettingsMain />
 							</Box>
 							<AppStoreMain />
-							<ProfileMain/>
+							<ProfileMain />
 						</Grid>
 					</Grid>
 				</Box>

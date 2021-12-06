@@ -5,7 +5,8 @@
 {% endblock %}
 
 {% block text_body %}
-{% trans "Your username has been changed!" %}
+{% trans "You are receiving this email to confirm the change of log in details for {{ site_name }}.
+    You can now log in with this email address and your old password."" %}
 
 {% trans "Thanks for using our site!" %}
 
@@ -13,7 +14,8 @@
 {% endblock text_body %}
 
 {% block html_body %}
-<p>{% trans "Your email login has been changed!" %}</p>
+<p>{% trans "You are receiving this email to confirm the change of log in details for {{ site_name }}.
+    You can now log in with this email address and your old password." %}</p>
 
 <p>{% trans "Thanks for using our site!" %}</p>
 

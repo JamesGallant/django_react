@@ -9,7 +9,11 @@ import { Grid, Typography, Divider, Switch, Stack, useTheme } from "@mui/materia
 import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
 
+import ContentDialog from "../common/dialogs/ContentDialog";
+import AlertDialog from "../common/dialogs/AlertDialog";
 import PasswordField from "../common/formFields/passwordComponent";
+import TextField from "../common/formFields/TextFieldComponent";
+
 import configuration from "../../utils/config";
 import { resetPassword, deleteUser, resetUsername } from "../../api/authentication";
 import { logout } from "../../modules/authentication";
@@ -33,6 +37,7 @@ const initialLoadingValues: LoadingTypes = {
 };
 
 const SettingsAccount: FC = (): JSX.Element => {
+
 	const dispatch = useAppDispatch();
 	const user: UserDataInterface = useAppSelector(selectUserData);
 	const siteConfig: SiteConfigDataInterface = useAppSelector(selectSiteConfigData);
@@ -44,33 +49,94 @@ const SettingsAccount: FC = (): JSX.Element => {
 	const [password, setPassword] = useState("");
 	const [loading, setLoading] = useState(initialLoadingValues);
 
+	const [openAlertDialog, setOpenAlertDialog] = useState(false);
+	const [alertDialogTitle, setAlertDialogTitle] = useState("");
+	const [alertDialogText, setAlertDialogText] = useState("");
+	const [alertDialogUpdate, setAlertDialogUpdate] = useState("");
+
 	const handleFormInput = (event: React.ChangeEvent<HTMLInputElement>): void => {
 		setPassword(event.target.value);
 		setErrorMessage([""]);
 	};
 
+	const handleCloseDialog = (): void => {
+		setOpenAlertDialog(false);
+		setAlertDialogUpdate("");
+		setAlertDialogTitle("");
+		setAlertDialogText("");
+	};
+
+	const handleAlertOnOk = () => {
+		/**
+		 * @description This hook handles the main functionality of the accounts the button triggers and modal okay's pass
+		 * through here
+		 */
+		setOpenAlertDialog(false);
+		setAlertDialogTitle("");
+		setAlertDialogText("");
+		switch(alertDialogUpdate) {
+		case "updateEmail": {
+			setAlertDialogUpdate("");
+			handleUpdateEmail();
+			break;
+		}
+		case "updatePassword": {
+			setAlertDialogUpdate("");
+			handleUpdatePassword();
+			break;
+		}
+		case "deleteAccount": {
+			setAlertDialogUpdate("");
+			handleDeleteAccount();
+			break;
+		}
+		default: {
+			throw new Error(`Invalid id for alertDialogObject, expected (deleteAcount) but recieved ${alertDialogUpdate}`);
+		}
+		}
+	};
+	
 	const toggleLogout = (): void => {
 		dispatch(toggleClearLoginCache());
 	};
 
-	const submitUpdateEmail = async (): Promise<void> => {
+	const submitUpdateEmail = (): void => {
+		setAlertDialogUpdate("updateEmail");
+		setAlertDialogTitle("Change your email address?");
+		setAlertDialogText("Are you sure you would like to update your email? You will still be able to use your old email " +
+		"if you do not complete the required steps.");
+		setOpenAlertDialog(true);
+	};
+
+	const submitUpdatePassword = (): void => {
+		setAlertDialogUpdate("updatePassword");
+		setAlertDialogTitle("Update your password?");
+		setAlertDialogText("Are you sure you would like to update your password? You will still be able to use your old password " +
+		"if you do not complete the required steps.");
+		setOpenAlertDialog(true);
+	};
+
+	const submitDeleteAccount = (): void => {
+		/**
+		 * @description opens the alert modal to request validation on the delete account function. The buisiness logic is 
+		 * executed in handleDeleteAccount executed in handleAlertOnOk, the alert dialog handler. 
+		 */
+		setAlertDialogUpdate("deleteAccount");
+		setAlertDialogTitle("Delete your account?");
+		setAlertDialogText("Are you sure you would like to delete your account? This is permanent and you will lose all of your " + 
+		"information.");
+		setOpenAlertDialog(true);
+	};
+
+	const handleUpdateEmail = async (): Promise<void> => {
 		setLoading({
 			...loading,
 			emailChangeUsername: true
 		});
 
 		const response: AxiosResponse = await resetUsername(user.email);
-
+		//TODO should we handle 400
 		switch(response.status) {
-		case 400: {
-			//@TODO handle error here
-			setLoading({
-				...loading,
-				emailChangeUsername: false
-			});
-
-			break;
-		}
 		case 401: {
 			logout();
 			setLoading({
@@ -100,23 +166,15 @@ const SettingsAccount: FC = (): JSX.Element => {
 		}
 	};
 
-	const submitChangePassword = async (): Promise<void> => {
+	const handleUpdatePassword = async (): Promise<void> => {
 		setLoading({
 			...loading,
 			emailChangePassword: true
 		});
 
 		const response: AxiosResponse = await resetPassword(user.email);
-
+		//TODO should we handle 400
 		switch(response.status) {
-		case 400: {
-			//@TODO handle error here
-			setLoading({
-				...loading,
-				emailChangePassword: false
-			});
-			break;
-		}
 		case 401: {
 			logout();
 			setLoading({
@@ -127,6 +185,7 @@ const SettingsAccount: FC = (): JSX.Element => {
 			break;
 		}
 		case 204: {
+
 			setLoading({
 				...loading,
 				emailChangePassword: false
@@ -146,7 +205,11 @@ const SettingsAccount: FC = (): JSX.Element => {
 		}
 	};
 
-	const submitDeleteAccount = async (): Promise<void> => {
+	const handleDeleteAccount = async (): Promise<void> => {
+		/**
+		 * @description Business logic for deleting an account, this function is called when a user clicks okay in the
+		 * alert dialog.
+		 */
 		setLoading({
 			...loading,
 			deleteUser: true
@@ -250,7 +313,7 @@ const SettingsAccount: FC = (): JSX.Element => {
 							Requesting to update your password will log you out and we will send a link to <strong>{user.email}</strong>. Follow the link in your email to complete the process. 
 						</Typography>
 						<LoadingButton
-							onClick={ submitChangePassword }
+							onClick={ submitUpdatePassword }
 							endIcon={<SaveIcon />}
 							loading={loading.emailChangePassword}
 							size="small"
@@ -297,8 +360,16 @@ const SettingsAccount: FC = (): JSX.Element => {
 					</Stack>
 				</Grid>
 			</Grid>
+			<AlertDialog
+				isOpen={openAlertDialog}
+				dialogTitle={alertDialogTitle}
+				dialogText={alertDialogText}
+				okBtnText="Ok"
+				onClose={ handleCloseDialog }
+				onOk={ handleAlertOnOk } 
+			/>
 		</div>
-
+		
 	);
 };
 

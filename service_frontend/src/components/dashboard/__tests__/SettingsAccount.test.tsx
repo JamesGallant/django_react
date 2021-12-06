@@ -56,7 +56,7 @@ describe("Testing profile settings", () => {
 		expect(store.dispatch).toHaveBeenCalledTimes(1);
 		expect(store.dispatch).toHaveBeenCalledWith({payload: undefined, type: "siteConfiguration/toggleClearLoginCache"});
 	});
-
+	
 	it("Update email by unauthorised token logs user out and reroutes to login", async () => {
 		AxiosResponse.status = 401;
 
@@ -73,6 +73,13 @@ describe("Testing profile settings", () => {
 		const button: HTMLElement = wrapper.getByRole("button", {name: "Update email"});
 		await waitFor(() => {
 			fireEvent.click(button);
+		});
+
+		const modalButton: HTMLElement = wrapper.getByRole("button", { name: "Ok", hidden: true});
+		expect(wrapper.getByText("Change your email address?")).toBeInTheDocument();
+
+		await waitFor(() => {
+			fireEvent.click(modalButton);
 		});
 
 		await spyOnApi;
@@ -98,6 +105,13 @@ describe("Testing profile settings", () => {
 			fireEvent.click(button);
 		});
 
+		const modalButton: HTMLElement = wrapper.getByRole("button", { name: "Ok", hidden: true});
+		expect(wrapper.getByText("Change your email address?")).toBeInTheDocument();
+
+		await waitFor(() => {
+			fireEvent.click(modalButton);
+		});
+
 		await spyOnApi;
 		expect(spyOnLogout).toBeCalledTimes(1);
 		expect(history.location.pathname).toBe(configuration["url-resetEmailSent"]);
@@ -119,6 +133,13 @@ describe("Testing profile settings", () => {
 		const button: HTMLElement = wrapper.getByRole("button", {name: "Update password"});
 		await waitFor(() => {
 			fireEvent.click(button);
+		});
+
+		const modalButton: HTMLElement = wrapper.getByRole("button", { name: "Ok", hidden: true});
+		expect(wrapper.getByText("Update your password?")).toBeInTheDocument();
+
+		await waitFor(() => {
+			fireEvent.click(modalButton);
 		});
 
 		await spyOnApi;
@@ -144,6 +165,12 @@ describe("Testing profile settings", () => {
 			fireEvent.click(button);
 		});
 
+		const modalButton: HTMLElement = wrapper.getByRole("button", { name: "Ok", hidden: true});
+		expect(wrapper.getByText("Update your password?")).toBeInTheDocument();
+		await waitFor(() => {
+			fireEvent.click(modalButton);
+		});
+
 		await spyOnApi;
 		expect(spyOnLogout).toBeCalledTimes(1);
 		expect(history.location.pathname).toBe(configuration["url-resetEmailSent"]);
@@ -165,8 +192,17 @@ describe("Testing profile settings", () => {
 			</Provider>);
 
 		const button: HTMLElement = wrapper.getByRole("button", {name: "Delete account"});
+
+		
 		await waitFor(() => {
 			fireEvent.click(button);
+		});
+
+		const modalButton: HTMLElement = wrapper.getByRole("button", { name: "Ok", hidden: true});
+		expect(wrapper.getByText("Delete your account?")).toBeInTheDocument();
+
+		await waitFor(() => {
+			fireEvent.click(modalButton);
 		});
 
 		await spyOnApi;
@@ -191,6 +227,13 @@ describe("Testing profile settings", () => {
 			fireEvent.click(button);
 		});
 
+		const modalButton: HTMLElement = wrapper.getByRole("button", { name: "Ok", hidden: true});
+		expect(wrapper.getByText("Delete your account?")).toBeInTheDocument();
+
+		await waitFor(() => {
+			fireEvent.click(modalButton);
+		});
+
 		await spyOnApi;
 		expect(spyOnLogout).toBeCalledTimes(1);
 		expect(history.location.pathname).toBe(configuration["url-login"]);
@@ -212,6 +255,13 @@ describe("Testing profile settings", () => {
 		const button: HTMLElement = wrapper.getByRole("button", {name: "Delete account"});
 		await waitFor(() => {
 			fireEvent.click(button);
+		});
+
+		const modalButton: HTMLElement = wrapper.getByRole("button", { name: "Ok", hidden: true});
+		expect(wrapper.getByText("Delete your account?")).toBeInTheDocument();
+
+		await waitFor(() => {
+			fireEvent.click(modalButton);
 		});
 
 		await spyOnApi;
