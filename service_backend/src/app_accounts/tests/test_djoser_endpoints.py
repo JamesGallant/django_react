@@ -52,7 +52,7 @@ class TestDjoserAccountCreation(APITestCase):
             "mobile_number": "+31111111114",
             "country": "Netherlands",
             "password": "@VeryHardPassword123",
-            "re_password": "@VeryHardPassword123"
+            "re_password": "@VeryHardPassword123",
         }
         # same email and mobile, both these fields should error out
         self.invalid_payload_samedetails = {
@@ -72,7 +72,7 @@ class TestDjoserAccountCreation(APITestCase):
             "country": "Netherlands",
             "mobile_number": "+31111111115",
             "password": "secret",
-            "re_password": "secret"
+            "re_password": "secret",
         }
 
         self.invalid_payload_noRequiredData = {
@@ -82,7 +82,7 @@ class TestDjoserAccountCreation(APITestCase):
             "country": "",
             "mobile_number": "",
             "password": "secret",
-            "re_password": "secret"
+            "re_password": "secret",
         }
 
     def test_create_account(self) -> None:
