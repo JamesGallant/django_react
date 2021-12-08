@@ -6,6 +6,6 @@ import MediaCard from "../MediaCard";
 describe("Testing MediaCard component", () => {
 	
 	it("Should mount", () => {
-		render(<MediaCard />);
+		render(<MediaCard mediaComponent="img"/>);
 	});
 });
