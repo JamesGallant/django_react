@@ -6,8 +6,7 @@ import configuration from "./utils/config";
 import PrivateRoute from "./components/common/helper/privateRoute";
 import views from "./views";
 
-const theme = createTheme({
-});
+const theme = createTheme({});
 
 const App = (): JSX.Element => {
 	return(
