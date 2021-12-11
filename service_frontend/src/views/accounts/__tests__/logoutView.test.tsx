@@ -29,6 +29,7 @@ describe("Testing the logout view", () => {
 		};
 
 	});
+	
 	afterEach(() => {
 		jest.resetAllMocks();
 	});

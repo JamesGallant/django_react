@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { FC, useState } from "react";
 import { Grid, Typography, Divider, Stack, FormControlLabel, FormControl, FormLabel, RadioGroup, Radio,
 	Checkbox, useTheme, useMediaQuery } from "@mui/material";
 
@@ -19,10 +19,9 @@ interface CardSelectThemeInterface {
 const SettingsAppearance: FC = (): JSX.Element => {
 	const theme = useTheme();
 	const dispatch = useAppDispatch();
+	const prefersDarkMode: boolean = useMediaQuery("(prefers-color-scheme: dark)");
 	const siteTheme: ThemePreferenceInterface = useAppSelector(selectSiteTheme);
 
-	// TODO do we need to remove this?
-	const prefersDarkMode: boolean = useMediaQuery("(prefers-color-scheme: dark)");
 	const initialCardThemeValues: CardSelectThemeInterface = {
 		darkmode: theme.palette.mode === "light" ? false : true,
 		lightmode: theme.palette.mode === "light" ? true : false
@@ -32,18 +31,7 @@ const SettingsAppearance: FC = (): JSX.Element => {
 	const [cardThemeValue, setCardThemeValue] = useState(initialCardThemeValues);
 	const [isThemeDisabled, setThemeDisabled] = useState(themeValue === "SyncTheme" ? true : false);
 
-
-	// useEffect(() => {
-	// 	console.log(themeValue);
-	// 	dispatch(setThemePreference(themeValue));
-	// 	// dispatch(setThemeMode(cardThemeValue.darkmode === true ? "dark" : "light"));
-	// },[themeValue]);
-
-	const handleThemePreference = (event: React.ChangeEvent<HTMLInputElement>) => {
-		// On syncTheme we need to check prefersDarkMode and dispatch this to the theme on the main component
-		// initial card vals need to be on a listner to detect changes in theme.palette.mode 
-		// On selectTheme we need to change the theme pallete mode also via dispatch to the main component
-
+	const handleThemePreference = (event: React.ChangeEvent<HTMLInputElement>): void => {
 		const themePreference: string = event.target.value;
 		setThemeValue(themePreference);
 		
@@ -61,7 +49,7 @@ const SettingsAppearance: FC = (): JSX.Element => {
 		dispatch(setThemePreference(themePreference));
 	};
 
-	const handleCardCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
+	const handleCardCheckbox = (event: React.ChangeEvent<HTMLInputElement>): void => {
 		const { name, checked } = event.target;
 		switch(name) {
 		case "darkmode": {
@@ -90,7 +78,7 @@ const SettingsAppearance: FC = (): JSX.Element => {
 		<div>
 			<Grid container spacing={2}>
 				<Grid item xs={12}>
-					<Typography gutterBottom variant="subtitle1"> <strong> Appearance settings</strong></Typography>
+					<Typography gutterBottom variant="subtitle1"> <strong>Appearance settings</strong></Typography>
 					<Divider/>
 				</Grid>
 				<Grid item xs={12} sx={{marginTop: 0.5}}>
@@ -104,25 +92,11 @@ const SettingsAppearance: FC = (): JSX.Element => {
 							Choose how {process.env.REACT_APP_SITE_NAME} looks to you. Either select a theme or we can automatically
 							sync it with your current system preference. 
 						</Typography>
-						{/* <Radio
-							checked={themeValue === "SyncTheme"}
-							onChange={handleThemePreference}
-							value="SyncTheme"
-							name="ThemeSettingToggle"
-							inputProps={{ "aria-label": "SyncTheme" }}
-						/>
-						<Radio
-							checked={themeValue === "SelectTheme"}
-							onChange={handleThemePreference}
-							value="SelectTheme"
-							name="ThemeSettingToggle"
-							inputProps={{ "aria-label": "SelectTheme" }}
-						/> */}
 						<FormControl component="fieldset">
 							<FormLabel component="legend">Select preference</FormLabel>
 							<RadioGroup
 								row 
-								aria-label="gender"
+								aria-label="themePreference"
 								name="controlled-radio-buttons-group"
 								value={themeValue}
 								onChange={handleThemePreference}
@@ -144,7 +118,7 @@ const SettingsAppearance: FC = (): JSX.Element => {
 								mediaAlt="lightmode"
 								cardContentElements={
 									<Typography variant="body2" color="text.secondary">
-									Example Text
+										Example Text
 									</Typography>
 								}
 								cardActionElements={
@@ -170,7 +144,7 @@ const SettingsAppearance: FC = (): JSX.Element => {
 								mediaAlt="darkmode"
 								cardContentElements={
 									<Typography variant="body2" color="text.secondary">
-									Example Text
+										Example Text
 									</Typography>
 								}
 								cardActionElements={
