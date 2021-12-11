@@ -1,10 +1,15 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { Grid, Typography, Divider, Stack, FormControlLabel, FormControl, FormLabel, RadioGroup, Radio,
 	Checkbox, useTheme, useMediaQuery } from "@mui/material";
+
+import { useAppSelector, useAppDispatch } from "../../store/hooks";
+import { selectSiteTheme, setThemeMode, setThemePreference } from "../../store/slices/siteConfigurationSlice";
 
 import MediaCard from "../common/cards/MediaCard";
 import darkmodeImage from "../../assets/images/darkmode.png";
 import lightmodeImage from "../../assets/images/lightmode.png";
+
+import type { ThemePreferenceInterface } from "../../types/store";
 
 interface CardSelectThemeInterface {
 	darkmode: boolean
@@ -13,33 +18,47 @@ interface CardSelectThemeInterface {
 
 const SettingsAppearance: FC = (): JSX.Element => {
 	const theme = useTheme();
+	const dispatch = useAppDispatch();
+	const siteTheme: ThemePreferenceInterface = useAppSelector(selectSiteTheme);
+
+	// TODO do we need to remove this?
 	const prefersDarkMode: boolean = useMediaQuery("(prefers-color-scheme: dark)");
 	const initialCardThemeValues: CardSelectThemeInterface = {
 		darkmode: theme.palette.mode === "light" ? false : true,
 		lightmode: theme.palette.mode === "light" ? true : false
 	};
 	
-	const [themeValue, setThemeValue] = useState("SyncTheme");
+	const [themeValue, setThemeValue] = useState(siteTheme.setting);
 	const [cardThemeValue, setCardThemeValue] = useState(initialCardThemeValues);
 	const [isThemeDisabled, setThemeDisabled] = useState(themeValue === "SyncTheme" ? true : false);
+
+
+	// useEffect(() => {
+	// 	console.log(themeValue);
+	// 	dispatch(setThemePreference(themeValue));
+	// 	// dispatch(setThemeMode(cardThemeValue.darkmode === true ? "dark" : "light"));
+	// },[themeValue]);
 
 	const handleThemePreference = (event: React.ChangeEvent<HTMLInputElement>) => {
 		// On syncTheme we need to check prefersDarkMode and dispatch this to the theme on the main component
 		// initial card vals need to be on a listner to detect changes in theme.palette.mode 
 		// On selectTheme we need to change the theme pallete mode also via dispatch to the main component
+
 		const themePreference: string = event.target.value;
-
-		setThemeValue(event.target.value);
-
+		setThemeValue(themePreference);
+		
 		if (themePreference === "SyncTheme") {
 			setThemeDisabled(true);
 			setCardThemeValue({
 				darkmode: prefersDarkMode,
 				lightmode: !prefersDarkMode
 			});
+			dispatch(setThemeMode(prefersDarkMode === true ? "dark" : "light"));
 		} else {
 			setThemeDisabled(false);
 		}
+
+		dispatch(setThemePreference(themePreference));
 	};
 
 	const handleCardCheckbox = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -50,6 +69,7 @@ const SettingsAppearance: FC = (): JSX.Element => {
 				darkmode: checked,
 				lightmode: !checked
 			});
+			dispatch(setThemeMode("dark"));
 			break;
 		}
 		case "lightmode": {
@@ -57,6 +77,7 @@ const SettingsAppearance: FC = (): JSX.Element => {
 				darkmode: !checked,
 				lightmode: checked
 			});
+			dispatch(setThemeMode("light"));
 			break;
 		}
 		default: {
@@ -83,6 +104,20 @@ const SettingsAppearance: FC = (): JSX.Element => {
 							Choose how {process.env.REACT_APP_SITE_NAME} looks to you. Either select a theme or we can automatically
 							sync it with your current system preference. 
 						</Typography>
+						{/* <Radio
+							checked={themeValue === "SyncTheme"}
+							onChange={handleThemePreference}
+							value="SyncTheme"
+							name="ThemeSettingToggle"
+							inputProps={{ "aria-label": "SyncTheme" }}
+						/>
+						<Radio
+							checked={themeValue === "SelectTheme"}
+							onChange={handleThemePreference}
+							value="SelectTheme"
+							name="ThemeSettingToggle"
+							inputProps={{ "aria-label": "SelectTheme" }}
+						/> */}
 						<FormControl component="fieldset">
 							<FormLabel component="legend">Select preference</FormLabel>
 							<RadioGroup

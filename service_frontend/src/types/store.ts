@@ -1,4 +1,5 @@
 import type { UserDataInterface } from "./authentication";
+import type { PaletteMode } from "@mui/material";
 
 //#region user
 export interface stateError {
@@ -35,7 +36,11 @@ export interface DashboardInterface {
 export interface SiteConfigInterface {
 	siteConfigReducer: {
 		data: {
-			clearLoginCache: boolean
+			clearLoginCache: boolean,
+			themePreference: {
+				setting: string
+				mode: PaletteMode
+			}
 		}
 	}
 }
@@ -43,6 +48,12 @@ export interface SiteConfigInterface {
 export interface SiteConfigDataInterface {
 	data: {
 		clearLoginCache: boolean
+		themePreference: ThemePreferenceInterface
 	}
+}
+
+export interface ThemePreferenceInterface {
+	setting: string
+	mode: PaletteMode
 }
 //#endregion

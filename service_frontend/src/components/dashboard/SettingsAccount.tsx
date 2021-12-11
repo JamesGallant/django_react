@@ -9,10 +9,8 @@ import { Grid, Typography, Divider, Switch, Stack, useTheme } from "@mui/materia
 import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
 
-import ContentDialog from "../common/dialogs/ContentDialog";
 import AlertDialog from "../common/dialogs/AlertDialog";
 import PasswordField from "../common/formFields/passwordComponent";
-import TextField from "../common/formFields/TextFieldComponent";
 
 import configuration from "../../utils/config";
 import { resetPassword, deleteUser, resetUsername } from "../../api/authentication";
