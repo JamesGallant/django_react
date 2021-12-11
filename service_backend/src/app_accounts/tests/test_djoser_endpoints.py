@@ -41,7 +41,7 @@ class TestDjoserAccountCreation(APITestCase):
         # administrative
         self.client = APIClient()
         self.base_url = (
-            f"http://{develop_configuration.get('frontend_url')}/api/v1/auth"
+            f"http://{develop_configuration.get('service_backend')}/api/v1/auth"
         )
 
         # dummy accounts
@@ -52,6 +52,7 @@ class TestDjoserAccountCreation(APITestCase):
             "mobile_number": "+31111111114",
             "country": "Netherlands",
             "password": "@VeryHardPassword123",
+            "re_password": "@VeryHardPassword123",
         }
         # same email and mobile, both these fields should error out
         self.invalid_payload_samedetails = {
@@ -61,6 +62,7 @@ class TestDjoserAccountCreation(APITestCase):
             "mobile_number": "+31111111114",
             "country": "Netherlands",
             "password": "@VeryHardPassword123",
+            "re_password": "@VeryHardPassword123",
         }
 
         self.invalid_payload_easypw = {
@@ -70,6 +72,7 @@ class TestDjoserAccountCreation(APITestCase):
             "country": "Netherlands",
             "mobile_number": "+31111111115",
             "password": "secret",
+            "re_password": "secret",
         }
 
         self.invalid_payload_noRequiredData = {
@@ -79,6 +82,7 @@ class TestDjoserAccountCreation(APITestCase):
             "country": "",
             "mobile_number": "",
             "password": "secret",
+            "re_password": "secret",
         }
 
     def test_create_account(self) -> None:
@@ -364,6 +368,7 @@ class TestEmailVerification(APITestCase):
             "mobile_number": "+31111111114",
             "country": "Netherlands",
             "password": "@VeryHardPassword123",
+            "re_password": "@VeryHardPassword123",
         }
 
     def test_email(self):
@@ -666,7 +671,7 @@ class TestDjoserResets(APITestCase):
 
         ## mail sent
         ## two mails sent, one activation and once welcome
-        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(len(mail.outbox), 2)
 
     def test_reset_password(self):
         """

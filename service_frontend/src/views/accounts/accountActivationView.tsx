@@ -19,16 +19,13 @@ const AccountActivationView: FC = () => {
      const { uid, token } = useParams<ParamTypes>();
      const [statusCode, setStatusCode] = useState(0);
      const history = useHistory();
-
-     // api calls using useEffect hook
-     // Note: the empty deps array [] means it will run once after react updates the DOM, otherwise the email is sent twice.
+     
      useEffect(() => {
      	const activateUser = async () => {
      		const response: AxiosResponse = await postActivateUserAccount(uid, token);
      		const statusCode: number = response.status;
      		setStatusCode(statusCode);
      	};
-
      	activateUser();
      }, []);
 

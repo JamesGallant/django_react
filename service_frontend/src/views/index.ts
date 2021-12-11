@@ -10,7 +10,8 @@ import LogoutView from "./accounts/logoutView";
 import RegisterView from "./accounts/registerView";
 import ResetPassword from "./accounts/resetPasswordView";
 import ResetPasswordConfirm from "./accounts/resetPasswordConfirmView";
-import ResetPasswordEmailSent from "./accounts/resetPasswordEmailSentView";
+import ResetUsernameConfirm from "./accounts/resetUsernameConfirmView";
+import ResetEmailSent from "./accounts/resetEmailSentView";
 
 const views = {
 	HomeView,
@@ -22,7 +23,8 @@ const views = {
 	RegisterView,
 	ResetPassword,
 	ResetPasswordConfirm,
-	ResetPasswordEmailSent
+	ResetUsernameConfirm,
+	ResetEmailSent
 };
 
 export default views;

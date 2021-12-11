@@ -1,17 +1,37 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import { createTheme, ThemeProvider } from "@mui/material";
+
+import { createTheme, ThemeProvider, useMediaQuery, CssBaseline } from "@mui/material";
+
+import {useAppSelector, useAppDispatch} from "./store/hooks";
+import { selectSiteTheme, setThemeMode } from "./store/slices/siteConfigurationSlice";
 
 import configuration from "./utils/config";
-import PrivateRoute from "./components/helper/privateRoute";
+import PrivateRoute from "./components/common/helper/privateRoute";
 import views from "./views";
 
-const theme = createTheme({
-});
+import type { ThemePreferenceInterface } from "./types/store";
 
 const App = (): JSX.Element => {
+	const systemThemePreference = useMediaQuery("(prefers-color-scheme: dark)") ? "dark" : "light";
+	const dispatch = useAppDispatch();
+	const siteConfig: ThemePreferenceInterface = useAppSelector(selectSiteTheme);
+
+	useEffect(() => {
+		if (siteConfig.setting === "syncTheme") {
+			dispatch(setThemeMode(systemThemePreference));
+		}
+	}, [systemThemePreference]);
+
+	const theme = React.useMemo(() => createTheme({
+		palette: {
+			mode: siteConfig.mode 
+		},
+	}), [siteConfig.mode]);
+  
 	return(
 		<ThemeProvider theme={theme}>
+			<CssBaseline />
 			<BrowserRouter>
 				<Switch>
 					<Route exact path={ configuration["url-home"] } component={views.HomeView}/>
@@ -22,7 +42,8 @@ const App = (): JSX.Element => {
 					<Route path= { configuration["url-acitvateAccount"] } exact component={views.AccountActivationView}/>
 					<Route exact path={ configuration["url-resetPassword"] } component={views.ResetPassword}/>
 					<Route exact path={ configuration["url-resetPasswordConfirm"] } component={views.ResetPasswordConfirm}/>
-					<Route exact path={ configuration["url-resetPasswordEmailSent"]} component={views.ResetPasswordEmailSent}/>
+					<Route exact path={ configuration["url-resetUsernameConfirm"] } component={views.ResetUsernameConfirm}/>
+					<Route exact path={ configuration["url-resetEmailSent"]} component={views.ResetEmailSent}/>
 					<PrivateRoute path={ configuration["url-dashboard"] } component={views.DashboardView}/>
 				</Switch>
 			</BrowserRouter>

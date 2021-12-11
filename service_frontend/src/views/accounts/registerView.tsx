@@ -10,10 +10,11 @@ import { CentredSubmitFormRoot } from "../../utils/commonStyles";
 import parsePhoneNumber from "libphonenumber-js";
 
 // own
-import Copyright from "../../components/helper/copyrightComponent";
-import TextField from "../../components/formFields/TextFieldComponent";
-import PasswordField from "../../components/formFields/passwordComponent";
-import CountrySelect from "../../components/formFields/countryComponent";
+import Copyright from "../../components/common/helper/copyrightComponent";
+import TextField from "../../components/common/formFields/TextFieldComponent";
+import PasswordField from "../../components/common/formFields/passwordComponent";
+import CountrySelect from "../../components/common/formFields/countryComponent";
+import FlashError from "../../components/common/helper/flashErrors";
 import configuration from "../../utils/config";
 
 import { postRegisterUser } from "../../api/authentication";
@@ -77,6 +78,8 @@ const RegisterView: React.FC = (): JSX.Element => {
 	const [formValues, setFormValues] = useState(initialVals);
 	const [countryCode, setCountryCode] = useState("");
 	const [errorMessage, setErrorMessage] = useState(initialErrs);
+	const [flashErrorMessage, setFlashErrorMessage] = useState("");
+	const [flashError, setFlashError] = useState(false);
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { name, value } = event.target;
@@ -112,9 +115,11 @@ const RegisterView: React.FC = (): JSX.Element => {
 
 	const  submit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
-
+		setFlashError(false);
+		setFlashErrorMessage("");
 		const country: any = countryCode;
 		const parsedPhoneNumber = parsePhoneNumber(formValues.mobileNumber, country);
+		const parsedEmail = formValues.email.toLowerCase();
 		let phonenumber = formValues.mobileNumber;
 
 		if (parsedPhoneNumber) {
@@ -125,25 +130,32 @@ const RegisterView: React.FC = (): JSX.Element => {
 			first_name: formValues.firstName,
 			last_name: formValues.lastName,
 			mobile_number: phonenumber,
-			email: formValues.email,
+			email: parsedEmail,
 			country: formValues.country,
-			password: formValues.password
+			password: formValues.password,
+			re_password: formValues.password
 		};
     
 		const registerNewAccountResponse: AxiosResponse = await postRegisterUser(userData);
 		const statusCode: number = registerNewAccountResponse.status;
 		const responseData = registerNewAccountResponse.data;
-		
 		switch(statusCode) {
 		case 201:
 			//account creation successfull
 			history.push(configuration["url-accountCreated"], {
-				email: formValues.email,
+				email: parsedEmail,
 				firstName: formValues.firstName,
 			});
 			break;
+		case 401:
+			// has modheaders
+			setFlashError(true);
+			setFlashErrorMessage("Unauthorised token detected");
+			break;
 		case 400:
 			// account creation failed
+			setFlashError(true);
+			setFlashErrorMessage("Account creation failed");
 			setErrorMessage({
 				firstName: typeof(responseData?.first_name) === "undefined" ? [""]: responseData?.first_name,
 				lastName: typeof(responseData?.last_name) === "undefined" ? [""]:  responseData?.last_name,
@@ -170,6 +182,12 @@ const RegisterView: React.FC = (): JSX.Element => {
 								<Typography variant="h5" align="center">
 									<strong>Create your {process.env.REACT_APP_SITE_NAME} account</strong>
 								</Typography>
+							</Grid>
+							<Grid item xs = {12}>
+								<FlashError 
+									message={flashErrorMessage}
+									display={flashError}
+								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
 								<TextField

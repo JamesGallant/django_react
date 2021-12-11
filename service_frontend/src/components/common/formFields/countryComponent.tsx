@@ -3,14 +3,15 @@ import Box from "@mui/material/Box";
 import { TextField as MuiTextField } from "@mui/material/";
 import Autocomplete from "@mui/material/Autocomplete";
 
-import countries from "../../utils/countryData";
+import countries from "../../../utils/countryData";
 
 export default function CountrySelect(props: any): JSX.Element {
-	const { onChange, errorMessage=[""] } = props;
+	const { onChange, errorMessage=[""], width="100%" } = props;
 
 	return (
 		<Autocomplete
 			id="select-country"
+			sx={{width: width}}
 			options={countries}
 			onChange={ onChange }
 			autoHighlight

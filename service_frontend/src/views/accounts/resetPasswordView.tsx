@@ -5,28 +5,29 @@ import { useHistory } from "react-router";
 import { Button, CssBaseline, Typography, Link, Container, Grid, Box } from "@mui/material";
 import { CentredSubmitFormRoot } from "../../utils/commonStyles";
 
-import TextField from "../../components/formFields/TextFieldComponent";
+import TextField from "../../components/common/formFields/TextFieldComponent";
+import Copyright from "../../components/common/helper/copyrightComponent";
 import configuration from "../../utils/config";
 import { resetPassword } from "../../api/authentication";
 import { logout } from "../../modules/authentication";
-import Copyright from "../../components/helper/copyrightComponent";
 
 const { Root, classes} = CentredSubmitFormRoot("ResetPassword");
 
 const ResetPassword: FC = (): JSX.Element => {
 	const history = useHistory();
 
-	const [formValue, setFormValues] = useState("");
+	const [email, setEmail] = useState("");
 	const [errorMessage, setErrorMessage] = useState([""]);
 
 	const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-		setFormValues(event.target.value);
+		setEmail(event.target.value);
 		setErrorMessage([""]);
 	};
 
 	const submit = async (event: React.FormEvent<HTMLFormElement>): Promise<void> => {
 		event.preventDefault();
-		const response = await resetPassword(formValue);
+		const parsedEmail = email.toLowerCase();
+		const response = await resetPassword(parsedEmail);
 		switch(response.status) {
 		case 400: {
 			let errorMessageResponse: string[];
@@ -46,9 +47,9 @@ const ResetPassword: FC = (): JSX.Element => {
 			break;
 		}
 		case 204: {
-			//@TODO reroute to info view
-			history.push(configuration["url-resetPasswordEmailSent"], {
-				email: formValue,
+			history.push(configuration["url-resetEmailSent"], {
+				email: parsedEmail,
+				changed: "password",
 			});
 			break;
 		}
@@ -82,7 +83,7 @@ const ResetPassword: FC = (): JSX.Element => {
 									label="email"
 									fullWidth = {true}           
 									required={true}
-									value = {formValue}
+									value = {email}
 									onChange={ handleChange }
 									errorMessage={ errorMessage}
 								/>

@@ -155,6 +155,22 @@ describe("Testing account registration", () => {
 		await spyOnRegister;
 		expect(spyOnRegister).toBeCalledTimes(1);
 		expect(screen.getByText("This password is too short. It must contain at least 8 characters. This password is too common. This password is entirely numeric.")).toBeInTheDocument();
-        
+	});
+
+	it("Displays flash errors when unauthorised", async () => {
+		axiosResponse.status = 401;
+		const spyOnRegister: jest.SpyInstance = jest.spyOn(API, "postRegisterUser").mockImplementation(() => Promise.resolve(axiosResponse));
+
+		const wrapper = render(<RegisterView />);
+
+		const submitButton = screen.getByRole("button", {name: "Register"});
+
+		await waitFor(() => {
+			fireEvent.click(submitButton);
+		});
+
+		await spyOnRegister;
+		expect(spyOnRegister).toBeCalledTimes(1);
+		expect(wrapper.getByText("Unauthorised token detected")).toBeInTheDocument();
 	});
 });

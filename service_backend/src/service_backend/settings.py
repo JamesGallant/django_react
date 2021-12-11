@@ -175,6 +175,8 @@ DJOSER = {
     "SEND_CONFIRMATION_EMAIL": develop_configuration.get(
         "djoser_send_confirmation_email", False
     ),
+    "USER_CREATE_PASSWORD_RETYPE": True,
+    "SET_USERNAME_RETYPE": False,
     "PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND": develop_configuration.get(
         "djoser_password_reset", False
     ),
@@ -191,12 +193,12 @@ DJOSER = {
         "djoser_password_reset_url", None
     ),
     "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
+    "USERNAME_CHANGED_EMAIL_CONFIRMATION": True,
     "SERIALIZERS": {},
     # https://github.com/sunscrapers/djoser/tree/master/djoser/templates/email
     "EMAIL": {
         "activation": "app_accounts.email.activation_email.ActivationEmail",
-        "username_changed_confirmation": "app_accounts.email.username_reset_confirmation"
-        ".UsernameChangedConfirmationEmail",
+        "username_changed_confirmation": "app_accounts.email.username_reset_confirmation.UsernameChangedConfirmationEmail",
         "username_reset": "app_accounts.email.username_reset.UsernameResetEmail",
         "password_reset": "app_accounts.email.password_reset.PasswordResetEmail",
     },

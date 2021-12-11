@@ -1,9 +1,9 @@
 import configuration from "../utils/config";
 import CookieHandler from "./cookies";
-
-import type { cookieDataType } from "../types/types";
 import { AxiosResponse } from "axios";
 import { postTokenLogout, getIsActiveUser } from "../api/authentication";
+
+import type { cookieDataType } from "../types/types";
 
 export const logout = async (): Promise<void> => {
 	const cookies = new CookieHandler();
@@ -17,6 +17,7 @@ export const logout = async (): Promise<void> => {
 	if (logoutResponse.status === 204) {
 		cookies.deleteCookie("authToken");
 		window.localStorage.setItem("authenticated", "false");
+		window.localStorage.removeItem(`persist:${configuration["persistKey-siteConfiguraton"]}`);
 	}
 };
 

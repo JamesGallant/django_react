@@ -3,8 +3,23 @@ import { AxiosResponse } from "axios";
 
 import configuration from "../utils/config";
 
-import type { UserDataInterface } from "../types/authentication";
+import type { UserDataInterface, UserPutInterface } from "../types/authentication";
 
+export async function putRegisterUser(data: UserPutInterface, authToken: string): Promise<AxiosResponse> {
+	try {
+		const response: AxiosResponse = await axios({
+			method: "put",
+			url: configuration["api-base"].concat(configuration["api-getUserData"]),
+			data: data, 
+			headers: {"Content-type": "application/json","Authorization": `Token ${authToken}`}
+		});
+		return response;
+	/* eslint-disable */
+	} catch(error: any) {
+	/* eslint-enable */
+		return error.response;
+	}
+}
 
 export async function postRegisterUser(data: UserDataInterface ): Promise<AxiosResponse> {
 	/**
@@ -137,6 +152,37 @@ export async function getUserData(authToken: string): Promise<AxiosResponse> {
 		return error.response;
 	}
 }
+export async function resetUsername(email: string): Promise<AxiosResponse> {
+	try {
+		const response: AxiosResponse = await axios({
+			method: "post",
+			url: configuration["api-base"].concat(configuration["api-resetUsername"]),
+			data: {"email": email},
+			headers: {"Content-type": "application/json"}
+		});
+		return response;
+		/* eslint-disable*/
+	} catch(error: any) {
+		/* eslint-enable */
+		return error.response;
+	}
+}
+
+export async function resetUsernameConfirm(uid: string, token: string, email: string): Promise<AxiosResponse> {
+	try {
+		const response: AxiosResponse = await axios({
+			method: "post",
+			url: configuration["api-base"].concat(configuration["api-resetUsernameConfirm"]),
+			data: {"uid": uid, "token": token, "new_email": email},
+			headers: {"Content-type": "application/json"}
+		});
+		return response;
+		/* eslint-disable*/
+	} catch(error: any) {
+		/* eslint-enable */
+		return error.response;
+	}
+}
 
 export async function resetPassword(email: string): Promise<AxiosResponse> {
 	try {
@@ -175,6 +221,22 @@ export async function getIsActiveUser(authToken: string): Promise<AxiosResponse>
 		const response: AxiosResponse = await axios({
 			method: "get",
 			url: configuration["api-base"].concat(configuration["api-isActiveUser"]),
+			headers: {"Authorization": `Token ${authToken}`}
+		});
+		return response;
+		/* eslint-disable */
+	} catch(error: any) {
+		/* eslint-enable */
+		return error.response;
+	}
+}
+
+export async function deleteUser(authToken: string, password: string): Promise<AxiosResponse> {
+	try {
+		const response: AxiosResponse = await axios({
+			method: "delete",
+			url: configuration["api-base"].concat(configuration["api-getUserData"]),
+			data: {"current_password": password},
 			headers: {"Authorization": `Token ${authToken}`}
 		});
 		return response;

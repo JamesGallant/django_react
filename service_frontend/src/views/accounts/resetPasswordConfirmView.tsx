@@ -6,18 +6,15 @@ import { Grid, Container, CssBaseline, Typography, Button, Link, Box } from "@mu
 import { CentredSubmitFormRoot } from "../../utils/commonStyles";
 
 import { resetPasswordConfirm } from "../../api/authentication";
-import PasswordField from "../../components/formFields/passwordComponent";
 import configuration from "../../utils/config";
-import FlashError from "../../components/helper/flashErrors";
 import { logout } from "../../modules/authentication";
-import Copyright from "../../components/helper/copyrightComponent";
 
-const { Root, classes} = CentredSubmitFormRoot("ResetPasswordConfirm");
+import PasswordField from "../../components/common/formFields/passwordComponent";
+import FlashError from "../../components/common/helper/flashErrors";
+import Copyright from "../../components/common/helper/copyrightComponent";
 
-interface ParamTypes {
-	uid: string,
-	token: string,
-}
+import type { UrlAuthTokenTypes } from "../../types/authentication";
+
 
 interface initialValInterface {
 	new_password: string,
@@ -42,8 +39,9 @@ const initialErrors: initialErrInterface = {
 const ResetPasswordConfirm: FC = (): JSX.Element => {
 
 	const history = useHistory();
+	const { Root, classes} = CentredSubmitFormRoot("ResetPasswordConfirm");
 
-	const {uid, token} = useParams<ParamTypes>();
+	const {uid, token} = useParams<UrlAuthTokenTypes>();
 	const [formValues, setFormValues] = useState(initalValues);
 	const [errorMessage, setErrorMessage] = useState(initialErrors);
 	const [flashErrorMessage, setFlashErrorMessage] = useState("");
@@ -71,13 +69,15 @@ const ResetPasswordConfirm: FC = (): JSX.Element => {
 		switch(response.status) {
 		case 400: {
 			if (response.data.non_field_errors) {
-				
 				setFlashError(true);
 				setFlashErrorMessage(response.data.non_field_errors[0]);
 				setErrorMessage({
 					new_password: ["error"],
 					re_new_password: ["error"]
 				});
+			} else if (response.data.token) {
+				setFlashError(true);
+				setFlashErrorMessage("Invalid token, resend email");
 			} else {
 				setErrorMessage({
 					new_password: typeof(response.data?.new_password) === "undefined" ? [""]: response.data?.new_password,
@@ -139,7 +139,7 @@ const ResetPasswordConfirm: FC = (): JSX.Element => {
 								<PasswordField
 									id="rePassword"
 									name="re_new_password"
-									inputLabel="Confirm password"
+									inputLabel="Confirm"
 									showTooltip= {false}
 									value={ formValues.re_new_password }
 									errorMessage={ errorMessage.re_new_password }

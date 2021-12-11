@@ -5,6 +5,7 @@ import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { store } from "../../store/store";
 
+import type { ViewsStateInterface } from "../../types/store";
 import * as reduxHooks from "../../store/hooks";
 import * as userFunctions from "../../store/slices/userSlice";
 
@@ -18,8 +19,19 @@ import * as authenticationModules from "../../modules/authentication";
 
 describe("Testing the dashboard view", () => {
 	let history: any;
+	let mockViewStore: ViewsStateInterface;
 	beforeEach(() => {
 		history = createMemoryHistory();
+		mockViewStore = {
+			viewReducer: {
+				stateStatus: "idle",
+				dashboard: {
+					settings: false,
+					profile: false,
+					appstore: true,
+				}
+			}
+		};
 	});
 
 	afterEach(() => {
@@ -54,7 +66,7 @@ describe("Testing the dashboard view", () => {
 	it("Token dispatches failed login thunk", () => {
 		const spyOnCookies: jest.SpyInstance<string> = jest.spyOn(CookieHandler.prototype, "getCookie").mockImplementation(() => "validToken");
 		const spyOnDispatch: jest.SpyInstance = jest.spyOn(reduxHooks, "useAppDispatch");
-		const spyOnUserState = jest.spyOn(userFunctions, "setUser");
+		const spyOnUserState = jest.spyOn(userFunctions, "getUser");
 
 		render(
 			<Provider store={store}>
@@ -64,7 +76,7 @@ describe("Testing the dashboard view", () => {
 			</Provider>);
 		
 		expect(spyOnCookies).toBeCalledWith("authToken");
-		expect(spyOnDispatch).toBeCalledTimes(1);
+		expect(spyOnDispatch).toBeCalledTimes(3);
 		expect(spyOnUserState).toBeCalledTimes(1);
 	});
 });

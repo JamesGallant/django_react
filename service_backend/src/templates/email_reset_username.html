@@ -19,7 +19,7 @@
 <p>{% blocktrans %}You're receiving this email because you requested to change your email  for your user account at {{ site_name }}.{% endblocktrans %}</p>
 
 <p>{% trans "Please go to the following page and choose a new username:" %}</p>
-<a href="{{ protocol }}://{{ FRONTEND_URL }}/{{ url }}">{{ protocol }}://{{ domain }}/{{ url }}</a>
+<a href="{{ protocol }}://{{ djoser_frontend_url }}/{{ url }}">{{ protocol }}://{{ domain }}/{{ url }}</a>
 
 <p>{% trans "Thanks for using our site!" %}</p>
 

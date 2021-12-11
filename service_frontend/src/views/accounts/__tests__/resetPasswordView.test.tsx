@@ -113,7 +113,7 @@ describe("Testing reset password component", () => {
 
 		await spyOnApi;
 		expect(spyOnApi).toBeCalledTimes(1);
-		expect(history.location.pathname).toBe(configuration["url-resetPasswordEmailSent"]);
+		expect(history.location.pathname).toBe(configuration["url-resetEmailSent"]);
 	});
 
 });
