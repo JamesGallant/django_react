@@ -23,7 +23,6 @@ export const siteConfigSlice = createSlice({
 			state.siteConfigReducer.data.clearLoginCache = !state.siteConfigReducer.data.clearLoginCache;
 		},
 		setThemePreference: (state, action: PayloadAction<string>) => {
-			console.log("store", action.payload);
 			state.siteConfigReducer.data.themePreference.setting = action.payload;
 		},
 		setThemeMode: (state, action: PayloadAction<PaletteMode>) => {

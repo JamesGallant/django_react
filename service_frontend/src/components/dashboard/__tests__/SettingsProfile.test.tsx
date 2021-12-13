@@ -63,6 +63,7 @@ describe("Testing profile settings", () => {
 
 	it("shows flash error on failed put", async () => {
 		axiosResponse.data.detail = "Unauthorised token detected";
+		axiosResponse.status = 401;
 		const spyOnCookies: jest.SpyInstance<string> = jest.spyOn(CookieHandler.prototype, "getCookie").mockImplementation(() => "validToken");
 		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "putRegisterUser").mockImplementation(() => Promise.resolve(axiosResponse));
 		
@@ -106,5 +107,29 @@ describe("Testing profile settings", () => {
 		await spyOnApi;
 		expect(spyOnDispatch).toBeCalledTimes(2);
 		expect(spyOnUserState).toBeCalledTimes(1);
+	});
+
+	it("Field errors are shown on 400", async () => {
+		axiosResponse.data.first_name = ["Some error"];
+		axiosResponse.status = 400;
+		const spyOnCookies: jest.SpyInstance<string> = jest.spyOn(CookieHandler.prototype, "getCookie").mockImplementation(() => "validToken");
+		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "putRegisterUser").mockImplementation(() => Promise.resolve(axiosResponse));
+		
+		const wrapper = render(
+			<Provider store={store}>
+				<SettingsProfile />
+			</Provider>
+		);
+		
+		const submitButton = wrapper.getByRole("button", {name: "Update"});
+		await waitFor(() => {
+			fireEvent.click(submitButton);
+		});
+		const first_name_field = wrapper.getByRole("textbox", {name: "First name"});
+
+		expect(spyOnCookies).toHaveBeenCalledTimes(1);
+		expect(spyOnApi).toBeCalledTimes(1);
+		await spyOnApi;
+		expect(first_name_field).toHaveAttribute("aria-invalid", "true");
 	});
 });

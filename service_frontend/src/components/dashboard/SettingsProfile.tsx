@@ -105,9 +105,6 @@ const SettingsProfile: FC = (): JSX.Element => {
 
 		const authToken: string = cookies.getCookie("authToken");
 		const response: AxiosResponse = await putRegisterUser(updatedProfileData, authToken);
-		console.log(response);
-		//TODO switch here
-
 		switch(response.status) {
 		case 200: {
 			const getUserData = await dispatch(getUser(authToken));
