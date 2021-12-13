@@ -76,11 +76,11 @@ const Navbar: FC = (): JSX.Element => {
 							<Typography variant="overline" display="block"><strong>{user.email}</strong></Typography>
 						</MenuItem>
 						<Divider />
-						<MenuItem onClick={() => dispatch(toggleDashboardView("profile"))}>
+						<MenuItem onClick={() => dispatch(toggleDashboardView("profile"))} disabled>
 							<ListItemIcon>
 								<AccountCircle fontSize="small" />
 							</ListItemIcon>
-						Profile
+							Profile
 						</MenuItem>
 						<MenuItem onClick={() => dispatch(toggleDashboardView("settings"))}>
 							<ListItemIcon>

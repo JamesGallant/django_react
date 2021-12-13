@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { Grid, Typography, Divider, Stack, FormControlLabel, FormControl, FormLabel, RadioGroup, Radio,
-	Checkbox, useTheme, useMediaQuery } from "@mui/material";
+	Checkbox, useTheme, useMediaQuery, Box } from "@mui/material";
 
 import { useAppSelector, useAppDispatch } from "../../store/hooks";
 import { selectSiteTheme, setThemeMode, setThemePreference } from "../../store/slices/siteConfigurationSlice";
@@ -75,7 +75,7 @@ const SettingsAppearance: FC = (): JSX.Element => {
 	};
 
 	return(
-		<div>
+		<Box sx={{width: "40vw"}}>
 			<Grid container spacing={2}>
 				<Grid item xs={12}>
 					<Typography gutterBottom variant="subtitle1"> <strong>Appearance settings</strong></Typography>
@@ -166,7 +166,7 @@ const SettingsAppearance: FC = (): JSX.Element => {
 					</Stack>
 				</Grid>
 			</Grid>
-		</div>
+		</Box>
 	);
 };
 

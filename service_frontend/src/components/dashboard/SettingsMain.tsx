@@ -39,7 +39,7 @@ const SettingsMain = (): JSX.Element | null => {
 				{...other}
 			>
 				{value === index && (
-					<div style={{ marginLeft: "5vw", paddingTop: "1vh", width: "40vw"}}>
+					<div style={{ marginLeft: "5vw", paddingTop: "1vh"}}>
 						{children}
 					</div>
 				)}

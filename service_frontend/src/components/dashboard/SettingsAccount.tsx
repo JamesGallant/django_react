@@ -5,7 +5,7 @@ import { useAppSelector, useAppDispatch } from "../../store/hooks";
 import { selectUserData } from "../../store/slices/userSlice";
 import { selectSiteConfigData, toggleClearLoginCache } from "../../store/slices/siteConfigurationSlice";
 
-import { Grid, Typography, Divider, Switch, Stack, useTheme } from "@mui/material";
+import { Grid, Typography, Divider, Switch, Stack, useTheme, Box } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
 
@@ -249,11 +249,11 @@ const SettingsAccount: FC = (): JSX.Element => {
 	};
 
 	return(
-		<div>
+		<Box sx={{width: "40vw"}}>
 			<Grid container spacing={2}>
 				<Grid item xs={12}>
 					<Typography gutterBottom variant="subtitle1"> <strong> Account settings</strong></Typography>
-					<Divider/>
+					<Divider />
 				</Grid>
 				<Grid item xs={12} sx={{marginTop: 0.5}}>
 					<Stack spacing={1}>
@@ -291,7 +291,7 @@ const SettingsAccount: FC = (): JSX.Element => {
 							endIcon={<SaveIcon />}
 							loading={loading.emailChangeUsername}
 							size="small"
-							sx={{width: "15vw"}}
+							sx={{width: "200px"}}
 							loadingPosition="end"
 							variant="contained"
 						>
@@ -315,7 +315,7 @@ const SettingsAccount: FC = (): JSX.Element => {
 							endIcon={<SaveIcon />}
 							loading={loading.emailChangePassword}
 							size="small"
-							sx={{width: "15vw"}}
+							sx={{width: "200px"}}
 							loadingPosition="end"
 							variant="contained"
 						>
@@ -333,6 +333,7 @@ const SettingsAccount: FC = (): JSX.Element => {
 							value={ password }
 							errorMessage={ errorMessage }
 							required
+							sx={{width: "20vw"}}
 							onChange={ handleFormInput }/>
 						<Typography 
 							variant="subtitle1" 
@@ -348,7 +349,7 @@ const SettingsAccount: FC = (): JSX.Element => {
 							endIcon={<SaveIcon />}
 							loading={loading.deleteUser}
 							size="small"
-							sx={{width: "15vw"}}
+							sx={{width: "200px"}}
 							loadingPosition="end"
 							variant="contained"
 						>
@@ -366,7 +367,7 @@ const SettingsAccount: FC = (): JSX.Element => {
 				onClose={ handleCloseDialog }
 				onOk={ handleAlertOnOk } 
 			/>
-		</div>
+		</Box>
 		
 	);
 };
