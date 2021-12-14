@@ -1,19 +1,19 @@
 import React, { FC, useState } from "react";
 import { parsePhoneNumber } from "libphonenumber-js";
-import { useAppSelector, useAppDispatch } from "../../store/hooks";
-import { selectUserData, getUser } from "../../store/slices/userSlice";
+import { useAppSelector, useAppDispatch } from "../../../store/hooks";
+import { selectUserData, getUser } from "../../../store/slices/userSlice";
 
 import { Grid, Box, Typography, Divider, Stack } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
 
-import TextField from "../common/formFields/TextFieldComponent";
-import CountrySelect from "../common/formFields/countryComponent";
-import FlashError from "../common/helper/flashErrors";
+import TextField from "../../common/formFields/TextFieldComponent";
+import CountrySelect from "../../common/formFields/countryComponent";
+import FlashError from "../../common/helper/flashErrors";
 
-import { putRegisterUser } from "../../api/authentication";
-import CookieHandler from "../../modules/cookies";
-import type { UserDataInterface, UserPutInterface } from "../../types/authentication";
+import { putRegisterUser } from "../../../api/authentication";
+import CookieHandler from "../../../modules/cookies";
+import type { UserDataInterface, UserPutInterface } from "../../../types/authentication";
 import { AxiosResponse } from "axios";
 
 interface ErrMessageTypes {

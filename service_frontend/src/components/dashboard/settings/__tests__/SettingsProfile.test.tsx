@@ -4,10 +4,10 @@ import { Provider } from "react-redux";
 import configureStore, { MockStoreEnhanced }  from "redux-mock-store";
 import thunk from "redux-thunk";
 
-import CookieHandler from "../../../modules/cookies";
-import * as API from "../../../api/authentication";
-import * as reduxHooks from "../../../store/hooks";
-import * as userFunctions from "../../../store/slices/userSlice";
+import CookieHandler from "../../../../modules/cookies";
+import * as API from "../../../../api/authentication";
+import * as reduxHooks from "../../../../store/hooks";
+import * as userFunctions from "../../../../store/slices/userSlice";
 
 import SettingsProfile from "../SettingsProfile";
 

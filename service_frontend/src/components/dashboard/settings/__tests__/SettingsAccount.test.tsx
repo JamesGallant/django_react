@@ -1,15 +1,15 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
-import { store } from "../../../store/store";
+import { store } from "../../../../store/store";
 import { AxiosResponse } from "axios";
 import { Router } from "react-router-dom";
 import { createMemoryHistory, MemoryHistory } from "history";
 
-import * as Api from "../../../api/authentication";
-import * as AuthModules from "../../../modules/authentication";
+import * as Api from "../../../../api/authentication";
+import * as AuthModules from "../../../../modules/authentication";
 
-import configuration from "../../../utils/config";
+import configuration from "../../../../utils/config";
 import SettingsAccount from "../SettingsAccount";
 
 describe("Testing profile settings", () => {

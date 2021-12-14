@@ -2,14 +2,14 @@ import React, { FC, useState } from "react";
 import { Grid, Typography, Divider, Stack, FormControlLabel, FormControl, FormLabel, RadioGroup, Radio,
 	Checkbox, useTheme, useMediaQuery, Box } from "@mui/material";
 
-import { useAppSelector, useAppDispatch } from "../../store/hooks";
-import { selectSiteTheme, setThemeMode, setThemePreference } from "../../store/slices/siteConfigurationSlice";
+import { useAppSelector, useAppDispatch } from "../../../store/hooks";
+import { selectSiteTheme, setThemeMode, setThemePreference } from "../../../store/slices/siteConfigurationSlice";
 
-import MediaCard from "../common/cards/MediaCard";
-import darkmodeImage from "../../assets/images/darkmode.png";
-import lightmodeImage from "../../assets/images/lightmode.png";
+import MediaCard from "../../common/cards/MediaCard";
+import darkmodeImage from "../../../assets/images/darkmode.png";
+import lightmodeImage from "../../../assets/images/lightmode.png";
 
-import type { ThemePreferenceInterface } from "../../types/store";
+import type { ThemePreferenceInterface } from "../../../types/store";
 
 interface CardSelectThemeInterface {
 	darkmode: boolean

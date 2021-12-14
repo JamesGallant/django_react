@@ -8,7 +8,7 @@ import { Box, Grid } from "@mui/material";
 
 import BasicSpinner from "../components/common/spinner/basicSpinnerComponent";
 import Navbar from "../components/dashboard/Navbar";
-import SettingsMain from "../components/dashboard/SettingsMain";
+import SettingsMain from "../components/dashboard/settings/SettingsMain";
 import AppStoreMain from "../components/dashboard/AppStoreMain";
 import ProfileMain from "../components/dashboard/ProfileMain";
 

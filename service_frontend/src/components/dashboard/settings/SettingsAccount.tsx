@@ -1,24 +1,24 @@
 import React, { FC, useState } from "react";
 import { useHistory } from "react-router";
 
-import { useAppSelector, useAppDispatch } from "../../store/hooks";
-import { selectUserData } from "../../store/slices/userSlice";
-import { selectSiteConfigData, toggleClearLoginCache } from "../../store/slices/siteConfigurationSlice";
+import { useAppSelector, useAppDispatch } from "../../../store/hooks";
+import { selectUserData } from "../../../store/slices/userSlice";
+import { selectSiteConfigData, toggleClearLoginCache } from "../../../store/slices/siteConfigurationSlice";
 
 import { Grid, Typography, Divider, Switch, Stack, useTheme, Box } from "@mui/material";
 import LoadingButton from "@mui/lab/LoadingButton";
 import SaveIcon from "@mui/icons-material/Save";
 
-import AlertDialog from "../common/dialogs/AlertDialog";
-import PasswordField from "../common/formFields/passwordComponent";
+import AlertDialog from "../../common/dialogs/AlertDialog";
+import PasswordField from "../../common/formFields/passwordComponent";
 
-import configuration from "../../utils/config";
-import { resetPassword, deleteUser, resetUsername } from "../../api/authentication";
-import { logout } from "../../modules/authentication";
-import CookieHandler from "../../modules/cookies";
+import configuration from "../../../utils/config";
+import { resetPassword, deleteUser, resetUsername } from "../../../api/authentication";
+import { logout } from "../../../modules/authentication";
+import CookieHandler from "../../../modules/cookies";
 
-import type { UserDataInterface } from "../../types/authentication";
-import type { SiteConfigDataInterface } from "../../types/store";
+import type { UserDataInterface } from "../../../types/authentication";
+import type { SiteConfigDataInterface } from "../../../types/store";
 
 import { AxiosResponse } from "axios";
 

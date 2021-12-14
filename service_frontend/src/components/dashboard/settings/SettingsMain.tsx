@@ -1,6 +1,6 @@
-import React, {FC, useState} from "react";
-import { useAppSelector } from "../../store/hooks";
-import { selectVeiwDashboard } from "../../store/slices/viewSlice";
+import React, { useState } from "react";
+import { useAppSelector } from "../../../store/hooks";
+import { selectVeiwDashboard } from "../../../store/slices/viewSlice";
 
 import { Box, Tabs, Tab } from "@mui/material";
 
@@ -9,7 +9,7 @@ import SetingsAppearance from "./SettingsAppearance";
 import SettingsAccount from "./SettingsAccount";
 import SettingsBilling from "./SettingsBilling";
 import SettingsApps from "./SettingsApps";
-import type { TabPanelPropsInterface } from "../../types/components";
+import type { TabPanelPropsInterface } from "../../../types/components";
 
 const SettingsMain = (): JSX.Element | null => {
 	const [tabValue, setTabValue] = useState(0);
