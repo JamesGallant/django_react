@@ -5,6 +5,13 @@ import { postTokenLogout, getIsActiveUser } from "../api/authentication";
 
 import type { cookieDataType } from "../types/types";
 
+const cleanStorage = (): void => {
+	const cookies = new CookieHandler();
+	cookies.deleteCookie("authToken");
+	window.localStorage.setItem("authenticated", "false");
+	window.localStorage.removeItem(`persist:${configuration["persistKey-siteConfiguraton"]}`);
+};
+
 export const logout = async (): Promise<void> => {
 	const cookies = new CookieHandler();
 
@@ -15,9 +22,7 @@ export const logout = async (): Promise<void> => {
 	const logoutResponse: AxiosResponse = await postTokenLogout(authToken);
    
 	if (logoutResponse.status === 204) {
-		cookies.deleteCookie("authToken");
-		window.localStorage.setItem("authenticated", "false");
-		window.localStorage.removeItem(`persist:${configuration["persistKey-siteConfiguraton"]}`);
+		cleanStorage();
 	}
 };
 
@@ -34,24 +39,21 @@ export const login = async (): Promise<void> => {
 
 		// unsuccesfull use of token block login
 		if (userData["detail"]) {
-			window.localStorage.setItem("authenticated", "false");
-			cookies.deleteCookie("authToken");
+			cleanStorage();
 		} else {
 			// successfully retrieved data
 			// user Is no longer active
 			if(!userData["message"].is_active) {
-				window.localStorage.setItem("authenticated", "false");
-				cookies.deleteCookie("authToken");
+				cleanStorage();
 			} else {
 				// user is active
 				const lastServerLogin: Date = new Date (userData["message"].last_login);
 				const currentLogin: Date = new Date();
 				const diffInLogin: number = currentLogin.getMonth() - lastServerLogin.getMonth();
+				
 				// user has not loggen in a long time
 				if (diffInLogin > configuration["misc-loginDurationMonths"]) {
-					
-					window.localStorage.setItem("authenticated", "false");
-					cookies.deleteCookie("authToken");
+					cleanStorage();
 				} else {
 					// login allowed
 					

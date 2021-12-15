@@ -2,7 +2,6 @@ import React, { FC } from "react";
 import { useAppSelector } from "../../store/hooks";
 import { selectVeiwDashboard } from "../../store/slices/viewSlice";
 
-
 const AppStoreMain: FC = (): JSX.Element | null => {
 	const dashboardView = useAppSelector(selectVeiwDashboard);
 

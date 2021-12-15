@@ -3,6 +3,7 @@ import { useAppSelector } from "../../../store/hooks";
 import { selectVeiwDashboard } from "../../../store/slices/viewSlice";
 
 import { Box, Tabs, Tab } from "@mui/material";
+import { styled } from "@mui/material";
 
 import SettingsProfile from "./SettingsProfile";
 import SetingsAppearance from "./SettingsAppearance";
@@ -10,6 +11,13 @@ import SettingsAccount from "./SettingsAccount";
 import SettingsBilling from "./SettingsBilling";
 import SettingsApps from "./SettingsApps";
 import type { TabPanelPropsInterface } from "../../../types/components";
+
+const TabRoot = styled(Box)({
+	flexGrow: 1, 
+	bgcolor: "background.paper", 
+	display: "flex", 
+	marginLeft: "5%"
+});
 
 const SettingsMain = (): JSX.Element | null => {
 	const [tabValue, setTabValue] = useState(0);
@@ -50,7 +58,7 @@ const SettingsMain = (): JSX.Element | null => {
 	if(dashboardView.settings) {
 		//TODO make styles here
 		return (
-			<Box sx={{ flexGrow: 1, bgcolor: "background.paper", display: "flex", marginLeft: "5%"}}>
+			<TabRoot>
 				<Tabs
 					orientation="vertical"
 					aria-label="settings-tabpanel"
@@ -82,7 +90,7 @@ const SettingsMain = (): JSX.Element | null => {
 				<TabPanel value={tabValue} index={4}>
 					<SettingsApps />				
 				</TabPanel>
-			</Box>
+			</TabRoot>
 		);
 	} else {
 		return(null);

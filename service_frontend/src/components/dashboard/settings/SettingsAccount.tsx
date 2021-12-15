@@ -59,9 +59,6 @@ const SettingsAccount: FC = (): JSX.Element => {
 
 	const handleCloseDialog = (): void => {
 		setOpenAlertDialog(false);
-		setAlertDialogUpdate("");
-		setAlertDialogTitle("");
-		setAlertDialogText("");
 	};
 
 	const handleAlertOnOk = () => {
@@ -70,21 +67,16 @@ const SettingsAccount: FC = (): JSX.Element => {
 		 * through here
 		 */
 		setOpenAlertDialog(false);
-		setAlertDialogTitle("");
-		setAlertDialogText("");
 		switch(alertDialogUpdate) {
 		case "updateEmail": {
-			setAlertDialogUpdate("");
 			handleUpdateEmail();
 			break;
 		}
 		case "updatePassword": {
-			setAlertDialogUpdate("");
 			handleUpdatePassword();
 			break;
 		}
 		case "deleteAccount": {
-			setAlertDialogUpdate("");
 			handleDeleteAccount();
 			break;
 		}
