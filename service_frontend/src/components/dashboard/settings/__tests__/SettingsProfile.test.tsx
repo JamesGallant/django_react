@@ -1,5 +1,5 @@
 import React from "react";
-import { render, waitFor, fireEvent, screen } from "@testing-library/react";
+import { render, waitFor, fireEvent } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore, { MockStoreEnhanced }  from "redux-mock-store";
 import thunk from "redux-thunk";
@@ -12,7 +12,6 @@ import * as userFunctions from "../../../../store/slices/userSlice";
 import SettingsProfile from "../SettingsProfile";
 
 import type { AxiosResponse } from "axios";
-import axios from "axios";
 
 const middlewares: Array<any> = [thunk];
 const mockStore = configureStore (middlewares);

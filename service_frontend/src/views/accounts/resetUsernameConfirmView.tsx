@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { useParams, useHistory } from "react-router";
 
-import { Container, CssBaseline, Box, Grid, Typography, Divider, Button } from "@mui/material";
+import { Container, CssBaseline, Box, Grid, Typography, Button } from "@mui/material";
 
 import TextField from "../../components/common/formFields/TextFieldComponent";
 import FlashError from "../../components/common/helper/flashErrors";

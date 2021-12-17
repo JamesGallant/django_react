@@ -1,4 +1,4 @@
-import { AsyncThunk, createAsyncThunk, createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 
 import { getUserData } from "../../api/authentication";
