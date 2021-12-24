@@ -20,7 +20,10 @@ export const logout = async (): Promise<void> => {
 	if (authToken === "" || authToken === "deleted") return;
     
 	const logoutResponse: AxiosResponse = await postTokenLogout(authToken);
-   
+	if (!logoutResponse) {
+		//TODO handle server failures
+		cleanStorage();
+	}
 	if (logoutResponse.status === 204) {
 		cleanStorage();
 	}

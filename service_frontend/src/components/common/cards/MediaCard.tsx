@@ -4,41 +4,27 @@ import {Card, CardContent, CardActions, CardMedia, CardActionArea} from "@mui/ma
 
 const MediaCard = (props: any): JSX.Element => {
 	const validMedia = ["video", "audio", "picture", "iframe", "img"];
-	const { cardSx, mediaSx, mediaHeight, mediaComponent, mediaAlt, clickable=false, mediaSrc=null, mediaImage=null,
-		cardContentElements, cardActionElements } = props;
+	const { cardSx, mediaSx, mediaHeight, mediaComponent, mediaAlt, clickable=false, mediaSrc=null,
+		cardContentElements, cardActionElements, onCardClick } = props;
 	
 	if(!validMedia.includes(mediaComponent)) {
 		throw new Error(`mediaComponent ${mediaComponent} is not a valid component, choose one of these ${validMedia}`);
 	}
-	
-	const renderCorrectCardMedia = () => {
-		if (mediaSrc) {
-			return(
-				<CardMedia 
-					src={mediaSrc}
-					component={mediaComponent}
-					height={mediaHeight}
-					sx={mediaSx}
-					alt={mediaAlt}
-				/>
-			);
-		} else {
-			<CardMedia 
-				image={mediaImage}
-				component={mediaComponent}
-				height={mediaHeight}
-				sx={mediaSx}
-				alt={mediaAlt}
-			/>;
-		}
-	};
 
 	const renderCard = () => {
 		if (clickable) {
 			return(
 				<Card sx={cardSx}>
-					<CardActionArea>
-						{ renderCorrectCardMedia() }
+					<CardActionArea
+						onClick={onCardClick}
+					>
+						<CardMedia 
+							src={mediaSrc}
+							component={mediaComponent}
+							height={mediaHeight}
+							sx={mediaSx}
+							alt={mediaAlt}
+						/>
 						<CardContent>
 							{cardContentElements}
 						</CardContent>
@@ -51,7 +37,13 @@ const MediaCard = (props: any): JSX.Element => {
 		} else {
 			return(
 				<Card sx={cardSx}>
-					{ renderCorrectCardMedia() }
+					<CardMedia 
+						src={mediaSrc}
+						component={mediaComponent}
+						height={mediaHeight}
+						sx={mediaSx}
+						alt={mediaAlt}
+					/>
 					<CardContent>
 						{cardContentElements}
 					</CardContent>

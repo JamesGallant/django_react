@@ -1,10 +1,10 @@
 import React from "react";
 
 import CloseIcon from "@mui/icons-material/Close";
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, IconButton, Divider } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, IconButton, Divider } from "@mui/material";
 
 const ContentDialog = (props:any): JSX.Element => {
-	const {isOpen=false, dialogTitle="", dialogText="", cancelBtnText="Cancel", okBtnText="Ok", maxWidth="sm",
+	const {isOpen=false, dialogTitle="", cancelBtnText="Cancel", okBtnText="Ok", maxWidth="sm",
 		onClose, onOk, content } = props; 
 	return(
 		<Dialog
@@ -32,12 +32,6 @@ const ContentDialog = (props:any): JSX.Element => {
 			</DialogTitle>
 			<Divider />
 			<DialogContent>
-				{dialogText === "" ? null : 
-					<DialogContentText>
-						{dialogText}
-					</DialogContentText>
-				}
-				<br/>
 				{content}
 			</DialogContent>
 			<DialogActions>

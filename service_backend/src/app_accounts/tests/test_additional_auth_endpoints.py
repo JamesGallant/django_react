@@ -10,7 +10,6 @@ from service_backend.config import develop_configuration
 
 class TestAdditionalAuthEndpoints(APITestCase):
     def setUp(self) -> None:
-        self.test = "Hello"
         self.base_url = (
             f"http://{develop_configuration.get('service_backend')}/api/v1/auth"
         )

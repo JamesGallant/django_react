@@ -37,6 +37,7 @@ SITE_NAME = develop_configuration.get("site_name", "test site")
 INSTALLED_APPS = [
     # ours
     "app_accounts.apps.AccountsConfig",
+    "app_applications.apps.ApplicationsConfig",
     # third party
     "corsheaders",
     "rest_framework",
@@ -167,6 +168,8 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.TokenAuthentication",
     ),
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 10,
 }
 
 # djoser

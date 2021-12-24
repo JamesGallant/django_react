@@ -876,7 +876,7 @@ class TestDjoserAuth(APITestCase):
         ## regular user
         self.assertEqual(response_user_users.status_code, status.HTTP_200_OK)
         self.assertEqual(
-            response_user_users.data[0].get("first_name"), self.user.first_name
+            response_user_users.data["results"][0].get("first_name"), self.user.first_name
         )
 
         self.assertEqual(response_user_me.status_code, status.HTTP_200_OK)

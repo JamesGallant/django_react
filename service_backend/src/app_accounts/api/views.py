@@ -11,6 +11,6 @@ from .serialzers import UserIsAuthenticated
 @permission_classes([IsAuthenticated])
 def user_is_authenticated_and_active(request):
     userModel = get_user_model()
-    user = userModel.objects.get(id=request.user.id)
+    user = userModel.objects.filter(id=request.user.id).order_by("id")
     serializer = UserIsAuthenticated(user)
     return Response({"message": serializer.data}, status=status.HTTP_200_OK)

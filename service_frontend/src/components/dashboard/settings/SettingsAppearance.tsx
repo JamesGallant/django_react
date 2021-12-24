@@ -1,6 +1,6 @@
 import React, { FC, useState } from "react";
 import { Grid, Typography, Divider, Stack, FormControlLabel, FormControl, FormLabel, RadioGroup, Radio,
-	Checkbox, useTheme, useMediaQuery, Box, createTheme, ThemeProvider, PaletteMode  } from "@mui/material";
+	Checkbox, useTheme, useMediaQuery, Box } from "@mui/material";
 
 import { useAppSelector, useAppDispatch } from "../../../store/hooks";
 import { selectSiteTheme, setThemeMode, setThemePreference } from "../../../store/slices/siteConfigurationSlice";
@@ -18,14 +18,6 @@ interface CardSelectThemeInterface {
 
 const SettingsAppearance: FC = (): JSX.Element => {
 	const theme = useTheme();
-	const displayTheme = (palette: PaletteMode) => {
-		return(createTheme({
-			palette: {
-				mode: palette
-			},
-		}));
-	};
-
 	const dispatch = useAppDispatch();
 	const prefersDarkMode: boolean = useMediaQuery("(prefers-color-scheme: dark)");
 	const siteTheme: ThemePreferenceInterface = useAppSelector(selectSiteTheme);
@@ -118,62 +110,48 @@ const SettingsAppearance: FC = (): JSX.Element => {
 							spacing={2}
 							divider={<Divider orientation="vertical" flexItem />}
 						>
-							<ThemeProvider theme={displayTheme("light")}>
-								<MediaCard 
-									cardSx={{ width: "15vw", opacity: isThemeDisabled === true ? 0.5 : 1 }}
-									mediaHeight="140"
-									mediaComponent="img"
-									mediaSrc={lightmodeImage}
-									mediaAlt="lightmode"
-									cardContentElements={
-										<Typography variant="body2" color="text.secondary">
-										Example Text
-										</Typography>
-									}
-									cardActionElements={
-										<FormControlLabel 
-											label="Lightmode"
-											control={
-												<Checkbox
-													checked={cardThemeValue.lightmode}
-													disabled={isThemeDisabled}
-													onChange={handleCardCheckbox}
-													name="lightmode"
-													inputProps={{ "aria-label": "thememode" }}
-												/>
-											}
-										/>
-									}
-								/>
-							</ThemeProvider>
-							<ThemeProvider theme={displayTheme("dark")}>
-								<MediaCard 
-									cardSx={{ width: "15vw", opacity: isThemeDisabled === true ? 0.5 : 1 }}
-									mediaHeight="140"
-									mediaComponent="img"
-									mediaSrc={darkmodeImage}
-									mediaAlt="darkmode"
-									cardContentElements={
-										<Typography variant="body2" color="text.secondary">
-										Example Text
-										</Typography>
-									}
-									cardActionElements={
-										<FormControlLabel 
-											label="Darkmode"
-											control={
-												<Checkbox
-													checked={cardThemeValue.darkmode}
-													disabled={isThemeDisabled}
-													onChange={handleCardCheckbox}
-													name="darkmode"
-													inputProps={{ "aria-label": "thememode" }}
-												/>
-											}
-										/>
-									}
-								/>
-							</ThemeProvider>
+							<MediaCard 
+								cardSx={{ width: "15vw", opacity: isThemeDisabled === true ? 0.5 : 1 }}
+								mediaHeight="140"
+								mediaComponent="img"
+								mediaSrc={lightmodeImage}
+								mediaAlt="lightmode"
+								cardActionElements={
+									<FormControlLabel 
+										label="Lightmode"
+										control={
+											<Checkbox
+												checked={cardThemeValue.lightmode}
+												disabled={isThemeDisabled}
+												onChange={handleCardCheckbox}
+												name="lightmode"
+												inputProps={{ "aria-label": "thememode" }}
+											/>
+										}
+									/>
+								}
+							/>
+							<MediaCard 
+								cardSx={{ width: "15vw", opacity: isThemeDisabled === true ? 0.5 : 1 }}
+								mediaHeight="140"
+								mediaComponent="img"
+								mediaSrc={darkmodeImage}
+								mediaAlt="darkmode"
+								cardActionElements={
+									<FormControlLabel 
+										label="Darkmode"
+										control={
+											<Checkbox
+												checked={cardThemeValue.darkmode}
+												disabled={isThemeDisabled}
+												onChange={handleCardCheckbox}
+												name="darkmode"
+												inputProps={{ "aria-label": "thememode" }}
+											/>
+										}
+									/>
+								}
+							/>
 						</Stack>
 					</Stack>
 				</Grid>
