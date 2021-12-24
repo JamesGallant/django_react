@@ -21,7 +21,9 @@ class UserOwnedApplications(models.Model):
     app = models.ForeignKey(
         "app_applications.MarketplaceApplications", on_delete=models.CASCADE
     )
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, blank=False, on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=False, blank=False, on_delete=models.CASCADE
+    )
     activation_date = models.DateField(auto_now=True, null=False, blank=False)
     expiration_date = models.DateField(null=True)
 

@@ -10,9 +10,7 @@ from ..models import UserOwnedApplications, MarketplaceApplications
 
 class TestUserOwnedApplication(APITestCase):
     def setUp(self) -> None:
-        self.base_url = (
-            f"http://{develop_configuration.get('service_backend')}/api/v1"
-        )
+        self.base_url = f"http://{develop_configuration.get('service_backend')}/api/v1"
         self.user_apps_url = f"{self.base_url}/apps/user/"
 
         self.client = APIClient()
@@ -60,40 +58,31 @@ class TestUserOwnedApplication(APITestCase):
             app=self.marketplace_app,
             user=self.user,
             activation_date=date.today(),
-            expiration_date=date.today() + timedelta(days=1)
+            expiration_date=date.today() + timedelta(days=1),
         )
 
         self.owned_app_user2 = self.owned_apps_model.objects.create(
             app=self.marketplace_app,
             user=self.user2,
             activation_date=date.today(),
-            expiration_date=date.today() + timedelta(days=1)
+            expiration_date=date.today() + timedelta(days=1),
         )
 
         self.user_token = self.client.post(
             f"{self.base_url}/auth/token/login/",
-            data=json.dumps({
-                "email": self.user.email,
-                "password": "secret"
-            }),
+            data=json.dumps({"email": self.user.email, "password": "secret"}),
             content_type="application/json",
         )
 
         self.user2_token = self.client.post(
             f"{self.base_url}/auth/token/login/",
-            data=json.dumps({
-                "email": self.user2.email,
-                "password": "secret"
-            }),
+            data=json.dumps({"email": self.user2.email, "password": "secret"}),
             content_type="application/json",
         )
 
         self.superuser_token = self.client.post(
             f"{self.base_url}/auth/token/login/",
-            data=json.dumps({
-                "email": self.superuser.email,
-                "password": "secret"
-            }),
+            data=json.dumps({"email": self.superuser.email, "password": "secret"}),
             content_type="application/json",
         )
 
@@ -140,7 +129,9 @@ class TestUserOwnedApplication(APITestCase):
         self.client.credentials()
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data["count"], len(self.owned_apps_model.objects.all()))
+        self.assertEqual(
+            response.data["count"], len(self.owned_apps_model.objects.all())
+        )
 
     def test_admin_can_get_other_user_apps(self):
         self.client.credentials(
@@ -156,12 +147,14 @@ class TestUserOwnedApplication(APITestCase):
         data = {
             "expiration_date": "2000-01-01",
             "app": self.marketplace_app.id,
-            "user": self.user.email
+            "user": self.user.email,
         }
         self.client.credentials(
             HTTP_AUTHORIZATION=f"Token {self.user_token.data.get('auth_token')}"
         )
-        response = self.client.post(self.user_apps_url, data=json.dumps(data), content_type="application/json")
+        response = self.client.post(
+            self.user_apps_url, data=json.dumps(data), content_type="application/json"
+        )
         self.client.credentials()
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
@@ -170,20 +163,26 @@ class TestUserOwnedApplication(APITestCase):
         data = {
             "expiration_date": "2000-01-01",
             "app": self.marketplace_app.id,
-            "user": self.user.email
+            "user": self.user.email,
         }
-        response = self.client.post(self.user_apps_url, data=json.dumps(data), content_type="application/json")
+        response = self.client.post(
+            self.user_apps_url, data=json.dumps(data), content_type="application/json"
+        )
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_admin_can_create_new_owned_apps(self):
         data = {
             "expiration_date": "2000-01-01",
             "app": self.marketplace_app.id,
-            "user": self.user.id
+            "user": self.user.id,
         }
 
-        self.client.credentials( HTTP_AUTHORIZATION=f"Token {self.superuser_token.data.get('auth_token')}")
-        response = self.client.post(self.user_apps_url, data=json.dumps(data), content_type="application/json")
+        self.client.credentials(
+            HTTP_AUTHORIZATION=f"Token {self.superuser_token.data.get('auth_token')}"
+        )
+        response = self.client.post(
+            self.user_apps_url, data=json.dumps(data), content_type="application/json"
+        )
         self.client.credentials()
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
@@ -195,8 +194,11 @@ class TestUserOwnedApplication(APITestCase):
         self.client.credentials(
             HTTP_AUTHORIZATION=f"Token {self.user_token.data.get('auth_token')}"
         )
-        response = self.client.patch(f"{self.user_apps_url}{self.owned_app_user.id}/", data=json.dumps(data),
-                                   content_type="application/json")
+        response = self.client.patch(
+            f"{self.user_apps_url}{self.owned_app_user.id}/",
+            data=json.dumps(data),
+            content_type="application/json",
+        )
         self.client.credentials()
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
@@ -205,8 +207,11 @@ class TestUserOwnedApplication(APITestCase):
         data = {
             "expiration_date": "2000-01-01",
         }
-        response = self.client.patch(f"{self.user_apps_url}{self.owned_app_user.id}/", data=json.dumps(data),
-                                   content_type="application/json")
+        response = self.client.patch(
+            f"{self.user_apps_url}{self.owned_app_user.id}/",
+            data=json.dumps(data),
+            content_type="application/json",
+        )
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
@@ -217,22 +222,29 @@ class TestUserOwnedApplication(APITestCase):
         self.client.credentials(
             HTTP_AUTHORIZATION=f"Token {self.superuser_token.data.get('auth_token')}"
         )
-        response = self.client.patch(f"{self.user_apps_url}{self.owned_app_user.id}/", data=json.dumps(data),
-                                   content_type="application/json")
+        response = self.client.patch(
+            f"{self.user_apps_url}{self.owned_app_user.id}/",
+            data=json.dumps(data),
+            content_type="application/json",
+        )
         self.client.credentials()
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     # delete
     def test_user_can_delete_current_owned_apps(self):
-        self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.user_token.data.get('auth_token')}")
+        self.client.credentials(
+            HTTP_AUTHORIZATION=f"Token {self.user_token.data.get('auth_token')}"
+        )
         response = self.client.delete(f"{self.user_apps_url}{self.owned_app_user.id}/")
         self.client.credentials()
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_user_cannot_delete_other_user_apps(self):
-        self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.user_token.data.get('auth_token')}")
+        self.client.credentials(
+            HTTP_AUTHORIZATION=f"Token {self.user_token.data.get('auth_token')}"
+        )
         response = self.client.delete(f"{self.user_apps_url}{self.owned_app_user2.id}/")
         self.client.credentials()
 
@@ -243,7 +255,9 @@ class TestUserOwnedApplication(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_admin_can_delete_user_owned_apps(self):
-        self.client.credentials(HTTP_AUTHORIZATION=f"Token {self.superuser_token.data.get('auth_token')}")
+        self.client.credentials(
+            HTTP_AUTHORIZATION=f"Token {self.superuser_token.data.get('auth_token')}"
+        )
         response = self.client.delete(f"{self.user_apps_url}{self.owned_app_user.id}/")
         self.client.credentials()
 

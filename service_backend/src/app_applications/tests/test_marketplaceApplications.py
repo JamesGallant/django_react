@@ -7,11 +7,10 @@ import json
 from service_backend.config import develop_configuration
 from ..models import MarketplaceApplications
 
+
 class TestMarketPlaceApplications(APITestCase):
     def setUp(self) -> None:
-        self.base_url = (
-            f"http://{develop_configuration.get('service_backend')}/api/v1"
-        )
+        self.base_url = f"http://{develop_configuration.get('service_backend')}/api/v1"
         self.user_registered_apps_url = f"{self.base_url}/apps/registered/"
 
         self.client = APIClient()
@@ -47,23 +46,18 @@ class TestMarketPlaceApplications(APITestCase):
 
         self.user_token = self.client.post(
             f"{self.base_url}/auth/token/login/",
-            data=json.dumps({
-                "email": self.user.email,
-                "password": "secret"
-            }),
+            data=json.dumps({"email": self.user.email, "password": "secret"}),
             content_type="application/json",
         )
 
         self.superuser_token = self.client.post(
             f"{self.base_url}/auth/token/login/",
-            data=json.dumps({
-                "email": self.superuser.email,
-                "password": "secret"
-            }),
+            data=json.dumps({"email": self.superuser.email, "password": "secret"}),
             content_type="application/json",
         )
 
         # get
+
     def test_user_can_get_registered_apps(self):
         self.client.credentials(
             HTTP_AUTHORIZATION=f"Token {self.user_token.data.get('auth_token')}"
@@ -84,18 +78,22 @@ class TestMarketPlaceApplications(APITestCase):
         response = self.client.get(self.user_registered_apps_url)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    #post
+    # post
     def test_user_cannot_register_apps(self):
         data = {
             "name": "some app",
             "description": "some descr",
             "url": "https://www.whatsup.com",
-            "image_path": "/"
+            "image_path": "/",
         }
         self.client.credentials(
             HTTP_AUTHORIZATION=f"Token {self.user_token.data.get('auth_token')}"
         )
-        response = self.client.post(self.user_registered_apps_url, data=json.dumps(data), content_type='application/json')
+        response = self.client.post(
+            self.user_registered_apps_url,
+            data=json.dumps(data),
+            content_type="application/json",
+        )
         self.client.credentials()
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
@@ -104,12 +102,16 @@ class TestMarketPlaceApplications(APITestCase):
             "name": "some app",
             "description": "some descr",
             "url": "https://www.whatsup.com",
-            "image_path": "/"
+            "image_path": "/",
         }
         self.client.credentials(
             HTTP_AUTHORIZATION=f"Token {self.superuser_token.data.get('auth_token')}"
         )
-        response = self.client.post(self.user_registered_apps_url, data=json.dumps(data), content_type='application/json')
+        response = self.client.post(
+            self.user_registered_apps_url,
+            data=json.dumps(data),
+            content_type="application/json",
+        )
         self.client.credentials()
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
@@ -118,9 +120,13 @@ class TestMarketPlaceApplications(APITestCase):
             "name": "some app",
             "description": "some descr",
             "url": "https://www.whatsup.com",
-            "image_path": "/"
+            "image_path": "/",
         }
-        response = self.client.post(self.user_registered_apps_url, data=json.dumps(data),content_type='application/json')
+        response = self.client.post(
+            self.user_registered_apps_url,
+            data=json.dumps(data),
+            content_type="application/json",
+        )
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     # patch
@@ -131,8 +137,11 @@ class TestMarketPlaceApplications(APITestCase):
         self.client.credentials(
             HTTP_AUTHORIZATION=f"Token {self.user_token.data.get('auth_token')}"
         )
-        response = self.client.patch(f"{self.user_registered_apps_url}{self.marketplace_app.id}/",
-                                     data=json.dumps(data), content_type='application/json')
+        response = self.client.patch(
+            f"{self.user_registered_apps_url}{self.marketplace_app.id}/",
+            data=json.dumps(data),
+            content_type="application/json",
+        )
         self.client.credentials()
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
@@ -140,8 +149,11 @@ class TestMarketPlaceApplications(APITestCase):
         data = {
             "name": "some app",
         }
-        response = self.client.patch(f"{self.user_registered_apps_url}{self.marketplace_app.id}/",
-                                     data=json.dumps(data), content_type='application/json')
+        response = self.client.patch(
+            f"{self.user_registered_apps_url}{self.marketplace_app.id}/",
+            data=json.dumps(data),
+            content_type="application/json",
+        )
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_admin_can_patch_registered_apps(self):
@@ -151,8 +163,11 @@ class TestMarketPlaceApplications(APITestCase):
         self.client.credentials(
             HTTP_AUTHORIZATION=f"Token {self.superuser_token.data.get('auth_token')}"
         )
-        response = self.client.patch(f"{self.user_registered_apps_url}{self.marketplace_app.id}/",
-                                     data=json.dumps(data), content_type='application/json')
+        response = self.client.patch(
+            f"{self.user_registered_apps_url}{self.marketplace_app.id}/",
+            data=json.dumps(data),
+            content_type="application/json",
+        )
         self.client.credentials()
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
@@ -161,7 +176,9 @@ class TestMarketPlaceApplications(APITestCase):
         self.client.credentials(
             HTTP_AUTHORIZATION=f"Token {self.user_token.data.get('auth_token')}"
         )
-        response = self.client.delete(f"{self.user_registered_apps_url}{self.marketplace_app.id}/")
+        response = self.client.delete(
+            f"{self.user_registered_apps_url}{self.marketplace_app.id}/"
+        )
         self.client.credentials()
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
@@ -169,12 +186,14 @@ class TestMarketPlaceApplications(APITestCase):
         self.client.credentials(
             HTTP_AUTHORIZATION=f"Token {self.superuser_token.data.get('auth_token')}"
         )
-        response = self.client.delete(f"{self.user_registered_apps_url}{self.marketplace_app.id}/")
+        response = self.client.delete(
+            f"{self.user_registered_apps_url}{self.marketplace_app.id}/"
+        )
         self.client.credentials()
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
     def test_unknown_cannot_delete_registered_apps(self):
-        response = self.client.delete(f"{self.user_registered_apps_url}{self.marketplace_app.id}/")
+        response = self.client.delete(
+            f"{self.user_registered_apps_url}{self.marketplace_app.id}/"
+        )
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
-
-
