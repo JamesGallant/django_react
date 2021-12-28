@@ -23,4 +23,4 @@ RUN pip install --upgrade pip
 COPY . . 
 
 # install dependencies 
-RUN pip install -r requirements/requirements.txt
+RUN pip install -r requirements/develop.txt
