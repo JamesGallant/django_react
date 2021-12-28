@@ -1,9 +1,11 @@
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 
+
 class IsAdminOrNoPuts(BasePermission):
     """
     Allows all methods except puts, admin can access all methods
     """
+
     def has_permission(self, request, view):
         if request.method in SAFE_METHODS and request.user.is_authenticated:
             return True
@@ -15,6 +17,7 @@ class IsAdminOrNoPuts(BasePermission):
                 return True
 
         return False
+
 
 class IsAdminOrReadOnly(BasePermission):
     """

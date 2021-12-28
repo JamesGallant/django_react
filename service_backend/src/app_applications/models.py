@@ -28,9 +28,7 @@ class UserOwnedApplications(models.Model):
 
     class Meta:
         verbose_name = _("User owned application")
-        unique_together = (
-            ("app", "user"),
-        )
+        unique_together = (("app", "user"),)
 
     @property
     def is_expired(self):

@@ -6,6 +6,4 @@ router = routers.DefaultRouter()
 router.register(r"registered", views.MarketplaceApplicationsView)
 router.register(r"user-owned", views.UserOwnedApplicationView, "user-apps")
 
-urlpatterns = [
-    path("", include(router.urls))
-]
+urlpatterns = [path("", include(router.urls))]

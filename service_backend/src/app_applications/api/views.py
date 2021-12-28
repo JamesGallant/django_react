@@ -35,14 +35,23 @@ class UserOwnedApplicationView(ModelViewSet):
 
         if has_payed:
             date_today = timezone.datetime.today()
-            expiration_date = date_today if request.data["expiration_date"] == "" else timezone.datetime.strptime(request.data["expiration_date"], "%Y-%m-%d")
+            expiration_date = (
+                date_today
+                if request.data["expiration_date"] == ""
+                else timezone.datetime.strptime(
+                    request.data["expiration_date"], "%Y-%m-%d"
+                )
+            )
             if expiration_date < date_today:
-                return Response({"message": "Expiration date cannot be in the past"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    {"message": "Expiration date cannot be in the past"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
 
             app_data = {
                 "expiration_date": expiration_date.date(),
                 "app": int(request.data["app"]),
-                "user": int(request.data["user"])
+                "user": int(request.data["user"]),
             }
 
             serializer = UserOwnedApplicationSerializer(data=app_data)
@@ -52,7 +61,10 @@ class UserOwnedApplicationView(ModelViewSet):
             else:
                 return Response(serializer.errors, status.HTTP_400_BAD_REQUEST)
         else:
-            return Response({"message": "Payment failed"}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+            return Response(
+                {"message": "Payment failed"},
+                status=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            )
 
     def partial_update(self, request, *args, **kwargs) -> Response:
         """
@@ -68,23 +80,30 @@ class UserOwnedApplicationView(ModelViewSet):
         if has_payed:
             keys = [keys for keys, _ in request.data.items()]
             if len(keys) > 1 or keys[0] != "expiration_date":
-                return Response({"message": "only expiration_date can be altered"}, status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    {"message": "only expiration_date can be altered"},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
 
             test = self.get_object()
             patch_data = {
-                "id": self.kwargs.get('pk'),
+                "id": self.kwargs.get("pk"),
                 "expiration_date": request.data["expiration_date"],
-                "acitivation_date": timezone.datetime.today().date()
+                "acitivation_date": timezone.datetime.today().date(),
             }
 
-            serializer = UserOwnedApplicationSerializer(test, data=patch_data, partial=True)
+            serializer = UserOwnedApplicationSerializer(
+                test, data=patch_data, partial=True
+            )
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_200_OK)
             else:
                 return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         else:
-            return Response({"message": "not owned"}, status=status.HTTP_422_UNPROCESSABLE_ENTITY)
+            return Response(
+                {"message": "not owned"}, status=status.HTTP_422_UNPROCESSABLE_ENTITY
+            )
 
 
 class MarketplaceApplicationsView(ModelViewSet):

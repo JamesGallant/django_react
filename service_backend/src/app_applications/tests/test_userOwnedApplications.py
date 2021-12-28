@@ -85,7 +85,7 @@ class TestUserOwnedApplication(APITestCase):
             content_type="application/json",
         )
 
-    #get
+    # get
     def test_user_can_get_owned_apps(self):
         self.client.credentials(
             HTTP_AUTHORIZATION=f"Token {self.user_token.data.get('auth_token')}"
@@ -130,7 +130,6 @@ class TestUserOwnedApplication(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.data["count"], 2)
-
 
     def test_admin_can_get_other_user_apps(self):
         self.client.credentials(
@@ -231,7 +230,9 @@ class TestUserOwnedApplication(APITestCase):
         self.client.credentials()
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(response.data["message"], "Expiration date cannot be in the past")
+        self.assertEqual(
+            response.data["message"], "Expiration date cannot be in the past"
+        )
 
     # patch
     def test_user_can_patch_current_owned_apps_if_payed(self):
@@ -306,7 +307,7 @@ class TestUserOwnedApplication(APITestCase):
         data = {
             "expiration_date": str(datetime.today().date() + timedelta(days=4)),
             "app": test_app.id,
-            "activation_date": str(datetime.today().date())
+            "activation_date": str(datetime.today().date()),
         }
         self.client.credentials(
             HTTP_AUTHORIZATION=f"Token {self.user_token.data.get('auth_token')}"
@@ -352,7 +353,7 @@ class TestUserOwnedApplication(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
-    #puts
+    # puts
     def test_user_cannot_alter_app_with_puts(self):
         test_app = MarketplaceApplications.objects.create(
             name=self.fake.name(),
@@ -366,7 +367,7 @@ class TestUserOwnedApplication(APITestCase):
             "activation_date": str(datetime.today().date()),
             "expiration_date": str(datetime.today().date() + timedelta(days=4)),
             "app": test_app.id,
-            "user": self.user.id
+            "user": self.user.id,
         }
 
         self.client.credentials(
@@ -393,7 +394,7 @@ class TestUserOwnedApplication(APITestCase):
             "activation_date": str(datetime.today().date()),
             "expiration_date": str(datetime.today().date() + timedelta(days=4)),
             "app": test_app.id,
-            "user": self.user.id
+            "user": self.user.id,
         }
         response = self.client.put(
             f"{self.user_apps_url}{self.user_app1.id}/",
@@ -402,7 +403,7 @@ class TestUserOwnedApplication(APITestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
-    #puts
+    # puts
     def test_user_cannot_alter_others_app_with_puts(self):
         test_app = MarketplaceApplications.objects.create(
             name=self.fake.name(),
@@ -416,7 +417,7 @@ class TestUserOwnedApplication(APITestCase):
             "activation_date": str(datetime.today().date()),
             "expiration_date": str(datetime.today().date() + timedelta(days=4)),
             "app": test_app.id,
-            "user": self.user.id
+            "user": self.user.id,
         }
 
         self.client.credentials(
@@ -443,7 +444,7 @@ class TestUserOwnedApplication(APITestCase):
             "activation_date": str(datetime.today().date()),
             "expiration_date": str(datetime.today().date() + timedelta(days=4)),
             "app": test_app.id,
-            "user": self.user.id
+            "user": self.user.id,
         }
 
         self.client.credentials(
