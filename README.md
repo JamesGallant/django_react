@@ -298,7 +298,7 @@ jobs:
         uses: actions/cache@v1
         with:
           path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+          key: ${{ runner.os }}-pip-${{ hashFiles('**/develop.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
 

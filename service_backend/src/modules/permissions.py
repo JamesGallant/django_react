@@ -1,19 +1,20 @@
 from rest_framework.permissions import BasePermission, SAFE_METHODS
 
-
-class IsAdminOrReadAndDelete(BasePermission):
+class IsAdminOrNoPuts(BasePermission):
     """
-    Allow get and delete requests if user is not admin, else all methods are allowed
+    Allows all methods except puts, admin can access all methods
     """
-
     def has_permission(self, request, view):
         if request.method in SAFE_METHODS and request.user.is_authenticated:
             return True
         else:
-            if request.user.is_staff or request.method == "DELETE":
+            if request.user.is_staff:
                 return True
-        return False
 
+            if request.user.is_authenticated and request.method != "PUT":
+                return True
+
+        return False
 
 class IsAdminOrReadOnly(BasePermission):
     """

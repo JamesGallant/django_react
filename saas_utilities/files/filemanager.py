@@ -57,7 +57,7 @@ class FileGenerator:
             "RUN apt-get -qqy update \nRUN apt-get -qqy install postgresql gcc python3-dev libpq-dev \n\n"
             "# cryptography dependencies\nRUN apt-get -qqy install build-essential libssl-dev libffi-dev python3-dev cargo \n\n"
             "# install dependencies \nRUN pip install --upgrade pip \n\n# copy project \nCOPY . . \n\n"
-            "# install dependencies \nRUN pip install -r requirements/requirements.txt"
+            "# install dependencies \nRUN pip install -r requirements/develop.txt"
         )
 
         filepath_dockerfile = f"{self.root_path}/docker/Dockerfile"
@@ -68,7 +68,7 @@ class FileGenerator:
 
     def create_python_requirement(self) -> None:
         """
-        Creates a requirements.txt file that bootstraps the basic dependencies needed to build a django app
+        Creates a develop.txt file that bootstraps the basic dependencies needed to build a django app
         :return: None
         """
         requirements = (
@@ -77,7 +77,7 @@ class FileGenerator:
             "Markdown==3.3.4 \ndjango-cors-headers==3.7.0"
         )
 
-        filepath = f"{self.root_path}/requirements/requirements.txt"
+        filepath = f"{self.root_path}/requirements/develop.txt"
         self._filemanager(content=requirements, filepath=filepath)
 
     def create_dev_environment(self, service_name) -> None:

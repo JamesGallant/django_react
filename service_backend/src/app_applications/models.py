@@ -1,6 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
 from datetime import date
 
 # Create your models here.
@@ -18,17 +19,18 @@ class MarketplaceApplications(models.Model):
 
 
 class UserOwnedApplications(models.Model):
-    app = models.ForeignKey(
-        "app_applications.MarketplaceApplications", on_delete=models.CASCADE
-    )
+    app = models.ForeignKey(MarketplaceApplications, on_delete=models.CASCADE)
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL, null=False, blank=False, on_delete=models.CASCADE
     )
     activation_date = models.DateField(auto_now=True, null=False, blank=False)
-    expiration_date = models.DateField(null=True)
+    expiration_date = models.DateField(null=False, blank=False, default=timezone.now)
 
     class Meta:
         verbose_name = _("User owned application")
+        unique_together = (
+            ("app", "user"),
+        )
 
     @property
     def is_expired(self):
