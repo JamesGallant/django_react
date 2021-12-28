@@ -1,6 +1,6 @@
 import {login, logout} from "../authentication";
 import CookieHandler from "../cookies";
-import * as authenticationAPI from "../../api/authentication";
+import * as authenticationAPI from "../../api/authenticationAPI";
 import configuration from "../../utils/config";
 
 import type { cookieDataType } from "../../types/types";

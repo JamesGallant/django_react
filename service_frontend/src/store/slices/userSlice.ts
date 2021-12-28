@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 
-import { getUserData } from "../../api/authentication";
+import { getUserData } from "../../api/authenticationAPI";
 
 import type { RootState } from "../store";
 import type { UserDataInterface } from "../../types/authentication";

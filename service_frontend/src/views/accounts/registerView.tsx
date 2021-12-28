@@ -17,7 +17,7 @@ import CountrySelect from "../../components/common/formFields/countryComponent";
 import FlashError from "../../components/common/helper/flashErrors";
 import configuration from "../../utils/config";
 
-import { postRegisterUser } from "../../api/authentication";
+import { postRegisterUser } from "../../api/authenticationAPI";
 import { AxiosResponse } from "axios";
 
 import type { UserDataInterface } from "../../types/authentication";

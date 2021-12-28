@@ -5,7 +5,7 @@ import { AxiosResponse } from "axios";
 import { Grid, Container, CssBaseline, Typography, Button, Link, Box } from "@mui/material";
 import { CentredSubmitFormRoot } from "../../utils/commonStyles";
 
-import { resetPasswordConfirm } from "../../api/authentication";
+import { resetPasswordConfirm } from "../../api/authenticationAPI";
 import configuration from "../../utils/config";
 import { logout } from "../../modules/authentication";
 

@@ -5,7 +5,7 @@ import {Button, Box, styled, Container, CssBaseline, Grid, Typography, Link } fr
 import { AxiosResponse } from "axios";
 
 import configuration from "../../utils/config";
-import { postSendEmail } from "../../api/authentication";
+import { postSendEmail } from "../../api/authenticationAPI";
 
 
 const PREFIX = "accountCreated";

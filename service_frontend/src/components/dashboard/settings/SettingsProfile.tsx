@@ -11,7 +11,7 @@ import TextField from "../../common/formFields/TextFieldComponent";
 import CountrySelect from "../../common/formFields/countryComponent";
 import FlashError from "../../common/helper/flashErrors";
 
-import { putRegisterUser } from "../../../api/authentication";
+import { putRegisterUser } from "../../../api/authenticationAPI";
 import CookieHandler from "../../../modules/cookies";
 import type { UserDataInterface, UserPutInterface } from "../../../types/authentication";
 import { AxiosResponse } from "axios";

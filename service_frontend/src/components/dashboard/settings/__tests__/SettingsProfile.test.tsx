@@ -5,7 +5,7 @@ import configureStore, { MockStoreEnhanced }  from "redux-mock-store";
 import thunk from "redux-thunk";
 
 import CookieHandler from "../../../../modules/cookies";
-import * as API from "../../../../api/authentication";
+import * as API from "../../../../api/authenticationAPI";
 import * as reduxHooks from "../../../../store/hooks";
 import * as userFunctions from "../../../../store/slices/userSlice";
 

@@ -5,7 +5,7 @@ import { AxiosResponse } from "axios";
 import { Button, CssBaseline, Typography,  Link, Container, Grid, Box , styled, Stack } from "@mui/material";
 
 import configuration from "../../utils/config";
-import { resetPassword, resetUsername } from "../../api/authentication";
+import { resetPassword, resetUsername } from "../../api/authenticationAPI";
 
 import FlashError from "../../components/common/helper/flashErrors";
 

@@ -9,7 +9,7 @@ import FlashError from "../../components/common/helper/flashErrors";
 import { logout } from "../../modules/authentication";
 import configuration from "../../utils/config";
 import { CentredSubmitFormRoot } from "../../utils/commonStyles";
-import { resetUsernameConfirm } from "../../api/authentication";
+import { resetUsernameConfirm } from "../../api/authenticationAPI";
 
 import type { UrlAuthTokenTypes } from "../../types/authentication";
 import type { AxiosResponse } from "axios";

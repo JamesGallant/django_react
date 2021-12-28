@@ -4,7 +4,7 @@ import {render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { AxiosResponse } from "axios";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
-import * as API from "../../../api/authentication";
+import * as API from "../../../api/authenticationAPI";
 
 import RegisterView from "../registerView";
 import configuration from "../../../utils/config";

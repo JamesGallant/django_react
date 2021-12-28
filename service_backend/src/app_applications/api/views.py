@@ -1,11 +1,12 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
-from rest_framework import status, exceptions, permissions
+from rest_framework import status
 from .serializers import (
     UserOwnedApplicationSerializer,
     MarketplaceApplicationSerializer,
 )
 from django.utils import timezone
+
 from modules.permissions import IsAdminOrReadOnly, IsAdminOrNoPuts
 from ..models import UserOwnedApplications, MarketplaceApplications
 
@@ -46,6 +47,15 @@ class UserOwnedApplicationView(ModelViewSet):
                 return Response(
                     {"message": "Expiration date cannot be in the past"},
                     status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            if (
+                int(request.data["user"]) != request.user.id
+                and not request.user.is_staff
+            ):
+                return Response(
+                    {"message": "You cannot assign apps to an unauthorized user"},
+                    status=status.HTTP_401_UNAUTHORIZED,
                 )
 
             app_data = {

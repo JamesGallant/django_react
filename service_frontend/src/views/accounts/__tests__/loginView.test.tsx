@@ -6,7 +6,7 @@ import { Router } from "react-router-dom";
 
 import LoginView from "../loginView";
 import CookieHandler from "../../../modules/cookies";
-import * as API from "../../../api/authentication";
+import * as API from "../../../api/authenticationAPI";
 import configuration from "../../../utils/config";
 
 import {login} from "../../../modules/authentication";

@@ -21,6 +21,8 @@ const configuration = {
 	"api-resetPasswordConfirm": "auth/users/reset_password_confirm/",
 	"api-resetUsername": "auth/users/reset_email/",
 	"api-resetUsernameConfirm": "auth/users/reset_email_confirm/",
+	"api-getRegisteredApps": "apps/registered/",
+	"api-getOwnedApps": "apps/user-owned/",
 
 	// internal urls registry
 	"url-home": "/",

@@ -7,7 +7,7 @@ import { Router } from "react-router-dom";
 import configuration from "../../../utils/config";
 import ResetPassword from "../resetPasswordView";
 import * as authentication from "../../../modules/authentication";
-import * as API from "../../../api/authentication";
+import * as API from "../../../api/authenticationAPI";
 
 jest.mock("axios");
 

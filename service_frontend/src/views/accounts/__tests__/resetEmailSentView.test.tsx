@@ -3,7 +3,7 @@ import { render, fireEvent, waitFor } from "@testing-library/react";
 import ResetPasswordEmailSent from "../resetEmailSentView";
 import { AxiosResponse } from "axios";
 
-import * as authenticationAPI from "../../../api/authentication";
+import * as authenticationAPI from "../../../api/authenticationAPI";
 
 jest.mock("react-router-dom", () => ({
 	...jest.requireActual("react-router-dom"),

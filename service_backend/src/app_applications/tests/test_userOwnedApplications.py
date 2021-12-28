@@ -182,6 +182,53 @@ class TestUserOwnedApplication(APITestCase):
 
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
+    def test_user_cannot_create_app_for_other_user(self):
+        test_app = MarketplaceApplications.objects.create(
+            name=self.fake.name(),
+            description=self.fake.sentence(),
+            url=self.fake.url(),
+            image_path=self.fake.file_path(),
+        )
+        data = {
+            "expiration_date": str(datetime.today().date() + timedelta(days=4)),
+            "app": test_app.id,
+            "user": self.user2.id,
+        }
+
+        self.client.credentials(
+            HTTP_AUTHORIZATION=f"Token {self.user_token.data.get('auth_token')}"
+        )
+        response = self.client.post(
+            self.user_apps_url, data=json.dumps(data), content_type="application/json"
+        )
+        self.client.credentials()
+
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_admin_can_create_app_for_other_user(self):
+        test_app = MarketplaceApplications.objects.create(
+            name=self.fake.name(),
+            description=self.fake.sentence(),
+            url=self.fake.url(),
+            image_path=self.fake.file_path(),
+        )
+        data = {
+            "expiration_date": str(datetime.today().date() + timedelta(days=4)),
+            "app": test_app.id,
+            "user": self.user.id,
+        }
+
+        self.client.credentials(
+            HTTP_AUTHORIZATION=f"Token {self.superuser_token.data.get('auth_token')}"
+        )
+        response = self.client.post(
+            self.user_apps_url, data=json.dumps(data), content_type="application/json"
+        )
+        print(response.data)
+        self.client.credentials()
+
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
     def test_unknown_cannot_create_new_owned_apps(self):
         data = {
             "expiration_date": "2000-01-01",

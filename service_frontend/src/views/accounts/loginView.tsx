@@ -11,7 +11,7 @@ import Copyright from "../../components/common/helper/copyrightComponent";
 import FlashError from "../../components/common/helper/flashErrors";
 
 import configuration from "../../utils/config";
-import { postTokenLogin, getUserData } from "../../api/authentication";
+import { postTokenLogin, getUserData } from "../../api/authenticationAPI";
 import CookieHandler from "../../modules/cookies";
 import { login } from "../../modules/authentication";
 

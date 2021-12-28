@@ -6,7 +6,7 @@ import { AxiosResponse } from "axios";
 import { Router } from "react-router-dom";
 import { createMemoryHistory, MemoryHistory } from "history";
 
-import * as Api from "../../../../api/authentication";
+import * as Api from "../../../../api/authenticationAPI";
 import * as AuthModules from "../../../../modules/authentication";
 
 import configuration from "../../../../utils/config";

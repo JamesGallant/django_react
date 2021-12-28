@@ -8,7 +8,7 @@ import ReactRouter from "react-router";
 import configuration from "../../../utils/config";
 import ResetPasswordConfirm from "../resetPasswordConfirmView";
 import * as authentication from "../../../modules/authentication";
-import * as API from "../../../api/authentication";
+import * as API from "../../../api/authenticationAPI";
 
 jest.mock("axios");
 describe("Testing the resetPasswordConfirm view", () => {

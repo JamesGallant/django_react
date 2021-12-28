@@ -8,7 +8,7 @@ import ReactRouter from "react-router";
 import configuration from "../../../utils/config";
 import ResetUsernameConfirm from "../resetUsernameConfirmView";
 import * as authentication from "../../../modules/authentication";
-import * as API from "../../../api/authentication";
+import * as API from "../../../api/authenticationAPI";
 
 describe("Testing the ResetUsernameConfirmView", () => {
 	let AxiosResponse: AxiosResponse;

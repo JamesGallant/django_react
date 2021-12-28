@@ -3,7 +3,7 @@ import { FC, useState, useEffect } from "react";
 import { useParams, useHistory } from "react-router-dom";
 
 import configuration from "../../utils/config";
-import { postActivateUserAccount } from "../../api/authentication";
+import { postActivateUserAccount } from "../../api/authenticationAPI";
 import { AxiosResponse } from "axios";
 
 const AccountActivationView: FC = () => {

@@ -13,7 +13,7 @@ import AlertDialog from "../../common/dialogs/AlertDialog";
 import PasswordField from "../../common/formFields/passwordComponent";
 
 import configuration from "../../../utils/config";
-import { resetPassword, deleteUser, resetUsername } from "../../../api/authentication";
+import { resetPassword, deleteUser, resetUsername } from "../../../api/authenticationAPI";
 import { logout } from "../../../modules/authentication";
 import CookieHandler from "../../../modules/cookies";
 

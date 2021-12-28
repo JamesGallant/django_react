@@ -8,7 +8,7 @@ import { CentredSubmitFormRoot } from "../../utils/commonStyles";
 import TextField from "../../components/common/formFields/TextFieldComponent";
 import Copyright from "../../components/common/helper/copyrightComponent";
 import configuration from "../../utils/config";
-import { resetPassword } from "../../api/authentication";
+import { resetPassword } from "../../api/authenticationAPI";
 import { logout } from "../../modules/authentication";
 
 const { Root, classes} = CentredSubmitFormRoot("ResetPassword");

@@ -1,7 +1,7 @@
 import configuration from "../utils/config";
 import CookieHandler from "./cookies";
 import { AxiosResponse } from "axios";
-import { postTokenLogout, getIsActiveUser } from "../api/authentication";
+import { postTokenLogout, getIsActiveUser } from "../api/authenticationAPI";
 
 import type { cookieDataType } from "../types/types";
 
