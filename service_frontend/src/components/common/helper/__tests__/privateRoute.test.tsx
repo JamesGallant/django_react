@@ -10,7 +10,9 @@ describe("Testing private routes", () => {
 	it("renders correctly", () => {
 		render(<BrowserRouter>
 			<Switch>
-				<PrivateRoute path={ configuration["url-dashboard"] } component={DashboardView} />
+				<PrivateRoute redirectTo={configuration["url-login"]}>
+					<DashboardView />
+				</PrivateRoute>
 			</Switch>
 		</BrowserRouter>);
 	});

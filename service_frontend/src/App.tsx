@@ -9,7 +9,6 @@ import { selectSiteTheme, setThemeMode } from "./store/slices/siteConfigurationS
 import configuration from "./utils/config";
 import PrivateRoute from "./components/common/helper/privateRoute";
 import views from "./components/views";
-
 import type { ThemePreferenceInterface } from "./types/store";
 
 const App = (): JSX.Element => {
@@ -43,7 +42,9 @@ const App = (): JSX.Element => {
 					<Route exact path={ configuration["url-resetPasswordConfirm"] } component={views.ResetPasswordConfirm}/>
 					<Route exact path={ configuration["url-resetUsernameConfirm"] } component={views.ResetUsernameConfirm}/>
 					<Route exact path={ configuration["url-resetEmailSent"]} component={views.ResetEmailSent}/>
-					<PrivateRoute path={ configuration["url-dashboard"] } component={views.DashboardView}/>
+					<PrivateRoute redirectTo={configuration["url-login"]}>
+						<views.DashboardView/>
+					</PrivateRoute>
 				</Switch>
 			</BrowserRouter>
 		</ThemeProvider>
