@@ -9,7 +9,7 @@ import * as API from "../../../../api/authenticationAPI";
 import * as reduxHooks from "../../../../store/hooks";
 import * as userFunctions from "../../../../store/slices/userSlice";
 
-import SettingsProfile from "../SettingsProfile";
+import SettingsProfile from "../settingsProfile";
 
 import type { AxiosResponse } from "axios";
 
@@ -60,11 +60,11 @@ describe("Testing profile settings", () => {
 		);
 	});
 
-	it("shows flash error on failed put", async () => {
+	it("shows flash error on failed patch", async () => {
 		axiosResponse.data.detail = "Unauthorised token detected";
 		axiosResponse.status = 401;
 		const spyOnCookies: jest.SpyInstance<string> = jest.spyOn(CookieHandler.prototype, "getCookie").mockImplementation(() => "validToken");
-		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "putRegisterUser").mockImplementation(() => Promise.resolve(axiosResponse));
+		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "patchUser").mockImplementation(() => Promise.resolve(axiosResponse));
 		
 		const wrapper = render(
 			<Provider store={store}>
@@ -83,10 +83,10 @@ describe("Testing profile settings", () => {
 		expect(wrapper.getByText("Unauthorised token detected")).toBeInTheDocument();
 	});
 
-	it("updates state on successfull put request", async () => {
+	it("updates state on successfull patch request", async () => {
 		axiosResponse.status = 200;
 		const spyOnCookies: jest.SpyInstance<string> = jest.spyOn(CookieHandler.prototype, "getCookie").mockImplementation(() => "validToken");
-		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "putRegisterUser").mockImplementation(() => Promise.resolve(axiosResponse));
+		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "patchUser").mockImplementation(() => Promise.resolve(axiosResponse));
 		const spyOnDispatch: jest.SpyInstance = jest.spyOn(reduxHooks, "useAppDispatch");
 		const spyOnUserState = jest.spyOn(userFunctions, "getUser");
 
@@ -112,7 +112,7 @@ describe("Testing profile settings", () => {
 		axiosResponse.data.first_name = ["Some error"];
 		axiosResponse.status = 400;
 		const spyOnCookies: jest.SpyInstance<string> = jest.spyOn(CookieHandler.prototype, "getCookie").mockImplementation(() => "validToken");
-		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "putRegisterUser").mockImplementation(() => Promise.resolve(axiosResponse));
+		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "patchUser").mockImplementation(() => Promise.resolve(axiosResponse));
 		
 		const wrapper = render(
 			<Provider store={store}>

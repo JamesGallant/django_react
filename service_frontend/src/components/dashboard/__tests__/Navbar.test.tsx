@@ -1,22 +1,24 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
+import { Middleware, Dispatch, AnyAction } from "redux";
+import configureStore from "redux-mock-store";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "../../../store/store";
 import viewsReducer, { toggleDashboardView } from "../../../store/slices/viewSlice";
-import type { ViewsStateInterface } from "../../../types/store";
-
 import configuration from "../../../utils/config";
 import * as AuthModules from "../../../modules/authentication";
+
+import type { ViewsStateInterface } from "../../../types/store";
 
 import Navbar from "../Navbar";
 
 describe("Testing navbar from dashboard", () => {
-	let mockViewStore: ViewsStateInterface;
+	let state: any;
 	store.dispatch = jest.fn();
 	beforeEach(() => {
-		mockViewStore = {
+		state = {
 			viewReducer: {
 				stateStatus: "idle",
 				dashboard: {
@@ -24,6 +26,25 @@ describe("Testing navbar from dashboard", () => {
 					profile: false,
 					appstore: true,
 				}
+			},
+			siteConfiguration: {
+				siteConfigReducer: {
+					data: {
+						clearLoginCache: false
+					}
+				}
+			},
+			userReducer: {
+				stateStatus: "idle",
+				data: {
+					id: null,
+					first_name: "",
+					last_name: "",
+					country: "",
+					mobile_number: "",
+					email: ""
+				},
+				error: {}
 			}
 		};
 	});
@@ -40,7 +61,7 @@ describe("Testing navbar from dashboard", () => {
 	});
 
 	it("Profile menu item profile changes state", async () => {
-		const newState: ViewsStateInterface = mockViewStore;
+		const newState: ViewsStateInterface = state;
 		newState.viewReducer.dashboard.profile = true;
 		newState.viewReducer.dashboard.appstore = false;
 
@@ -61,11 +82,11 @@ describe("Testing navbar from dashboard", () => {
 
 		expect(store.dispatch).toHaveBeenCalledTimes(1);
 		expect(store.dispatch).toHaveBeenCalledWith({payload: "profile", type: "views/toggleDashboardView"});
-		expect(viewsReducer(mockViewStore, toggleDashboardView("profile"))).toEqual(newState);
+		expect(viewsReducer(state, toggleDashboardView("profile"))).toEqual(newState);
 	});
 
 	it("Profile menu item settings changes state", async () => {
-		const newState: ViewsStateInterface = mockViewStore;
+		const newState: ViewsStateInterface = state;
 		newState.viewReducer.dashboard.settings = true;
 		newState.viewReducer.dashboard.appstore = false;
 		newState.viewReducer.dashboard.profile = false;
@@ -87,7 +108,7 @@ describe("Testing navbar from dashboard", () => {
 
 		// expect(store.dispatch).toHaveBeenCalledTimes(1);
 		expect(store.dispatch).toHaveBeenCalledWith({payload: "settings", type: "views/toggleDashboardView"});
-		expect(viewsReducer(mockViewStore, toggleDashboardView("settings"))).toEqual(newState);
+		expect(viewsReducer(state, toggleDashboardView("settings"))).toEqual(newState);
 	});
 
 	it("Profile item logout functions properly", async () => {
@@ -112,10 +133,10 @@ describe("Testing navbar from dashboard", () => {
 			fireEvent.click(logout[4]);
 		});
 
-		expect(history.location.pathname).toBe(configuration["url-logout"]);
+		expect(history.location.pathname).toBe(configuration["url-home"]);
 	});
 
-	it("Switch account hard logs out and routes to login", async () => {
+	it("Switch account hard does a hard logout and routes to login", async () => {
 		const history = createMemoryHistory();
 		const spyOnLogout: jest.SpyInstance = jest.spyOn(AuthModules, "logout");
 		const wrapper = render(

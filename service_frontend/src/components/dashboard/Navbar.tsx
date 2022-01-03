@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { toggleDashboardView } from "../../store/slices/viewSlice";
 import { selectUserData } from "../../store/slices/userSlice";
+import { selectSiteConfigData } from "../../store/slices/siteConfigurationSlice";
 
 import { Box, AppBar, Toolbar, IconButton, Menu, MenuItem, ListItemIcon, Divider, Typography } from "@mui/material";
 import {AccountCircle, Settings, Logout } from "@mui/icons-material";
@@ -14,11 +15,13 @@ import { logout } from "../../modules/authentication";
 import configuration from "../../utils/config";
 
 import type { UserDataInterface } from "../../types/authentication";
+import type { SiteConfigDataInterface } from "../../types/store";
 
 const Navbar: FC = (): JSX.Element => {
 	const history = useHistory();
 	const dispatch = useAppDispatch();
 	const user: UserDataInterface = useAppSelector(selectUserData);
+	const siteConfig: SiteConfigDataInterface = useAppSelector(selectSiteConfigData);
 
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 	const isProfileMenuOpen = Boolean(anchorEl);
@@ -31,13 +34,25 @@ const Navbar: FC = (): JSX.Element => {
 		setAnchorEl(null);
 	};
 
-	const handleLogout = (): void => {
-		history.push(configuration["url-logout"]);
-	};
-
-	const handleSwitchAccounts = (): void => {
-		logout();
-		history.push(configuration["url-login"]);
+	const handleLogout = (option: string): void => {
+		switch(option) {
+		case "switchAccount": {
+			logout();
+			history.push(configuration["url-login"]);
+			break;
+		}
+		case "logout": {
+			if (siteConfig.data.clearLoginCache) {
+				console.log("siteconfig");
+				logout();
+			}
+			history.push(configuration["url-home"]);
+			break;
+		}
+		default: {
+			throw new Error(`Expected options: (logout | switchAccount) but recieved ${option}`);
+		}
+		}
 	};
 
 	return(
@@ -89,13 +104,13 @@ const Navbar: FC = (): JSX.Element => {
 						Settings
 						</MenuItem>
 						<Divider />
-						<MenuItem onClick={ handleSwitchAccounts }>
+						<MenuItem onClick={ () => handleLogout("switchAccount") }>
 							<SwitchAccountIcon >
 								<Logout fontSize="small" />
 							</SwitchAccountIcon >
 						Switch accounts
 						</MenuItem>
-						<MenuItem onClick={ handleLogout }>
+						<MenuItem onClick={ () => handleLogout("logout") }>
 							<ListItemIcon>
 								<Logout fontSize="small" />
 							</ListItemIcon>

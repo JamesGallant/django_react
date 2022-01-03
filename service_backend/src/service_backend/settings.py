@@ -197,7 +197,9 @@ DJOSER = {
     ),
     "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
     "USERNAME_CHANGED_EMAIL_CONFIRMATION": True,
-    "SERIALIZERS": {},
+    "SERIALIZERS": {
+        "current_user": "app_accounts.api.serializers.UserSerializer"
+    },
     # https://github.com/sunscrapers/djoser/tree/master/djoser/templates/email
     "EMAIL": {
         "activation": "app_accounts.email.activation_email.ActivationEmail",

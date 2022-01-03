@@ -16,7 +16,6 @@ const configuration = {
 	"api-resendActivationEmail": "auth/users/resend_activation/",
 	"api-tokenLogin": "auth/token/login/",
 	"api-tokenLogout": "auth/token/logout/",
-	"api-isActiveUser": "auth/isActiveUser",
 	"api-resetPassword": "auth/users/reset_password/",
 	"api-resetPasswordConfirm": "auth/users/reset_password_confirm/",
 	"api-resetUsername": "auth/users/reset_email/",

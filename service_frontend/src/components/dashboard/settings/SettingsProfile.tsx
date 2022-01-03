@@ -11,7 +11,7 @@ import TextField from "../../common/formFields/TextFieldComponent";
 import CountrySelect from "../../common/formFields/countryComponent";
 import FlashError from "../../common/helper/flashErrors";
 
-import { putRegisterUser } from "../../../api/authenticationAPI";
+import { patchUser } from "../../../api/authenticationAPI";
 import CookieHandler from "../../../modules/cookies";
 import type { UserDataInterface, UserPutInterface } from "../../../types/authentication";
 import { AxiosResponse } from "axios";
@@ -88,7 +88,7 @@ const SettingsProfile: FC = (): JSX.Element => {
 		
 		const cookies: CookieHandler = new CookieHandler();
 		const country: any = countryCode;
-		let phonenumber: any = formValues.mobile_number;
+		let phonenumber: any = formValues.mobile_number === "" ? user.mobile_number : formValues.mobile_number;
 
 		const parsedPhoneNumber = parsePhoneNumber(phonenumber, country);
 		
@@ -97,14 +97,15 @@ const SettingsProfile: FC = (): JSX.Element => {
 		} 
     
 		const updatedProfileData: UserPutInterface = {
-			first_name: formValues.first_name,
-			last_name: formValues.last_name,
+			first_name: formValues.first_name === "" ? user.first_name : formValues.first_name,
+			last_name: formValues.last_name === "" ? user.last_name : formValues.last_name,
 			mobile_number: phonenumber,
-			country: formValues.country,
+			country: formValues.country === "" ? user.country : formValues.country,
 		};
 
 		const authToken: string = cookies.getCookie("authToken");
-		const response: AxiosResponse = await putRegisterUser(updatedProfileData, authToken);
+		console.log(updatedProfileData);
+		const response: AxiosResponse = await patchUser(updatedProfileData, authToken);
 		switch(response.status) {
 		case 200: {
 			const getUserData = await dispatch(getUser(authToken));

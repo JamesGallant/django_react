@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import { Middleware, Dispatch, AnyAction } from "redux";
 
-import SettingsAppearance from "../SettingsAppearance";
+import SettingsAppearance from "../settingsAppearance";
 
 describe("Testing profile settings", () => {
 	const middlewares: Middleware<unknown, any, Dispatch<AnyAction>>[] | undefined = [];

@@ -8,7 +8,7 @@ import { selectSiteTheme, setThemeMode } from "./store/slices/siteConfigurationS
 
 import configuration from "./utils/config";
 import PrivateRoute from "./components/common/helper/privateRoute";
-import views from "./views";
+import views from "./components/views";
 
 import type { ThemePreferenceInterface } from "./types/store";
 
@@ -36,7 +36,6 @@ const App = (): JSX.Element => {
 				<Switch>
 					<Route exact path={ configuration["url-home"] } component={views.HomeView}/>
 					<Route exact path={ configuration["url-login"] } component={views.LoginView}/>
-					<Route exact path={ configuration["url-logout"] } component={views.LogoutView}/>
 					<Route exact path={ configuration["url-register"] } component={views.RegisterView}/>
 					<Route path={ configuration["url-accountCreated"] } exact component={views.AccountCreatedView}/>
 					<Route path= { configuration["url-acitvateAccount"] } exact component={views.AccountActivationView}/>

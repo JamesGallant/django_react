@@ -10,7 +10,7 @@ import * as Api from "../../../../api/authenticationAPI";
 import * as AuthModules from "../../../../modules/authentication";
 
 import configuration from "../../../../utils/config";
-import SettingsAccount from "../SettingsAccount";
+import SettingsAccount from "../settingsAccount";
 
 describe("Testing profile settings", () => {
 	let AxiosResponse: AxiosResponse;

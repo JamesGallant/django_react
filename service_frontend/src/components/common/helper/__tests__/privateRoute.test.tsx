@@ -3,7 +3,7 @@ import { render} from "@testing-library/react";
 import { BrowserRouter, Switch } from "react-router-dom";
 
 import configuration from "../../../../utils/config";
-import DashboardView from "../../../../views/dashboardView";
+import DashboardView from "../../../views/dashboard/dashboardView";
 import PrivateRoute from "../privateRoute";
 
 describe("Testing private routes", () => {

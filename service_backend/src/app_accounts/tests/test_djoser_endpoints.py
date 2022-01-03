@@ -1,3 +1,4 @@
+from django.utils.timezone import datetime
 import json
 
 from django.contrib.auth import get_user_model
@@ -511,7 +512,7 @@ class TestDjoserUpdateAccount(APITestCase):
         """
 
         # anonymous
-        response_anon_id = self.client.put(
+        response_anon_id = self.client.patch(
             f"{self.users_url}{self.admin.id}/",
             data=json.dumps({"email": "anon@anon.com"}),
             content_type="application/json",
@@ -521,12 +522,12 @@ class TestDjoserUpdateAccount(APITestCase):
         self.client.credentials(
             HTTP_AUTHORIZATION="Token " + self.token_user.data.get("auth_token")
         )
-        response_user_detailChange = self.client.put(
+        response_user_detailChange = self.client.patch(
             f"{self.users_url}me/",
             data=json.dumps(self.valid_payload),
             content_type="application/json",
         )
-        self.client.put(
+        self.client.patch(
             f"{self.users_url}me/",
             data=json.dumps(self.invalid_payload),
             content_type="application/json",
@@ -538,7 +539,7 @@ class TestDjoserUpdateAccount(APITestCase):
             HTTP_AUTHORIZATION="Token " + self.token_admin.data.get("auth_token")
         )
 
-        response_admin_detailChange = self.client.put(
+        response_admin_detailChange = self.client.patch(
             f"{self.users_url}{self.user.id}/",
             data=json.dumps(self.admin_valid_payload),
             content_type="application/json",

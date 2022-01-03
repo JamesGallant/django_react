@@ -17,6 +17,7 @@ export interface UserStateInterface {
 }
 
 //#endregion
+
 //#region views
 export interface ViewsStateInterface {
 	viewReducer: {
