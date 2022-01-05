@@ -5,15 +5,16 @@ import configuration from "../utils/config";
 
 import type { UserDataInterface, UserPutInterface } from "../types/authentication";
 
-export async function putRegisterUser(data: UserPutInterface, authToken: string): Promise<AxiosResponse> {
+export async function patchUser(data: UserPutInterface, authToken: string): Promise<AxiosResponse> {
 	try {
 		const response: AxiosResponse = await axios({
-			method: "put",
+			method: "patch",
 			url: configuration["api-base"].concat(configuration["api-getUserData"]),
 			data: data, 
 			headers: {"Content-type": "application/json","Authorization": `Token ${authToken}`}
 		});
 		return response;
+		
 	/* eslint-disable */
 	} catch(error: any) {
 	/* eslint-enable */
@@ -216,20 +217,20 @@ export async function resetPasswordConfirm(uid: string, token: string, password:
 	}
 }
 
-export async function getIsActiveUser(authToken: string): Promise<AxiosResponse> {
-	try {
-		const response: AxiosResponse = await axios({
-			method: "get",
-			url: configuration["api-base"].concat(configuration["api-isActiveUser"]),
-			headers: {"Authorization": `Token ${authToken}`}
-		});
-		return response;
-		/* eslint-disable */
-	} catch(error: any) {
-		/* eslint-enable */
-		return error.response;
-	}
-}
+// export async function getIsActiveUser(authToken: string): Promise<AxiosResponse> {
+// 	try {
+// 		const response: AxiosResponse = await axios({
+// 			method: "get",
+// 			url: configuration["api-base"].concat(configuration["api-getUserData"]),
+// 			headers: {"Authorization": `Token ${authToken}`}
+// 		});
+// 		return response;
+// 		/* eslint-disable */
+// 	} catch(error: any) {
+// 		/* eslint-enable */
+// 		return error.response;
+// 	}
+// }
 
 export async function deleteUser(authToken: string, password: string): Promise<AxiosResponse> {
 	try {

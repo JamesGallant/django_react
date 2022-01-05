@@ -17,20 +17,6 @@ export interface UserStateInterface {
 }
 
 //#endregion
-//#region views
-export interface ViewsStateInterface {
-	viewReducer: {
-		stateStatus: string,
-		dashboard: DashboardInterface,
-	}
-}
-
-export interface DashboardInterface {
-	settings: boolean,
-	profile: boolean,
-	appstore: boolean
-}
-//#endregion
 
 //#region site configuration
 export interface SiteConfigInterface {

@@ -54,7 +54,7 @@ describe("Testing login", () => {
 		jest.clearAllMocks();
 	});
 
-	it("should set authenticated to false when cookie is not present", () => {
+	it("should set authenticated to false when cookie is not present", async () => {
 
 		const spyGetCookie: jest.SpyInstance = jest.spyOn(CookieHandler.prototype, "getCookie").mockImplementation(() => "");
 		const spyLocalStorage: jest.SpyInstance = jest.spyOn(window.localStorage.__proto__, "setItem");
@@ -70,7 +70,7 @@ describe("Testing login", () => {
 		axiosResponse.data = {"detail": "some fake detail"};
 
 		const spyGetCookie: jest.SpyInstance = jest.spyOn(CookieHandler.prototype, "getCookie").mockImplementation(() => "123456");
-		const spyOnApiHandler: jest.SpyInstance =  jest.spyOn(authenticationAPI, "getIsActiveUser").mockImplementation(() => Promise.resolve(axiosResponse));
+		const spyOnApiHandler: jest.SpyInstance =  jest.spyOn(authenticationAPI, "getUserData").mockImplementation(() => Promise.resolve(axiosResponse));
 		const spyDeleteCookie: jest.SpyInstance = jest.spyOn(CookieHandler.prototype, "deleteCookie");
 		const spyLocalStorage: jest.SpyInstance = jest.spyOn(window.localStorage.__proto__, "setItem").mockReset();
 
@@ -84,6 +84,7 @@ describe("Testing login", () => {
 		expect(spyDeleteCookie).toHaveBeenCalledWith("authToken");
 		expect(spyDeleteCookie).toHaveBeenCalledTimes(1);
 	});
+
 	it ("should delete a cookie if user is inactive", async () => {
 		const authToken = "123456";
 		axiosResponse.data = {
@@ -94,7 +95,7 @@ describe("Testing login", () => {
 
 		const spyGetCookie: jest.SpyInstance = jest.spyOn(CookieHandler.prototype, "getCookie").mockImplementation(() => authToken);
 		const spyDeleteCookie: jest.SpyInstance = jest.spyOn(CookieHandler.prototype, "deleteCookie");
-		const spyOnApiHandler: jest.SpyInstance =  jest.spyOn(authenticationAPI, "getIsActiveUser").mockImplementation(() => Promise.resolve(axiosResponse));
+		const spyOnApiHandler: jest.SpyInstance =  jest.spyOn(authenticationAPI, "getUserData").mockImplementation(() => Promise.resolve(axiosResponse));
 		const spyLocalStorage: jest.SpyInstance = jest.spyOn(window.localStorage.__proto__, "setItem").mockReset();
 
 		login();
@@ -117,15 +118,13 @@ describe("Testing login", () => {
 			secure: true
 		};
 		axiosResponse.data = {
-			message: {
-				is_active: true,
-				last_loigin: Date.now()
-			}
+			is_active: true,
+			last_loigin: Date.now()
 		};
 
 		const spyGetCookie: jest.SpyInstance = jest.spyOn(CookieHandler.prototype, "getCookie").mockImplementation(() => authToken);
 		const spySetCookie: jest.SpyInstance = jest.spyOn(CookieHandler.prototype, "setCookie");
-		const spyOnApiHandler: jest.SpyInstance =  jest.spyOn(authenticationAPI, "getIsActiveUser").mockImplementation(() => Promise.resolve(axiosResponse));
+		const spyOnApiHandler: jest.SpyInstance =  jest.spyOn(authenticationAPI, "getUserData").mockImplementation(() => Promise.resolve(axiosResponse));
 		const spyLocalStorage: jest.SpyInstance = jest.spyOn(window.localStorage.__proto__, "setItem").mockReset();
 
 		login();
