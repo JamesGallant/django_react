@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AxiosResponse } from "axios";
 
 import { Grid, Button, CssBaseline, Typography, Container, Link, FormControlLabel, Checkbox, Box  } from "@mui/material";
@@ -45,7 +45,7 @@ const LoginViewPage: React.FC = (): JSX.Element => {
      */
 
 
-	const history = useHistory();
+	const navigate = useNavigate();
 
 	const [formValues, setFormValues] = useState(initialFormVals);
 	const [errorMessage, setErrorMessage] = useState(initialErrs);
@@ -123,7 +123,7 @@ const LoginViewPage: React.FC = (): JSX.Element => {
 			}
                 
 			window.localStorage.setItem("authenticated", "true");
-			history.push(configuration["url-dashboard"]);
+			navigate(configuration["url-dashboard"]);
 
 			break;
 		}
@@ -215,23 +215,26 @@ const LoginViewPage: React.FC = (): JSX.Element => {
 };
 
 const LoginView: React.FC = (): JSX.Element => {
-	const history = useHistory();
-
+	const navigate = useNavigate();
+	const [displayLoginPage, setDisplayLoginPage] = useState(true);
 	useEffect(() => {
 		login();
+		if (window.localStorage.getItem("authenticated") === "false") {
+			setDisplayLoginPage(true);
+		} else {
+			navigate(configuration["url-dashboard"]);
+		}
 	}, []);
 
-	if (window.localStorage.getItem("authenticated") === "true") {
-		history.push(configuration["url-dashboard"]);
-	} else {
+	if (displayLoginPage) {
 		return(
 			<LoginViewPage />
 		);
+	} else {
+		return (
+			<div></div>
+		);
 	}
-
-	return (
-		<div></div>
-	);
 };
 
 

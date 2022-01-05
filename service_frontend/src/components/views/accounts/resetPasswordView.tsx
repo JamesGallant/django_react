@@ -1,5 +1,5 @@
 import React, {FC, useState} from "react";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 
 // material ui
 import { Button, CssBaseline, Typography, Link, Container, Grid, Box } from "@mui/material";
@@ -14,7 +14,7 @@ import { logout } from "../../../modules/authentication";
 const { Root, classes} = CentredSubmitFormRoot("ResetPassword");
 
 const ResetPassword: FC = (): JSX.Element => {
-	const history = useHistory();
+	const navigate = useNavigate();
 
 	const [email, setEmail] = useState("");
 	const [errorMessage, setErrorMessage] = useState([""]);
@@ -43,13 +43,15 @@ const ResetPassword: FC = (): JSX.Element => {
 		}
 		case 401: {
 			logout();
-			history.push(configuration["url-login"]);
+			navigate(configuration["url-login"]);
 			break;
 		}
 		case 204: {
-			history.push(configuration["url-resetEmailSent"], {
-				email: parsedEmail,
-				changed: "password",
+			navigate(configuration["url-resetEmailSent"], {
+				state: {
+					email: parsedEmail,
+					changed: "password",
+				}
 			});
 			break;
 		}

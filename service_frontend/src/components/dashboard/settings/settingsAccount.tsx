@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 
 import { useAppSelector, useAppDispatch } from "../../../store/hooks";
 import { selectUserData } from "../../../store/slices/userSlice";
@@ -41,7 +41,7 @@ const SettingsAccount: FC = (): JSX.Element => {
 	const siteConfig: SiteConfigDataInterface = useAppSelector(selectSiteConfigData);
 	const cookies = new CookieHandler();
 	const theme = useTheme();
-	const history = useHistory();
+	const navigate = useNavigate();
 
 	const [errorMessage, setErrorMessage] = useState([""]);
 	const [password, setPassword] = useState("");
@@ -133,7 +133,7 @@ const SettingsAccount: FC = (): JSX.Element => {
 				...loading,
 				emailChangeUsername: false
 			});
-			history.push(configuration["url-login"]);
+			navigate(configuration["url-login"]);
 			break;
 		}
 		case 204: {
@@ -144,9 +144,11 @@ const SettingsAccount: FC = (): JSX.Element => {
 
 			logout();
 
-			history.push(configuration["url-resetEmailSent"], {
-				email: user.email,
-				changed: "email"
+			navigate(configuration["url-resetEmailSent"], {
+				state: {
+					email: user.email,
+					changed: "email"
+				}
 			});
 			break;
 		}
@@ -171,7 +173,7 @@ const SettingsAccount: FC = (): JSX.Element => {
 				...loading,
 				emailChangePassword: false
 			});
-			history.push(configuration["url-login"]);
+			navigate(configuration["url-login"]);
 			break;
 		}
 		case 204: {
@@ -183,9 +185,11 @@ const SettingsAccount: FC = (): JSX.Element => {
 
 			logout();
 
-			history.push(configuration["url-resetEmailSent"], {
-				email: user.email,
-				changed: "password"
+			navigate(configuration["url-resetEmailSent"], {
+				state: {
+					email: user.email,
+					changed: "password"
+				}
 			});
 			break;
 		}
@@ -215,7 +219,7 @@ const SettingsAccount: FC = (): JSX.Element => {
 				deleteUser: false
 			});
 			logout();
-			history.push(configuration["url-login"]);
+			navigate(configuration["url-login"]);
 			break;
 		}
 		case 400: {
@@ -234,7 +238,7 @@ const SettingsAccount: FC = (): JSX.Element => {
 			
 			logout();
 
-			history.push(configuration["url-home"]);
+			navigate(configuration["url-home"]);
 			break;
 		}
 		}

@@ -104,7 +104,6 @@ const SettingsProfile: FC = (): JSX.Element => {
 		};
 
 		const authToken: string = cookies.getCookie("authToken");
-		console.log(updatedProfileData);
 		const response: AxiosResponse = await patchUser(updatedProfileData, authToken);
 		switch(response.status) {
 		case 200: {

@@ -14,7 +14,7 @@ jest.mock("axios");
 
 describe("Testing account registration", () => {
 	let axiosResponse: AxiosResponse;
-
+	const history = createMemoryHistory();
 	beforeEach(() => {
 		axiosResponse = {
 			data: {},
@@ -30,19 +30,28 @@ describe("Testing account registration", () => {
 	});
 
 	it("component renders correctly", () => {
-		render(<RegisterView />);
+		render(			
+			<Router
+				navigator={history} 
+				location={history.location}
+			>
+				<RegisterView />
+			</Router>);
 	});
 
 	it("displays no errors when form is completed correctly", async () => {
-		const history = createMemoryHistory();
 		axiosResponse.status = 201;
 		axiosResponse.statusText = "OK";
 
 		const spyOnRegister: jest.SpyInstance = jest.spyOn(API, "postRegisterUser").mockImplementation(() => Promise.resolve(axiosResponse));
 
-		render(<Router history={history}>
-			<RegisterView />
-		</Router>);
+		render(
+			<Router
+				navigator={history} 
+				location={history.location}
+			>
+				<RegisterView />
+			</Router>);
 
 		const submitButton =screen.getByRole("button", {name: "Register"});
 		const fname = screen.getByRole("textbox", {name: "First Name"});
@@ -79,7 +88,13 @@ describe("Testing account registration", () => {
 
 		const spyOnRegister: jest.SpyInstance = jest.spyOn(API, "postRegisterUser").mockImplementation(() => Promise.resolve(axiosResponse));
 		
-		render(<RegisterView />);
+		render(			
+			<Router
+				navigator={history} 
+				location={history.location}
+			>
+				<RegisterView />
+			</Router>);
 
 		const submitButton =screen.getByRole("button", {name: "Register"});
 		const fname = screen.getByRole("textbox", {name: "First Name"});
@@ -113,7 +128,13 @@ describe("Testing account registration", () => {
 
 		const spyOnRegister: jest.SpyInstance = jest.spyOn(API, "postRegisterUser").mockImplementation(() => Promise.resolve(axiosResponse));
 
-		render(<RegisterView />);
+		render(			
+			<Router
+				navigator={history} 
+				location={history.location}
+			>
+				<RegisterView />
+			</Router>);
 		
 		const submitButton = screen.getByRole("button", {name: "Register"});
 		const email = screen.getByRole("textbox", {name: "Email"});
@@ -144,7 +165,13 @@ describe("Testing account registration", () => {
 
 		const spyOnRegister: jest.SpyInstance = jest.spyOn(API, "postRegisterUser").mockImplementation(() => Promise.resolve(axiosResponse));
 
-		render(<RegisterView />);
+		render(			
+			<Router
+				navigator={history} 
+				location={history.location}
+			>
+				<RegisterView />
+			</Router>);
 
 		const submitButton = screen.getByRole("button", {name: "Register"});
 
@@ -161,7 +188,13 @@ describe("Testing account registration", () => {
 		axiosResponse.status = 401;
 		const spyOnRegister: jest.SpyInstance = jest.spyOn(API, "postRegisterUser").mockImplementation(() => Promise.resolve(axiosResponse));
 
-		const wrapper = render(<RegisterView />);
+		const wrapper = render(			
+			<Router
+				navigator={history} 
+				location={history.location}
+			>
+				<RegisterView />
+			</Router>);
 
 		const submitButton = screen.getByRole("button", {name: "Register"});
 

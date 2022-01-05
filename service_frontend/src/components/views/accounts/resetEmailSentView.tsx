@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { AxiosResponse } from "axios";
 
 import { Button, CssBaseline, Typography,  Link, Container, Grid, Box , styled, Stack } from "@mui/material";
@@ -32,21 +32,16 @@ const Root = styled("div")(({theme}) => ({
 	},
 }));
 
-interface StateInterface {
-	email: string,
-	changed: string
-}
-
 const ResetEmailSent: FC = (): JSX.Element => {
-	const history = useHistory();
-	const location = useLocation<StateInterface>();
+	const navigate = useNavigate();
+	const location: any = useLocation();
 
 	const [flashErrorMessage, setFlashErrorMessage] = useState("");
 	const [flashError, setFlashError] = useState(false);
 
 	if (typeof(location.state) === "undefined") {
 		// user accessed this route without submitting a request to change the password, return to password reset
-		history.push(configuration["url-resetPassword"]);
+		navigate(configuration["url-resetPassword"]);
 	}
 
 	const resendEmail = async (): Promise<void> => {

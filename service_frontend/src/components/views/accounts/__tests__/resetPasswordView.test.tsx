@@ -13,7 +13,7 @@ jest.mock("axios");
 
 describe("Testing reset password component", () => {
 	let AxiosResponse: AxiosResponse;
-
+	const history = createMemoryHistory();
 	beforeEach(() => {
 		AxiosResponse = {
 			data: {},
@@ -28,7 +28,13 @@ describe("Testing reset password component", () => {
 	});
 
 	it("renders correctly", () => {
-		render(<ResetPassword/>);
+		render(			
+			<Router 
+				navigator={history}
+				location={history.location}
+			>
+				<ResetPassword />		
+			</Router>);
 	});
 
 	it("Response no email address error", async () => {
@@ -37,7 +43,13 @@ describe("Testing reset password component", () => {
 		AxiosResponse.status = 400;
 		
 		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetPassword").mockImplementation(() => Promise.resolve(AxiosResponse));
-		const wrapper = render(<ResetPassword/>);
+		const wrapper = render(			
+			<Router 
+				navigator={history}
+				location={history.location}
+			>
+				<ResetPassword />		
+			</Router>);
 
 		const submitButton = wrapper.getByRole("button", {name: "Reset Password"});
 		const email = wrapper.getByRole("textbox", {name: "email"});
@@ -59,7 +71,13 @@ describe("Testing reset password component", () => {
 
 		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetPassword").mockImplementation(() => Promise.resolve(AxiosResponse));
 
-		const wrapper = render(<ResetPassword/>);
+		const wrapper = render(			
+			<Router 
+				navigator={history}
+				location={history.location}
+			>
+				<ResetPassword />		
+			</Router>);
 
 		const submitButton = wrapper.getByRole("button", {name: "Reset Password"});
 		const email = wrapper.getByRole("textbox", {name: "email"});
@@ -75,13 +93,16 @@ describe("Testing reset password component", () => {
 
 	it("Mangled headers returns user to login screen", async () => {
 		AxiosResponse.status = 401;
-		const history = createMemoryHistory();
 		const spyOnLogout: jest.SpyInstance = jest.spyOn(authentication, "logout");
 		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetPassword").mockImplementation(() => Promise.resolve(AxiosResponse));
 
-		const wrapper = render(<Router history={history}>
-			<ResetPassword />		
-		</Router>);
+		const wrapper = render(
+			<Router 
+				navigator={history}
+				location={history.location}
+			>
+				<ResetPassword />		
+			</Router>);
 
 		const submitButton = wrapper.getByRole("button", {name: "Reset Password"});
 
@@ -100,10 +121,13 @@ describe("Testing reset password component", () => {
 
 		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetPassword").mockImplementation(() => Promise.resolve(AxiosResponse));
 
-		const history = createMemoryHistory();
-		const wrapper = render(<Router history={history}>
-			<ResetPassword />		
-		</Router>);
+		const wrapper = render(			
+			<Router 
+				navigator={history}
+				location={history.location}
+			>
+				<ResetPassword />		
+			</Router>);
 
 		const submitButton = wrapper.getByRole("button", {name: "Reset Password"});
 

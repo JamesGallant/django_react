@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { useParams, useHistory } from "react-router";
+import { useParams, useNavigate } from "react-router";
 
 import { Container, CssBaseline, Box, Grid, Typography, Button } from "@mui/material";
 
@@ -11,16 +11,17 @@ import configuration from "../../../utils/config";
 import { CentredSubmitFormRoot } from "../../../utils/commonStyles";
 import { resetUsernameConfirm } from "../../../api/authenticationAPI";
 
-import type { UrlAuthTokenTypes } from "../../../types/authentication";
 import type { AxiosResponse } from "axios";
 const { Root, classes} = CentredSubmitFormRoot("ResetUsernameConfirm");
 
 //TODO add a popup to alert user that change was successfull before logout
 const ResetUsernameConfirm: FC = (): JSX.Element => {
 	
-	const history = useHistory();
-	const { uid, token } = useParams<UrlAuthTokenTypes>();
-	
+	const navigate = useNavigate();
+	const params = useParams();
+	const uid = params.uid as string;
+	const token = params.token as string;
+
 	const [newEmail, setEmail] = useState("");
 	const [errorMessage, setErrorMessage] = useState([""]);
 	const [flashErrorMessage, setFlashErrorMessage] = useState("");
@@ -60,7 +61,7 @@ const ResetUsernameConfirm: FC = (): JSX.Element => {
 			break;
 		}
 		case 204: {
-			history.push(configuration["url-login"]);
+			navigate(configuration["url-login"]);
 			break;
 		}
 		default: {

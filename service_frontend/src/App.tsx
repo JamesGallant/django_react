@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import { createTheme, ThemeProvider, useMediaQuery, CssBaseline } from "@mui/material";
 
@@ -31,22 +31,22 @@ const App = (): JSX.Element => {
 	return(
 		<ThemeProvider theme={theme}>
 			<CssBaseline />
-			<BrowserRouter>
-				<Switch>
-					<Route exact path={ configuration["url-home"] } component={views.HomeView}/>
-					<Route exact path={ configuration["url-login"] } component={views.LoginView}/>
-					<Route exact path={ configuration["url-register"] } component={views.RegisterView}/>
-					<Route path={ configuration["url-accountCreated"] } exact component={views.AccountCreatedView}/>
-					<Route path= { configuration["url-acitvateAccount"] } exact component={views.AccountActivationView}/>
-					<Route exact path={ configuration["url-resetPassword"] } component={views.ResetPassword}/>
-					<Route exact path={ configuration["url-resetPasswordConfirm"] } component={views.ResetPasswordConfirm}/>
-					<Route exact path={ configuration["url-resetUsernameConfirm"] } component={views.ResetUsernameConfirm}/>
-					<Route exact path={ configuration["url-resetEmailSent"]} component={views.ResetEmailSent}/>
+			<Routes>
+				<Route path={ configuration["url-home"] } element={ <views.HomeView /> }/>
+				<Route path={ configuration["url-login"] } element={ <views.LoginView /> }/>
+				<Route path={ configuration["url-register"] } element={ <views.RegisterView /> }/>
+				<Route path={ configuration["url-accountCreated"] } element={ <views.AccountCreatedView /> }/>
+				<Route path= { configuration["url-acitvateAccount"] } element={ <views.AccountActivationView /> }/>
+				<Route path={ configuration["url-resetPassword"] } element={ <views.ResetPassword /> }/>
+				<Route path={ configuration["url-resetPasswordConfirm"] } element={ <views.ResetPasswordConfirm /> }/>
+				<Route path={ configuration["url-resetUsernameConfirm"] } element={ <views.ResetUsernameConfirm /> }/>
+				<Route path={ configuration["url-resetEmailSent"]} element={ <views.ResetEmailSent /> }/>
+				<Route path={ configuration["url-dashboard"] } element={
 					<PrivateRoute redirectTo={configuration["url-login"]}>
 						<views.DashboardView/>
 					</PrivateRoute>
-				</Switch>
-			</BrowserRouter>
+				} />
+			</Routes>
 		</ThemeProvider>
 
 	);

@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import {Button, Box, styled, Container, CssBaseline, Grid, Typography, Link } from "@mui/material";
 import { AxiosResponse } from "axios";
@@ -31,11 +31,6 @@ const Root = styled("div")(({theme}) => ({
 	}
 }));
 
-interface stateType {
-    email: string, 
-    firstName: string,
- }
-
 const AccountCreatedView : FC = () => {
 	/**
      * @description Redirects user to login or register based on the email link. to login if account creation is successfull or the account exists, to
@@ -44,8 +39,8 @@ const AccountCreatedView : FC = () => {
      * @Resource https://djoser.readthedocs.io/en/latest/base_endpoints.html#user-resend-activation-e-mail
      */
 
-	const location = useLocation<stateType>();
-	const history = useHistory();
+	const location: any = useLocation();
+	const navigate = useNavigate();
 
 	const email: string = location.state.email;
 	const firstName: string = location.state.firstName;
@@ -60,7 +55,7 @@ const AccountCreatedView : FC = () => {
 			alert(`email sent to ${email}`);
 			break;
 		case 400:
-			history.push(configuration["url-login"]);
+			navigate(configuration["url-login"]);
 			break;
 		default:
 			throw new Error("Invalid status code, options are 400 or 200. see: https://djoser.readthedocs.io/en/latest/base_endpoints.html#user-resend-activation-e-mail");

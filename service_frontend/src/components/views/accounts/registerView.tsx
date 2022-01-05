@@ -1,6 +1,6 @@
 // react
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // material ui
 import { Button, CssBaseline, Link, Grid, Box, Typography, Container } from "@mui/material";
@@ -73,7 +73,7 @@ const RegisterView: React.FC = (): JSX.Element => {
  */
 
 
-	const history = useHistory();
+	const navigate = useNavigate();
 
 	const [formValues, setFormValues] = useState(initialVals);
 	const [countryCode, setCountryCode] = useState("");
@@ -142,9 +142,11 @@ const RegisterView: React.FC = (): JSX.Element => {
 		switch(statusCode) {
 		case 201:
 			//account creation successfull
-			history.push(configuration["url-accountCreated"], {
-				email: parsedEmail,
-				firstName: formValues.firstName,
+			navigate(configuration["url-accountCreated"], {
+				state: {
+					email: parsedEmail,
+					firstName: formValues.firstName,
+				}
 			});
 			break;
 		case 401:

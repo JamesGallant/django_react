@@ -3,7 +3,6 @@ import { persistReducer, persistStore, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, 
 import storage from "redux-persist/lib/storage";
 
 import users from "./slices/userSlice";
-import views from "./slices/viewSlice";
 import siteConfiguration from "./slices/siteConfigurationSlice";
 
 import configuration from "../utils/config";
@@ -19,8 +18,7 @@ const persistSiteConfig = {
 
 const reducer = combineReducers({
 	siteConfiguration: persistReducer(persistSiteConfig, siteConfiguration),
-	users: users, 
-	views: views,
+	users: users,
 });
 
 // this causes an extra tree

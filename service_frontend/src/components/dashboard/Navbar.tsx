@@ -1,7 +1,6 @@
 import React, { FC } from "react";
-import { useHistory } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { toggleDashboardView } from "../../store/slices/viewSlice";
+import { useNavigate } from "react-router-dom";
+import { useAppSelector } from "../../store/hooks";
 import { selectUserData } from "../../store/slices/userSlice";
 import { selectSiteConfigData } from "../../store/slices/siteConfigurationSlice";
 
@@ -18,8 +17,7 @@ import type { UserDataInterface } from "../../types/authentication";
 import type { SiteConfigDataInterface } from "../../types/store";
 
 const Navbar: FC = (): JSX.Element => {
-	const history = useHistory();
-	const dispatch = useAppDispatch();
+	const navigate = useNavigate();
 	const user: UserDataInterface = useAppSelector(selectUserData);
 	const siteConfig: SiteConfigDataInterface = useAppSelector(selectSiteConfigData);
 
@@ -38,15 +36,14 @@ const Navbar: FC = (): JSX.Element => {
 		switch(option) {
 		case "switchAccount": {
 			logout();
-			history.push(configuration["url-login"]);
+			navigate(configuration["url-login"]);
 			break;
 		}
 		case "logout": {
 			if (siteConfig.data.clearLoginCache) {
-				console.log("siteconfig");
 				logout();
 			}
-			history.push(configuration["url-home"]);
+			navigate(configuration["url-home"]);
 			break;
 		}
 		default: {
@@ -62,10 +59,10 @@ const Navbar: FC = (): JSX.Element => {
 					<IconButton
 						size="large"
 						edge="end"
-						aria-label="nav display apps"
+						aria-label="dash-home"
 						aria-controls="nav-apps"
 						aria-haspopup="true"
-						onClick={() => dispatch(toggleDashboardView("appstore"))}
+						onClick={ () => navigate(configuration["url-dashboard-home"]) }
 						color="inherit"
 					>
 						<AppsIcon fontSize="large" />
@@ -91,13 +88,13 @@ const Navbar: FC = (): JSX.Element => {
 							<Typography variant="overline" display="block"><strong>{user.email}</strong></Typography>
 						</MenuItem>
 						<Divider />
-						<MenuItem onClick={() => dispatch(toggleDashboardView("profile"))} disabled>
+						<MenuItem onClick={() => navigate(configuration["url-dashboard-profile"])} disabled>
 							<ListItemIcon>
 								<AccountCircle fontSize="small" />
 							</ListItemIcon>
 							Profile
 						</MenuItem>
-						<MenuItem onClick={() => dispatch(toggleDashboardView("settings"))}>
+						<MenuItem onClick={() => navigate(configuration["url-dashboard-settings"])}>
 							<ListItemIcon>
 								<Settings fontSize="small" />
 							</ListItemIcon>

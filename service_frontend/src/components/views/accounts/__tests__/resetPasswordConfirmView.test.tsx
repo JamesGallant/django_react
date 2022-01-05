@@ -2,8 +2,8 @@ import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import { AxiosResponse } from "axios";
 import { createMemoryHistory } from "history";
-import { Router } from "react-router-dom";
-import ReactRouter from "react-router";
+
+import {Router} from "react-router-dom";
 
 import configuration from "../../../../utils/config";
 import ResetPasswordConfirm from "../resetPasswordConfirmView";
@@ -11,9 +11,16 @@ import * as authentication from "../../../../modules/authentication";
 import * as API from "../../../../api/authenticationAPI";
 
 jest.mock("axios");
+jest.mock("react-router-dom", () => ({
+	...jest.requireActual("react-router-dom"),
+	useParams: () => ({
+		uid: "test",
+		token: "123",
+	})
+}));
 describe("Testing the resetPasswordConfirm view", () => {
 	let AxiosResponse: AxiosResponse;
-
+	const history = createMemoryHistory();
 	beforeEach(() => {
 		AxiosResponse = {
 			data: {},
@@ -28,17 +35,28 @@ describe("Testing the resetPasswordConfirm view", () => {
 	});
 
 	it("mounts", () => {
-		jest.spyOn(ReactRouter, "useParams").mockReturnValue({uid: "test", token: "123"});
-		render(<ResetPasswordConfirm></ResetPasswordConfirm>);
+		render(
+			<Router
+				navigator={history}
+				location={history.location}
+			>
+				<ResetPasswordConfirm/>
+			</Router>
+		);
 	});
 
 	it("Bad request throws flash error when token is invalid", async() => {
 		AxiosResponse.data = {token: ["random error"]};
 		AxiosResponse.status = 400;
-		jest.spyOn(ReactRouter, "useParams").mockReturnValue({uid: "test", token: "123"});
 		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetPasswordConfirm").mockImplementation(() => Promise.resolve(AxiosResponse));
 
-		const wrapper = render(<ResetPasswordConfirm/>);
+		const wrapper = render(			
+			<Router
+				navigator={history}
+				location={history.location}
+			>
+				<ResetPasswordConfirm/>
+			</Router>);
 		const submitButton: HTMLElement = wrapper.getByRole("button", {name: "Update Password"});
 
 		await waitFor(() => {
@@ -54,10 +72,15 @@ describe("Testing the resetPasswordConfirm view", () => {
 		AxiosResponse.data = {non_field_errors: ["other error"]};
 		AxiosResponse.status = 400;
 
-		jest.spyOn(ReactRouter, "useParams").mockReturnValue({uid: "test", token: "123"});
 		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetPasswordConfirm").mockImplementation(() => Promise.resolve(AxiosResponse));
 
-		const wrapper = render(<ResetPasswordConfirm/>);
+		const wrapper = render(			
+			<Router
+				navigator={history}
+				location={history.location}
+			>
+				<ResetPasswordConfirm/>
+			</Router>);
 		const submitButton: HTMLElement = wrapper.getByRole("button", {name: "Update Password"});
 
 		await waitFor(() => {
@@ -72,10 +95,15 @@ describe("Testing the resetPasswordConfirm view", () => {
 	it("bad request response throws field errors correctly", async() => {
 		AxiosResponse.data = {new_password: ["error password"], re_new_password: ["error new password"]};
 		AxiosResponse.status = 400;
-		jest.spyOn(ReactRouter, "useParams").mockReturnValue({uid: "test", token: "123"});
 		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetPasswordConfirm").mockImplementation(() => Promise.resolve(AxiosResponse));
 
-		const wrapper = render(<ResetPasswordConfirm/>);
+		const wrapper = render(			
+			<Router
+				navigator={history}
+				location={history.location}
+			>
+				<ResetPasswordConfirm/>
+			</Router>);
 		const submitButton: HTMLElement = wrapper.getByRole("button", {name: "Update Password"});
 
 		await waitFor(() => {
@@ -90,11 +118,16 @@ describe("Testing the resetPasswordConfirm view", () => {
 
 	it("Unauthorised user throws flash error and logs out", async() => {
 		AxiosResponse.status = 401;
-		jest.spyOn(ReactRouter, "useParams").mockReturnValue({uid: "test", token: "123"});
 		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetPasswordConfirm").mockImplementation(() => Promise.resolve(AxiosResponse));
 
 		const spyOnLogout = jest.spyOn(authentication, "logout");
-		const wrapper = render(<ResetPasswordConfirm/>);
+		const wrapper = render(			
+			<Router
+				navigator={history}
+				location={history.location}
+			>
+				<ResetPasswordConfirm/>
+			</Router>);
 		const submitButton: HTMLElement = wrapper.getByRole("button", {name: "Update Password"});
 
 		await waitFor(() => {
@@ -109,13 +142,15 @@ describe("Testing the resetPasswordConfirm view", () => {
 
 	it("Succcessfull password change redirects user to login", async() => {
 		AxiosResponse.status = 204;
-		jest.spyOn(ReactRouter, "useParams").mockReturnValue({uid: "test", token: "123"});
 		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetPasswordConfirm").mockImplementation(() => Promise.resolve(AxiosResponse));
 
-		const history = createMemoryHistory();
-		const wrapper = render(<Router history={history}>
-			<ResetPasswordConfirm/>
-		</Router>);
+		const wrapper = render(
+			<Router 
+				navigator={history}
+				location={history.location}
+			>
+				<ResetPasswordConfirm/>
+			</Router>);
 
 		const submitButton = wrapper.getByRole("button", {name: "Update Password"});
 

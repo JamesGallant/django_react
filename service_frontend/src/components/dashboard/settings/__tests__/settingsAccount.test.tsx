@@ -37,15 +37,26 @@ describe("Testing profile settings", () => {
 	});
 
 	it("Mounts", () => {
-		render(<Provider store={store}>
-			<SettingsAccount />
-		</Provider>);
+		render(
+			<Provider store={store}>
+				<Router 
+					navigator={history}
+					location={history.location}
+				>
+					<SettingsAccount/>
+				</Router>
+			</Provider>);
 	});
 
 	it("Toggle login dispatches function to toggle clearLoginCache state", async () => {
 		const wrapper = render(
 			<Provider store={store}>
-				<SettingsAccount />
+				<Router 
+					navigator={history}
+					location={history.location}
+				>
+					<SettingsAccount/>
+				</Router>
 			</Provider>);
 
 		const checkbox: HTMLElement = wrapper.getByRole("checkbox");
@@ -65,7 +76,10 @@ describe("Testing profile settings", () => {
 
 		const wrapper = render(
 			<Provider store={store}>
-				<Router history={history}>
+				<Router 
+					navigator={history}
+					location={history.location}
+				>
 					<SettingsAccount/>
 				</Router>
 			</Provider>);
@@ -95,7 +109,10 @@ describe("Testing profile settings", () => {
 
 		const wrapper = render(
 			<Provider store={store}>
-				<Router history={history}>
+				<Router 
+					navigator={history}
+					location={history.location}
+				>
 					<SettingsAccount/>
 				</Router>
 			</Provider>);
@@ -125,7 +142,10 @@ describe("Testing profile settings", () => {
 
 		const wrapper = render(
 			<Provider store={store}>
-				<Router history={history}>
+				<Router 
+					navigator={history}
+					location={history.location}
+				>
 					<SettingsAccount/>
 				</Router>
 			</Provider>);
@@ -155,7 +175,10 @@ describe("Testing profile settings", () => {
 
 		const wrapper = render(
 			<Provider store={store}>
-				<Router history={history}>
+				<Router 
+					navigator={history}
+					location={history.location}
+				>
 					<SettingsAccount/>
 				</Router>
 			</Provider>);
@@ -186,7 +209,10 @@ describe("Testing profile settings", () => {
 
 		const wrapper = render(
 			<Provider store={store}>
-				<Router history={history}>
+				<Router 
+					navigator={history}
+					location={history.location}
+				>
 					<SettingsAccount/>
 				</Router>
 			</Provider>);
@@ -217,7 +243,10 @@ describe("Testing profile settings", () => {
 
 		const wrapper = render(
 			<Provider store={store}>
-				<Router history={history}>
+				<Router 
+					navigator={history}
+					location={history.location}
+				>
 					<SettingsAccount/>
 				</Router>
 			</Provider>);
@@ -247,7 +276,10 @@ describe("Testing profile settings", () => {
 
 		const wrapper = render(
 			<Provider store={store}>
-				<Router history={history}>
+				<Router 
+					navigator={history}
+					location={history.location}
+				>
 					<SettingsAccount/>
 				</Router>
 			</Provider>);

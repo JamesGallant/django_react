@@ -15,6 +15,7 @@ jest.mock("axios");
 jest.mock("../../../../modules/authentication");
 
 describe("Testing login", () => {
+	const history = createMemoryHistory();
 	let axiosResponse: AxiosResponse;
 	beforeEach(() => {
 		axiosResponse = {
@@ -31,7 +32,12 @@ describe("Testing login", () => {
 
 	it("component renders correctly", () => {
 		render(
-			<LoginView/>
+			<Router 
+				navigator={history}
+				location={history.location}
+			>
+				<LoginView />
+			</Router>
 		);
 	});
 
@@ -45,7 +51,12 @@ describe("Testing login", () => {
 		const spyOnTokenLogin: jest.SpyInstance = jest.spyOn(API, "postTokenLogin").mockImplementation(() => Promise.resolve(axiosResponse));
 
 		const wrapper = render(
-			<LoginView/>
+			<Router 
+				navigator={history}
+				location={history.location}
+			>
+				<LoginView />
+			</Router>
 		);
 
 		const submitButton = wrapper.getByRole("button", {name: "Log in"});
@@ -70,7 +81,12 @@ describe("Testing login", () => {
 		const spyOnTokenLogin: jest.SpyInstance = jest.spyOn(API, "postTokenLogin").mockImplementation(() => Promise.resolve(axiosResponse));
 
 		const wrapper = render(
-			<LoginView/>
+			<Router 
+				navigator={history}
+				location={history.location}
+			>
+				<LoginView />
+			</Router>
 		);
         
 		const email = wrapper.getByRole("textbox", {name: "email"});
@@ -88,7 +104,6 @@ describe("Testing login", () => {
 	});
 
 	it("sets cookies and routes to dashboard on successfull login", async () => {
-		const history = createMemoryHistory();
 		const axiosToken:  AxiosResponse = axiosResponse;
 		const axiosUser: AxiosResponse = axiosResponse;
 
@@ -107,7 +122,10 @@ describe("Testing login", () => {
 		jest.spyOn(window.localStorage.__proto__, "setItem");
 
 		render(
-			<Router history={history}>
+			<Router 
+				navigator={history}
+				location={history.location}
+			>
 				<LoginView />
 			</Router>);
 
@@ -126,10 +144,12 @@ describe("Testing login", () => {
 	});
 
 	it("redirects to dash if already authenticated", () => {
-		const history = createMemoryHistory();
        
 		render(
-			<Router history={history}>
+			<Router 
+				navigator={history}
+				location={history.location}
+			>
 				<LoginView />
 			</Router>);
 

@@ -10,7 +10,16 @@ import ResetUsernameConfirm from "../resetUsernameConfirmView";
 import * as authentication from "../../../../modules/authentication";
 import * as API from "../../../../api/authenticationAPI";
 
+jest.mock("react-router-dom", () => ({
+	...jest.requireActual("react-router-dom"),
+	useParams: () => ({
+		uid: "test",
+		token: "123",
+	})
+}));
+
 describe("Testing the ResetUsernameConfirmView", () => {
+	const history = createMemoryHistory();
 	let AxiosResponse: AxiosResponse;
 
 	beforeEach(() => {
@@ -27,18 +36,28 @@ describe("Testing the ResetUsernameConfirmView", () => {
 	});
 
 	it("mounts", () => {
-		jest.spyOn(ReactRouter, "useParams").mockReturnValue({uid: "test", token: "123"});
-		render(<ResetUsernameConfirm></ResetUsernameConfirm>);
+		render(			
+			<Router 
+				navigator={history}
+				location={history.location}>
+				<ResetUsernameConfirm/>
+			</Router>
+		);
 	});
 
 	it("Bad request (400) throws flashError when non_field_errors occur", async () => {
 		AxiosResponse.data = {non_field_errors: ["random error"]};
 		AxiosResponse.status = 400;
 
-		jest.spyOn(ReactRouter, "useParams").mockReturnValue({uid: "test", token: "123"});
 		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetUsernameConfirm").mockImplementation(() => Promise.resolve(AxiosResponse));
 
-		const wrapper = render(<ResetUsernameConfirm/>);
+		const wrapper = render(
+			<Router 
+				navigator={history}
+				location={history.location}>
+				<ResetUsernameConfirm/>
+			</Router>
+		);
 		const submitButton: HTMLElement = wrapper.getByRole("button", {name: "Update email"});
 
 		await waitFor(() => {
@@ -54,11 +73,16 @@ describe("Testing the ResetUsernameConfirmView", () => {
 		AxiosResponse.data = {token: ["token error"]};
 		AxiosResponse.status = 400;
 
-		jest.spyOn(ReactRouter, "useParams").mockReturnValue({uid: "test", token: "123"});
 		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetUsernameConfirm").mockImplementation(() => Promise.resolve(AxiosResponse));
 		const spyOnLogout = jest.spyOn(authentication, "logout");
 
-		const wrapper = render(<ResetUsernameConfirm/>);
+		const wrapper = render(
+			<Router 
+				navigator={history}
+				location={history.location}>
+				<ResetUsernameConfirm/>
+			</Router>
+		);
 		const submitButton: HTMLElement = wrapper.getByRole("button", {name: "Update email"});
 
 		await waitFor(() => {
@@ -75,10 +99,15 @@ describe("Testing the ResetUsernameConfirmView", () => {
 		AxiosResponse.data = {new_email: ["email error"]};
 		AxiosResponse.status = 400;
 
-		jest.spyOn(ReactRouter, "useParams").mockReturnValue({uid: "test", token: "123"});
 		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetUsernameConfirm").mockImplementation(() => Promise.resolve(AxiosResponse));
 
-		const wrapper = render(<ResetUsernameConfirm/>);
+		const wrapper = render(
+			<Router 
+				navigator={history}
+				location={history.location}>
+				<ResetUsernameConfirm/>
+			</Router>
+		);
 		const submitButton: HTMLElement = wrapper.getByRole("button", {name: "Update email"});
 
 		await waitFor(() => {
@@ -94,11 +123,16 @@ describe("Testing the ResetUsernameConfirmView", () => {
 		AxiosResponse.data = {non_field_error: ["random error"]};
 		AxiosResponse.status = 401;
 
-		jest.spyOn(ReactRouter, "useParams").mockReturnValue({uid: "test", token: "123"});
 		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetUsernameConfirm").mockImplementation(() => Promise.resolve(AxiosResponse));
 		const spyOnLogout = jest.spyOn(authentication, "logout");
 
-		const wrapper = render(<ResetUsernameConfirm/>);
+		const wrapper = render(
+			<Router 
+				navigator={history}
+				location={history.location}>
+				<ResetUsernameConfirm/>
+			</Router>
+		);
 		const submitButton: HTMLElement = wrapper.getByRole("button", {name: "Update email"});
 
 		await waitFor(() => {
@@ -114,12 +148,12 @@ describe("Testing the ResetUsernameConfirmView", () => {
 	it("Successfull username redirects to login", async () => {
 		AxiosResponse.status = 204;
 
-		jest.spyOn(ReactRouter, "useParams").mockReturnValue({uid: "test", token: "123"});
 		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetUsernameConfirm").mockImplementation(() => Promise.resolve(AxiosResponse));
-		const history = createMemoryHistory();
 
 		const wrapper = render(
-			<Router history={history}>
+			<Router 
+				navigator={history}
+				location={history.location}>
 				<ResetUsernameConfirm/>
 			</Router>
 		);

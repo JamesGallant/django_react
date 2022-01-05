@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { useParams, useHistory } from "react-router";
+import { useParams, useNavigate } from "react-router";
 import { AxiosResponse } from "axios";
 
 import { Grid, Container, CssBaseline, Typography, Button, Link, Box } from "@mui/material";
@@ -13,8 +13,7 @@ import PasswordField from "../../common/formFields/passwordComponent";
 import FlashError from "../../common/helper/flashErrors";
 import Copyright from "../../common/helper/copyrightComponent";
 
-import type { UrlAuthTokenTypes } from "../../../types/authentication";
-
+const { Root, classes} = CentredSubmitFormRoot("ResetPasswordConfirm");
 
 interface initialValInterface {
 	new_password: string,
@@ -36,12 +35,13 @@ const initialErrors: initialErrInterface = {
 	re_new_password: [""]
 };
 
+
 const ResetPasswordConfirm: FC = (): JSX.Element => {
-
-	const history = useHistory();
-	const { Root, classes} = CentredSubmitFormRoot("ResetPasswordConfirm");
-
-	const {uid, token} = useParams<UrlAuthTokenTypes>();
+	const navigate = useNavigate();
+	const params = useParams();
+	const uid = params.uid as string;
+	const token = params.token as string;
+	
 	const [formValues, setFormValues] = useState(initalValues);
 	const [errorMessage, setErrorMessage] = useState(initialErrors);
 	const [flashErrorMessage, setFlashErrorMessage] = useState("");
@@ -93,7 +93,7 @@ const ResetPasswordConfirm: FC = (): JSX.Element => {
 			break;
 		}
 		case 204: {
-			history.push(configuration["url-login"]);
+			navigate(configuration["url-login"]);
 			break;
 		}
 		default: {

@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { useAppSelector } from "../../../store/hooks";
-import { selectVeiwDashboard } from "../../../store/slices/viewSlice";
 
 import { Box, Tabs, Tab } from "@mui/material";
 import { styled } from "@mui/material";
@@ -21,7 +19,6 @@ const TabRoot = styled(Box)({
 
 const SettingsView = (): JSX.Element | null => {
 	const [tabValue, setTabValue] = useState(0);
-	const dashboardView = useAppSelector(selectVeiwDashboard);
 
 	const handleTabSwitch = (event: React.SyntheticEvent, tabValue: number): void => {
 		setTabValue(tabValue);
@@ -55,45 +52,40 @@ const SettingsView = (): JSX.Element | null => {
 		);
 	};
 
-	if(dashboardView.settings) {
-		//TODO make styles here
-		return (
-			<TabRoot>
-				<Tabs
-					orientation="vertical"
-					aria-label="settings-tabpanel"
-					sx={{ borderRight: 2, borderColor: "divider", alignItems: "flex-end", height: "80vh" }}
-					textColor="inherit"
-					indicatorColor="secondary"
-					variant="fullWidth"
-					value={tabValue}
-					onChange={handleTabSwitch}
-				>
-					<Tab label="Profile" {...tabProps(0)}/>
-					<Tab label="Appearance" {...tabProps(1)}/>
-					<Tab label="Account" {...tabProps(2)}/>
-					<Tab label="Billing" disabled {...tabProps(3)}/>
-					<Tab label="Connencted apps" disabled {...tabProps(4)}/>
-				</Tabs>
-				<TabPanel value={tabValue} index={0}>
-					<SettingsProfile />				
-				</TabPanel>
-				<TabPanel value={tabValue} index={1}>
-					<SetingsAppearance />					
-				</TabPanel>
-				<TabPanel value={tabValue} index={2}>
-					<SettingsAccount />					
-				</TabPanel>
-				<TabPanel value={tabValue} index={3}>
-					<SettingsBilling />				
-				</TabPanel>
-				<TabPanel value={tabValue} index={4}>
-					<SettingsApps />				
-				</TabPanel>
-			</TabRoot>
-		);
-	} else {
-		return(null);
-	}
+	return (
+		<TabRoot>
+			<Tabs
+				orientation="vertical"
+				aria-label="settings-tabpanel"
+				sx={{ borderRight: 2, borderColor: "divider", alignItems: "flex-end", height: "80vh" }}
+				textColor="inherit"
+				indicatorColor="secondary"
+				variant="fullWidth"
+				value={tabValue}
+				onChange={handleTabSwitch}
+			>
+				<Tab label="Profile" {...tabProps(0)}/>
+				<Tab label="Appearance" {...tabProps(1)}/>
+				<Tab label="Account" {...tabProps(2)}/>
+				<Tab label="Billing" disabled {...tabProps(3)}/>
+				<Tab label="Connencted apps" disabled {...tabProps(4)}/>
+			</Tabs>
+			<TabPanel value={tabValue} index={0}>
+				<SettingsProfile />				
+			</TabPanel>
+			<TabPanel value={tabValue} index={1}>
+				<SetingsAppearance />					
+			</TabPanel>
+			<TabPanel value={tabValue} index={2}>
+				<SettingsAccount />					
+			</TabPanel>
+			<TabPanel value={tabValue} index={3}>
+				<SettingsBilling />				
+			</TabPanel>
+			<TabPanel value={tabValue} index={4}>
+				<SettingsApps />				
+			</TabPanel>
+		</TabRoot>
+	);
 };
 export default SettingsView;

@@ -5,7 +5,6 @@ import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { store } from "../../../../store/store";
 
-import type { ViewsStateInterface } from "../../../../types/store";
 import * as reduxHooks from "../../../../store/hooks";
 import * as userFunctions from "../../../../store/slices/userSlice";
 
@@ -18,22 +17,7 @@ import configuration from "../../../../utils/config";
 import * as authenticationModules from "../../../../modules/authentication";
 
 describe("Testing the dashboard view", () => {
-	let history: any;
-	let mockViewStore: ViewsStateInterface;
-	beforeEach(() => {
-		history = createMemoryHistory();
-		mockViewStore = {
-			viewReducer: {
-				stateStatus: "idle",
-				dashboard: {
-					settings: false,
-					profile: false,
-					appstore: true,
-				}
-			}
-		};
-	});
-
+	const history = createMemoryHistory();
 	afterEach(() => {
 		jest.resetAllMocks();
 	});
@@ -41,10 +25,14 @@ describe("Testing the dashboard view", () => {
 	it("Mounts correctly", () => {
 		render(
 			<Provider store={store}>
-				<Router history={history}>
+				<Router 
+					navigator={history}
+					location={history.location}
+				>
 					<DashboardView />
 				</Router>
-			</Provider>);
+			</Provider>
+		);
 	});
 
 	it("Missing token redirects user to login", () => {
@@ -53,7 +41,10 @@ describe("Testing the dashboard view", () => {
 
 		render(
 			<Provider store={store}>
-				<Router history={history}>
+				<Router 
+					navigator={history}
+					location={history.location}
+				>
 					<DashboardView />
 				</Router>
 			</Provider>);
@@ -70,13 +61,16 @@ describe("Testing the dashboard view", () => {
 
 		render(
 			<Provider store={store}>
-				<Router history={history}>
+				<Router 
+					navigator={history}
+					location={history.location}
+				>
 					<DashboardView />
 				</Router>
 			</Provider>);
 		
 		expect(spyOnCookies).toBeCalledWith("authToken");
-		expect(spyOnDispatch).toBeCalledTimes(3);
+		expect(spyOnDispatch).toBeCalledTimes(2);
 		expect(spyOnUserState).toBeCalledTimes(1);
 	});
 });

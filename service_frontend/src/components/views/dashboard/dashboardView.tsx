@@ -1,9 +1,9 @@
 import React, { useEffect, FC } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { useAppSelector, useAppDispatch } from "../../../store/hooks";
 import { getUser, selectUserStateStatus } from "../../../store/slices/userSlice";
-
+import { Routes, Route } from "react-router-dom";
 import { Box, Grid } from "@mui/material"; 
 
 import BasicSpinner from "../../common/spinner/basicSpinnerComponent";
@@ -18,7 +18,7 @@ import { logout } from "../../../modules/authentication";
 
 
 const DashboardView: FC = (): JSX.Element => {
-	const history = useHistory();
+	const navigate = useNavigate();
 	const dispatch = useAppDispatch();
 	const userStateStatus: string = useAppSelector(selectUserStateStatus);
 
@@ -29,12 +29,12 @@ const DashboardView: FC = (): JSX.Element => {
 			
 			if (token === "" || token === undefined) {
 				logout();
-				history.push(configuration["url-login"]);
+				navigate(configuration["url-login"]);
 			} else {
 				const result = await dispatch(getUser(token));
 				if (result.meta.requestStatus === "rejected" || result.payload.detail || result.payload.email === "") {
 					logout();
-					history.push(configuration["url-login"]);
+					navigate(configuration["url-login"]);
 				}
 			}
 		};
@@ -54,10 +54,12 @@ const DashboardView: FC = (): JSX.Element => {
 					<Grid container sx={{position: "fixed"}} spacing={1}>]
 						<Grid item xs={12}>
 							<Box sx={{maxHeight: "87vh", overflow: "auto" }}>
-								<SettingsMain />
+								<Routes>
+									<Route path="*" element={ <AppStoreMain />} />
+									<Route path="settings" element={ <SettingsMain />} />
+									<Route path="profile" element={ <ProfileMain />} />
+								</Routes>
 							</Box>
-							<AppStoreMain />
-							<ProfileMain />
 						</Grid>
 					</Grid>
 				</Box>

@@ -2,6 +2,8 @@ import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
 import ResetPasswordEmailSent from "../resetEmailSentView";
 import { AxiosResponse } from "axios";
+import { createMemoryHistory } from "history";
+import { Router } from "react-router-dom";
 
 import * as authenticationAPI from "../../../../api/authenticationAPI";
 
@@ -20,6 +22,8 @@ jest.mock("axios");
 
 describe("Testing view after email has been sent to reset users password", () => {
 	let AxiosResponse: AxiosResponse;
+	const history = createMemoryHistory();
+
 	beforeEach(() => {
 		AxiosResponse = {
 			data: {},
@@ -35,14 +39,27 @@ describe("Testing view after email has been sent to reset users password", () =>
 	});
 
 	it("mounts", () => {
-		render(<ResetPasswordEmailSent/>);
+		render(			
+			<Router 
+				navigator={history}
+				location={history.location}
+			>
+				<ResetPasswordEmailSent/>
+			</Router>);
 	});
 
 	it("Resend email fires api call and alerts user of success", async () => {
 		AxiosResponse.status = 204;
 
-		const wrapper = render(<ResetPasswordEmailSent/>);
-		const resendEmail = wrapper.getByRole("button", {name: "Resend email"});
+		const wrapper = render(			
+			<Router 
+				navigator={history}
+				location={history.location}
+			>
+				<ResetPasswordEmailSent/>
+			</Router>);
+			
+		const resendEmail: HTMLElement = wrapper.getByRole("button", {name: "Resend email"});
 		const spyOnResetPassword: jest.SpyInstance = jest.spyOn(authenticationAPI, "resetPassword").mockImplementation(() => Promise.resolve(AxiosResponse));
 
 		await waitFor(() => {
