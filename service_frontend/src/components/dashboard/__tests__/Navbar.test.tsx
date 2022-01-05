@@ -1,7 +1,5 @@
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react";
-import { Middleware, Dispatch, AnyAction } from "redux";
-import configureStore from "redux-mock-store";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 import { Provider } from "react-redux";

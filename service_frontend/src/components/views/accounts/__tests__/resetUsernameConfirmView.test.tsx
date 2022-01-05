@@ -3,7 +3,6 @@ import { render, fireEvent, waitFor } from "@testing-library/react";
 import { AxiosResponse } from "axios";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
-import ReactRouter from "react-router";
 
 import configuration from "../../../../utils/config";
 import ResetUsernameConfirm from "../resetUsernameConfirmView";

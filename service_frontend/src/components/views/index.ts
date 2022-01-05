@@ -27,7 +27,10 @@ const views = {
 	ResetPassword,
 	ResetPasswordConfirm,
 	ResetUsernameConfirm,
-	ResetEmailSent
+	ResetEmailSent,
+	AppStoreView,
+	ProfileView,
+	SettingsView
 };
 
 export default views;
