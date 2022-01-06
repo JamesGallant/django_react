@@ -4,11 +4,11 @@ import { AxiosResponse } from "axios";
 import configuration from "../utils/config";
 import type { OwnedAppInterface } from "../types/applicationTypes";
 
-export async function getRegisteredApps(authToken: string): Promise<AxiosResponse> {
+export async function getRegisteredApps(authToken: string, url: string): Promise<AxiosResponse> {
 	try {
 		const response: AxiosResponse = await axios({
 			method: "get",
-			url: configuration["api-base"].concat(configuration["api-getRegisteredApps"]),
+			url: url === "" ? configuration["api-base"].concat(configuration["api-getRegisteredApps"]) : url,
 			headers: {"Authorization": `Token ${authToken}`}
 		});
 		return response;

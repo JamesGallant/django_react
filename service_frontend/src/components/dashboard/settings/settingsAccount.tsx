@@ -18,7 +18,7 @@ import { logout } from "../../../modules/authentication";
 import CookieHandler from "../../../modules/cookies";
 
 import type { UserDataInterface } from "../../../types/authentication";
-import type { SiteConfigDataInterface } from "../../../types/store";
+import type { SiteConfigDataInterface } from "../../../types/siteConfigTypes";
 
 import { AxiosResponse } from "axios";
 

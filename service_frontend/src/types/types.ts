@@ -12,3 +12,7 @@ export interface AxiosError {
     response: AxiosResponse
 }
 
+export interface ApiErrInterface {
+	detail: string
+}
+

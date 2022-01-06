@@ -9,7 +9,7 @@ import { selectSiteTheme, setThemeMode } from "./store/slices/siteConfigurationS
 import configuration from "./utils/config";
 import PrivateRoute from "./components/common/helper/privateRoute";
 import views from "./components/views";
-import type { ThemePreferenceInterface } from "./types/store";
+import type { ThemePreferenceInterface } from "./types/siteConfigTypes";
 
 const App = (): JSX.Element => {
 	const systemThemePreference = useMediaQuery("(prefers-color-scheme: dark)") ? "dark" : "light";

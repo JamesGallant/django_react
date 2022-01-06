@@ -16,6 +16,14 @@ import CookieHandler from "../../../modules/cookies";
 import configuration from "../../../utils/config";
 import { logout } from "../../../modules/authentication";
 
+// import { styled } from "@mui/material";
+
+// const StyledIframe = styled("iframe")({
+// 	display: "block",
+// 	border: "none",
+// 	height: "100vh",
+// 	width: "100%",
+// });
 
 const DashboardView: FC = (): JSX.Element => {
 	const navigate = useNavigate();
@@ -55,9 +63,10 @@ const DashboardView: FC = (): JSX.Element => {
 						<Grid item xs={12}>
 							<Box sx={{maxHeight: "87vh", overflow: "auto" }}>
 								<Routes>
-									<Route path="*" element={ <AppStoreMain />} />
-									<Route path="settings" element={ <SettingsMain />} />
-									<Route path="profile" element={ <ProfileMain />} />
+									<Route path={ configuration["url-dashboard-home"] } element={ <AppStoreMain />} />
+									<Route path={ configuration["url-dashboard-settings"] } element={ <SettingsMain />} />
+									<Route path={ configuration["url-dashboard-profile"] } element={ <ProfileMain />} />
+									{/* <Route path="testPlugin" element={ <StyledIframe src="https://www.jamesgallant.nl/" />} /> */}
 								</Routes>
 							</Box>
 						</Grid>

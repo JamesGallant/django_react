@@ -9,7 +9,7 @@ import MediaCard from "../../common/cards/MediaCard";
 import darkmodeImage from "../../../assets/images/darkmode.png";
 import lightmodeImage from "../../../assets/images/lightmode.png";
 
-import type { ThemePreferenceInterface } from "../../../types/store";
+import type { ThemePreferenceInterface } from "../../../types/siteConfigTypes";
 
 interface CardSelectThemeInterface {
 	darkmode: boolean

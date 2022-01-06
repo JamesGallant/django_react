@@ -14,7 +14,7 @@ import { logout } from "../../modules/authentication";
 import configuration from "../../utils/config";
 
 import type { UserDataInterface } from "../../types/authentication";
-import type { SiteConfigDataInterface } from "../../types/store";
+import type { SiteConfigDataInterface } from "../../types/siteConfigTypes";
 
 const Navbar: FC = (): JSX.Element => {
 	const navigate = useNavigate();

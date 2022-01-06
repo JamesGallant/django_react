@@ -1,6 +1,6 @@
 import type { UserDataInterface } from "./authentication";
-import type { PaletteMode } from "@mui/material";
-
+import type { AppDataMixin } from "./applicationTypes";
+import type { ThemePreferenceInterface } from "./siteConfigTypes"; 
 //#region user
 export interface stateError {
 	message: string,
@@ -23,23 +23,20 @@ export interface SiteConfigInterface {
 	siteConfigReducer: {
 		data: {
 			clearLoginCache: boolean,
-			themePreference: {
-				setting: string
-				mode: PaletteMode
-			}
+			themePreference: ThemePreferenceInterface
 		}
 	}
 }
+//#endregion
 
-export interface SiteConfigDataInterface {
-	data: {
-		clearLoginCache: boolean
-		themePreference: ThemePreferenceInterface
+//#region apps
+
+export interface AppStateInterface {
+	appReducer: {
+		stateStatus: string
+		data: AppDataMixin
+		error: any
 	}
 }
 
-export interface ThemePreferenceInterface {
-	setting: string
-	mode: PaletteMode
-}
 //#endregion
