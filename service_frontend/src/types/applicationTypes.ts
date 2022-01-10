@@ -26,7 +26,15 @@ export interface AppPagedInterface {
 export interface AppDataInterface {
 	id: number
 	name: string
-	description: string
+	card_description: string
+	full_description: string
+	base_app_description: string
+	premium_description: string
+	base_cost: number
+	premium_cost: number
+	has_premium_service: boolean
 	url: string
 	image_path: string
+	cost: number
+	disabled: boolean
 }

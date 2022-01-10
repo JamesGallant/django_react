@@ -3,7 +3,7 @@ import { CentredSubmitFormRoot } from "../../../utils/commonStyles";
 
 import { Box, CircularProgress } from "@mui/material";
 
-const BasicSpinner: React.FC = (props: any): JSX.Element => {
+const BasicCenteredSpinner: React.FC = (props: any): JSX.Element => {
 	const { Root, classes } = CentredSubmitFormRoot("circular-progress");
 	const { ...other } = props;
 	return(
@@ -17,4 +17,4 @@ const BasicSpinner: React.FC = (props: any): JSX.Element => {
 	);
 };
 
-export default BasicSpinner;
+export default BasicCenteredSpinner;

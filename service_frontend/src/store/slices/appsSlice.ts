@@ -40,7 +40,6 @@ export const appSlice: Slice = createSlice({
 			state.appReducer.stateStatus = "pending";
 		},
 		[getRegisteredApp.fulfilled.type]: (state, action: PayloadAction<AppDataUnion>) => {
-			console.log(action);
 			if (action.payload.detail) {
 				state.appReducer.stateStatus = "failed";
 				state.appReducer.error = action.payload;
@@ -62,7 +61,7 @@ export const appSlice: Slice = createSlice({
 	}
 });
 
-export const selectAppStateStatus = (state: RootState): string => state.apps.appReducer.data;
+export const selectAppStateStatus = (state: RootState): string => state.apps.appReducer.stateStatus;
 export const selectAppState = (state: RootState): AppStateInterface => state.apps;
 export const selectAppData = (state: RootState): AppDataUnion => state.apps.appReducer.data;
 

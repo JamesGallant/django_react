@@ -1,7 +1,7 @@
 import React from "react";
 import { render } from "@testing-library/react";
 
-import BasicSpinner from "../basicSpinnerComponent";
+import BasicCenteredSpinner from "../basicCenteredSpinner";
 
 describe("testing basicSpinner component", () => {
 	/**
@@ -11,6 +11,6 @@ describe("testing basicSpinner component", () => {
      */
 
 	it("Spinner renders correctly", () => {
-		render(<BasicSpinner />);
+		render(<BasicCenteredSpinner />);
 	});
 });

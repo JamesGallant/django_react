@@ -6,7 +6,7 @@ import { getUser, selectUserStateStatus } from "../../../store/slices/userSlice"
 import { Routes, Route } from "react-router-dom";
 import { Box, Grid } from "@mui/material"; 
 
-import BasicSpinner from "../../common/spinner/basicSpinnerComponent";
+import BasicCenteredSpinner from "../../common/spinner/basicCenteredSpinner";
 import Navbar from "../../dashboard/Navbar";
 import SettingsMain from "./settingsView";
 import AppStoreMain from "./appStoreView";
@@ -52,7 +52,7 @@ const DashboardView: FC = (): JSX.Element => {
 
 	if (userStateStatus === "loading") {
 		return(
-			<BasicSpinner />
+			<BasicCenteredSpinner />
 		);
 	} else {
 		return(
