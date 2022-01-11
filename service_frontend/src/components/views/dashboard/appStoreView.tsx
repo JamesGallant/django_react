@@ -16,6 +16,12 @@ const AppStoreView = (): JSX.Element | null => {
 	const navigate = useNavigate();
 	/**
 	 * This component will eventually be an appstore when we have apps. For now rendering the first application
+	 * 
+	 * card functions: 
+	 * disabled if disabled or not purchased
+	 * click purchase displayes purchase options
+	 * click learn more displayes learn more text
+	 * 
 	 */
 	
 	const dispatch = useAppDispatch();
