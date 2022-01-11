@@ -9,6 +9,7 @@ sqlparse==0.4.1
 
 # -- third party
 django-phonenumber-field==5.0.0
+django-money==2.1.1
 phonenumberslite==8.12.21
 
 # -- django rest framework

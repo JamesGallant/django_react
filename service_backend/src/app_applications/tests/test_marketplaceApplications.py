@@ -39,9 +39,15 @@ class TestMarketPlaceApplications(APITestCase):
 
         self.marketplace_app = self.apps_marketplace_model.objects.create(
             name=self.fake.name(),
-            description=self.fake.sentence(),
+            card_description=self.fake.sentence(nb_words=5),
+            full_description=self.fake.sentence(),
+            base_app_description=self.fake.sentence(nb_words=5),
+            premium_app_description=self.fake.sentence(nb_words=5),
+            base_cost=10.00,
+            premium_cost=100.00,
             url=self.fake.url(),
             image_path=self.fake.file_path(),
+            disabled=False,
         )
 
         self.user_token = self.client.post(
@@ -81,10 +87,16 @@ class TestMarketPlaceApplications(APITestCase):
     # post
     def test_user_cannot_register_apps(self):
         data = {
-            "name": "some app",
-            "description": "some descr",
-            "url": "https://www.whatsup.com",
-            "image_path": "/",
+            "name": self.fake.name(),
+            "card_description": self.fake.sentence(nb_words=5),
+            "full_description": self.fake.paragraph(nb_sentences=3),
+            "base_app_description": self.fake.sentence(nb_words=5),
+            "premium_app_description": self.fake.sentence(nb_words=5),
+            "base_cost": 0.00,
+            "premium_cost": 100.00,
+            "url": self.fake.url(),
+            "image_path": self.fake.file_path(),
+            "disabled": False,
         }
         self.client.credentials(
             HTTP_AUTHORIZATION=f"Token {self.user_token.data.get('auth_token')}"
@@ -99,10 +111,16 @@ class TestMarketPlaceApplications(APITestCase):
 
     def test_admin_can_register_apps(self):
         data = {
-            "name": "some app",
-            "description": "some descr",
-            "url": "https://www.whatsup.com",
-            "image_path": "/",
+            "name": self.fake.name(),
+            "card_description": self.fake.sentence(nb_words=5),
+            "full_description": self.fake.sentence(),
+            "base_app_description": self.fake.sentence(nb_words=5),
+            "premium_app_description": self.fake.sentence(nb_words=5),
+            "base_cost": 0.00,
+            "premium_cost": 100.00,
+            "url": self.fake.url(),
+            "image_path": self.fake.file_path(),
+            "disabled": False,
         }
         self.client.credentials(
             HTTP_AUTHORIZATION=f"Token {self.superuser_token.data.get('auth_token')}"
@@ -117,10 +135,16 @@ class TestMarketPlaceApplications(APITestCase):
 
     def test_unknown_cannot_register_apps(self):
         data = {
-            "name": "some app",
-            "description": "some descr",
-            "url": "https://www.whatsup.com",
-            "image_path": "/",
+            "name": self.fake.name(),
+            "card_description": self.fake.sentence(nb_words=5),
+            "full_description": self.fake.sentence(),
+            "base_app_description": self.fake.sentence(nb_words=5),
+            "premium_app_description": self.fake.sentence(nb_words=5),
+            "base_cost": 0.00,
+            "premium_cost": 100.00,
+            "url": self.fake.url(),
+            "image_path": self.fake.file_path(),
+            "disabled": False,
         }
         response = self.client.post(
             self.user_registered_apps_url,

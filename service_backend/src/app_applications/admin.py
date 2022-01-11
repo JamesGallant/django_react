@@ -6,7 +6,21 @@ from .models import UserOwnedApplications, MarketplaceApplications
 
 @admin.register(MarketplaceApplications)
 class MarketplaceAppsAdmin(admin.ModelAdmin):
-    list_display = ("pk", "name", "description", "url", "image_path")
+    list_display = [
+        "name",
+        "card_description",
+        "full_description",
+        "base_app_description",
+        "premium_app_description",
+        "base_cost",
+        "premium_cost",
+        "has_premium_service",
+        "url",
+        "image_path",
+        "disabled",
+    ]
+
+    list_filter = ["id", "name"]
 
 
 @admin.register(UserOwnedApplications)

@@ -48,9 +48,15 @@ class TestUserOwnedApplication(APITestCase):
 
         self.marketplace_app = MarketplaceApplications.objects.create(
             name=self.fake.name(),
-            description=self.fake.sentence(),
+            card_description=self.fake.sentence(nb_words=5),
+            full_description=self.fake.sentence(),
+            base_app_description=self.fake.sentence(nb_words=5),
+            premium_app_description=self.fake.sentence(nb_words=5),
+            base_cost=10.00,
+            premium_cost=100.00,
             url=self.fake.url(),
             image_path=self.fake.file_path(),
+            disabled=False,
         )
 
         self.user_app1 = UserOwnedApplications.objects.create(
@@ -144,9 +150,15 @@ class TestUserOwnedApplication(APITestCase):
     def test_user_can_create_owned_apps(self):
         test_app = MarketplaceApplications.objects.create(
             name=self.fake.name(),
-            description=self.fake.sentence(),
+            card_description=self.fake.sentence(nb_words=5),
+            full_description=self.fake.sentence(),
+            base_app_description=self.fake.sentence(nb_words=5),
+            premium_app_description=self.fake.sentence(nb_words=5),
+            base_cost=10.00,
+            premium_cost=100.00,
             url=self.fake.url(),
             image_path=self.fake.file_path(),
+            disabled=False,
         )
 
         data = {
@@ -185,9 +197,15 @@ class TestUserOwnedApplication(APITestCase):
     def test_user_cannot_create_app_for_other_user(self):
         test_app = MarketplaceApplications.objects.create(
             name=self.fake.name(),
-            description=self.fake.sentence(),
+            card_description=self.fake.sentence(nb_words=5),
+            full_description=self.fake.sentence(),
+            base_app_description=self.fake.sentence(nb_words=5),
+            premium_app_description=self.fake.sentence(nb_words=5),
+            base_cost=10.00,
+            premium_cost=100.00,
             url=self.fake.url(),
             image_path=self.fake.file_path(),
+            disabled=False,
         )
         data = {
             "expiration_date": str(datetime.today().date() + timedelta(days=4)),
@@ -208,9 +226,15 @@ class TestUserOwnedApplication(APITestCase):
     def test_admin_can_create_app_for_other_user(self):
         test_app = MarketplaceApplications.objects.create(
             name=self.fake.name(),
-            description=self.fake.sentence(),
+            card_description=self.fake.sentence(nb_words=5),
+            full_description=self.fake.sentence(),
+            base_app_description=self.fake.sentence(nb_words=5),
+            premium_app_description=self.fake.sentence(nb_words=5),
+            base_cost=10.00,
+            premium_cost=100.00,
             url=self.fake.url(),
             image_path=self.fake.file_path(),
+            disabled=False,
         )
         data = {
             "expiration_date": str(datetime.today().date() + timedelta(days=4)),
@@ -224,16 +248,23 @@ class TestUserOwnedApplication(APITestCase):
         response = self.client.post(
             self.user_apps_url, data=json.dumps(data), content_type="application/json"
         )
-        print(response.data)
+
         self.client.credentials()
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_unknown_cannot_create_new_owned_apps(self):
         data = {
-            "expiration_date": "2000-01-01",
-            "app": self.marketplace_app.id,
-            "user": self.user.email,
+            "name": self.fake.name(),
+            "card_description": self.fake.sentence(nb_words=5),
+            "full_description": self.fake.paragraph(nb_sentences=3),
+            "base_app_description": self.fake.sentence(nb_words=5),
+            "premium_app_description": self.fake.sentence(nb_words=5),
+            "base_cost": 0.00,
+            "premium_cost": 100.00,
+            "url": self.fake.url(),
+            "image_path": self.fake.file_path(),
+            "disabled": False,
         }
         response = self.client.post(
             self.user_apps_url, data=json.dumps(data), content_type="application/json"
@@ -243,9 +274,15 @@ class TestUserOwnedApplication(APITestCase):
     def test_admin_can_create_new_owned_apps_for_user(self):
         test_app = MarketplaceApplications.objects.create(
             name=self.fake.name(),
-            description=self.fake.sentence(),
+            card_description=self.fake.sentence(nb_words=5),
+            full_description=self.fake.sentence(),
+            base_app_description=self.fake.sentence(nb_words=5),
+            premium_app_description=self.fake.sentence(nb_words=5),
+            base_cost=10.00,
+            premium_cost=100.00,
             url=self.fake.url(),
             image_path=self.fake.file_path(),
+            disabled=False,
         )
         data = {
             "expiration_date": str(datetime.today().date() + timedelta(days=4)),
@@ -346,9 +383,15 @@ class TestUserOwnedApplication(APITestCase):
     def test_cannot_patch_other_fields(self):
         test_app = MarketplaceApplications.objects.create(
             name=self.fake.name(),
-            description=self.fake.sentence(),
+            card_description=self.fake.sentence(nb_words=5),
+            full_description=self.fake.sentence(),
+            base_app_description=self.fake.sentence(nb_words=5),
+            premium_app_description=self.fake.sentence(nb_words=5),
+            base_cost=10.00,
+            premium_cost=100.00,
             url=self.fake.url(),
             image_path=self.fake.file_path(),
+            disabled=False,
         )
 
         data = {
@@ -404,9 +447,15 @@ class TestUserOwnedApplication(APITestCase):
     def test_user_cannot_alter_app_with_puts(self):
         test_app = MarketplaceApplications.objects.create(
             name=self.fake.name(),
-            description=self.fake.sentence(),
+            card_description=self.fake.sentence(nb_words=5),
+            full_description=self.fake.sentence(),
+            base_app_description=self.fake.sentence(nb_words=5),
+            premium_app_description=self.fake.sentence(nb_words=5),
+            base_cost=10.00,
+            premium_cost=100.00,
             url=self.fake.url(),
             image_path=self.fake.file_path(),
+            disabled=False,
         )
 
         data = {
@@ -431,9 +480,15 @@ class TestUserOwnedApplication(APITestCase):
     def test_unknown_cannot_alter_app_with_puts(self):
         test_app = MarketplaceApplications.objects.create(
             name=self.fake.name(),
-            description=self.fake.sentence(),
+            card_description=self.fake.sentence(nb_words=5),
+            full_description=self.fake.sentence(),
+            base_app_description=self.fake.sentence(nb_words=5),
+            premium_app_description=self.fake.sentence(nb_words=5),
+            base_cost=10.00,
+            premium_cost=100.00,
             url=self.fake.url(),
             image_path=self.fake.file_path(),
+            disabled=False,
         )
 
         data = {
@@ -454,9 +509,15 @@ class TestUserOwnedApplication(APITestCase):
     def test_user_cannot_alter_others_app_with_puts(self):
         test_app = MarketplaceApplications.objects.create(
             name=self.fake.name(),
-            description=self.fake.sentence(),
+            card_description=self.fake.sentence(nb_words=5),
+            full_description=self.fake.sentence(),
+            base_app_description=self.fake.sentence(nb_words=5),
+            premium_app_description=self.fake.sentence(nb_words=5),
+            base_cost=10.00,
+            premium_cost=100.00,
             url=self.fake.url(),
             image_path=self.fake.file_path(),
+            disabled=False,
         )
 
         data = {
@@ -481,9 +542,15 @@ class TestUserOwnedApplication(APITestCase):
     def test_admin_can_alter_others_app_with_puts(self):
         test_app = MarketplaceApplications.objects.create(
             name=self.fake.name(),
-            description=self.fake.sentence(),
+            card_description=self.fake.sentence(nb_words=5),
+            full_description=self.fake.sentence(),
+            base_app_description=self.fake.sentence(nb_words=5),
+            premium_app_description=self.fake.sentence(nb_words=5),
+            base_cost=10.00,
+            premium_cost=100.00,
             url=self.fake.url(),
             image_path=self.fake.file_path(),
+            disabled=False,
         )
 
         data = {
