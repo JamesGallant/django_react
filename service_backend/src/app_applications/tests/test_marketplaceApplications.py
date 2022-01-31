@@ -41,12 +41,13 @@ class TestMarketPlaceApplications(APITestCase):
             name=self.fake.name(),
             card_description=self.fake.sentence(nb_words=5),
             full_description=self.fake.sentence(),
-            base_app_description=self.fake.sentence(nb_words=5),
+            demo_app_description=self.fake.sentence(nb_words=5),
+            basic_app_description=self.fake.sentence(nb_words=5),
             premium_app_description=self.fake.sentence(nb_words=5),
-            base_cost=10.00,
+            basic_cost=10.00,
             premium_cost=100.00,
-            url=self.fake.url(),
-            image_path=self.fake.file_path(),
+            subscription_type="BASIC",
+            url="/",
             disabled=False,
         )
 
@@ -90,12 +91,13 @@ class TestMarketPlaceApplications(APITestCase):
             "name": self.fake.name(),
             "card_description": self.fake.sentence(nb_words=5),
             "full_description": self.fake.paragraph(nb_sentences=3),
-            "base_app_description": self.fake.sentence(nb_words=5),
+            "demo_app_description": self.fake.sentence(nb_words=5),
+            "basic_app_description": self.fake.sentence(nb_words=5),
             "premium_app_description": self.fake.sentence(nb_words=5),
             "base_cost": 0.00,
             "premium_cost": 100.00,
-            "url": self.fake.url(),
-            "image_path": self.fake.file_path(),
+            "subscription_type": "BASIC",
+            "url": "/",
             "disabled": False,
         }
         self.client.credentials(
@@ -113,13 +115,14 @@ class TestMarketPlaceApplications(APITestCase):
         data = {
             "name": self.fake.name(),
             "card_description": self.fake.sentence(nb_words=5),
-            "full_description": self.fake.sentence(),
-            "base_app_description": self.fake.sentence(nb_words=5),
+            "full_description": self.fake.paragraph(nb_sentences=3),
+            "demo_app_description": self.fake.sentence(nb_words=5),
+            "basic_app_description": self.fake.sentence(nb_words=5),
             "premium_app_description": self.fake.sentence(nb_words=5),
             "base_cost": 0.00,
             "premium_cost": 100.00,
-            "url": self.fake.url(),
-            "image_path": self.fake.file_path(),
+            "subscription_type": "BASIC",
+            "url": "/",
             "disabled": False,
         }
         self.client.credentials(
@@ -137,13 +140,14 @@ class TestMarketPlaceApplications(APITestCase):
         data = {
             "name": self.fake.name(),
             "card_description": self.fake.sentence(nb_words=5),
-            "full_description": self.fake.sentence(),
-            "base_app_description": self.fake.sentence(nb_words=5),
+            "full_description": self.fake.paragraph(nb_sentences=3),
+            "demo_app_description": self.fake.sentence(nb_words=5),
+            "basic_app_description": self.fake.sentence(nb_words=5),
             "premium_app_description": self.fake.sentence(nb_words=5),
             "base_cost": 0.00,
             "premium_cost": 100.00,
-            "url": self.fake.url(),
-            "image_path": self.fake.file_path(),
+            "subscription_type": "BASIC",
+            "url": "/",
             "disabled": False,
         }
         response = self.client.post(

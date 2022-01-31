@@ -357,8 +357,8 @@ const SettingsAccount: FC = (): JSX.Element => {
 			</Grid>
 			<AlertDialog
 				isOpen={openAlertDialog}
-				dialogTitle={alertDialogTitle}
-				dialogText={alertDialogText}
+				title={alertDialogTitle}
+				content={alertDialogText}
 				okBtnText="Ok"
 				onClose={ handleCloseDialog }
 				onOk={ handleAlertOnOk } 

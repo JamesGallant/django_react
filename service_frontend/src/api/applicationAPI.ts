@@ -34,7 +34,7 @@ export async function getOwnedApps(authToken: string): Promise<AxiosResponse> {
 	}
 }
 
-export async function postNewOwnedApp(authToken: string, data: OwnedAppInterface): Promise<AxiosResponse> {
+export async function linkAppToUser(authToken: string, data: OwnedAppInterface): Promise<AxiosResponse> {
 	try {
 		const response: AxiosResponse = await axios({
 			method: "post",
@@ -50,13 +50,13 @@ export async function postNewOwnedApp(authToken: string, data: OwnedAppInterface
 	}
 }
 
-export async function patchOwnedAppExpirationDate(authToken: string, appID: number, expirationDate: string): Promise<AxiosResponse> {
+export async function patchOwnedAppExpirationDate(authToken: string, id: number, expirationDate: string): Promise<AxiosResponse> {
 	try {
 		const response: AxiosResponse = await axios({
 			method: "patch",
-			url: `${configuration["api-base"].concat(configuration["api-getOwnedApps"])}/${appID}`,
+			url: `${configuration["api-base"].concat(configuration["api-getOwnedApps"])}${id}/`,
 			data: {
-				expiration_date: expirationDate
+				"expiration_date": expirationDate
 			}, 
 			headers: {"Content-type": "application/json", "Authorization": `Token ${authToken}`}
 		});

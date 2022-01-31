@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, {ChangeEvent} from "react";
 import Box from "@mui/material/Box";
 import { TextField as MuiTextField } from "@mui/material/";
 import Autocomplete from "@mui/material/Autocomplete";

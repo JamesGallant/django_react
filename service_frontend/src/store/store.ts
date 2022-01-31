@@ -4,8 +4,8 @@ import storage from "redux-persist/lib/storage";
 
 import users from "./slices/userSlice";
 import siteConfiguration from "./slices/siteConfigurationSlice";
-import apps from "./slices/appsSlice";
-
+import registeredApps from "./slices/registeredAppsSlice";
+import userOwnedApps from "./slices/userOwnedAppsSlice";
 import configuration from "../utils/config";
 
 // @TODO store encryption
@@ -20,7 +20,8 @@ const persistSiteConfig = {
 const reducer = combineReducers({
 	siteConfiguration: persistReducer(persistSiteConfig, siteConfiguration),
 	users: users,
-	apps: apps,
+	registeredApps: registeredApps,
+	userOwnedApps: userOwnedApps
 });
 
 // this causes an extra tree

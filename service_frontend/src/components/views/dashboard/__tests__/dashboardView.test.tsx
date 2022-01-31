@@ -5,9 +5,6 @@ import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { store } from "../../../../store/store";
 
-import * as reduxHooks from "../../../../store/hooks";
-import * as userFunctions from "../../../../store/slices/userSlice";
-
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 
@@ -54,6 +51,7 @@ describe("Testing the dashboard view", () => {
 		expect(history.location.pathname).toBe(configuration["url-login"]);
 	});
 
+	// need to mock the return of spyOnDispatch for this test to work, test that failed user login logs user out.
 	// it("Token dispatches failed login thunk", () => {
 	// 	const res = {
 	// 		meta: {

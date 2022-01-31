@@ -9,20 +9,28 @@ class MarketplaceAppsAdmin(admin.ModelAdmin):
     list_display = [
         "name",
         "card_description",
-        "full_description",
-        "base_app_description",
+        "full_description_shortened",
+        "demo_app_description",
+        "basic_app_description",
         "premium_app_description",
-        "base_cost",
+        "basic_cost",
         "premium_cost",
-        "has_premium_service",
+        "subscription_type",
         "url",
-        "image_path",
         "disabled",
     ]
 
     list_filter = ["id", "name"]
+    search_fields = ["name", "url"]
 
 
 @admin.register(UserOwnedApplications)
 class UserOwnedApplicationsAdmin(admin.ModelAdmin):
-    list_display = ("pk", "app", "user", "activation_date", "expiration_date")
+    list_display = (
+        "pk",
+        "app",
+        "user",
+        "activation_date",
+        "expiration_date",
+        "is_expired",
+    )

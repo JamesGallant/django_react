@@ -13,6 +13,15 @@ export interface AxiosError {
 }
 
 export interface ApiErrInterface {
-	detail: string
+	detail?: string
+    non_field_errors?: Array<string>
+    message?: string
+}
+
+export interface BasePagedInterface {
+    count: number
+    next: string | null
+    previous: string | null
+    results: unknown
 }
 

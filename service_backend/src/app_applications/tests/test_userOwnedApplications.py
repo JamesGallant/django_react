@@ -48,14 +48,15 @@ class TestUserOwnedApplication(APITestCase):
 
         self.marketplace_app = MarketplaceApplications.objects.create(
             name=self.fake.name(),
-            card_description=self.fake.sentence(nb_words=5),
+            card_description=self.fake.sentence(nb_words=2),
             full_description=self.fake.sentence(),
-            base_app_description=self.fake.sentence(nb_words=5),
-            premium_app_description=self.fake.sentence(nb_words=5),
-            base_cost=10.00,
+            demo_app_description=self.fake.sentence(nb_words=2),
+            basic_app_description=self.fake.sentence(nb_words=2),
+            premium_app_description=self.fake.sentence(nb_words=2),
+            basic_cost=10.00,
             premium_cost=100.00,
-            url=self.fake.url(),
-            image_path=self.fake.file_path(),
+            subscription_type="BASIC",
+            url="/",
             disabled=False,
         )
 
@@ -123,7 +124,6 @@ class TestUserOwnedApplication(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_unknown_user_cannot_get_specific_apps(self):
-        # owned_app_user = self._get_app_object(self.user)
         response = self.client.get(f"{self.user_apps_url}{self.user_app1.id}/")
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
@@ -150,14 +150,15 @@ class TestUserOwnedApplication(APITestCase):
     def test_user_can_create_owned_apps(self):
         test_app = MarketplaceApplications.objects.create(
             name=self.fake.name(),
-            card_description=self.fake.sentence(nb_words=5),
+            card_description=self.fake.sentence(nb_words=2),
             full_description=self.fake.sentence(),
-            base_app_description=self.fake.sentence(nb_words=5),
-            premium_app_description=self.fake.sentence(nb_words=5),
-            base_cost=10.00,
+            demo_app_description=self.fake.sentence(nb_words=2),
+            basic_app_description=self.fake.sentence(nb_words=2),
+            premium_app_description=self.fake.sentence(nb_words=2),
+            basic_cost=10.00,
             premium_cost=100.00,
-            url=self.fake.url(),
-            image_path=self.fake.file_path(),
+            subscription_type="BASIC",
+            url="/",
             disabled=False,
         )
 
@@ -197,14 +198,15 @@ class TestUserOwnedApplication(APITestCase):
     def test_user_cannot_create_app_for_other_user(self):
         test_app = MarketplaceApplications.objects.create(
             name=self.fake.name(),
-            card_description=self.fake.sentence(nb_words=5),
+            card_description=self.fake.sentence(nb_words=2),
             full_description=self.fake.sentence(),
-            base_app_description=self.fake.sentence(nb_words=5),
-            premium_app_description=self.fake.sentence(nb_words=5),
-            base_cost=10.00,
+            demo_app_description=self.fake.sentence(nb_words=2),
+            basic_app_description=self.fake.sentence(nb_words=2),
+            premium_app_description=self.fake.sentence(nb_words=2),
+            basic_cost=10.00,
             premium_cost=100.00,
-            url=self.fake.url(),
-            image_path=self.fake.file_path(),
+            subscription_type="BASIC",
+            url="/",
             disabled=False,
         )
         data = {
@@ -228,12 +230,13 @@ class TestUserOwnedApplication(APITestCase):
             name=self.fake.name(),
             card_description=self.fake.sentence(nb_words=5),
             full_description=self.fake.sentence(),
-            base_app_description=self.fake.sentence(nb_words=5),
+            demo_app_description=self.fake.sentence(nb_words=5),
+            basic_app_description=self.fake.sentence(nb_words=5),
             premium_app_description=self.fake.sentence(nb_words=5),
-            base_cost=10.00,
+            basic_cost=10.00,
             premium_cost=100.00,
-            url=self.fake.url(),
-            image_path=self.fake.file_path(),
+            subscription_type="BASIC",
+            url="/",
             disabled=False,
         )
         data = {
@@ -262,8 +265,7 @@ class TestUserOwnedApplication(APITestCase):
             "premium_app_description": self.fake.sentence(nb_words=5),
             "base_cost": 0.00,
             "premium_cost": 100.00,
-            "url": self.fake.url(),
-            "image_path": self.fake.file_path(),
+            "url": "/",
             "disabled": False,
         }
         response = self.client.post(
@@ -276,12 +278,13 @@ class TestUserOwnedApplication(APITestCase):
             name=self.fake.name(),
             card_description=self.fake.sentence(nb_words=5),
             full_description=self.fake.sentence(),
-            base_app_description=self.fake.sentence(nb_words=5),
+            demo_app_description=self.fake.sentence(nb_words=5),
+            basic_app_description=self.fake.sentence(nb_words=5),
             premium_app_description=self.fake.sentence(nb_words=5),
-            base_cost=10.00,
+            basic_cost=10.00,
             premium_cost=100.00,
-            url=self.fake.url(),
-            image_path=self.fake.file_path(),
+            subscription_type="BASIC",
+            url="/",
             disabled=False,
         )
         data = {
@@ -385,12 +388,13 @@ class TestUserOwnedApplication(APITestCase):
             name=self.fake.name(),
             card_description=self.fake.sentence(nb_words=5),
             full_description=self.fake.sentence(),
-            base_app_description=self.fake.sentence(nb_words=5),
+            demo_app_description=self.fake.sentence(nb_words=5),
+            basic_app_description=self.fake.sentence(nb_words=5),
             premium_app_description=self.fake.sentence(nb_words=5),
-            base_cost=10.00,
+            basic_cost=10.00,
             premium_cost=100.00,
-            url=self.fake.url(),
-            image_path=self.fake.file_path(),
+            subscription_type="BASIC",
+            url="/",
             disabled=False,
         )
 
@@ -449,12 +453,13 @@ class TestUserOwnedApplication(APITestCase):
             name=self.fake.name(),
             card_description=self.fake.sentence(nb_words=5),
             full_description=self.fake.sentence(),
-            base_app_description=self.fake.sentence(nb_words=5),
+            demo_app_description=self.fake.sentence(nb_words=5),
+            basic_app_description=self.fake.sentence(nb_words=5),
             premium_app_description=self.fake.sentence(nb_words=5),
-            base_cost=10.00,
+            basic_cost=10.00,
             premium_cost=100.00,
-            url=self.fake.url(),
-            image_path=self.fake.file_path(),
+            subscription_type="BASIC",
+            url="/",
             disabled=False,
         )
 
@@ -482,12 +487,13 @@ class TestUserOwnedApplication(APITestCase):
             name=self.fake.name(),
             card_description=self.fake.sentence(nb_words=5),
             full_description=self.fake.sentence(),
-            base_app_description=self.fake.sentence(nb_words=5),
+            demo_app_description=self.fake.sentence(nb_words=5),
+            basic_app_description=self.fake.sentence(nb_words=5),
             premium_app_description=self.fake.sentence(nb_words=5),
-            base_cost=10.00,
+            basic_cost=10.00,
             premium_cost=100.00,
-            url=self.fake.url(),
-            image_path=self.fake.file_path(),
+            subscription_type="BASIC",
+            url="/",
             disabled=False,
         )
 
@@ -511,12 +517,13 @@ class TestUserOwnedApplication(APITestCase):
             name=self.fake.name(),
             card_description=self.fake.sentence(nb_words=5),
             full_description=self.fake.sentence(),
-            base_app_description=self.fake.sentence(nb_words=5),
+            demo_app_description=self.fake.sentence(nb_words=5),
+            basic_app_description=self.fake.sentence(nb_words=5),
             premium_app_description=self.fake.sentence(nb_words=5),
-            base_cost=10.00,
+            basic_cost=10.00,
             premium_cost=100.00,
-            url=self.fake.url(),
-            image_path=self.fake.file_path(),
+            subscription_type="BASIC",
+            url="/",
             disabled=False,
         )
 
@@ -544,12 +551,13 @@ class TestUserOwnedApplication(APITestCase):
             name=self.fake.name(),
             card_description=self.fake.sentence(nb_words=5),
             full_description=self.fake.sentence(),
-            base_app_description=self.fake.sentence(nb_words=5),
+            demo_app_description=self.fake.sentence(nb_words=5),
+            basic_app_description=self.fake.sentence(nb_words=5),
             premium_app_description=self.fake.sentence(nb_words=5),
-            base_cost=10.00,
+            basic_cost=10.00,
             premium_cost=100.00,
-            url=self.fake.url(),
-            image_path=self.fake.file_path(),
+            subscription_type="BASIC",
+            url="/",
             disabled=False,
         )
 

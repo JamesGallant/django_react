@@ -11,32 +11,8 @@ import * as AuthModules from "../../../modules/authentication";
 import Navbar from "../Navbar";
 
 describe("Testing navbar from dashboard", () => {
-	let state: any;
 	store.dispatch = jest.fn();
 	const history = createMemoryHistory();
-	beforeEach(() => {
-		state = {
-			siteConfiguration: {
-				siteConfigReducer: {
-					data: {
-						clearLoginCache: false
-					}
-				}
-			},
-			userReducer: {
-				stateStatus: "idle",
-				data: {
-					id: null,
-					first_name: "",
-					last_name: "",
-					country: "",
-					mobile_number: "",
-					email: ""
-				},
-				error: {}
-			}
-		};
-	});
 
 	afterEach(() => {
 		jest.resetAllMocks();

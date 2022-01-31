@@ -59,7 +59,7 @@ export const userSlice: Slice<UserStateInterface> = createSlice({
 				error: {},
 			};
 		},
-		[getUser.rejected.type]: (state, action: PayloadAction<any>) => {
+		[getUser.rejected.type]: (state) => {
 			state.userReducer.stateStatus = "failed";
 		},
 	}

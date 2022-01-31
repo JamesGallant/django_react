@@ -6,24 +6,28 @@ import { getUser, selectUserStateStatus } from "../../../store/slices/userSlice"
 import { Routes, Route } from "react-router-dom";
 import { Box, Grid } from "@mui/material"; 
 
+import PaidRoute from "../../../components/common/helper/paidRoute";
 import BasicCenteredSpinner from "../../common/spinner/basicCenteredSpinner";
 import Navbar from "../../dashboard/Navbar";
 import SettingsMain from "./settingsView";
 import AppStoreMain from "./appStoreView";
 import ProfileMain from "./profileView";
+import Statistics from "../apps/statistics";
 
 import CookieHandler from "../../../modules/cookies";
 import configuration from "../../../utils/config";
 import { logout } from "../../../modules/authentication";
 
-// import { styled } from "@mui/material";
+import { styled } from "@mui/material";
 
-// const StyledIframe = styled("iframe")({
-// 	display: "block",
-// 	border: "none",
-// 	height: "100vh",
-// 	width: "100%",
-// });
+// TODO move to component and onLoad from iFrame to render spinner
+const StyledIframe = styled("iframe")({
+	display: "block",
+	border: "none",
+	height: "85vh",
+	paddingLeft: "5%",
+	width: "95%",
+});
 
 const DashboardView: FC = (): JSX.Element => {
 	const navigate = useNavigate();
@@ -66,7 +70,16 @@ const DashboardView: FC = (): JSX.Element => {
 									<Route path={ configuration["url-dashboard-home"] } element={ <AppStoreMain />} />
 									<Route path={ configuration["url-dashboard-settings"] } element={ <SettingsMain />} />
 									<Route path={ configuration["url-dashboard-profile"] } element={ <ProfileMain />} />
-									{/* <Route path="testPlugin" element={ <StyledIframe src="https://www.jamesgallant.nl/" />} /> */}
+									<Route path={ configuration["url-apps-statistics"] } element={
+										<PaidRoute redirectTo={ configuration["url-dashboard"] } >
+											<Statistics /> 
+										</PaidRoute>
+									} />
+									<Route path={ configuration["url-iframe-apps-provision"]} element={
+										<PaidRoute redirectTo={ configuration["url-dashboard"] }>
+											<StyledIframe src={ configuration["url-iframe-apps-provision"]} />
+										</PaidRoute>
+									} />
 								</Routes>
 							</Box>
 						</Grid>

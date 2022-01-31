@@ -26,7 +26,7 @@ const SettingsAppearance: FC = (): JSX.Element => {
 		darkmode: theme.palette.mode === "light" ? false : true,
 		lightmode: theme.palette.mode === "light" ? true : false
 	};
-	
+
 	const [themeValue, setThemeValue] = useState(siteTheme.setting);
 	const [cardThemeValue, setCardThemeValue] = useState(initialCardThemeValues);
 	const [isThemeDisabled, setThemeDisabled] = useState(themeValue === "SyncTheme" ? true : false);
@@ -34,7 +34,6 @@ const SettingsAppearance: FC = (): JSX.Element => {
 	const handleThemePreference = (event: React.ChangeEvent<HTMLInputElement>): void => {
 		const themePreference: string = event.target.value;
 		setThemeValue(themePreference);
-		
 		if (themePreference === "SyncTheme") {
 			setThemeDisabled(true);
 			setCardThemeValue({

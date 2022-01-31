@@ -1,5 +1,5 @@
 import type { UserDataInterface } from "./authentication";
-import type { AppDataMixin } from "./applicationTypes";
+import type { AppDataMixin, userAppDataUnion } from "./applicationTypes";
 import type { ThemePreferenceInterface } from "./siteConfigTypes"; 
 //#region user
 export interface stateError {
@@ -23,20 +23,30 @@ export interface SiteConfigInterface {
 	siteConfigReducer: {
 		data: {
 			clearLoginCache: boolean,
-			themePreference: ThemePreferenceInterface
+			themePreference: ThemePreferenceInterface,
 		}
 	}
 }
 //#endregion
 
-//#region apps
+//#region registeredApps
 
-export interface AppStateInterface {
-	appReducer: {
+export interface RegisteredAppStateInterface {
+	registeredAppsReducer: {
 		stateStatus: string
 		data: AppDataMixin
 		error: any
 	}
 }
 
+//#endregion
+
+//#region userOwnedApps
+export interface UserOwnedAppsStateInterface {
+	userAppsReducer: {
+		stateStatus: string,
+		data: userAppDataUnion,
+		error: any
+	}
+}
 //#endregion

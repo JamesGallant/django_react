@@ -3,20 +3,20 @@ import { AxiosResponse } from "axios";
 
 import { getRegisteredApps } from "../../api/applicationAPI";
 import type { RootState } from "../store";
-import type { AppStateInterface} from "../../types/store";
+import type { RegisteredAppStateInterface } from "../../types/store";
 import type { RegisterAppPayloadInterface, AppDataUnion } from "../../types/applicationTypes";
 
-const initialState: AppStateInterface = {
-	appReducer: {
+const initialState: RegisteredAppStateInterface = {
+	registeredAppsReducer: {
 		stateStatus: "idle",
 		data: {
 			count: 0,
 			next: null,
 			previous: null,
-			results: null
+			results: undefined
 		},
 		error: {}
-	},
+	}
 };
 
 export const getRegisteredApp = createAsyncThunk(
@@ -31,21 +31,21 @@ export const getRegisteredApp = createAsyncThunk(
 	}
 );
 
-export const appSlice: Slice = createSlice({
-	name: "apps",
+export const registeredAppSlice: Slice = createSlice({
+	name: "registeredApps",
 	initialState,
 	reducers: {},
 	extraReducers: {
 		[getRegisteredApp.pending.type]: (state) => {
-			state.appReducer.stateStatus = "pending";
+			state.registeredAppsReducer.stateStatus = "pending";
 		},
 		[getRegisteredApp.fulfilled.type]: (state, action: PayloadAction<AppDataUnion>) => {
 			if (action.payload.detail) {
-				state.appReducer.stateStatus = "failed";
-				state.appReducer.error = action.payload;
+				state.registeredAppsReducer.stateStatus = "failed";
+				state.registeredAppsReducer.error = action.payload;
 			} else {
-				state.appReducer.stateStatus = "fulfilled";
-				state.appReducer.data = {
+				state.registeredAppsReducer.stateStatus = "fulfilled";
+				state.registeredAppsReducer.data = {
 					count: action.payload.count,
 					next: action.payload.next,
 					previous: action.payload.previous,
@@ -54,16 +54,16 @@ export const appSlice: Slice = createSlice({
 			}
 
 		},
-		[getRegisteredApp.rejected.type]: (state, action: PayloadAction<any>) => {
-			state.appReducer.stateStatus = "failed";
-			state.appReducer.error = action.payload;
+		[getRegisteredApp.rejected.type]: (state, action: PayloadAction<unknown>) => {
+			state.registeredAppsReducer.stateStatus = "failed";
+			state.registeredAppsReducer.error = action.payload;
 		}
 	}
 });
 
-export const selectAppStateStatus = (state: RootState): string => state.apps.appReducer.stateStatus;
-export const selectAppState = (state: RootState): AppStateInterface => state.apps;
-export const selectAppData = (state: RootState): AppDataUnion => state.apps.appReducer.data;
+export const selectAppStateStatus = (state: RootState): string => state.registeredApps.registeredAppsReducer.stateStatus;
+export const selectAppState = (state: RootState): RegisteredAppStateInterface => state.registeredApps;
+export const selectAppData = (state: RootState): AppDataUnion => state.registeredApps.registeredAppsReducer.data;
 
-export default appSlice.reducer;
+export default registeredAppSlice.reducer;
 

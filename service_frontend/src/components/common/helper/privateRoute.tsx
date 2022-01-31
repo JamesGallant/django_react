@@ -1,9 +1,13 @@
 import React  from "react";
 import { Navigate } from "react-router-dom";
 
-const PrivateRoute = ({ children, redirectTo }: any): JSX.Element => {
+interface PrivateRouteInterface {
+	redirectTo: string
+	children: JSX.Element
+}
+const PrivateRoute = (props: PrivateRouteInterface): JSX.Element => {
 	const authenticated = window.localStorage.getItem("authenticated") === "true";
-	return authenticated ? children : <Navigate to={redirectTo} />;
+	return authenticated ? props.children : <Navigate to={props.redirectTo} />;
 };
 
 export default PrivateRoute;

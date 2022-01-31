@@ -38,6 +38,8 @@ const configuration = {
 	"url-dashboard-home": "*",
 	"url-dashboard-settings": "settings",
 	"url-dashboard-profile": "profile",
+	"url-apps-statistics": "app-statistics",
+	"url-iframe-apps-provision": "https://provision.shinyapps.io/provision/",
 
 	// cookies
 	"cookie-maxAuthDuration": 90,
