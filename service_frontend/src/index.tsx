@@ -6,13 +6,18 @@ import reportWebVitals from "./reportWebVitals";
 import { store, persistor } from "./store/store";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import BasicSpinner from "./components/common/spinner/basicSpinnerComponent";
+import BasicSpinner from "./components/common/spinner/basicCenteredSpinner";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 ReactDOM.render(
 	<React.StrictMode>
 		<Provider store= { store }>
 			<PersistGate loading={<BasicSpinner />} persistor={persistor}>
-				<App />
+				<BrowserRouter>
+					<Routes>
+						<Route path="/*" element={ <App /> } />
+					</Routes>
+				</BrowserRouter>
 			</PersistGate>
 		</Provider>
 	</React.StrictMode>,

@@ -1,5 +1,7 @@
+
 import { styled } from "@mui/material";
 
+// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export const CentredSubmitFormRoot = (prefix: string) => {
 	const classes = {
 		root: `${prefix}-root`,

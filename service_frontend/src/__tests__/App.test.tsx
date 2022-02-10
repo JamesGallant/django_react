@@ -40,7 +40,7 @@ describe("Testing the main component", () => {
 		const store = mockStore(state);
 		render(
 			<Provider store={store}>
-				<Router history={history}>
+				<Router location={history.location} navigator={history}				>
 					<App />
 				</Router>
 			</Provider>
@@ -53,7 +53,7 @@ describe("Testing the main component", () => {
 		store.dispatch = jest.fn();
 		render(
 			<Provider store={store}>
-				<Router history={history}>
+				<Router location={history.location} navigator={history}>
 					<App />
 				</Router>
 			</Provider>

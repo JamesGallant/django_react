@@ -1,29 +1,13 @@
-import React from "react";
-import { Redirect, Route } from "react-router";
+import React  from "react";
+import { Navigate } from "react-router-dom";
 
-import configuration from "../../../utils/config";
-
-const PrivateRoute = (props: any): JSX.Element => {
-	/**
-     * @description Rerouting helper component to protect routes. This component will verify the user and either
-     * redirect the user to the route or to login screen
-     *          
-     * @verifcations user in state | authToken present | auth token valid
-     */
-
-	const { component: Component, ...rest } = props;
+interface PrivateRouteInterface {
+	redirectTo: string
+	children: JSX.Element
+}
+const PrivateRoute = (props: PrivateRouteInterface): JSX.Element => {
 	const authenticated = window.localStorage.getItem("authenticated") === "true";
-	return(
-		<Route 
-			{ ...rest }
-			render={elem => 
-				authenticated ? (
-					<Component {...elem} />
-				) : (
-					<Redirect to={{ pathname: configuration["url-login"], state: {from: elem.location} }} />
-				)} 
-		/>
-	);
+	return authenticated ? props.children : <Navigate to={props.redirectTo} />;
 };
 
 export default PrivateRoute;

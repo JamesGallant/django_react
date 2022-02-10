@@ -1,0 +1,12 @@
+-r ./base.txt
+
+# -- linting
+black==21.9b0 # devdepenency
+
+# -- testing
+Faker==10.0.0 # devdepenency
+
+
+
+
+

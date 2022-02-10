@@ -1,25 +1,45 @@
 import React from "react";
 
 import CloseIcon from "@mui/icons-material/Close";
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, IconButton, Divider } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, IconButton, Divider, Breakpoint } from "@mui/material";
 
-const ContentDialog = (props:any): JSX.Element => {
-	const {isOpen=false, dialogTitle="", dialogText="", cancelBtnText="Cancel", okBtnText="Ok", maxWidth="sm",
-		onClose, onOk, content } = props; 
+interface ContentDialogInterface {
+	isOpen?: boolean
+	title?: string
+	cancelBtnText?: string
+	okBtnText?: string
+	maxWidth?: Breakpoint
+	fullScreen?: boolean
+	fullWidth?: boolean
+	closeOnClickaway?: boolean
+	onClose: any
+	onOk?: () => void
+	content: JSX.Element
+	customActions?: JSX.Element
+}
+
+const ContentDialog = (props:ContentDialogInterface): JSX.Element => {
+	const {isOpen=false, title="", cancelBtnText="Cancel", okBtnText="Ok", maxWidth="sm", 
+		fullWidth=false, fullScreen=false, closeOnClickaway=true, onClose, onOk, content, 
+		customActions } = props; 
+	
+	
 	return(
 		<Dialog
+			fullScreen={fullScreen}
 			open={ isOpen }
+			fullWidth={fullWidth}
 			disablePortal
-			onClose={ onClose }
+			onClose={ closeOnClickaway ? onClose :  null}
 			maxWidth={maxWidth}
 		>
 			<DialogTitle
 				id="standard-alert-dialog"
 			>
-				<strong>{dialogTitle}</strong>
+				<strong>{title}</strong>
 				<IconButton
 					aria-label="close"
-					onClick={ onClose }
+					onClick={ onClose === undefined ? onOk : onClose }
 					sx={{
 						position: "absolute",
 						right: 8,
@@ -32,18 +52,18 @@ const ContentDialog = (props:any): JSX.Element => {
 			</DialogTitle>
 			<Divider />
 			<DialogContent>
-				{dialogText === "" ? null : 
-					<DialogContentText>
-						{dialogText}
-					</DialogContentText>
-				}
-				<br/>
 				{content}
 			</DialogContent>
-			<DialogActions>
-				<Button onClick={  onClose } autoFocus>{cancelBtnText}</Button>
-				<Button onClick={  onOk } autoFocus>{okBtnText}</Button>
-			</DialogActions>
+			{customActions === undefined ? 
+				<DialogActions>
+					{onClose === undefined ? null : <Button onClick={  onClose } autoFocus>{cancelBtnText}</Button>}
+					{onOk === undefined ? null : <Button onClick={  onOk } autoFocus>{okBtnText}</Button>}
+				</DialogActions> 
+				:
+				<DialogActions>
+					{customActions}
+				</DialogActions>
+			}
 		</Dialog>
 	);
 };

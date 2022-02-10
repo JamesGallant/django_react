@@ -1,7 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../store";
 import type { PaletteMode } from "@mui/material";
-import type { SiteConfigInterface, SiteConfigDataInterface, ThemePreferenceInterface } from "../../types/store";
+import type { SiteConfigInterface } from "../../types/store";
+import type { SiteConfigDataInterface, ThemePreferenceInterface } from "../../types/siteConfigTypes";
 
 const initialState: SiteConfigInterface = {
 	siteConfigReducer: {
@@ -23,7 +24,6 @@ export const siteConfigSlice = createSlice({
 			state.siteConfigReducer.data.clearLoginCache = !state.siteConfigReducer.data.clearLoginCache;
 		},
 		setThemePreference: (state, action: PayloadAction<string>) => {
-			console.log("store", action.payload);
 			state.siteConfigReducer.data.themePreference.setting = action.payload;
 		},
 		setThemeMode: (state, action: PayloadAction<PaletteMode>) => {

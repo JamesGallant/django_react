@@ -37,12 +37,14 @@ SITE_NAME = develop_configuration.get("site_name", "test site")
 INSTALLED_APPS = [
     # ours
     "app_accounts.apps.AccountsConfig",
+    "app_applications.apps.ApplicationsConfig",
     # third party
     "corsheaders",
     "rest_framework",
     "rest_framework.authtoken",
     "djoser",
     "phonenumber_field",
+    "djmoney",
     # django
     "django.contrib.admin",
     "django.contrib.auth",
@@ -167,6 +169,8 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework.authentication.TokenAuthentication",
     ),
+    "DEFAULT_PAGINATION_CLASS": "rest_framework.pagination.PageNumberPagination",
+    "PAGE_SIZE": 5,
 }
 
 # djoser
@@ -194,7 +198,7 @@ DJOSER = {
     ),
     "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
     "USERNAME_CHANGED_EMAIL_CONFIRMATION": True,
-    "SERIALIZERS": {},
+    "SERIALIZERS": {"current_user": "app_accounts.api.serializers.UserSerializer"},
     # https://github.com/sunscrapers/djoser/tree/master/djoser/templates/email
     "EMAIL": {
         "activation": "app_accounts.email.activation_email.ActivationEmail",

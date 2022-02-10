@@ -3,10 +3,11 @@ import { persistReducer, persistStore, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, 
 import storage from "redux-persist/lib/storage";
 
 import users from "./slices/userSlice";
-import views from "./slices/viewSlice";
 import siteConfiguration from "./slices/siteConfigurationSlice";
-
+import registeredApps from "./slices/registeredAppsSlice";
+import userOwnedApps from "./slices/userOwnedAppsSlice";
 import configuration from "../utils/config";
+import purchaseDialog from "./slices/purchaseDialogSlice";
 
 // @TODO store encryption
 const persistSiteConfig = {
@@ -19,8 +20,10 @@ const persistSiteConfig = {
 
 const reducer = combineReducers({
 	siteConfiguration: persistReducer(persistSiteConfig, siteConfiguration),
-	users: users, 
-	views: views,
+	users: users,
+	registeredApps: registeredApps,
+	userOwnedApps: userOwnedApps,
+	purchaseDialog: purchaseDialog,
 });
 
 // this causes an extra tree

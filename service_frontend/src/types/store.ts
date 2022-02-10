@@ -1,6 +1,7 @@
 import type { UserDataInterface } from "./authentication";
-import type { PaletteMode } from "@mui/material";
-
+import type { AppDataMixin, userAppDataUnion } from "./applicationTypes";
+import type { ThemePreferenceInterface } from "./siteConfigTypes"; 
+import type { PurchaseDialogData } from "./purchaseDialogTypes";
 //#region user
 export interface stateError {
 	message: string,
@@ -17,43 +18,43 @@ export interface UserStateInterface {
 }
 
 //#endregion
-//#region views
-export interface ViewsStateInterface {
-	viewReducer: {
-		stateStatus: string,
-		dashboard: DashboardInterface,
-	}
-}
-
-export interface DashboardInterface {
-	settings: boolean,
-	profile: boolean,
-	appstore: boolean
-}
-//#endregion
 
 //#region site configuration
 export interface SiteConfigInterface {
 	siteConfigReducer: {
 		data: {
 			clearLoginCache: boolean,
-			themePreference: {
-				setting: string
-				mode: PaletteMode
-			}
+			themePreference: ThemePreferenceInterface,
 		}
 	}
 }
+//#endregion
 
-export interface SiteConfigDataInterface {
-	data: {
-		clearLoginCache: boolean
-		themePreference: ThemePreferenceInterface
+//#region registeredApps
+
+export interface RegisteredAppStateInterface {
+	registeredAppsReducer: {
+		stateStatus: string
+		data: AppDataMixin
+		error: any
 	}
 }
 
-export interface ThemePreferenceInterface {
-	setting: string
-	mode: PaletteMode
+//#endregion
+
+//#region userOwnedApps
+export interface UserOwnedAppsStateInterface {
+	userAppsReducer: {
+		stateStatus: string,
+		data: userAppDataUnion,
+		error: any
+	}
 }
+//#endregion
+
+//#region purchaseDialog
+export interface PurchaseDialogStateInterface {
+	purchaseDialogReducer: PurchaseDialogData
+}
+
 //#endregion

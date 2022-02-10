@@ -4,49 +4,42 @@ import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 import { Provider } from "react-redux";
 import { store } from "../../../store/store";
-import viewsReducer, { toggleDashboardView } from "../../../store/slices/viewSlice";
-import type { ViewsStateInterface } from "../../../types/store";
-
 import configuration from "../../../utils/config";
 import * as AuthModules from "../../../modules/authentication";
+
 
 import Navbar from "../Navbar";
 
 describe("Testing navbar from dashboard", () => {
-	let mockViewStore: ViewsStateInterface;
 	store.dispatch = jest.fn();
-	beforeEach(() => {
-		mockViewStore = {
-			viewReducer: {
-				stateStatus: "idle",
-				dashboard: {
-					settings: false,
-					profile: false,
-					appstore: true,
-				}
-			}
-		};
-	});
+	const history = createMemoryHistory();
 
 	afterEach(() => {
 		jest.resetAllMocks();
 	});
 
 	it("Should mount", () => {
+		const history = createMemoryHistory();
 		render(
 			<Provider store={store}>
-				<Navbar />
+				<Router 
+					navigator={history}
+					location={history.location}
+				>
+					<Navbar/>
+				</Router>
 			</Provider>);
 	});
 
-	it("Profile menu item profile changes state", async () => {
-		const newState: ViewsStateInterface = mockViewStore;
-		newState.viewReducer.dashboard.profile = true;
-		newState.viewReducer.dashboard.appstore = false;
-
+	it("Profile link in navbar profile menu navigates to profile route", async () => {
 		const wrapper = render(
 			<Provider store={store}>
-				<Navbar/>
+				<Router 
+					navigator={history}
+					location={history.location}
+				>
+					<Navbar/>
+				</Router>
 			</Provider>);
 
 		const ProfileButton: HTMLElement = wrapper.getByRole("button", {name: "userAccount"});
@@ -59,20 +52,18 @@ describe("Testing navbar from dashboard", () => {
 			fireEvent.click(profileMenuItems[1]);
 		});
 
-		expect(store.dispatch).toHaveBeenCalledTimes(1);
-		expect(store.dispatch).toHaveBeenCalledWith({payload: "profile", type: "views/toggleDashboardView"});
-		expect(viewsReducer(mockViewStore, toggleDashboardView("profile"))).toEqual(newState);
+		expect(history.location.pathname).toBe(`/${configuration["url-dashboard-profile"]}`);
 	});
 
-	it("Profile menu item settings changes state", async () => {
-		const newState: ViewsStateInterface = mockViewStore;
-		newState.viewReducer.dashboard.settings = true;
-		newState.viewReducer.dashboard.appstore = false;
-		newState.viewReducer.dashboard.profile = false;
-
+	it("Settings link in navbar profile menu navigates to settings route", async () => {
 		const wrapper = render(
 			<Provider store={store}>
-				<Navbar/>
+				<Router 
+					navigator={history}
+					location={history.location}
+				>
+					<Navbar/>
+				</Router>
 			</Provider>);
 
 		const ProfileButton: HTMLElement = wrapper.getByRole("button", {name: "userAccount"});
@@ -85,9 +76,26 @@ describe("Testing navbar from dashboard", () => {
 			fireEvent.click(profileMenuItems[2]);
 		});
 
-		// expect(store.dispatch).toHaveBeenCalledTimes(1);
-		expect(store.dispatch).toHaveBeenCalledWith({payload: "settings", type: "views/toggleDashboardView"});
-		expect(viewsReducer(mockViewStore, toggleDashboardView("settings"))).toEqual(newState);
+		expect(history.location.pathname).toBe(`/${configuration["url-dashboard-settings"]}`);
+	});
+
+	it("Navbar main icon redirects home", async () => {
+		const wrapper = render(
+			<Provider store={store}>
+				<Router 
+					navigator={history}
+					location={history.location}
+				>
+					<Navbar/>
+				</Router>
+			</Provider>);
+
+		const homeButton: HTMLElement = wrapper.getByRole("button", {name: "dash-home"});
+		await waitFor(() => {
+			fireEvent.click(homeButton);
+		});
+
+		expect(history.location.pathname).toBe(`/${configuration["url-dashboard-home"]}`);
 	});
 
 	it("Profile item logout functions properly", async () => {
@@ -95,7 +103,10 @@ describe("Testing navbar from dashboard", () => {
 
 		const wrapper = render(
 			<Provider store={store}>
-				<Router history={history}>
+				<Router 
+					navigator={history}
+					location={history.location}
+				>
 					<Navbar/>
 				</Router>
 			</Provider>);
@@ -112,15 +123,18 @@ describe("Testing navbar from dashboard", () => {
 			fireEvent.click(logout[4]);
 		});
 
-		expect(history.location.pathname).toBe(configuration["url-logout"]);
+		expect(history.location.pathname).toBe(configuration["url-home"]);
 	});
 
-	it("Switch account hard logs out and routes to login", async () => {
+	it("Switch account hard does a hard logout and routes to login", async () => {
 		const history = createMemoryHistory();
 		const spyOnLogout: jest.SpyInstance = jest.spyOn(AuthModules, "logout");
 		const wrapper = render(
 			<Provider store={store}>
-				<Router history={history}>
+				<Router 
+					navigator={history}
+					location={history.location}
+				>
 					<Navbar/>
 				</Router>
 			</Provider>);

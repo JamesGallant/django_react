@@ -1,7 +1,7 @@
-import { AsyncThunk, createAsyncThunk, createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction, Slice } from "@reduxjs/toolkit";
 import { AxiosResponse } from "axios";
 
-import { getUserData } from "../../api/authentication";
+import { getUserData } from "../../api/authenticationAPI";
 
 import type { RootState } from "../store";
 import type { UserDataInterface } from "../../types/authentication";
@@ -59,9 +59,8 @@ export const userSlice: Slice<UserStateInterface> = createSlice({
 				error: {},
 			};
 		},
-		[getUser.rejected.type]: (state, action: PayloadAction<any>) => {
+		[getUser.rejected.type]: (state) => {
 			state.userReducer.stateStatus = "failed";
-			state.userReducer.error = action.payload.error;
 		},
 	}
 });

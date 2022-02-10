@@ -3,11 +3,6 @@ import { AxiosResponse } from "axios";
  * @description All general types that involves authentication
  */
 
-export interface UrlAuthTokenTypes {
-    uid: string, 
-    token: string
-}
-
 export interface UserPutResponseInterface extends AxiosResponse {
     data:   UserDataInterface
 }

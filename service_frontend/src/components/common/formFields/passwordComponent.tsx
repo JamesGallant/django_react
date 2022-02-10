@@ -19,7 +19,8 @@ type adornmentType = {
     handleClickAway: baseEvent,
     handleMouseDown: mouseEvent, 
     handleToggleTooltip: baseEvent,
-    handleClickShowPassword: baseEvent}
+    handleClickShowPassword: baseEvent
+}
 
 const InputVariant = (props: any): JSX.Element => {
 	/**

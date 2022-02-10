@@ -1,10 +1,19 @@
 import React from "react";
 import CloseIcon from "@mui/icons-material/Close";
-import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, IconButton, Divider } from "@mui/material";
+import { Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Button, IconButton, Divider, Breakpoint } from "@mui/material";
 
+interface AlertDialogInterface {
+	isOpen?: boolean
+	onClose: () => void
+	onOk: () => void
+	title?: string
+	content?: string
+	okBtnText?: string
+	maxWidth?: Breakpoint
+}
 
-const AlertDialog = (props: any): JSX.Element => {
-	const {isOpen=false, onClose, onOk, dialogTitle="", dialogText="", okBtnText="Agree", maxWidth="sm" } = props; 
+const AlertDialog = (props: AlertDialogInterface): JSX.Element => {
+	const {isOpen=false, onClose, onOk, title="", content="", okBtnText="Agree", maxWidth="sm" } = props; 
 	return(
 		<Dialog
 			open={ isOpen }
@@ -15,7 +24,7 @@ const AlertDialog = (props: any): JSX.Element => {
 			<DialogTitle
 				id="standard-alert-dialog"
 			>
-				<strong>{dialogTitle}</strong>
+				<strong>{title}</strong>
 				<IconButton
 					aria-label="close"
 					onClick={ onClose }
@@ -32,7 +41,7 @@ const AlertDialog = (props: any): JSX.Element => {
 			<Divider />
 			<DialogContent>
 				<DialogContentText>
-					{dialogText}
+					{content}
 				</DialogContentText>
 			</DialogContent>
 			<DialogActions>
