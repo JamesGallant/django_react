@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Card, CardContent, CardActions, CardActionArea } from "@mui/material";
+import {Card, CardContent, CardActions, CardActionArea, Box } from "@mui/material";
 import type { SxProps } from "@mui/system";
 
 interface BasicCardProps {
@@ -22,14 +22,14 @@ const BasicCard = (props: BasicCardProps): JSX.Element => {
 					</CardContent>
 				</CardActionArea> 
 				:
-				<div>
+				<Box>
 					<CardContent>
 						{props.content}
 					</CardContent>
-					<CardActions>
+					<CardActions>	
 						{props.actions}
 					</CardActions>
-				</div>
+				</Box>
 
 			}
 		</Card>

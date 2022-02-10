@@ -217,21 +217,6 @@ export async function resetPasswordConfirm(uid: string, token: string, password:
 	}
 }
 
-// export async function getIsActiveUser(authToken: string): Promise<AxiosResponse> {
-// 	try {
-// 		const response: AxiosResponse = await axios({
-// 			method: "get",
-// 			url: configuration["api-base"].concat(configuration["api-getUserData"]),
-// 			headers: {"Authorization": `Token ${authToken}`}
-// 		});
-// 		return response;
-// 		/* eslint-disable */
-// 	} catch(error: any) {
-// 		/* eslint-enable */
-// 		return error.response;
-// 	}
-// }
-
 export async function deleteUser(authToken: string, password: string): Promise<AxiosResponse> {
 	try {
 		const response: AxiosResponse = await axios({

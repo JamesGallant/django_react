@@ -4,7 +4,7 @@ import { AxiosResponse } from "axios";
 import { getRegisteredApps } from "../../api/applicationAPI";
 import type { RootState } from "../store";
 import type { RegisteredAppStateInterface } from "../../types/store";
-import type { RegisterAppPayloadInterface, AppDataUnion } from "../../types/applicationTypes";
+import type { RegisterAppPayloadInterface, AppDataUnion, AppPagedInterface } from "../../types/applicationTypes";
 
 const initialState: RegisteredAppStateInterface = {
 	registeredAppsReducer: {
@@ -63,7 +63,7 @@ export const registeredAppSlice: Slice = createSlice({
 
 export const selectAppStateStatus = (state: RootState): string => state.registeredApps.registeredAppsReducer.stateStatus;
 export const selectAppState = (state: RootState): RegisteredAppStateInterface => state.registeredApps;
-export const selectAppData = (state: RootState): AppDataUnion => state.registeredApps.registeredAppsReducer.data;
+export const selectAppData = (state: RootState): AppPagedInterface => state.registeredApps.registeredAppsReducer.data;
 
 export default registeredAppSlice.reducer;
 

@@ -59,6 +59,7 @@ const DashboardView: FC = (): JSX.Element => {
 			<BasicCenteredSpinner />
 		);
 	} else {
+		//TODO we need better routing preferably from the backend and /dashboard/apps/:id
 		return(
 			<div>
 				<Box>
@@ -70,12 +71,12 @@ const DashboardView: FC = (): JSX.Element => {
 									<Route path={ configuration["url-dashboard-home"] } element={ <AppStoreMain />} />
 									<Route path={ configuration["url-dashboard-settings"] } element={ <SettingsMain />} />
 									<Route path={ configuration["url-dashboard-profile"] } element={ <ProfileMain />} />
-									<Route path={ configuration["url-apps-statistics"] } element={
+									<Route path={ `${configuration["url-apps-statistics"]}` } element={
 										<PaidRoute redirectTo={ configuration["url-dashboard"] } >
 											<Statistics /> 
 										</PaidRoute>
 									} />
-									<Route path={ configuration["url-iframe-apps-provision"]} element={
+									<Route path={ `${configuration["url-iframe-apps-provision"]}`} element={
 										<PaidRoute redirectTo={ configuration["url-dashboard"] }>
 											<StyledIframe src={ configuration["url-iframe-apps-provision"]} />
 										</PaidRoute>

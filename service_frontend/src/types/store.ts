@@ -1,6 +1,7 @@
 import type { UserDataInterface } from "./authentication";
 import type { AppDataMixin, userAppDataUnion } from "./applicationTypes";
 import type { ThemePreferenceInterface } from "./siteConfigTypes"; 
+import type { PurchaseDialogData } from "./purchaseDialogTypes";
 //#region user
 export interface stateError {
 	message: string,
@@ -49,4 +50,11 @@ export interface UserOwnedAppsStateInterface {
 		error: any
 	}
 }
+//#endregion
+
+//#region purchaseDialog
+export interface PurchaseDialogStateInterface {
+	purchaseDialogReducer: PurchaseDialogData
+}
+
 //#endregion
