@@ -28,6 +28,7 @@ DEBUG = os.environ.get("DEBUG")
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
+ADMINS = os.environ.get("ADMINS")
 # comapany name
 SITE_NAME = os.environ.get("SITE_NAME")
 
@@ -90,6 +91,7 @@ WSGI_APPLICATION = "service_backend.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+CONN_MAX_AGE = os.environ.get("CONN_MAX_AGE")
 DATABASES = {
     "default": {
         "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
@@ -139,8 +141,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = "/static/"
+# STATIC_URL = "/static/"
 
+# HTTPS settings
+CSRF_COOKIE_SECURE = os.environ.get("CSRF_COOKIE_SECURE")
+SESSION_COOKIE_SECURE = os.environ.get("SESSION_COOKIE_SECURE")
 
 # Email support
 EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND", None)
@@ -154,7 +159,6 @@ AUTH_USER_MODEL = "app_accounts.UserModel"
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 # Rest framework settings
-
 # CORS
 CORS_ORIGIN_WHITELIST = [
     f"{os.environ.get('PROTOCOL')}{os.environ.get('FRONTEND_URL')}"
