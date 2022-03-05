@@ -12,8 +12,6 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 
 import os
 from pathlib import Path
-from .config import develop_configuration
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -26,12 +24,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = develop_configuration.get("debug", 0)
+DEBUG = os.environ.get("DEBUG")
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
 # comapany name
-SITE_NAME = develop_configuration.get("site_name", "test site")
+SITE_NAME = os.environ.get("SITE_NAME")
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -93,13 +92,13 @@ WSGI_APPLICATION = "service_backend.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": develop_configuration.get("sql_engine", "django.db.backends.sqlite3"),
+        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
         "NAME": os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),
         "USER": os.environ.get("SQL_USER", None),
         "PASSWORD": os.environ.get("SQL_PASSWORD", None),
         "HOST": os.environ.get("SQL_HOST", "localhost"),
-        "PORT": develop_configuration.get("sql_port", "5432"),
-        "TEST": {"NAME": develop_configuration.get("sql_test_database", "test_db")},
+        "PORT": os.environ.get("SQL_PORT", "5432"),
+        "TEST": {"NAME": os.environ.get("SQL_TEST_DATABASE", "test_db")},
     }
 }
 
@@ -144,9 +143,9 @@ STATIC_URL = "/static/"
 
 
 # Email support
-EMAIL_BACKEND = develop_configuration.get("email_backend", None)
-EMAIL_HOST = develop_configuration.get("email_host", None)
-EMAIL_PORT = develop_configuration.get("email_port", None)
+EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND", None)
+EMAIL_HOST = os.environ.get("EMAIL_HOST", None)
+EMAIL_PORT = os.environ.get("EMAIL_PORT", None)
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", None)
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", None)
 
@@ -158,7 +157,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 # CORS
 CORS_ORIGIN_WHITELIST = [
-    f"{develop_configuration.get('protocol')}{develop_configuration.get('frontend_url')}"
+    f"{os.environ.get('PROTOCOL')}{os.environ.get('FRONTEND_URL')}"
 ]
 
 # restrict to api only
@@ -175,27 +174,19 @@ REST_FRAMEWORK = {
 
 # djoser
 DJOSER = {
-    "SEND_ACTIVATION_EMAIL": develop_configuration.get("djoser_send_mail", False),
-    "SEND_CONFIRMATION_EMAIL": develop_configuration.get(
-        "djoser_send_confirmation_email", False
-    ),
+    "SEND_ACTIVATION_EMAIL": True,
+    "SEND_CONFIRMATION_EMAIL": True,
     "USER_CREATE_PASSWORD_RETYPE": True,
     "SET_USERNAME_RETYPE": False,
-    "PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND": develop_configuration.get(
-        "djoser_password_reset", False
-    ),
-    "USERNAME_RESET_SHOW_EMAIL_NOT_FOUND": develop_configuration.get(
-        "djoser_username_reset", False
-    ),
-    "LOGIN_FIELD": develop_configuration.get("djoser_login_field", "username"),
-    "HIDE_USERS": develop_configuration.get("djoser_hide_users", True),
-    "ACTIVATION_URL": develop_configuration.get("djoser_email_activation_url", None),
-    "USERNAME_RESET_CONFIRM_URL": develop_configuration.get(
-        "djoser_username_reset_url", None
-    ),
-    "PASSWORD_RESET_CONFIRM_URL": develop_configuration.get(
-        "djoser_password_reset_url", None
-    ),
+    "PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND": True,
+    "USERNAME_RESET_SHOW_EMAIL_NOT_FOUND": True,
+    "LOGIN_FIELD": "email",
+    "HIDE_USERS": True,
+    # --- change these on the frontend as well
+    "ACTIVATION_URL": "auth/activate/{uid}/{token}",
+    "USERNAME_RESET_CONFIRM_URL": "auth/reset/username/{uid}/{token}",
+    "PASSWORD_RESET_CONFIRM_URL": "auth/reset/password/{uid}/{token}",
+    # ---
     "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
     "USERNAME_CHANGED_EMAIL_CONFIRMATION": True,
     "SERIALIZERS": {"current_user": "app_accounts.api.serializers.UserSerializer"},

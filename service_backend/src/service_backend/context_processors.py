@@ -1,5 +1,4 @@
-from . import config
-
+import os
 
 def frontend_url(request):
-    return {"djoser_frontend_url": config.develop_configuration.get("frontend_url")}
+    return {"djoser_frontend_url": os.environ.get("FRONTEND_URL")}
