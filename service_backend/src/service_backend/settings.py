@@ -164,9 +164,6 @@ CORS_ORIGIN_WHITELIST = [
     f"{os.environ.get('PROTOCOL')}{os.environ.get('FRONTEND_URL')}"
 ]
 
-print(SITE_NAME)
-print(CORS_ORIGIN_WHITELIST)
-
 # restrict to api only
 CORS_ORIGIN_ALLOW_ALL = False
 
