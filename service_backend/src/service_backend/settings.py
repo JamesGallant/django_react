@@ -166,7 +166,12 @@ DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 # Rest framework settings
 # CORS
-CORS_ORIGIN_WHITELIST = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+if os.environ.get("MODE") == "production":
+    CORS_ORIGIN_WHITELIST = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+else:
+    CORS_ORIGIN_WHITELIST = [
+        f"{os.environ.get('PROTOCOL')}{os.environ.get('FRONTEND_URL')}"
+    ]
 # restrict to api only
 CORS_ORIGIN_ALLOW_ALL = False
 
