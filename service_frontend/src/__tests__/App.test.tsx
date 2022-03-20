@@ -59,7 +59,7 @@ describe("Testing the main component", () => {
 			</Provider>
 		);
 
-		expect(store.dispatch).toHaveBeenCalledWith({"payload": "light", "type": "siteConfiguration/setThemeMode"});
+		expect(store.dispatch).toHaveBeenCalledWith({ "payload": "light", "type": "siteConfiguration/setThemeMode" });
 	});
 });
 

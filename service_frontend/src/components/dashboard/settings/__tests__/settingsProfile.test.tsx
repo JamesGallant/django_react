@@ -72,7 +72,7 @@ describe("Testing profile settings", () => {
 			</Provider>
 		);
 		
-		const submitButton = wrapper.getByRole("button", {name: "Update"});
+		const submitButton = wrapper.getByRole("button", { name: "Update" });
 		await waitFor(() => {
 			fireEvent.click(submitButton);
 		});
@@ -96,7 +96,7 @@ describe("Testing profile settings", () => {
 			</Provider>
 		);
 		
-		const submitButton = wrapper.getByRole("button", {name: "Update"});
+		const submitButton = wrapper.getByRole("button", { name: "Update" });
 		await waitFor(() => {
 			fireEvent.click(submitButton);
 		});
@@ -120,11 +120,11 @@ describe("Testing profile settings", () => {
 			</Provider>
 		);
 		
-		const submitButton = wrapper.getByRole("button", {name: "Update"});
+		const submitButton = wrapper.getByRole("button", { name: "Update" });
 		await waitFor(() => {
 			fireEvent.click(submitButton);
 		});
-		const first_name_field = wrapper.getByRole("textbox", {name: "First name"});
+		const first_name_field = wrapper.getByRole("textbox", { name: "First name" });
 
 		expect(spyOnCookies).toHaveBeenCalledTimes(1);
 		expect(spyOnApi).toBeCalledTimes(1);

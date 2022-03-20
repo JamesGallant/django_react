@@ -10,7 +10,7 @@ export const CentredSubmitFormRoot = (prefix: string) => {
 		submit: `${prefix}-submit`
 	};
 	
-	const Root = styled("div")(({theme}) => ({
+	const Root = styled("div")(({ theme }) => ({
 		[`&.${classes.root}`]: {
 			position: "absolute",
 			flexGrow: 1, 

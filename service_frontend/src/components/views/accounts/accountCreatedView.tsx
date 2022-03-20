@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
-import {Button, Box, styled, Container, CssBaseline, Grid, Typography, Link } from "@mui/material";
+import { Button, Box, styled, Container, CssBaseline, Grid, Typography, Link } from "@mui/material";
 import { AxiosResponse } from "axios";
 
 import configuration from "../../../utils/config";
@@ -15,7 +15,7 @@ const classes = {
 	paper: `${PREFIX}-paper`
 };
 
-const Root = styled("div")(({theme}) => ({
+const Root = styled("div")(({ theme }) => ({
 	[`&.${classes.root}`]: {
 		position: "absolute",
 		flexGrow: 1, 
@@ -70,7 +70,7 @@ const AccountCreatedView : FC = () => {
 					<Grid container spacing={2}>
 						<Grid item xs={12}>
 							<Typography component="div" variant="h5" align="center">
-								<strong>Thank you for creating an account with {process.env.REACT_APP_SITE_NAME}</strong>
+								<strong>Thank you for creating an account with {configuration["site-name"]}</strong>
 							</Typography>
 						</Grid>
 						<Grid item>

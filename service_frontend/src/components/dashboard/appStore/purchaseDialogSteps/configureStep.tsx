@@ -24,9 +24,9 @@ const ConfigureStep = (props: ConfigurationProps): JSX.Element => {
 
 	const renderConfigurePlan = (): JSX.Element => {
 		const purchaseOptions= [
-			{durationText: "1 month", duration: 1, multiplier: 1, discountInfo: ""},
-			{durationText: "6 months", duration: 6, multiplier:  5, discountInfo: "One month free"},
-			{durationText: "1 year", duration: 12, multiplier: 10, discountInfo: "Two months free"}
+			{ durationText: "1 month", duration: 1, multiplier: 1, discountInfo: "" },
+			{ durationText: "6 months", duration: 6, multiplier:  5, discountInfo: "One month free" },
+			{ durationText: "1 year", duration: 12, multiplier: 10, discountInfo: "Two months free" }
 		];
 
 		const handlePurchaseOptions = (event: React.SyntheticEvent, value: any): void => {
@@ -129,13 +129,13 @@ const ConfigureStep = (props: ConfigurationProps): JSX.Element => {
 						options={purchaseOptions}
 						getOptionLabel={(option: configurationInterface) => option.durationText}
 						isOptionEqualToValue={(option: configurationInterface, value: configurationInterface) => option.durationText === value.durationText}
-						sx={{width: 200}}
+						sx={{ width: 200 }}
 						renderInput={(params: any) => <TextField {...params} label="Duration" />}
 					/>
 				</Grid>
 				<Grid item xs={6}>
 					<BasicCard
-						cardSX={{width: "15rem", height: "20rem"}}
+						cardSX={{ width: "15rem", height: "20rem" }}
 						actionArea={false}
 						raised={true}
 						content={
@@ -160,7 +160,7 @@ const ConfigureStep = (props: ConfigurationProps): JSX.Element => {
 	};
 
 	return(
-		<Box sx={{marginLeft: 5}}>
+		<Box sx={{ marginLeft: 5 }}>
 			{ renderConfigurePlan() }
 		</Box>
 	);

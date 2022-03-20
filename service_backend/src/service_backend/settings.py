@@ -9,13 +9,11 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
 import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -27,8 +25,8 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 DEBUG = os.environ.get("DEBUG")
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
-
 ADMINS = os.environ.get("ADMINS")
+
 # comapany name
 SITE_NAME = os.environ.get("SITE_NAME")
 
@@ -138,10 +136,18 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
+# Static files (CSS, JavaScript, Images) and storage
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = "/static/"
+if os.environ.get("MODE") == "production":
+    STATIC_URL = os.environ.get("STATIC_URL")
+    STATIC_ROOT = os.environ.get("STATIC_ROOT")
+    GS_BUCKET_NAME = os.environ.get("GS_BUCKET_NAME")
+    DEFAULT_FILE_STORAGE = os.environ.get("DEFAULT_FILE_STORAGE")
+    STATICFILES_STORAGE = os.environ.get("STATICFILES_STORAGE")
+    GS_DEFAULT_ACL = os.environ.get("GS_DEFAULT_ACL")
+else:
+    STATIC_URL = os.environ.get("STATIC_URL")
 
 # HTTPS settings
 CSRF_COOKIE_SECURE = os.environ.get("CSRF_COOKIE_SECURE")
@@ -160,10 +166,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 # Rest framework settings
 # CORS
-CORS_ORIGIN_WHITELIST = [
-    f"{os.environ.get('PROTOCOL')}{os.environ.get('FRONTEND_URL')}"
-]
-
+CORS_ORIGIN_WHITELIST = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 # restrict to api only
 CORS_ORIGIN_ALLOW_ALL = False
 

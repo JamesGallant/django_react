@@ -1,4 +1,4 @@
-import React, {FC, useState} from "react";
+import React, { FC, useState } from "react";
 import { useNavigate } from "react-router";
 
 // material ui
@@ -11,7 +11,7 @@ import configuration from "../../../utils/config";
 import { resetPassword } from "../../../api/authenticationAPI";
 import { logout } from "../../../modules/authentication";
 
-const { Root, classes} = CentredSubmitFormRoot("ResetPassword");
+const { Root, classes } = CentredSubmitFormRoot("ResetPassword");
 
 const ResetPassword: FC = (): JSX.Element => {
 	const navigate = useNavigate();

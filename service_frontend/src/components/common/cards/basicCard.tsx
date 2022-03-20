@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Card, CardContent, CardActions, CardActionArea, Box } from "@mui/material";
+import { Card, CardContent, CardActions, CardActionArea, Box } from "@mui/material";
 import type { SxProps } from "@mui/system";
 
 interface BasicCardProps {

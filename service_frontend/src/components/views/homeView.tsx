@@ -11,7 +11,7 @@ const classes = {
 	root: `${PREFIX}-root`
 };
 
-const Root = styled("div")(({theme}) => ({
+const Root = styled("div")(({ theme }) => ({
 	[`&.${classes.root}`]: {
 		padding: theme.spacing(5),
 	}

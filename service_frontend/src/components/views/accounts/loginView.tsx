@@ -15,7 +15,7 @@ import { postTokenLogin, getUserData } from "../../../api/authenticationAPI";
 import CookieHandler from "../../../modules/cookies";
 import { login } from "../../../modules/authentication";
 
-const { Root, classes} = CentredSubmitFormRoot("LoginView");
+const { Root, classes } = CentredSubmitFormRoot("LoginView");
 
 interface formTypes {
     email: string,
@@ -142,7 +142,7 @@ const LoginViewPage: React.FC = (): JSX.Element => {
 						<Grid container spacing={2}>
 							<Grid item xs={12}>
 								<Typography variant="h5" align="center">
-									<strong>Log in to {process.env.REACT_APP_SITE_NAME}</strong>
+									<strong>Log in to {configuration["site-name"]}</strong>
 								</Typography>
 							</Grid>
 							<Grid item xs={12}>

@@ -3,7 +3,7 @@ import { Route, Routes } from "react-router-dom";
 
 import { createTheme, ThemeProvider, useMediaQuery, CssBaseline } from "@mui/material";
 
-import {useAppSelector, useAppDispatch} from "./store/hooks";
+import { useAppSelector, useAppDispatch } from "./store/hooks";
 import { selectSiteTheme, setThemeMode } from "./store/slices/siteConfigurationSlice";
 
 import configuration from "./utils/config";

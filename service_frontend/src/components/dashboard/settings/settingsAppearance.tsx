@@ -8,7 +8,7 @@ import { selectSiteTheme, setThemeMode, setThemePreference } from "../../../stor
 import MediaCard from "../../common/cards/MediaCard";
 import darkmodeImage from "../../../assets/images/darkmode.png";
 import lightmodeImage from "../../../assets/images/lightmode.png";
-
+import configuration from "../../../utils/config";
 import type { ThemePreferenceInterface } from "../../../types/siteConfigTypes";
 
 interface CardSelectThemeInterface {
@@ -74,21 +74,21 @@ const SettingsAppearance: FC = (): JSX.Element => {
 	};
 
 	return(
-		<Box sx={{width: "40vw"}}>
+		<Box sx={{ width: "40vw" }}>
 			<Grid container spacing={2}>
 				<Grid item xs={12}>
 					<Typography gutterBottom variant="subtitle1"> <strong>Appearance settings</strong></Typography>
 					<Divider/>
 				</Grid>
-				<Grid item xs={12} sx={{marginTop: 0.5}}>
+				<Grid item xs={12} sx={{ marginTop: 0.5 }}>
 					<Typography  variant="subtitle2"><strong>Theme preference</strong></Typography>
 					<Stack spacing={1}>
 						<Typography  
 							variant="subtitle1" 
 							paragraph 
-							sx={{fontSize: 12}}
+							sx={{ fontSize: 12 }}
 						>
-							Choose how {process.env.REACT_APP_SITE_NAME} looks to you. Either select a theme or we can automatically
+							Choose how { configuration["site-name"] } looks to you. Either select a theme or we can automatically
 							sync it with your current system preference. 
 						</Typography>
 						<FormControl component="fieldset">

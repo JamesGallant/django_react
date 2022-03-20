@@ -1,0 +1,7 @@
+-r ./base.txt
+
+# WSGI server
+gunicorn==20.1.0
+
+# -- storage
+django-storages[google]==1.12.3

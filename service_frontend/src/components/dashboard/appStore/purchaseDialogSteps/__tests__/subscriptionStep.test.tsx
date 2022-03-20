@@ -130,13 +130,13 @@ describe("Testing the subscription step", () => {
 			</Provider>
 		);
 
-		const selectPlanBtn: HTMLElement[] = wrapper.getAllByRole("button", {name: "Select plan"});
+		const selectPlanBtn: HTMLElement[] = wrapper.getAllByRole("button", { name: "Select plan" });
 
 		await waitFor(() => {
 			fireEvent.click(selectPlanBtn[0]);
 		});
 		expect(store.dispatch).toHaveBeenCalledTimes(1);
-		expect(store.dispatch).toHaveBeenCalledWith({"payload": "DEMO", "type": "purchaseDialog/setSelectedSubscription"});
+		expect(store.dispatch).toHaveBeenCalledWith({ "payload": "DEMO", "type": "purchaseDialog/setSelectedSubscription" });
 	});
 
 });

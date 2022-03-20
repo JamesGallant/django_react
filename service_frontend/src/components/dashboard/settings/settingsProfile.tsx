@@ -137,7 +137,7 @@ const SettingsProfile: FC = (): JSX.Element => {
 	};
 
 	return(
-		<Box sx={{width: "30vw"}}>
+		<Box sx={{ width: "30vw" }}>
 			<Grid container spacing={2}>
 				<Grid item xs={12}>
 					<Stack direction="row" justifyContent="space-between">
@@ -147,14 +147,14 @@ const SettingsProfile: FC = (): JSX.Element => {
 							endIcon={<SaveIcon />}
 							loading={loading}
 							size="small"
-							sx={{width: "200px"}}
+							sx={{ width: "200px" }}
 							loadingPosition="end"
 							variant="contained"
 						>
 							Update
 						</LoadingButton>
 					</Stack>
-					<Divider sx={{marginTop: "2vh"}}/>
+					<Divider sx={{ marginTop: "2vh" }}/>
 				</Grid>
 				<Grid item xs = {12}>
 					<FlashError 
@@ -169,7 +169,7 @@ const SettingsProfile: FC = (): JSX.Element => {
 					<TextField 
 						name="first_name"
 						id="fname"
-						sx={{width: "15vw"}}
+						sx={{ width: "15vw" }}
 						label="First name"
 						errorMessage={errorMessage.first_name}
 						onChange={handleFormInput}
@@ -180,7 +180,7 @@ const SettingsProfile: FC = (): JSX.Element => {
 					<TextField 
 						name="last_name"
 						id="lname"
-						sx={{width: "15vw"}}
+						sx={{ width: "15vw" }}
 						label="Last name"
 						onChange={handleFormInput}
 						value={ formValues.last_name }
@@ -200,7 +200,7 @@ const SettingsProfile: FC = (): JSX.Element => {
 					<Typography gutterBottom variant="subtitle2"> <strong>Update your mobile number</strong></Typography>
 					<TextField 
 						fullWidth
-						sx={{width: "15vw"}}
+						sx={{ width: "15vw" }}
 						id="mobile_number"
 						name="mobile_number"
 						label="mobile number"

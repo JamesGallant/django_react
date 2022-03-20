@@ -5,7 +5,7 @@ import { selectUserData } from "../../store/slices/userSlice";
 import { selectSiteConfigData } from "../../store/slices/siteConfigurationSlice";
 
 import { Box, AppBar, Toolbar, IconButton, Menu, MenuItem, ListItemIcon, Divider, Typography } from "@mui/material";
-import {AccountCircle, Settings, Logout } from "@mui/icons-material";
+import { AccountCircle, Settings, Logout } from "@mui/icons-material";
 
 import SwitchAccountIcon from "@mui/icons-material/SwitchAccount";
 import AppsIcon from "@mui/icons-material/Apps";
@@ -53,7 +53,7 @@ const Navbar: FC = (): JSX.Element => {
 	};
 
 	return(
-		<Box sx={{flexGrow: 1}}>
+		<Box sx={{ flexGrow: 1 }}>
 			<AppBar position="static" enableColorOnDark={true} >
 				<Toolbar>
 					<IconButton

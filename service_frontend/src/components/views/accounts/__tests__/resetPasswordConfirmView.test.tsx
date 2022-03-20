@@ -3,7 +3,7 @@ import { render, fireEvent, waitFor } from "@testing-library/react";
 import { AxiosResponse } from "axios";
 import { createMemoryHistory } from "history";
 
-import {Router} from "react-router-dom";
+import { Router } from "react-router-dom";
 
 import configuration from "../../../../utils/config";
 import ResetPasswordConfirm from "../resetPasswordConfirmView";
@@ -46,7 +46,7 @@ describe("Testing the resetPasswordConfirm view", () => {
 	});
 
 	it("Bad request throws flash error when token is invalid", async() => {
-		AxiosResponse.data = {token: ["random error"]};
+		AxiosResponse.data = { token: ["random error"] };
 		AxiosResponse.status = 400;
 		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetPasswordConfirm").mockImplementation(() => Promise.resolve(AxiosResponse));
 
@@ -57,7 +57,7 @@ describe("Testing the resetPasswordConfirm view", () => {
 			>
 				<ResetPasswordConfirm/>
 			</Router>);
-		const submitButton: HTMLElement = wrapper.getByRole("button", {name: "Update Password"});
+		const submitButton: HTMLElement = wrapper.getByRole("button", { name: "Update Password" });
 
 		await waitFor(() => {
 			fireEvent.click(submitButton);
@@ -69,7 +69,7 @@ describe("Testing the resetPasswordConfirm view", () => {
 	});
 
 	it("bad request response throws flash error when field errors are unknown", async() => {
-		AxiosResponse.data = {non_field_errors: ["other error"]};
+		AxiosResponse.data = { non_field_errors: ["other error"] };
 		AxiosResponse.status = 400;
 
 		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetPasswordConfirm").mockImplementation(() => Promise.resolve(AxiosResponse));
@@ -81,7 +81,7 @@ describe("Testing the resetPasswordConfirm view", () => {
 			>
 				<ResetPasswordConfirm/>
 			</Router>);
-		const submitButton: HTMLElement = wrapper.getByRole("button", {name: "Update Password"});
+		const submitButton: HTMLElement = wrapper.getByRole("button", { name: "Update Password" });
 
 		await waitFor(() => {
 			fireEvent.click(submitButton);
@@ -93,7 +93,7 @@ describe("Testing the resetPasswordConfirm view", () => {
 	});
 
 	it("bad request response throws field errors correctly", async() => {
-		AxiosResponse.data = {new_password: ["error password"], re_new_password: ["error new password"]};
+		AxiosResponse.data = { new_password: ["error password"], re_new_password: ["error new password"] };
 		AxiosResponse.status = 400;
 		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetPasswordConfirm").mockImplementation(() => Promise.resolve(AxiosResponse));
 
@@ -104,7 +104,7 @@ describe("Testing the resetPasswordConfirm view", () => {
 			>
 				<ResetPasswordConfirm/>
 			</Router>);
-		const submitButton: HTMLElement = wrapper.getByRole("button", {name: "Update Password"});
+		const submitButton: HTMLElement = wrapper.getByRole("button", { name: "Update Password" });
 
 		await waitFor(() => {
 			fireEvent.click(submitButton);
@@ -128,7 +128,7 @@ describe("Testing the resetPasswordConfirm view", () => {
 			>
 				<ResetPasswordConfirm/>
 			</Router>);
-		const submitButton: HTMLElement = wrapper.getByRole("button", {name: "Update Password"});
+		const submitButton: HTMLElement = wrapper.getByRole("button", { name: "Update Password" });
 
 		await waitFor(() => {
 			fireEvent.click(submitButton);
@@ -152,7 +152,7 @@ describe("Testing the resetPasswordConfirm view", () => {
 				<ResetPasswordConfirm/>
 			</Router>);
 
-		const submitButton = wrapper.getByRole("button", {name: "Update Password"});
+		const submitButton = wrapper.getByRole("button", { name: "Update Password" });
 
 		await waitFor(() => {
 			fireEvent.click(submitButton);

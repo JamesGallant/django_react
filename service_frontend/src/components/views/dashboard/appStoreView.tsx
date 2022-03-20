@@ -4,10 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../store/hooks";
 import { getRegisteredApp, selectAppData, selectAppStateStatus } from "../../../store/slices/registeredAppsSlice";
 import { selectUserData } from "../../../store/slices/userSlice";
-import {linkApp, selectUserApps, getUserApps, updateAppExpirationDate} from "../../../store/slices/userOwnedAppsSlice";
+import { linkApp, selectUserApps, getUserApps, updateAppExpirationDate } from "../../../store/slices/userOwnedAppsSlice";
 import { resetPurchaseDialog, selectPurchaseDialogData, setActiveStep, setAppID } from "../../../store/slices/purchaseDialogSlice";
 
-import { Box, Typography, Button, Stack, Divider, Grid, CircularProgress, useMediaQuery, DialogContentText, Snackbar, Alert } from "@mui/material";
+import { Box, Typography, Button, Divider, Grid, CircularProgress, useMediaQuery, DialogContentText, Snackbar, Alert } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
 import MediaCard from "../../common/cards/MediaCard";
@@ -206,8 +206,8 @@ const AppStoreView = (): JSX.Element | null => {
 				{ appStateStatus === "pending" ? <CircularProgress /> : 
 					<MediaCard
 						key={index}
-						cardSx={{minWidth: "10rem"}} 
-						actionAreaSx={{height: "25rem", minWidth: "10rem", marginTop: -10}}
+						cardSx={{ minWidth: "10rem" }} 
+						actionAreaSx={{ height: "25rem", minWidth: "10rem", marginTop: -10 }}
 						mediaHeight="140"
 						mediaComponent="img"
 						mediaSrc="https://picsum.photos/200/300"
@@ -220,7 +220,7 @@ const AppStoreView = (): JSX.Element | null => {
 								direction="column"
 							>
 								<Grid item xs={12}>
-									<Typography variant="h4" color="text.secondary" gutterBottom sx={{wordWrap: "break-word", maxHeight: 40 }}>
+									<Typography variant="h4" color="text.secondary" gutterBottom sx={{ wordWrap: "break-word", maxHeight: 40 }}>
 										{app.name}
 									</Typography>
 								</Grid>
@@ -236,12 +236,12 @@ const AppStoreView = (): JSX.Element | null => {
 							</Grid>
 						}
 						cardActionElements={
-							<Box sx={{width: "100%", display: "flex", paddingBottom: 1}} justifyContent="space-between" alignItems="center">
-								<Box sx={{paddingLeft: 2}} justifyContent="flex-start">
+							<Box sx={{ width: "100%", display: "flex", paddingBottom: 1 }} justifyContent="space-between" alignItems="center">
+								<Box sx={{ paddingLeft: 2 }} justifyContent="flex-start">
 									<Button onClick={() => renderLearnMoreDialog(app.name, app.full_description)}>About</Button>
 								</Box>
 								<Divider orientation="vertical" flexItem />
-								<Box sx={{paddingRight: 2}} justifyContent="flex-end">
+								<Box sx={{ paddingRight: 2 }} justifyContent="flex-end">
 									<PurchaseButton disabled={app.disabled} purchased={purchased} onClick={() => renderPurchaseDialog(app)}/>
 								</Box>
 							</Box>
@@ -269,7 +269,7 @@ const AppStoreView = (): JSX.Element | null => {
 	};
 
 	return (
-		<Box sx={{marginLeft: "10%", marginRight: "10%", flexGrow: 1}}>
+		<Box sx={{ marginLeft: "10%", marginRight: "10%", flexGrow: 1 }}>
 			<h1>Apps</h1>
 			<Grid container spacing={{ xs: 2, md: 4 }} columns={{ xs: 4, sm: 8, md: 12 }}>
 				{ appList }
@@ -298,8 +298,8 @@ const AppStoreView = (): JSX.Element | null => {
 			<Snackbar
 				open={snackbar.open}
 				autoHideDuration={6000}
-				sx={{borderColor: snackbar.variant}}
-				anchorOrigin={{"vertical": "bottom", "horizontal": "right"}}
+				sx={{ borderColor: snackbar.variant }}
+				anchorOrigin={{ "vertical": "bottom", "horizontal": "right" }}
 				onClose={handleCloseSnackBar}
 			>
 				<Alert severity={snackbar.variant} sx={{ width: "100%" }} onClose={handleCloseSnackBar}>

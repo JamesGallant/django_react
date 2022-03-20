@@ -71,7 +71,7 @@ describe("Testing the PurchaseAppDialog", () => {
 			</Provider>
 		);
 
-		const nextBtn: HTMLElement = wrapper.getByRole("button", {name: "Next", hidden: true});
+		const nextBtn: HTMLElement = wrapper.getByRole("button", { name: "Next", hidden: true });
 		expect(nextBtn).toHaveAttribute("disabled");
 	});
 
@@ -99,7 +99,7 @@ describe("Testing the PurchaseAppDialog", () => {
 			</Provider>
 		);
 
-		const nextBtn: HTMLElement = wrapper.getByRole("button", {name: "Next", hidden: true});
+		const nextBtn: HTMLElement = wrapper.getByRole("button", { name: "Next", hidden: true });
 		expect(nextBtn).not.toHaveAttribute("disabled");
 	});
 
@@ -117,7 +117,7 @@ describe("Testing the PurchaseAppDialog", () => {
 				/>
 			</Provider>
 		);
-		const nextBtn: HTMLElement = wrapper.getByRole("button", {name: "Finish", hidden: true});
+		const nextBtn: HTMLElement = wrapper.getByRole("button", { name: "Finish", hidden: true });
 
 		expect(nextBtn).toHaveTextContent("Finish");
 	});

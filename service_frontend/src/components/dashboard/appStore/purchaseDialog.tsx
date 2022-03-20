@@ -2,7 +2,7 @@ import React from "react";
 
 import { useAppSelector } from "../../../store/hooks";
 import { selectPurchaseDialogData } from "../../../store/slices/purchaseDialogSlice";
-import {Box, Button, useMediaQuery, Breakpoint} from "@mui/material";
+import { Box, Button, useMediaQuery, Breakpoint } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 
 import BasicStepper from "../../common/steppers/basicStepper";
@@ -23,8 +23,8 @@ interface PurchaseAppDialogInterface {
 }
 
 const PurchaseAppDialog = (props: PurchaseAppDialogInterface): JSX.Element => {
-	const {isOpen, onClose, nextFn, backFn,  title="", closeOnClickAway=false,
-		maxWidth="md"} = props;
+	const { isOpen, onClose, nextFn, backFn,  title="", closeOnClickAway=false,
+		maxWidth="md" } = props;
 
 	const theme = useTheme();
 	const dialogData: PurchaseDialogData = useAppSelector(selectPurchaseDialogData);
@@ -93,7 +93,7 @@ const PurchaseAppDialog = (props: PurchaseAppDialogInterface): JSX.Element => {
 						steps={dialogData.data.steps}
 						activeStep={dialogData.data.activeStep}
 					/>
-					<Box sx={{marginTop: 5}}>
+					<Box sx={{ marginTop: 5 }}>
 						{mainStepContent(dialogData.data.activeStep)}
 					</Box>
 				</Box>

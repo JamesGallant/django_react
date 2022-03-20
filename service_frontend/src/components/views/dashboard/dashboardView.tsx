@@ -64,9 +64,9 @@ const DashboardView: FC = (): JSX.Element => {
 			<div>
 				<Box>
 					<Navbar />
-					<Grid container sx={{position: "fixed"}} spacing={1}>]
+					<Grid container sx={{ position: "fixed" }} spacing={1}>]
 						<Grid item xs={12}>
-							<Box sx={{maxHeight: "87vh", overflow: "auto" }}>
+							<Box sx={{ maxHeight: "87vh", overflow: "auto" }}>
 								<Routes>
 									<Route path={ configuration["url-dashboard-home"] } element={ <AppStoreMain />} />
 									<Route path={ configuration["url-dashboard-settings"] } element={ <SettingsMain />} />

@@ -245,13 +245,13 @@ const SettingsAccount: FC = (): JSX.Element => {
 	};
 
 	return(
-		<Box sx={{width: "40vw"}}>
+		<Box sx={{ width: "40vw" }}>
 			<Grid container spacing={2}>
 				<Grid item xs={12}>
 					<Typography gutterBottom variant="subtitle1"> <strong> Account settings</strong></Typography>
 					<Divider />
 				</Grid>
-				<Grid item xs={12} sx={{marginTop: 0.5}}>
+				<Grid item xs={12} sx={{ marginTop: 0.5 }}>
 					<Stack spacing={1}>
 						<Typography  variant="subtitle2"><strong>Clear cache on log out</strong></Typography>
 						<Switch 
@@ -262,7 +262,7 @@ const SettingsAccount: FC = (): JSX.Element => {
 						<Typography  
 							variant="subtitle1" 
 							paragraph 
-							sx={{fontSize: 12}}
+							sx={{ fontSize: 12 }}
 						>
 							By enabling this feature your account will not persist your login details. 
 						</Typography>
@@ -275,10 +275,10 @@ const SettingsAccount: FC = (): JSX.Element => {
 						<Typography  
 							variant="subtitle1" 
 							paragraph 
-							sx={{fontSize: 12}}
+							sx={{ fontSize: 12 }}
 						>We will send a email to <strong>{user.email}</strong>, 
 					follow the link to complete the reset. You will be logged out and <strong 
-								style={{color: theme.palette.error.main}}>
+								style={{ color: theme.palette.error.main }}>
 							you will not be able to login with your old email.
 							</strong>
 						</Typography>
@@ -287,7 +287,7 @@ const SettingsAccount: FC = (): JSX.Element => {
 							endIcon={<SaveIcon />}
 							loading={loading.emailChangeUsername}
 							size="small"
-							sx={{width: "200px"}}
+							sx={{ width: "200px" }}
 							loadingPosition="end"
 							variant="contained"
 						>
@@ -302,7 +302,7 @@ const SettingsAccount: FC = (): JSX.Element => {
 						<Typography 
 							variant="subtitle1"
 							paragraph
-							sx={{fontSize: 12}}
+							sx={{ fontSize: 12 }}
 						>
 							Requesting to update your password will log you out and we will send a link to <strong>{user.email}</strong>. Follow the link in your email to complete the process. 
 						</Typography>
@@ -311,7 +311,7 @@ const SettingsAccount: FC = (): JSX.Element => {
 							endIcon={<SaveIcon />}
 							loading={loading.emailChangePassword}
 							size="small"
-							sx={{width: "200px"}}
+							sx={{ width: "200px" }}
 							loadingPosition="end"
 							variant="contained"
 						>
@@ -329,14 +329,14 @@ const SettingsAccount: FC = (): JSX.Element => {
 							value={ password }
 							errorMessage={ errorMessage }
 							required
-							sx={{width: "20vw"}}
+							sx={{ width: "20vw" }}
 							onChange={ handleFormInput }/>
 						<Typography 
 							variant="subtitle1" 
 							paragraph
-							sx={{fontSize: 12}}
+							sx={{ fontSize: 12 }}
 						>Deleting your account will delete all of your data, 
-							<strong style={{color: theme.palette.error.main}}>
+							<strong style={{ color: theme.palette.error.main }}>
 							there is no going back
 							</strong>.
 						</Typography>
@@ -345,7 +345,7 @@ const SettingsAccount: FC = (): JSX.Element => {
 							endIcon={<SaveIcon />}
 							loading={loading.deleteUser}
 							size="small"
-							sx={{width: "200px"}}
+							sx={{ width: "200px" }}
 							loadingPosition="end"
 							variant="contained"
 						>

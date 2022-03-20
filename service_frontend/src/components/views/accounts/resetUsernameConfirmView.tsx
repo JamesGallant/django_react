@@ -12,7 +12,7 @@ import { CentredSubmitFormRoot } from "../../../utils/commonStyles";
 import { resetUsernameConfirm } from "../../../api/authenticationAPI";
 
 import type { AxiosResponse } from "axios";
-const { Root, classes} = CentredSubmitFormRoot("ResetUsernameConfirm");
+const { Root, classes } = CentredSubmitFormRoot("ResetUsernameConfirm");
 
 //TODO add a popup to alert user that change was successfull before logout
 const ResetUsernameConfirm: FC = (): JSX.Element => {

@@ -44,7 +44,7 @@ const SettingsView = (): JSX.Element | null => {
 				{...other}
 			>
 				{value === index && (
-					<div style={{ marginLeft: "5vw", paddingTop: "1vh"}}>
+					<div style={{ marginLeft: "5vw", paddingTop: "1vh" }}>
 						{children}
 					</div>
 				)}

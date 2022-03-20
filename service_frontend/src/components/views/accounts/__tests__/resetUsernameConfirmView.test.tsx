@@ -45,7 +45,7 @@ describe("Testing the ResetUsernameConfirmView", () => {
 	});
 
 	it("Bad request (400) throws flashError when non_field_errors occur", async () => {
-		AxiosResponse.data = {non_field_errors: ["random error"]};
+		AxiosResponse.data = { non_field_errors: ["random error"] };
 		AxiosResponse.status = 400;
 
 		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetUsernameConfirm").mockImplementation(() => Promise.resolve(AxiosResponse));
@@ -57,7 +57,7 @@ describe("Testing the ResetUsernameConfirmView", () => {
 				<ResetUsernameConfirm/>
 			</Router>
 		);
-		const submitButton: HTMLElement = wrapper.getByRole("button", {name: "Update email"});
+		const submitButton: HTMLElement = wrapper.getByRole("button", { name: "Update email" });
 
 		await waitFor(() => {
 			fireEvent.click(submitButton);
@@ -69,7 +69,7 @@ describe("Testing the ResetUsernameConfirmView", () => {
 	});
 
 	it("Bad request (400) throws flashError and logs out when token error occur", async () => {
-		AxiosResponse.data = {token: ["token error"]};
+		AxiosResponse.data = { token: ["token error"] };
 		AxiosResponse.status = 400;
 
 		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetUsernameConfirm").mockImplementation(() => Promise.resolve(AxiosResponse));
@@ -82,7 +82,7 @@ describe("Testing the ResetUsernameConfirmView", () => {
 				<ResetUsernameConfirm/>
 			</Router>
 		);
-		const submitButton: HTMLElement = wrapper.getByRole("button", {name: "Update email"});
+		const submitButton: HTMLElement = wrapper.getByRole("button", { name: "Update email" });
 
 		await waitFor(() => {
 			fireEvent.click(submitButton);
@@ -95,7 +95,7 @@ describe("Testing the ResetUsernameConfirmView", () => {
 	});
 
 	it("Bad request (400) throws flashError when email error occur", async () => {
-		AxiosResponse.data = {new_email: ["email error"]};
+		AxiosResponse.data = { new_email: ["email error"] };
 		AxiosResponse.status = 400;
 
 		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetUsernameConfirm").mockImplementation(() => Promise.resolve(AxiosResponse));
@@ -107,7 +107,7 @@ describe("Testing the ResetUsernameConfirmView", () => {
 				<ResetUsernameConfirm/>
 			</Router>
 		);
-		const submitButton: HTMLElement = wrapper.getByRole("button", {name: "Update email"});
+		const submitButton: HTMLElement = wrapper.getByRole("button", { name: "Update email" });
 
 		await waitFor(() => {
 			fireEvent.click(submitButton);
@@ -119,7 +119,7 @@ describe("Testing the ResetUsernameConfirmView", () => {
 	});
 
 	it("Auth error (401) throws flashError when authentication error occurs", async () => {
-		AxiosResponse.data = {non_field_error: ["random error"]};
+		AxiosResponse.data = { non_field_error: ["random error"] };
 		AxiosResponse.status = 401;
 
 		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetUsernameConfirm").mockImplementation(() => Promise.resolve(AxiosResponse));
@@ -132,7 +132,7 @@ describe("Testing the ResetUsernameConfirmView", () => {
 				<ResetUsernameConfirm/>
 			</Router>
 		);
-		const submitButton: HTMLElement = wrapper.getByRole("button", {name: "Update email"});
+		const submitButton: HTMLElement = wrapper.getByRole("button", { name: "Update email" });
 
 		await waitFor(() => {
 			fireEvent.click(submitButton);
@@ -156,7 +156,7 @@ describe("Testing the ResetUsernameConfirmView", () => {
 				<ResetUsernameConfirm/>
 			</Router>
 		);
-		const submitButton: HTMLElement = wrapper.getByRole("button", {name: "Update email"});
+		const submitButton: HTMLElement = wrapper.getByRole("button", { name: "Update email" });
 		
 		await waitFor(() => {
 			fireEvent.click(submitButton);

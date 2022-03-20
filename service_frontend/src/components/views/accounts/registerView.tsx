@@ -22,7 +22,7 @@ import { AxiosResponse } from "axios";
 
 import type { UserDataInterface } from "../../../types/authentication";
 
-const { Root, classes} = CentredSubmitFormRoot("RegisterView");
+const { Root, classes } = CentredSubmitFormRoot("RegisterView");
 
 //#region types
 interface FormTypes {
@@ -167,9 +167,6 @@ const RegisterView: React.FC = (): JSX.Element => {
 				password: typeof(responseData?.password) === "undefined" ? [""]: responseData?.password,
 			});
 			break;
-
-		default:
-			throw new Error("Status code invalid, should be 400 or 201. See https://djoser.readthedocs.io/en/latest/base_endpoints.html#user-create");
 		}
 	};
 
@@ -182,7 +179,7 @@ const RegisterView: React.FC = (): JSX.Element => {
 						<Grid container spacing={2}>
 							<Grid item xs={12}>
 								<Typography variant="h5" align="center">
-									<strong>Create your {process.env.REACT_APP_SITE_NAME} account</strong>
+									<strong>Create your {configuration["site-name"]} account</strong>
 								</Typography>
 							</Grid>
 							<Grid item xs = {12}>
