@@ -1,5 +1,5 @@
 import React from "react";
-import {render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 
 import { AxiosResponse } from "axios";
 import { createMemoryHistory } from "history";
@@ -53,12 +53,12 @@ describe("Testing account registration", () => {
 				<RegisterView />
 			</Router>);
 
-		const submitButton =screen.getByRole("button", {name: "Register"});
-		const fname = screen.getByRole("textbox", {name: "First Name"});
-		const lname = screen.getByRole("textbox", {name: "Last Name"});
-		const email = screen.getByRole("textbox", {name: "Email"});
-		const mobile = screen.getByRole("textbox", {name: "mobile number"});
-		const country = screen.getByRole("textbox", {name: "Country"});
+		const submitButton =screen.getByRole("button", { name: "Register" });
+		const fname = screen.getByRole("textbox", { name: "First Name" });
+		const lname = screen.getByRole("textbox", { name: "Last Name" });
+		const email = screen.getByRole("textbox", { name: "Email" });
+		const mobile = screen.getByRole("textbox", { name: "mobile number" });
+		const country = screen.getByRole("textbox", { name: "Country" });
 
 		await waitFor(() => {
 			fireEvent.click(submitButton);
@@ -96,12 +96,12 @@ describe("Testing account registration", () => {
 				<RegisterView />
 			</Router>);
 
-		const submitButton =screen.getByRole("button", {name: "Register"});
-		const fname = screen.getByRole("textbox", {name: "First Name"});
-		const lname = screen.getByRole("textbox", {name: "Last Name"});
-		const email = screen.getByRole("textbox", {name: "Email"});
-		const mobile = screen.getByRole("textbox", {name: "mobile number"});
-		const country = screen.getByRole("textbox", {name: "Country"});
+		const submitButton =screen.getByRole("button", { name: "Register" });
+		const fname = screen.getByRole("textbox", { name: "First Name" });
+		const lname = screen.getByRole("textbox", { name: "Last Name" });
+		const email = screen.getByRole("textbox", { name: "Email" });
+		const mobile = screen.getByRole("textbox", { name: "mobile number" });
+		const country = screen.getByRole("textbox", { name: "Country" });
 
 		await waitFor(() => {
 			fireEvent.click(submitButton);
@@ -136,9 +136,9 @@ describe("Testing account registration", () => {
 				<RegisterView />
 			</Router>);
 		
-		const submitButton = screen.getByRole("button", {name: "Register"});
-		const email = screen.getByRole("textbox", {name: "Email"});
-		const mobile = screen.getByRole("textbox", {name: "mobile number"});
+		const submitButton = screen.getByRole("button", { name: "Register" });
+		const email = screen.getByRole("textbox", { name: "Email" });
+		const mobile = screen.getByRole("textbox", { name: "mobile number" });
 
 		await waitFor(() => {
 			fireEvent.click(submitButton);
@@ -173,7 +173,7 @@ describe("Testing account registration", () => {
 				<RegisterView />
 			</Router>);
 
-		const submitButton = screen.getByRole("button", {name: "Register"});
+		const submitButton = screen.getByRole("button", { name: "Register" });
 
 		await waitFor(() => {
 			fireEvent.click(submitButton);
@@ -196,7 +196,7 @@ describe("Testing account registration", () => {
 				<RegisterView />
 			</Router>);
 
-		const submitButton = screen.getByRole("button", {name: "Register"});
+		const submitButton = screen.getByRole("button", { name: "Register" });
 
 		await waitFor(() => {
 			fireEvent.click(submitButton);

@@ -1,4 +1,4 @@
-import {login, logout} from "../authentication";
+import { login, logout } from "../authentication";
 import CookieHandler from "../cookies";
 import * as authenticationAPI from "../../api/authenticationAPI";
 import configuration from "../../utils/config";
@@ -67,7 +67,7 @@ describe("Testing login", () => {
 
 	it("should set authenticated to false if cookie is present but API call fails", async () => {
 
-		axiosResponse.data = {"detail": "some fake detail"};
+		axiosResponse.data = { "detail": "some fake detail" };
 
 		const spyGetCookie: jest.SpyInstance = jest.spyOn(CookieHandler.prototype, "getCookie").mockImplementation(() => "123456");
 		const spyOnApiHandler: jest.SpyInstance =  jest.spyOn(authenticationAPI, "getUserData").mockImplementation(() => Promise.resolve(axiosResponse));

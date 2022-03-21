@@ -177,73 +177,74 @@ class FileEditor:
 
         outfile.close()
 
-    def edit_django_settings(self, service_name: str) -> None:
-        """
-        Edits the django settings.py file to use the config file
-        :param service_name name of the microservice
-        :return:
-        """
-        filepath = f"{self.service_root_path}\\src\\{service_name}\\settings.py"
-
-        new_settings = []
-        with open(filepath, "r") as settings:
-            for line in settings:
-                if "pathlib" in line:
-                    line = "import os\nfrom pathlib import Path\nfrom .config import develop_configuration\n"
-
-                if "SECRET_KEY" in line:
-                    line = 'SECRET_KEY = os.environ.get("SECRET_KEY")'
-
-                if "DEBUG" in line:
-                    line = 'DEBUG = develop_configuration.get("debug", 0)\n'
-
-                if "ALLOWED_HOSTS" in line:
-                    line = (
-                        'ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split('
-                        ")"
-                    )
-
-                if "SITE_NAME" in line:
-                    line = 'SITE_NAME = develop_configuration.get("site_name", "test site")'
-
-                if "INSTALLED_APPS" in line:
-                    line = "INSTALLED_APPS = [\n\t# Your apps here\n\n\t# third party\n\t'corsheaders',\n\t'rest_framework',\n\t"
-
-                if "MIDDLEWARE" in line:
-                    line = (
-                        "MIDDLEWARE = [\n\t'corsheaders.middleware.CorsMiddleware',\n"
-                    )
-
-                if "ENGINE" in line:
-                    line = '\t\t"ENGINE": develop_configuration.get("sql_engine", "django.db.backends.sqlite3"),\n'
-
-                # need this keyword for the rest of DB
-                if "'NAME': BASE_DIR / 'db.sqlite3'," in line:
-                    line = (
-                        '\t\t"NAME": os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),'
-                        '\n\t\t"USER": os.environ.get("SQL_USER", None),\n\t\t"PASSWORD": os.environ.get('
-                        '"SQL_PASSWORD", None),\n\t\t"HOST": os.environ.get("SQL_HOST", "localhost"),\n'
-                        '\t\t"PORT": develop_configuration.get("sql_port", 5432),\n\t\t"TEST": {'
-                        '\n\t\t\t"NAME": develop_configuration.get("sql_test_database", "test_db"),\n\t\t}\n\t'
-                    )
-
-                new_settings.append(line)
-
-        # need to abstract these ports away
-        new_settings_data = (
-            f"# Rest framework settings\n\n# CORS\nCORS_ORIGIN_WHITELIST = ['http://localhost:8000']\n"
-            "# Restrict unknown urls\nCORS_ORIGIN_ALLOW_ALL = False\n\n"
-            'REST_FRAMEWORK = {\n\t"DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),\n'
-            '\t"DEFAULT_AUTHENTICATION_CLASSES": (\n\t\t"rest_framework.authentication.TokenAuthentication",\n'
-            "\t),\n}"
-        )
-
-        new_settings.append(new_settings_data)
-        settings.close()
-
-        file = open(filepath, "w+")
-        file.writelines(new_settings)
-        file.close()
+    #  config.py deprecated
+    # def edit_django_settings(self, service_name: str) -> None:
+    #     """
+    #     Edits the django settings.py file to use the config file
+    #     :param service_name name of the microservice
+    #     :return:
+    #     """
+    #     filepath = f"{self.service_root_path}\\src\\{service_name}\\settings.py"
+    #
+    #     new_settings = []
+    #     with open(filepath, "r") as settings:
+    #         for line in settings:
+    #             if "pathlib" in line:
+    #                 line = "import os\nfrom pathlib import Path\nfrom .config import develop_configuration\n"
+    #
+    #             if "SECRET_KEY" in line:
+    #                 line = 'SECRET_KEY = os.environ.get("SECRET_KEY")'
+    #
+    #             if "DEBUG" in line:
+    #                 line = 'DEBUG = develop_configuration.get("debug", 0)\n'
+    #
+    #             if "ALLOWED_HOSTS" in line:
+    #                 line = (
+    #                     'ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split('
+    #                     ")"
+    #                 )
+    #
+    #             if "SITE_NAME" in line:
+    #                 line = 'SITE_NAME = develop_configuration.get("site_name", "test site")'
+    #
+    #             if "INSTALLED_APPS" in line:
+    #                 line = "INSTALLED_APPS = [\n\t# Your apps here\n\n\t# third party\n\t'corsheaders',\n\t'rest_framework',\n\t"
+    #
+    #             if "MIDDLEWARE" in line:
+    #                 line = (
+    #                     "MIDDLEWARE = [\n\t'corsheaders.middleware.CorsMiddleware',\n"
+    #                 )
+    #
+    #             if "ENGINE" in line:
+    #                 line = '\t\t"ENGINE": develop_configuration.get("sql_engine", "django.db.backends.sqlite3"),\n'
+    #
+    #             # need this keyword for the rest of DB
+    #             if "'NAME': BASE_DIR / 'db.sqlite3'," in line:
+    #                 line = (
+    #                     '\t\t"NAME": os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),'
+    #                     '\n\t\t"USER": os.environ.get("SQL_USER", None),\n\t\t"PASSWORD": os.environ.get('
+    #                     '"SQL_PASSWORD", None),\n\t\t"HOST": os.environ.get("SQL_HOST", "localhost"),\n'
+    #                     '\t\t"PORT": develop_configuration.get("sql_port", 5432),\n\t\t"TEST": {'
+    #                     '\n\t\t\t"NAME": develop_configuration.get("sql_test_database", "test_db"),\n\t\t}\n\t'
+    #                 )
+    #
+    #             new_settings.append(line)
+    #
+    #     # need to abstract these ports away
+    #     new_settings_data = (
+    #         f"# Rest framework settings\n\n# CORS\nCORS_ORIGIN_WHITELIST = ['http://localhost:8000']\n"
+    #         "# Restrict unknown urls\nCORS_ORIGIN_ALLOW_ALL = False\n\n"
+    #         'REST_FRAMEWORK = {\n\t"DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),\n'
+    #         '\t"DEFAULT_AUTHENTICATION_CLASSES": (\n\t\t"rest_framework.authentication.TokenAuthentication",\n'
+    #         "\t),\n}"
+    #     )
+    #
+    #     new_settings.append(new_settings_data)
+    #     settings.close()
+    #
+    #     file = open(filepath, "w+")
+    #     file.writelines(new_settings)
+    #     file.close()
 
     def edit_project_config(self, project_config_yaml: str, service_name: str) -> None:
         """

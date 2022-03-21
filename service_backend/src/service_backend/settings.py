@@ -9,15 +9,11 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
-
 import os
 from pathlib import Path
-from .config import develop_configuration
-
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -26,12 +22,14 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = develop_configuration.get("debug", 0)
+DEBUG = os.environ.get("DEBUG")
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+ADMINS = os.environ.get("ADMINS")
 
 # comapany name
-SITE_NAME = develop_configuration.get("site_name", "test site")
+SITE_NAME = os.environ.get("SITE_NAME")
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -91,15 +89,16 @@ WSGI_APPLICATION = "service_backend.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+CONN_MAX_AGE = os.environ.get("CONN_MAX_AGE")
 DATABASES = {
     "default": {
-        "ENGINE": develop_configuration.get("sql_engine", "django.db.backends.sqlite3"),
+        "ENGINE": os.environ.get("SQL_ENGINE", "django.db.backends.sqlite3"),
         "NAME": os.environ.get("SQL_DATABASE", os.path.join(BASE_DIR, "db.sqlite3")),
         "USER": os.environ.get("SQL_USER", None),
         "PASSWORD": os.environ.get("SQL_PASSWORD", None),
         "HOST": os.environ.get("SQL_HOST", "localhost"),
-        "PORT": develop_configuration.get("sql_port", "5432"),
-        "TEST": {"NAME": develop_configuration.get("sql_test_database", "test_db")},
+        "PORT": os.environ.get("SQL_PORT", "5432"),
+        "TEST": {"NAME": os.environ.get("SQL_TEST_DATABASE", "test_db")},
     }
 }
 
@@ -137,16 +136,27 @@ USE_L10N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
+# Static files (CSS, JavaScript, Images) and storage
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
-STATIC_URL = "/static/"
+if os.environ.get("MODE") == "production":
+    STATIC_URL = os.environ.get("STATIC_URL")
+    STATIC_ROOT = os.environ.get("STATIC_ROOT")
+    GS_BUCKET_NAME = os.environ.get("GS_BUCKET_NAME")
+    DEFAULT_FILE_STORAGE = os.environ.get("DEFAULT_FILE_STORAGE")
+    STATICFILES_STORAGE = os.environ.get("STATICFILES_STORAGE")
+    GS_DEFAULT_ACL = os.environ.get("GS_DEFAULT_ACL")
+else:
+    STATIC_URL = os.environ.get("STATIC_URL")
 
+# HTTPS settings
+CSRF_COOKIE_SECURE = os.environ.get("CSRF_COOKIE_SECURE")
+SESSION_COOKIE_SECURE = os.environ.get("SESSION_COOKIE_SECURE")
 
 # Email support
-EMAIL_BACKEND = develop_configuration.get("email_backend", None)
-EMAIL_HOST = develop_configuration.get("email_host", None)
-EMAIL_PORT = develop_configuration.get("email_port", None)
+EMAIL_BACKEND = os.environ.get("EMAIL_BACKEND", None)
+EMAIL_HOST = os.environ.get("EMAIL_HOST", None)
+EMAIL_PORT = os.environ.get("EMAIL_PORT", None)
 EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER", None)
 EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", None)
 
@@ -155,12 +165,13 @@ AUTH_USER_MODEL = "app_accounts.UserModel"
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 # Rest framework settings
-
 # CORS
-CORS_ORIGIN_WHITELIST = [
-    f"{develop_configuration.get('protocol')}{develop_configuration.get('frontend_url')}"
-]
-
+if os.environ.get("MODE") == "production":
+    CORS_ORIGIN_WHITELIST = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+else:
+    CORS_ORIGIN_WHITELIST = [
+        f"{os.environ.get('PROTOCOL')}{os.environ.get('FRONTEND_URL')}"
+    ]
 # restrict to api only
 CORS_ORIGIN_ALLOW_ALL = False
 
@@ -175,27 +186,19 @@ REST_FRAMEWORK = {
 
 # djoser
 DJOSER = {
-    "SEND_ACTIVATION_EMAIL": develop_configuration.get("djoser_send_mail", False),
-    "SEND_CONFIRMATION_EMAIL": develop_configuration.get(
-        "djoser_send_confirmation_email", False
-    ),
+    "SEND_ACTIVATION_EMAIL": True,
+    "SEND_CONFIRMATION_EMAIL": True,
     "USER_CREATE_PASSWORD_RETYPE": True,
     "SET_USERNAME_RETYPE": False,
-    "PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND": develop_configuration.get(
-        "djoser_password_reset", False
-    ),
-    "USERNAME_RESET_SHOW_EMAIL_NOT_FOUND": develop_configuration.get(
-        "djoser_username_reset", False
-    ),
-    "LOGIN_FIELD": develop_configuration.get("djoser_login_field", "username"),
-    "HIDE_USERS": develop_configuration.get("djoser_hide_users", True),
-    "ACTIVATION_URL": develop_configuration.get("djoser_email_activation_url", None),
-    "USERNAME_RESET_CONFIRM_URL": develop_configuration.get(
-        "djoser_username_reset_url", None
-    ),
-    "PASSWORD_RESET_CONFIRM_URL": develop_configuration.get(
-        "djoser_password_reset_url", None
-    ),
+    "PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND": True,
+    "USERNAME_RESET_SHOW_EMAIL_NOT_FOUND": True,
+    "LOGIN_FIELD": "email",
+    "HIDE_USERS": True,
+    # --- change these on the frontend as well
+    "ACTIVATION_URL": "auth/activate/{uid}/{token}",
+    "USERNAME_RESET_CONFIRM_URL": "auth/reset/username/{uid}/{token}",
+    "PASSWORD_RESET_CONFIRM_URL": "auth/reset/password/{uid}/{token}",
+    # ---
     "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
     "USERNAME_CHANGED_EMAIL_CONFIRMATION": True,
     "SERIALIZERS": {"current_user": "app_accounts.api.serializers.UserSerializer"},

@@ -10,7 +10,7 @@ const classes = {
 	text: `${PREFIX}-text`
 };
 
-const Root = styled("div")(({theme}) => ({
+const Root = styled("div")(({ theme }) => ({
 	[`& .${classes.root}`]: {
 		borderRadius: 20, 
 		padding: 5,

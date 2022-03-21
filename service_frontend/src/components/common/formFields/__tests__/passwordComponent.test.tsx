@@ -20,10 +20,10 @@ describe("Testing password field Component", () => {
 	});
 
 	it("toggle password display", async () => {
-		render(<PasswordField value="somePassword" inputProps={{"data-testid": "testPassword"}} />);
+		render(<PasswordField value="somePassword" inputProps={{ "data-testid": "testPassword" }} />);
 
 		const hiddenPassword = screen.getByTestId("testPassword") as HTMLInputElement;
-		const toggleButton = screen.getByRole("button", {"name": "toggle-pw-visibility"});
+		const toggleButton = screen.getByRole("button", { "name": "toggle-pw-visibility" });
 		expect(hiddenPassword).toHaveAttribute("type", "password");
         
 		await waitFor(() => {
@@ -35,16 +35,16 @@ describe("Testing password field Component", () => {
 	});
 
 	it("removes tooltip adornment", () => {
-		render(<PasswordField showTooltip={false} inputProps={{"data-testid": "testPassword"}} />);
-		const helpButton = screen.queryByRole("button", {"name": "display-pw-info"});
+		render(<PasswordField showTooltip={false} inputProps={{ "data-testid": "testPassword" }} />);
+		const helpButton = screen.queryByRole("button", { "name": "display-pw-info" });
 		expect(helpButton).not.toBeInTheDocument();
 	});
 
 	it("display help", async() => {
 		// also test clickaway and timers
-		render(<PasswordField showTooltip={true} inputProps={{"data-testid": "testPassword"}} />);
+		render(<PasswordField showTooltip={true} inputProps={{ "data-testid": "testPassword" }} />);
 
-		const helpButton = screen.getByRole("button", {"name": "display-pw-info"});
+		const helpButton = screen.getByRole("button", { "name": "display-pw-info" });
 		const toolTipHidden = screen.queryByRole("tooltip");
 		expect(toolTipHidden).not.toBeInTheDocument();
 

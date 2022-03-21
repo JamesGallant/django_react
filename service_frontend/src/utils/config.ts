@@ -4,12 +4,13 @@
 const configuration = {
 	// misc
 	"misc-loginDurationMonths": 3,
+	"site-name": process.env.NODE_ENV === "production" ? "ProductionSite" : `${process.env.REACT_APP_SITE_NAME}`,
 	
 	// material ui configuration
 	"mui-InputVariant": "outlined",
 
 	// API endpoints
-	"api-base": `${process.env.REACT_APP_BASE_API}`,
+	"api-base": process.env.NODE_ENV === "production" ? "https://service-backend-kme4ufga4a-ez.a.run.app/api/v1/" : `${process.env.REACT_APP_BASE_API}`,
 	"api-activateAccount": "auth/users/activation/",
 	"api-createAccount": "auth/users/",
 	"api-getUserData": "auth/users/me/",

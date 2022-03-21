@@ -9,7 +9,7 @@ export async function getRegisteredApps(authToken: string, url: string): Promise
 		const response: AxiosResponse = await axios({
 			method: "get",
 			url: url === "" ? configuration["api-base"].concat(configuration["api-getRegisteredApps"]) : url,
-			headers: {"Authorization": `Token ${authToken}`}
+			headers: { "Authorization": `Token ${authToken}` }
 		});
 		return response;
 	/* eslint-disable */
@@ -24,7 +24,7 @@ export async function getOwnedApps(authToken: string): Promise<AxiosResponse> {
 		const response: AxiosResponse = await axios({
 			method: "get",
 			url: configuration["api-base"].concat(configuration["api-getOwnedApps"]),
-			headers: {"Authorization": `Token ${authToken}`}
+			headers: { "Authorization": `Token ${authToken}` }
 		});
 		return response;
 	/* eslint-disable */
@@ -40,7 +40,7 @@ export async function linkAppToUser(authToken: string, data: OwnedAppInterface):
 			method: "post",
 			url: configuration["api-base"].concat(configuration["api-getOwnedApps"]),
 			data: data, 
-			headers: {"Content-type": "application/json", "Authorization": `Token ${authToken}`}
+			headers: { "Content-type": "application/json", "Authorization": `Token ${authToken}` }
 		});
 		return response;
 	/* eslint-disable */
@@ -58,7 +58,7 @@ export async function patchOwnedAppExpirationDate(authToken: string, id: number,
 			data: {
 				"expiration_date": expirationDate
 			}, 
-			headers: {"Content-type": "application/json", "Authorization": `Token ${authToken}`}
+			headers: { "Content-type": "application/json", "Authorization": `Token ${authToken}` }
 		});
 		return response;
 	/* eslint-disable */
@@ -73,7 +73,7 @@ export async function deleteOwnedApp(authToken: string, appID: number): Promise<
 		const response: AxiosResponse = await axios({
 			method: "delete",
 			url: `${configuration["api-base"].concat(configuration["api-getOwnedApps"])}/${appID}`,
-			headers: {"Authorization": `Token ${authToken}`}
+			headers: { "Authorization": `Token ${authToken}` }
 		});
 		return response;
 	/* eslint-disable */

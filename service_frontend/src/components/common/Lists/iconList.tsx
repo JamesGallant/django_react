@@ -1,5 +1,5 @@
 import React from "react";
-import {List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
+import { List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 import { SxProps } from "@mui/system";
 
 interface IconListProps {

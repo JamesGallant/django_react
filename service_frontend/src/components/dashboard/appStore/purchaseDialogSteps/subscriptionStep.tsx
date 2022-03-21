@@ -1,10 +1,10 @@
 import React from "react";
 
 import { useAppDispatch, useAppSelector } from "../../../../store/hooks";
-import {setSelectedSubscription, selectPurchaseDialogData} from "../../../../store/slices/purchaseDialogSlice";
+import { setSelectedSubscription, selectPurchaseDialogData } from "../../../../store/slices/purchaseDialogSlice";
 import { selectAppData } from "../../../../store/slices/registeredAppsSlice";
 
-import { Box, Typography, Divider, Button, Grid} from "@mui/material";
+import { Box, Typography, Divider, Button, Grid } from "@mui/material";
 
 import CheckCircleOutlineSharpIcon from "@mui/icons-material/CheckCircleOutlineSharp";
 
@@ -145,16 +145,16 @@ const SubscriptionStep = (props: SubscriptionStepInterface): JSX.Element => {
 					dense={false} 
 					primaryText={item} 
 					icon={<CheckCircleOutlineSharpIcon />} 
-					iconSX={{color: "primary.main"}}/>
+					iconSX={{ color: "primary.main" }}/>
 			);
 		});
 		
 		return (
 			<Grid item  key={index} columns={{ xs: 4, sm: 8, md: 12 }}>
 				<BasicCard
-					cardSX={{border: dialogData.data.cardSelection[sub.toLowerCase() as keyof subscriptionCardSelection ] ? 2 : 0, 
+					cardSX={{ border: dialogData.data.cardSelection[sub.toLowerCase() as keyof subscriptionCardSelection ] ? 2 : 0, 
 						borderColor: dialogData.data.cardSelection[sub.toLowerCase() as keyof subscriptionCardSelection] ? "secondary.main": null,
-						width: "15rem", height: "22rem", padding: "1rem", position: "relative"}}
+						width: "15rem", height: "22rem", padding: "1rem", position: "relative" }}
 					actionArea={false}
 					raised={true}
 					content={
@@ -162,16 +162,16 @@ const SubscriptionStep = (props: SubscriptionStepInterface): JSX.Element => {
 							<Grid container>
 								<Grid item xs={12}>
 									<Typography variant="h5" align="center" gutterBottom><strong>{sub}</strong></Typography>
-									<Divider variant="middle" sx={{marginBottom: 2}}/>
+									<Divider variant="middle" sx={{ marginBottom: 2 }}/>
 								</Grid>
 								<Grid item xs={12}>
 									<Typography variant="h5" align="center" gutterBottom>
 										<strong>{renderAppCost(sub)}</strong>
 									</Typography>
-									<Divider variant="middle" sx={{marginBottom: 2}}/>
+									<Divider variant="middle" sx={{ marginBottom: 2 }}/>
 								</Grid>
 								<Grid item xs={12}>
-									<Box sx={{maxHeight: "9rem", overflow: "auto"}}>
+									<Box sx={{ maxHeight: "9rem", overflow: "auto" }}>
 										{ cardDescriptions }
 									</Box>
 								</Grid>
@@ -183,7 +183,7 @@ const SubscriptionStep = (props: SubscriptionStepInterface): JSX.Element => {
 							<Button 
 								onClick={() => dispatch(setSelectedSubscription(sub)) } 
 								variant="outlined"
-								sx={{bottom: "1rem", position: "absolute"}}
+								sx={{ bottom: "1rem", position: "absolute" }}
 								disabled={dialogData.data.cardSelection[sub.toLowerCase() as keyof subscriptionCardSelection ] ? true : false }
 							> 
 									Select plan

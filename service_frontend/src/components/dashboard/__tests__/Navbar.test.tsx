@@ -42,7 +42,7 @@ describe("Testing navbar from dashboard", () => {
 				</Router>
 			</Provider>);
 
-		const ProfileButton: HTMLElement = wrapper.getByRole("button", {name: "userAccount"});
+		const ProfileButton: HTMLElement = wrapper.getByRole("button", { name: "userAccount" });
 		await waitFor(() => {
 			fireEvent.click(ProfileButton);
 		});
@@ -66,7 +66,7 @@ describe("Testing navbar from dashboard", () => {
 				</Router>
 			</Provider>);
 
-		const ProfileButton: HTMLElement = wrapper.getByRole("button", {name: "userAccount"});
+		const ProfileButton: HTMLElement = wrapper.getByRole("button", { name: "userAccount" });
 		await waitFor(() => {
 			fireEvent.click(ProfileButton);
 		});
@@ -90,7 +90,7 @@ describe("Testing navbar from dashboard", () => {
 				</Router>
 			</Provider>);
 
-		const homeButton: HTMLElement = wrapper.getByRole("button", {name: "dash-home"});
+		const homeButton: HTMLElement = wrapper.getByRole("button", { name: "dash-home" });
 		await waitFor(() => {
 			fireEvent.click(homeButton);
 		});
@@ -111,7 +111,7 @@ describe("Testing navbar from dashboard", () => {
 				</Router>
 			</Provider>);
 
-		const ProfileButton: HTMLElement = wrapper.getByRole("button", {name: "userAccount"});
+		const ProfileButton: HTMLElement = wrapper.getByRole("button", { name: "userAccount" });
 
 		await waitFor(() => {
 			fireEvent.click(ProfileButton);
@@ -139,7 +139,7 @@ describe("Testing navbar from dashboard", () => {
 				</Router>
 			</Provider>);
 
-		const ProfileButton: HTMLElement = wrapper.getByRole("button", {name: "userAccount"});
+		const ProfileButton: HTMLElement = wrapper.getByRole("button", { name: "userAccount" });
 
 		await waitFor(() => {
 			fireEvent.click(ProfileButton);

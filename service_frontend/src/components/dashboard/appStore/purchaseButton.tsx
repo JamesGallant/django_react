@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Box, Typography, Stack, Button} from "@mui/material"; 
+import { Box, Typography, Stack, Button } from "@mui/material"; 
 import CheckCircleOutlineSharpIcon from "@mui/icons-material/CheckCircleOutlineSharp";
 
 interface PurchaseButtonInterface {
@@ -19,7 +19,7 @@ const PurchaseButton = (props: PurchaseButtonInterface): JSX.Element => {
 				:
 				props.purchased ? 
 					<Stack direction="row" spacing={2} alignItems="center">
-						<Typography variant="subtitle2" color="text.secondary" sx={{wordWrap: "break-word"}}>
+						<Typography variant="subtitle2" color="text.secondary" sx={{ wordWrap: "break-word" }}>
 							<strong>OWNED</strong>
 						</Typography>
 						<CheckCircleOutlineSharpIcon 

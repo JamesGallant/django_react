@@ -1,16 +1,16 @@
+import os
+import json
+from faker import Faker
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
 from django.contrib.auth import get_user_model
-from faker import Faker
-import json
 
-from service_backend.config import develop_configuration
 from ..models import MarketplaceApplications
 
 
 class TestMarketPlaceApplications(APITestCase):
     def setUp(self) -> None:
-        self.base_url = f"http://{develop_configuration.get('service_backend')}/api/v1"
+        self.base_url = f"http://{os.environ.get('BACKEND_URL')}/api/v1"
         self.user_registered_apps_url = f"{self.base_url}/apps/registered/"
 
         self.client = APIClient()

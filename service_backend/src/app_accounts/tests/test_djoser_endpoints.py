@@ -1,4 +1,4 @@
-from django.utils.timezone import datetime
+import os
 import json
 
 from django.contrib.auth import get_user_model
@@ -7,7 +7,6 @@ from django.core import mail
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
 
-from service_backend.config import develop_configuration
 
 """
 Internal testing for the djoser authentications. https://djoser.readthedocs.io/en/latest/introduction.html
@@ -41,9 +40,7 @@ class TestDjoserAccountCreation(APITestCase):
         """
         # administrative
         self.client = APIClient()
-        self.base_url = (
-            f"http://{develop_configuration.get('service_backend')}/api/v1/auth"
-        )
+        self.base_url = f"http://{os.environ.get('BACKEND_URL')}/api/v1/auth"
 
         # dummy accounts
         self.valid_payload = {
@@ -159,9 +156,7 @@ class TestDjoserLoginLogout(APITestCase):
         """
         self.client = APIClient()
         self.user_model = get_user_model()
-        self.base_url = (
-            f"http://{develop_configuration.get('service_backend')}/api/v1/auth"
-        )
+        self.base_url = f"http://{os.environ.get('BACKEND_URL')}/api/v1/auth"
         self.user_data_url = f"{self.base_url}/users/me/"
         self.login_url = f"{self.base_url}/token/login/"
         self.logout_url = f"{self.base_url}/token/logout/"
@@ -238,9 +233,7 @@ class TestDjoserAccountDelete(APITestCase):
     def setUp(self) -> None:
         self.user_model = get_user_model()
         self.client = APIClient()
-        self.base_url = (
-            f"http://{develop_configuration.get('service_backend')}/api/v1/auth"
-        )
+        self.base_url = f"http://{os.environ.get('BACKEND_URL')}/api/v1/auth"
         self.user_data_url = f"{self.base_url}/users/me/"
         self.login_url = f"{self.base_url}/token/login/"
 
@@ -359,9 +352,7 @@ class TestEmailVerification(APITestCase):
     def setUp(self) -> None:
         self.User_model = get_user_model()
         self.client = APIClient()
-        self.base_url = (
-            f"http://{develop_configuration.get('service_backend')}/api/v1/auth"
-        )
+        self.base_url = f"http://{os.environ.get('BACKEND_URL')}/api/v1/auth"
         self.valid_payload = {
             "first_name": "testuser3_firstname",
             "last_name": "testuser3_lastname",
@@ -437,9 +428,7 @@ class TestDjoserUpdateAccount(APITestCase):
     def setUp(self) -> None:
         self.client = APIClient()
         self.user_model = get_user_model()
-        self.base_url = (
-            f"http://{develop_configuration.get('service_backend')}/api/v1/auth"
-        )
+        self.base_url = f"http://{os.environ.get('BACKEND_URL')}/api/v1/auth"
         self.users_url = f"{self.base_url}/users/"
         self.login_url = f"{self.base_url}/token/login/"
 
@@ -575,9 +564,7 @@ class TestDjoserResets(APITestCase):
     def setUp(self) -> None:
         self.client = APIClient()
         self.user_model = get_user_model()
-        self.base_url = (
-            f"http://{develop_configuration.get('service_backend')}/api/v1/auth/"
-        )
+        self.base_url = f"http://{os.environ.get('BACKEND_URL')}/api/v1/auth/"
         self.new_username = "regular_user_new@email.com"
         self.new_password = "newSecret"
 
@@ -754,9 +741,7 @@ class TestDjoserAuth(APITestCase):
     def setUp(self) -> None:
         self.user_model = get_user_model()
         self.client = APIClient()
-        self.base_url = (
-            f"http://{develop_configuration.get('frontend_url')}/api/v1/auth"
-        )
+        self.base_url = f"http://{os.environ.get('BACKEND_URL')}/api/v1/auth"
         self.users_url = f"{self.base_url}/users/"
         self.login_url = f"{self.base_url}/token/login/"
 

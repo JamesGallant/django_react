@@ -27,7 +27,7 @@ describe("testing textField component", () => {
 			label="Last Name"
 			value=""
 			errorMessage={ ["This field is required"] }
-			inputProps={{"data-testid": "testError"}}
+			inputProps={{ "data-testid": "testError" }}
 		/>);
 
 		expect(screen.getByText("This field is required")).toBeInTheDocument();
@@ -40,7 +40,7 @@ describe("testing textField component", () => {
 			name="testName" 
 			label="testLabel"
 			id="testId"
-			inputProps={{"data-testid": "testError"}}
+			inputProps={{ "data-testid": "testError" }}
 			errorMessage={ [""] }
 			value="someText"/>);
 

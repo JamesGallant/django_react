@@ -41,6 +41,8 @@
         "semi": [
             "error",
             "always"
-        ]
+        ],
+        "object-curly-spacing": [1, "always"],
+        "no-unreachable": 1
     }
 }

@@ -59,7 +59,7 @@ describe("Testing view after email has been sent to reset users password", () =>
 				<ResetPasswordEmailSent/>
 			</Router>);
 			
-		const resendEmail: HTMLElement = wrapper.getByRole("button", {name: "Resend email"});
+		const resendEmail: HTMLElement = wrapper.getByRole("button", { name: "Resend email" });
 		const spyOnResetPassword: jest.SpyInstance = jest.spyOn(authenticationAPI, "resetPassword").mockImplementation(() => Promise.resolve(AxiosResponse));
 
 		await waitFor(() => {

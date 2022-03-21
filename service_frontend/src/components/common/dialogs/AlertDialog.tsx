@@ -13,7 +13,7 @@ interface AlertDialogInterface {
 }
 
 const AlertDialog = (props: AlertDialogInterface): JSX.Element => {
-	const {isOpen=false, onClose, onOk, title="", content="", okBtnText="Agree", maxWidth="sm" } = props; 
+	const { isOpen=false, onClose, onOk, title="", content="", okBtnText="Agree", maxWidth="sm" } = props; 
 	return(
 		<Dialog
 			open={ isOpen }

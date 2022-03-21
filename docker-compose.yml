@@ -21,7 +21,7 @@ services:
   service_backend:
     build:
       context: ./service_backend
-      dockerfile: ./docker/Dockerfile
+      dockerfile: ./docker/develop/Dockerfile
     command: python ./src/manage.py runserver 0.0.0.0:8000
     container_name: service_backend
     depends_on:
@@ -48,7 +48,7 @@ services:
   service_frontend:
     build:
       context: ./service_frontend
-      dockerfile: ./docker/Dockerfile
+      dockerfile: ./docker/develop/Dockerfile
     command: npm start
     container_name: service_frontend
     depends_on:

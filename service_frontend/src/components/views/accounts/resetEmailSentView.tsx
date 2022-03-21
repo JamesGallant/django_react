@@ -16,7 +16,7 @@ const classes = {
 	paper: `${PREFIX}-paper`,
 };
 
-const Root = styled("div")(({theme}) => ({
+const Root = styled("div")(({ theme }) => ({
 	[`&.${classes.root}`]: {
 		position: "absolute",
 		flexGrow: 1, 

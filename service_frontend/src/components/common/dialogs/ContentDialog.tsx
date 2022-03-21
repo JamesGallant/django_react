@@ -19,7 +19,7 @@ interface ContentDialogInterface {
 }
 
 const ContentDialog = (props:ContentDialogInterface): JSX.Element => {
-	const {isOpen=false, title="", cancelBtnText="Cancel", okBtnText="Ok", maxWidth="sm", 
+	const { isOpen=false, title="", cancelBtnText="Cancel", okBtnText="Ok", maxWidth="sm", 
 		fullWidth=false, fullScreen=false, closeOnClickaway=true, onClose, onOk, content, 
 		customActions } = props; 
 	

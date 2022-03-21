@@ -39,7 +39,7 @@ describe("Testing reset password component", () => {
 
 	it("Response no email address error", async () => {
 		const message = "This field is required";
-		AxiosResponse.data = {email: [message]};
+		AxiosResponse.data = { email: [message] };
 		AxiosResponse.status = 400;
 		
 		const spyOnApi: jest.SpyInstance = jest.spyOn(API, "resetPassword").mockImplementation(() => Promise.resolve(AxiosResponse));
@@ -51,8 +51,8 @@ describe("Testing reset password component", () => {
 				<ResetPassword />		
 			</Router>);
 
-		const submitButton = wrapper.getByRole("button", {name: "Reset Password"});
-		const email = wrapper.getByRole("textbox", {name: "email"});
+		const submitButton = wrapper.getByRole("button", { name: "Reset Password" });
+		const email = wrapper.getByRole("textbox", { name: "email" });
 
 		await waitFor(() => {
 			fireEvent.click(submitButton);
@@ -79,8 +79,8 @@ describe("Testing reset password component", () => {
 				<ResetPassword />		
 			</Router>);
 
-		const submitButton = wrapper.getByRole("button", {name: "Reset Password"});
-		const email = wrapper.getByRole("textbox", {name: "email"});
+		const submitButton = wrapper.getByRole("button", { name: "Reset Password" });
+		const email = wrapper.getByRole("textbox", { name: "email" });
 
 		await waitFor(() => {
 			fireEvent.click(submitButton);
@@ -104,7 +104,7 @@ describe("Testing reset password component", () => {
 				<ResetPassword />		
 			</Router>);
 
-		const submitButton = wrapper.getByRole("button", {name: "Reset Password"});
+		const submitButton = wrapper.getByRole("button", { name: "Reset Password" });
 
 		await waitFor(() => {
 			fireEvent.click(submitButton);
@@ -129,7 +129,7 @@ describe("Testing reset password component", () => {
 				<ResetPassword />		
 			</Router>);
 
-		const submitButton = wrapper.getByRole("button", {name: "Reset Password"});
+		const submitButton = wrapper.getByRole("button", { name: "Reset Password" });
 
 		await waitFor(() => {
 			fireEvent.click(submitButton);

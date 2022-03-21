@@ -186,7 +186,7 @@ describe("Testing AppStore component", () => {
 			</Provider>
 		);
 
-		const AboutBtn: HTMLElement = wrapper.getByRole("button", {name: "About"});
+		const AboutBtn: HTMLElement = wrapper.getByRole("button", { name: "About" });
 		await waitFor(() => {
 			fireEvent.click(AboutBtn);
 		});

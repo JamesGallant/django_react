@@ -13,7 +13,7 @@ import PasswordField from "../../common/formFields/passwordComponent";
 import FlashError from "../../common/helper/flashErrors";
 import Copyright from "../../common/helper/copyrightComponent";
 
-const { Root, classes} = CentredSubmitFormRoot("ResetPasswordConfirm");
+const { Root, classes } = CentredSubmitFormRoot("ResetPasswordConfirm");
 
 interface initialValInterface {
 	new_password: string,

@@ -65,7 +65,7 @@ describe("Testing profile settings", () => {
 		});
 
 		expect(store.dispatch).toHaveBeenCalledTimes(1);
-		expect(store.dispatch).toHaveBeenCalledWith({payload: undefined, type: "siteConfiguration/toggleClearLoginCache"});
+		expect(store.dispatch).toHaveBeenCalledWith({ payload: undefined, type: "siteConfiguration/toggleClearLoginCache" });
 	});
 	
 	it("Update email by unauthorised token logs user out and reroutes to login", async () => {
@@ -84,12 +84,12 @@ describe("Testing profile settings", () => {
 				</Router>
 			</Provider>);
 
-		const button: HTMLElement = wrapper.getByRole("button", {name: "Update email"});
+		const button: HTMLElement = wrapper.getByRole("button", { name: "Update email" });
 		await waitFor(() => {
 			fireEvent.click(button);
 		});
 
-		const modalButton: HTMLElement = wrapper.getByRole("button", { name: "Ok", hidden: true});
+		const modalButton: HTMLElement = wrapper.getByRole("button", { name: "Ok", hidden: true });
 		expect(wrapper.getByText("Change your email address?")).toBeInTheDocument();
 
 		await waitFor(() => {
@@ -117,12 +117,12 @@ describe("Testing profile settings", () => {
 				</Router>
 			</Provider>);
 
-		const button: HTMLElement = wrapper.getByRole("button", {name: "Update email"});
+		const button: HTMLElement = wrapper.getByRole("button", { name: "Update email" });
 		await waitFor(() => {
 			fireEvent.click(button);
 		});
 
-		const modalButton: HTMLElement = wrapper.getByRole("button", { name: "Ok", hidden: true});
+		const modalButton: HTMLElement = wrapper.getByRole("button", { name: "Ok", hidden: true });
 		expect(wrapper.getByText("Change your email address?")).toBeInTheDocument();
 
 		await waitFor(() => {
@@ -150,12 +150,12 @@ describe("Testing profile settings", () => {
 				</Router>
 			</Provider>);
 
-		const button: HTMLElement = wrapper.getByRole("button", {name: "Update password"});
+		const button: HTMLElement = wrapper.getByRole("button", { name: "Update password" });
 		await waitFor(() => {
 			fireEvent.click(button);
 		});
 
-		const modalButton: HTMLElement = wrapper.getByRole("button", { name: "Ok", hidden: true});
+		const modalButton: HTMLElement = wrapper.getByRole("button", { name: "Ok", hidden: true });
 		expect(wrapper.getByText("Update your password?")).toBeInTheDocument();
 
 		await waitFor(() => {
@@ -183,12 +183,12 @@ describe("Testing profile settings", () => {
 				</Router>
 			</Provider>);
 
-		const button: HTMLElement = wrapper.getByRole("button", {name: "Update password"});
+		const button: HTMLElement = wrapper.getByRole("button", { name: "Update password" });
 		await waitFor(() => {
 			fireEvent.click(button);
 		});
 
-		const modalButton: HTMLElement = wrapper.getByRole("button", { name: "Ok", hidden: true});
+		const modalButton: HTMLElement = wrapper.getByRole("button", { name: "Ok", hidden: true });
 		expect(wrapper.getByText("Update your password?")).toBeInTheDocument();
 		await waitFor(() => {
 			fireEvent.click(modalButton);
@@ -217,14 +217,14 @@ describe("Testing profile settings", () => {
 				</Router>
 			</Provider>);
 
-		const button: HTMLElement = wrapper.getByRole("button", {name: "Delete account"});
+		const button: HTMLElement = wrapper.getByRole("button", { name: "Delete account" });
 
 		
 		await waitFor(() => {
 			fireEvent.click(button);
 		});
 
-		const modalButton: HTMLElement = wrapper.getByRole("button", { name: "Ok", hidden: true});
+		const modalButton: HTMLElement = wrapper.getByRole("button", { name: "Ok", hidden: true });
 		expect(wrapper.getByText("Delete your account?")).toBeInTheDocument();
 
 		await waitFor(() => {
@@ -251,12 +251,12 @@ describe("Testing profile settings", () => {
 				</Router>
 			</Provider>);
 
-		const button: HTMLElement = wrapper.getByRole("button", {name: "Delete account"});
+		const button: HTMLElement = wrapper.getByRole("button", { name: "Delete account" });
 		await waitFor(() => {
 			fireEvent.click(button);
 		});
 
-		const modalButton: HTMLElement = wrapper.getByRole("button", { name: "Ok", hidden: true});
+		const modalButton: HTMLElement = wrapper.getByRole("button", { name: "Ok", hidden: true });
 		expect(wrapper.getByText("Delete your account?")).toBeInTheDocument();
 
 		await waitFor(() => {
@@ -284,12 +284,12 @@ describe("Testing profile settings", () => {
 				</Router>
 			</Provider>);
 
-		const button: HTMLElement = wrapper.getByRole("button", {name: "Delete account"});
+		const button: HTMLElement = wrapper.getByRole("button", { name: "Delete account" });
 		await waitFor(() => {
 			fireEvent.click(button);
 		});
 
-		const modalButton: HTMLElement = wrapper.getByRole("button", { name: "Ok", hidden: true});
+		const modalButton: HTMLElement = wrapper.getByRole("button", { name: "Ok", hidden: true });
 		expect(wrapper.getByText("Delete your account?")).toBeInTheDocument();
 
 		await waitFor(() => {

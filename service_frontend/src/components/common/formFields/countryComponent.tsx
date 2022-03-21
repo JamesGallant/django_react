@@ -1,4 +1,4 @@
-import React, {ChangeEvent} from "react";
+import React from "react";
 import Box from "@mui/material/Box";
 import { TextField as MuiTextField } from "@mui/material/";
 import Autocomplete from "@mui/material/Autocomplete";
@@ -11,7 +11,7 @@ export default function CountrySelect(props: any): JSX.Element {
 	return (
 		<Autocomplete
 			id="select-country"
-			sx={{width: width}}
+			sx={{ width: width }}
 			options={countries}
 			onChange={ onChange }
 			autoHighlight

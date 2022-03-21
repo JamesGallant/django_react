@@ -46,13 +46,13 @@ describe("Testing profile settings", () => {
 			</Provider>
 		);
 		
-		const toggleButton: HTMLElement = wrapper.getByRole("radio", {name: "Select"});
+		const toggleButton: HTMLElement = wrapper.getByRole("radio", { name: "Select" });
 
 		await waitFor(() => {
 			fireEvent.click(toggleButton);
 		});
 		
-		expect(store.dispatch).toHaveBeenCalledWith({"payload": "SelectTheme", "type": "siteConfiguration/setThemePreference"});
+		expect(store.dispatch).toHaveBeenCalledWith({ "payload": "SelectTheme", "type": "siteConfiguration/setThemePreference" });
 
 	});
 
@@ -66,7 +66,7 @@ describe("Testing profile settings", () => {
 			</Provider>
 		);
 		
-		const toggleButton: HTMLElement = wrapper.getByRole("radio", {name: "Sync"});
+		const toggleButton: HTMLElement = wrapper.getByRole("radio", { name: "Sync" });
 		
 		await waitFor(() => {
 			fireEvent.click(toggleButton);
@@ -86,13 +86,13 @@ describe("Testing profile settings", () => {
 			</Provider>
 		);
 		
-		const toggleButton = wrapper.getAllByRole("checkbox", {name: "thememode"});
+		const toggleButton = wrapper.getAllByRole("checkbox", { name: "thememode" });
 		
 		await waitFor(() => {
 			fireEvent.click(toggleButton[0]);
 		});
 
-		expect(store.dispatch).toHaveBeenCalledWith({"payload": "light", "type": "siteConfiguration/setThemeMode"});
+		expect(store.dispatch).toHaveBeenCalledWith({ "payload": "light", "type": "siteConfiguration/setThemeMode" });
 
 	});
 
@@ -106,13 +106,13 @@ describe("Testing profile settings", () => {
 			</Provider>
 		);
 		
-		const toggleButton = wrapper.getAllByRole("checkbox", {name: "thememode"});
+		const toggleButton = wrapper.getAllByRole("checkbox", { name: "thememode" });
 		
 		await waitFor(() => {
 			fireEvent.click(toggleButton[1]);
 		});
 
-		expect(store.dispatch).toHaveBeenCalledWith({"payload": "dark", "type": "siteConfiguration/setThemeMode"});
+		expect(store.dispatch).toHaveBeenCalledWith({ "payload": "dark", "type": "siteConfiguration/setThemeMode" });
 	});
 
 });

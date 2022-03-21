@@ -9,7 +9,7 @@ import CookieHandler from "../../../../modules/cookies";
 import * as API from "../../../../api/authenticationAPI";
 import configuration from "../../../../utils/config";
 
-import {login} from "../../../../modules/authentication";
+import { login } from "../../../../modules/authentication";
 
 jest.mock("axios");
 jest.mock("../../../../modules/authentication");
@@ -59,7 +59,7 @@ describe("Testing login", () => {
 			</Router>
 		);
 
-		const submitButton = wrapper.getByRole("button", {name: "Log in"});
+		const submitButton = wrapper.getByRole("button", { name: "Log in" });
         
 		await waitFor(() => {
 			fireEvent.click(submitButton);
@@ -89,8 +89,8 @@ describe("Testing login", () => {
 			</Router>
 		);
         
-		const email = wrapper.getByRole("textbox", {name: "email"});
-		const submitButton = wrapper.getByRole("button", {name: "Log in"});
+		const email = wrapper.getByRole("textbox", { name: "email" });
+		const submitButton = wrapper.getByRole("button", { name: "Log in" });
 
 		await waitFor(() => {
 			fireEvent.click(submitButton);
@@ -130,7 +130,7 @@ describe("Testing login", () => {
 			</Router>);
 
 		await waitFor(() => {
-			fireEvent.click(screen.getByRole("button", {name: "Log in"}));
+			fireEvent.click(screen.getByRole("button", { name: "Log in" }));
 		});
         
 		await spyOnTokenLogin;

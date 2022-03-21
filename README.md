@@ -327,3 +327,77 @@ jobs:
 Each microservice runs its own unit tests and details on the tests can be found in README of the individual service. 
 Intergration tests are handled using selenium to mock web browsers. See selenium README for more details.
 
+# Production 
+
+The application will be deployed to google cloud platform starting by using the cloud run serverless feature. Here we
+will provide a brief summary on how to have deploy the application. The current architecture needs to be extended with
+more specific service accounts and the use of CI/CD and secret manager for deployment. However the setup here will work 
+for a initial deployment system and can be upgraded later. 
+
+## starting a project and authorisation on the command line
+First the [gcloud cli](https://cloud.google.com/sdk/docs/install) is needed. This is used to interface with gcp from
+the command line.
+See which project is active:
+```
+gcloud config get-value project
+```
+Activate a project
+```
+gcloud config set project myProject
+```
+Login to gcp
+```
+gcloud auth login
+```
+Main components required:
+- Service account: The service account is responsible for the roles within the project. There can be more service accounts
+but in this instance I only used one. The service needs to be able to access different services such as cloud SQL. Add roles
+for cloud SQL edit, view, admin as well as storage. More roles may be needed. 
+```
+roles: run.invoker, storage.objectAdmin, secretmanager.secretAccessor, cloudsql.client, cloudsql.editor, cloudsql.admin
+```
+
+- artifact registry: This is where the production containers are pushed to.
+```
+docker build -f path/to/Dockerfile -t <region>-docker.pkg.dev/<registry-name>/<folder>/<cotnainer>
+docker push <region>-docker.pkg.dev/<registry-name>/<folder>/<cotnainer>
+```
+- cloud SQL: The cloud SQL is made of an instance and one or more databases. After the instance is made, a user and a database
+should be created as well. To connect to the database via django in the staging phase a windows environment is needed in order
+to connect to [cloud SQL proxy](https://cloud.google.com/sql/docs/mysql/sql-proxy). This will allow changes like migrations
+to be made on the production database. This should be done automatically in a CI pipeline later. Connecting to the production
+database in the container uses the following variables and connections:
+
+```
+SQL_USER=<db-username>
+SQL_PASSWORD=<db_password>
+SQL_HOST=postgres:/cloudsql/<projectID>:<region-name>:<instance-name>
+SQL_PORT=5432
+SQL_DATABASE=<database-name>
+SQL_ENGINE=django.db.backends.postgresql
+```
+- Cloud storage: Cloud storage is used to serve the static assets to django as well as save other content. Currently
+it does not support setting a subfolder, we will need to rewrite the storages backend in the future to do so. The storage
+needs to have public access in order to serve content to django, but it should be read only. We need to think about these 
+permissions when serving content that should not be public. The folders *inside static* need to be uploaded not the static 
+folder its self to function correctly. The following permissions are needed to serve the static django content.
+```
+allUsers: Storage Object Viewer
+<service-account>: Cloud Run Service Agent, Storage Object Admin, Storage Object Creator, Storage Object Viewer
+```
+To connect to the bucket the following variables are needed in production and should be ommited in develop environment
+variables.
+```
+GS_BUCKET_NAME=<bucket-name>
+STATIC_ROOT="."
+DEFAULT_FILE_STORAGE=storages.backends.gcloud.GoogleCloudStorage
+STATICFILES_STORAGE=storages.backends.gcloud.GoogleCloudStorage
+GS_DEFAULT_ACL=publicRead
+```
+
+-Services: The services are the content exposed to the internet and requires a service account that is able to connect to
+the relevant google cloud products. Thus it is possible to have different service accounts for different services with unique
+privaleges. However here we only used one service account which has all the required roles. We should use the secret manager
+and CI/CD to build and deploy services however it can be done manually as well. If all docker files are correctly configured
+simply assigning them and choosing the service account and connection should be enough to make it function properly. Exposing
+ports should be done with the $port variable. 

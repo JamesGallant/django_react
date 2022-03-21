@@ -26,9 +26,12 @@ service_frontend/yarn-error.log*
 # service_backend
 service_backend/venv/
 service_backend/environments/.development.env
+/service_backend/environments/.production.env
+/service_backend/environments/staging.bat
 service_backend.log
 service_backend/local_settings.py
 service_backend/db.sqlite3
 service_backend/db.sqlite3-journal
 service_backend/coverage/
 service_backend/src/**/migrations/
+
