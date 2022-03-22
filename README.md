@@ -401,3 +401,19 @@ privaleges. However here we only used one service account which has all the requ
 and CI/CD to build and deploy services however it can be done manually as well. If all docker files are correctly configured
 simply assigning them and choosing the service account and connection should be enough to make it function properly. Exposing
 ports should be done with the $port variable. 
+
+## building the services
+### Backend django
+The steps required are migrating the new models to the database and django specific operations and collecting the static
+files. To do so, use the cloudSQL proxy to login to the remote database and couple that with django using the staging 
+vars
+```
+python manage.py makemigrations
+python manage.py migrate
+python manage.py collectstatic
+```
+Collect static will create a folder called static which will contain all the django specific css and html. The contents of
+this folder needs to be uploaded to the cloud storage bucket.
+
+### frontend react
+Only think needed is to build and push the production docker image. 
